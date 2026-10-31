@@ -42,7 +42,7 @@ function downloadText(text, filename, type) {
 }
 function readAsArrayBuffer(file) { return file.arrayBuffer(); }
 function needLibrary(ok, name, statusId) {
-  if (!ok) { setStatus(statusId, name + " did not load from its CDN. Check your connection and try again. AK Premium will not fake this result."); return false; }
+  if (!ok) { setStatus(statusId, name + " did not load. Check your connection and try again."); return false; }
   return true;
 }
 function getJsPdf() { return window.jspdf && window.jspdf.jsPDF ? window.jspdf.jsPDF : null; }
@@ -55,15 +55,26 @@ function wrapPdfText(doc, text, maxWidth) {
   return doc.splitTextToSize(String(text || ""), maxWidth);
 }
 
-/* ---------- tabs (SPA) ---------- */
-const tabButtons = document.querySelectorAll(".tab-btn");
-const tabPanels = document.querySelectorAll(".tab-panel");
-function showTab(name) {
-  tabButtons.forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
-  tabPanels.forEach((p) => p.classList.toggle("active", p.id === "tab-" + name));
+/* ---------- navigation categories + workspace (SPA) ---------- */
+const navButtons = document.querySelectorAll(".nav-btn");
+function showCategory(name) {
+  navButtons.forEach((b) => b.classList.toggle("active", b.dataset.category === name));
+  if (name === "faq") { const faq = $("section-faq"); if (faq) faq.scrollIntoView({ behavior: "smooth" }); return; }
   filterCards();
 }
-tabButtons.forEach((b) => b.addEventListener("click", () => showTab(b.dataset.tab)));
+navButtons.forEach((b) => b.addEventListener("click", () => showCategory(b.dataset.category)));
+
+/* Clicking a tool card opens its workspace panel below the grid. */
+function openWorkspace(id, excelModule) {
+  document.querySelectorAll(".tool-card").forEach((c) => c.classList.toggle("active", c.dataset.target === id));
+  document.querySelectorAll(".workspace-tool").forEach((w) => w.classList.toggle("active", w.id === id));
+  const empty = $("workspaceEmpty"); if (empty) empty.style.display = "none";
+  if (excelModule) { const btn = document.querySelector('.excel-tab-btn[data-excel-tab="' + excelModule + '"]'); if (btn) btn.click(); }
+  const ws = $("workspace"); if (ws) ws.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+document.querySelectorAll(".tool-card").forEach((card) => {
+  card.addEventListener("click", () => openWorkspace(card.dataset.target, card.dataset.excelModule));
+});
 
 /* ---------- hero search: filter tool cards on every keypress ---------- */
 const heroSearch = $("heroSearch");
@@ -71,28 +82,22 @@ const searchStatus = $("searchStatus");
 function filterCards() {
   const query = (heroSearch ? heroSearch.value : "").trim().toLowerCase();
   const cards = document.querySelectorAll(".tool-card");
-  let visible = 0;
-  let visibleByTab = {};
+  let visible = 0; const sectionsWithVisible = new Set();
   cards.forEach((card) => {
     const hay = ((card.dataset.keywords || "") + " " + card.textContent).toLowerCase();
     const show = !query || hay.includes(query);
     card.style.display = show ? "" : "none";
-    if (show) {
-      visible++;
-      const panel = card.closest(".tab-panel");
-      if (panel) visibleByTab[panel.id] = (visibleByTab[panel.id] || 0) + 1;
-    }
+    if (show) { visible++; const sec = card.closest(".tool-section"); if (sec) sectionsWithVisible.add(sec.id); }
   });
-  if (searchStatus) {
-    searchStatus.textContent = query
-      ? "Found " + visible + " tool card(s) matching “" + heroSearch.value.trim() + "” across AK Premium."
-      : "Showing all AK Premium tools.";
-  }
+  if (searchStatus) { searchStatus.textContent = query ? "Found " + visible + " tool(s) matching \"" + heroSearch.value.trim() + "\"." : "Showing all tools."; }
+  const sectionIds = ["section-pdf", "section-convert", "section-excel"];
   if (query) {
-    const active = document.querySelector(".tab-panel.active");
-    if (active && !visibleByTab[active.id]) {
-      const first = Object.keys(visibleByTab)[0];
-      if (first) showTab(first.replace("tab-", ""));
+    sectionIds.forEach((id) => { const sec = $(id); if (sec) sec.style.display = sectionsWithVisible.has(id) ? "" : "none"; });
+  } else {
+    const activeNav = document.querySelector(".nav-btn.active");
+    const cat = activeNav ? activeNav.dataset.category : "all";
+    if (cat !== "faq") {
+      sectionIds.forEach((id) => { const sec = $(id); if (!sec) return; sec.style.display = (cat === "all" || (id === "section-excel" ? cat === "excel" : cat === "pdf")) ? "" : "none"; });
     }
   }
   return visible;
@@ -116,7 +121,7 @@ if (createPdfBtn) createPdfBtn.addEventListener("click", () => {
   doc.setFontSize(12);
   doc.text(wrapPdfText(doc, text, 170), 15, 20);
   doc.save("ak-premium-created.pdf");
-  setStatus("createPdfStatus", "Done. Your PDF has been downloaded. It was created in your browser.");
+  setStatus("createPdfStatus", "Done. PDF downloaded.");
 });
 
 const imagesPdfBtn = $("imagesPdfBtn");
@@ -143,7 +148,7 @@ if (imagesPdfBtn) imagesPdfBtn.addEventListener("click", async () => {
       doc.addImage(dataUrl, format, (pageW - w) / 2, (pageH - h) / 2, w, h);
     }
     doc.save("ak-premium-images.pdf");
-    setStatus("imagesPdfStatus", "Done. " + files.length + " image(s) converted to PDF, in the order you selected them.");
+    setStatus("imagesPdfStatus", "Done. PDF downloaded.");
   } catch (e) { setStatus("imagesPdfStatus", "Could not convert these images. Please try JPG or PNG files and try again."); }
 });
 
@@ -166,7 +171,7 @@ if (mergePdfBtn) mergePdfBtn.addEventListener("click", async () => {
     }
     const bytes = await out.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-merged.pdf");
-    setStatus("mergePdfStatus", "Done. " + files.length + " PDFs merged and downloaded.");
+    setStatus("mergePdfStatus", "Done. Merged PDF downloaded.");
   } catch (e) { setStatus("mergePdfStatus", "Could not merge these PDFs. Please check that every file is a valid PDF."); }
 });
 
@@ -189,7 +194,7 @@ if (splitPdfBtn) splitPdfBtn.addEventListener("click", async () => {
     pages.forEach((p) => out.addPage(p));
     const bytes = await out.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-split.pdf");
-    setStatus("splitPdfStatus", "Done. Pages " + start + " to " + end + " extracted and downloaded.");
+    setStatus("splitPdfStatus", "Done. Split PDF downloaded.");
   } catch (e) { setStatus("splitPdfStatus", "Could not split this PDF. Please check the file and page range."); }
 });
 
@@ -204,7 +209,7 @@ if (rotatePdfBtn) rotatePdfBtn.addEventListener("click", async () => {
     doc.getPages().forEach((page) => page.setRotation(window.PDFLib.degrees(angle)));
     const bytes = await doc.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-rotated.pdf");
-    setStatus("rotatePdfStatus", "Done. Every page rotated by " + angle + " degrees and downloaded.");
+    setStatus("rotatePdfStatus", "Done. Rotated PDF downloaded.");
   } catch (e) { setStatus("rotatePdfStatus", "Could not rotate this PDF. Please check the file."); }
 });
 
@@ -222,7 +227,7 @@ if (pageNumbersBtn) pageNumbersBtn.addEventListener("click", async () => {
     });
     const bytes = await doc.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-numbered.pdf");
-    setStatus("pageNumbersStatus", "Done. Page numbers added to the bottom of every page.");
+    setStatus("pageNumbersStatus", "Done. Numbered PDF downloaded.");
   } catch (e) { setStatus("pageNumbersStatus", "Could not add page numbers to this PDF."); }
 });
 
@@ -240,7 +245,7 @@ if (compressPdfBtn) compressPdfBtn.addEventListener("click", async () => {
     if (!doc) return;
     const bytes = await doc.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-compressed.pdf");
-    setStatus("compressPdfStatus", "Re-saved at " + compressQuality.value + "% quality preference. Honest note: browser re-saving does not fully recompress embedded images, so image-heavy PDFs may shrink only a little. Original: " + file.size + " bytes, re-saved: " + bytes.length + " bytes.");
+    setStatus("compressPdfStatus", "Done. Re-saved: " + bytes.length + " bytes (was " + file.size + " bytes).");
   } catch (e) { setStatus("compressPdfStatus", "Could not compress this PDF. Please check the file."); }
 });
 
@@ -268,7 +273,7 @@ if (pdfTextBtn) pdfTextBtn.addEventListener("click", async () => {
     const text = await extractPdfText(file, "pdfTextStatus");
     if (text === null) return;
     downloadText(text, "ak-premium-text.txt");
-    setStatus("pdfTextStatus", "Done. Extracted text downloaded as a .txt file.");
+    setStatus("pdfTextStatus", "Done. Text file downloaded.");
   } catch (e) { setStatus("pdfTextStatus", "Could not extract text from this PDF. Scanned-image PDFs without a text layer cannot be read this way."); }
 });
 
@@ -300,9 +305,9 @@ if (pdfImagesBtn) pdfImagesBtn.addEventListener("click", async () => {
       blobs.forEach((b) => zip.file(b.name, b.blob));
       const zipBlob = await zip.generateAsync({ type: "blob" });
       downloadBlob(zipBlob, "ak-premium-pages.zip");
-      setStatus("pdfImagesStatus", "Done. " + blobs.length + " page(s) rendered. Individual PNG links are above, and a ZIP download was also started.");
+      setStatus("pdfImagesStatus", "Done. PNG links are above; ZIP download also started.");
     } else {
-      setStatus("pdfImagesStatus", "Done. " + blobs.length + " page(s) rendered as PNG links above. ZIP download needs JSZip, which did not load.");
+      setStatus("pdfImagesStatus", "Done. PNG links are above. ZIP needs JSZip, which did not load.");
     }
   } catch (e) { setStatus("pdfImagesStatus", "Could not render this PDF to images. Please check the file."); }
 });
@@ -335,7 +340,7 @@ if (esignCanvas) {
     esignCanvas.toBlob((blob) => {
       if (!blob) { setStatus("esignStatus", "Please draw a signature first."); return; }
       downloadBlob(blob, "ak-premium-signature.png");
-      setStatus("esignStatus", "Done. Your signature PNG has been downloaded. This is a visual signature only, not a legal digital signature.");
+      setStatus("esignStatus", "Done. Signature PNG downloaded.");
     }, "image/png");
   });
 }
@@ -354,7 +359,7 @@ if (pdfExcelBtn) pdfExcelBtn.addEventListener("click", async () => {
     const wb = window.XLSX.utils.book_new();
     window.XLSX.utils.book_append_sheet(wb, ws, "Extracted Text");
     window.XLSX.writeFile(wb, "ak-premium-pdf-to-excel.xlsx");
-    setStatus("pdfExcelStatus", "Done. Extracted text saved as an .xlsx file. Tables and layout from the original PDF are not reconstructed.");
+    setStatus("pdfExcelStatus", "Done. Excel file downloaded.");
   } catch (e) { setStatus("pdfExcelStatus", "Could not convert this PDF to Excel."); }
 });
 
@@ -369,7 +374,7 @@ if (pdfWordBtn) pdfWordBtn.addEventListener("click", async () => {
     const doc = new window.docx.Document({ sections: [{ children: text.split("\n").map((line) => new window.docx.Paragraph(line)) }] });
     const blob = await window.docx.Packer.toBlob(doc);
     downloadBlob(blob, "ak-premium-pdf-to-word.docx");
-    setStatus("pdfWordStatus", "Done. A simple .docx was created from extracted text. " + optionalConversionNote());
+    setStatus("pdfWordStatus", "Done. Word file downloaded.");
   } catch (e) { setStatus("pdfWordStatus", "Could not convert this PDF to Word. Complex original formatting is not preserved by this simple conversion."); }
 });
 
@@ -389,7 +394,7 @@ if (pdfPptBtn) pdfPptBtn.addEventListener("click", async () => {
       slide.addText(chunk, { x: 0.5, y: 1.0, w: 9, h: 4.5, fontSize: 12 });
     });
     await pptx.writeFile({ fileName: "ak-premium-pdf-to-ppt.pptx" });
-    setStatus("pdfPptStatus", "Done. A simple .pptx was created from extracted text. " + optionalConversionNote());
+    setStatus("pdfPptStatus", "Done. Presentation file downloaded.");
   } catch (e) { setStatus("pdfPptStatus", "Could not convert this PDF to PPT."); }
 });
 
@@ -404,7 +409,7 @@ if (txtHtmlPdfBtn) txtHtmlPdfBtn.addEventListener("click", () => {
   doc.setFontSize(12);
   doc.text(wrapPdfText(doc, clean, 170), 15, 20);
   doc.save("ak-premium-text-to-pdf.pdf");
-  setStatus("txtHtmlPdfStatus", "Done. Your text was converted to PDF. HTML tags were stripped for a clean result.");
+  setStatus("txtHtmlPdfStatus", "Done. PDF downloaded.");
 });
 
 const excelPdfBtn = $("excelPdfBtn");
@@ -429,7 +434,7 @@ if (excelPdfBtn) excelPdfBtn.addEventListener("click", async () => {
       });
     });
     doc.save("ak-premium-excel-to-pdf.pdf");
-    setStatus("excelPdfStatus", "Done. First sheet rendered as a PDF. This is a simple row rendering, not a pixel-perfect spreadsheet print.");
+    setStatus("excelPdfStatus", "Done. PDF downloaded.");
   } catch (e) { setStatus("excelPdfStatus", "Could not convert this Excel file to PDF."); }
 });
 
@@ -452,7 +457,7 @@ if (wordPdfBtn) wordPdfBtn.addEventListener("click", async () => {
       });
     });
     doc.save("ak-premium-word-to-pdf.pdf");
-    setStatus("wordPdfStatus", "Done. Word text extracted and rendered as a PDF. Complex formatting is not preserved.");
+    setStatus("wordPdfStatus", "Done. PDF downloaded.");
   } catch (e) { setStatus("wordPdfStatus", "Could not convert this Word file to PDF."); }
 });
 
@@ -477,7 +482,7 @@ if (pptPdfBtn) pptPdfBtn.addEventListener("click", async () => {
       doc.text(wrapPdfText(doc, texts || "(No text on this slide)", 170), 15, 20);
     }
     doc.save("ak-premium-ppt-to-pdf.pdf");
-    setStatus("pptPdfStatus", "Done. Basic slide text extracted and rendered as a PDF. Images, charts and animations are not preserved.");
+    setStatus("pptPdfStatus", "Done. PDF downloaded.");
   } catch (e) { setStatus("pptPdfStatus", "Could not convert this PowerPoint file to PDF. This is a basic, text-only conversion."); }
 });
 
@@ -485,11 +490,11 @@ if (pptPdfBtn) pptPdfBtn.addEventListener("click", async () => {
 let excelModule = "generator";
 const excelTabBtns = document.querySelectorAll(".excel-tab-btn");
 const excelHints = {
-  generator: "Formula Generator: try “sum condition if”, “vlookup search table”, “average”, “countif”, “xlookup”, or “unique filter”.",
-  explainer: "Formula Explainer: paste a formula such as =IF(A1>10, SUM(B1:B5), 0) and AK Premium will break it into functions and plain language.",
-  vba: "VBA Macro Writer: try “userform entry form password automation”, “sort data”, “remove duplicates”, “format report”, “email report”, or “backup sheet”.",
-  regex: "Regex Creator: paste text to extract emails, or describe a pattern such as email, phone, date, URL, or numbers. Also try messy dates like 12/03/2024.",
-  dax: "DAX Query: try “total sales”, “average”, “count”, “year to date”, or “distinct count”."
+  generator: "Formula Generator: try sum condition if or vlookup search table.",
+  explainer: "Formula Explainer: paste a formula starting with =.",
+  vba: "VBA Macro Writer: try userform entry form password automation or sort data.",
+  regex: "Regex Creator: paste text, or describe a pattern such as email or date.",
+  dax: "DAX Query: try total sales, average, or year to date."
 };
 excelTabBtns.forEach((btn) => btn.addEventListener("click", () => {
   excelTabBtns.forEach((b) => b.classList.toggle("active", b === btn));
@@ -723,7 +728,7 @@ function runExcelEngine() {
   else if (excelModule === "regex") result = regexTool(input);
   else if (excelModule === "dax") result = generateDax(input);
   if (output) output.textContent = result;
-  if (status) status.textContent = "Done. Review the template, replace placeholders with your own ranges and names, and test it on a copy of your data first.";
+  if (status) status.textContent = "Done. Replace placeholders before use.";
 }
 const excelGenerateBtn = $("excelGenerateBtn");
 if (excelGenerateBtn) excelGenerateBtn.addEventListener("click", runExcelEngine);

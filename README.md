@@ -1,6 +1,10 @@
 # AK Premium
 
-AK Premium is a free, static, client-side toolkit with a PDF Studio and an Excel Automation Engine. It runs entirely in the browser: HTML for structure, CSS for design (with Tailwind CSS via CDN), and JavaScript for tools. There is no server, no database, and no paid API required for the built-in tools.
+AK Premium is a free, static, client-side toolkit with PDF tools and an Excel automation engine. It runs entirely in the browser: HTML for structure, custom CSS for design, and JavaScript for tools. There is no server, no database, and no paid API required for the built-in tools.
+
+## Design
+
+Light theme only: white cards on a very light gray page (#f7f8fa), dark slate text, thin 1px borders, 14-16px rounded corners, soft subtle shadows, and one restrained indigo accent (#4f46e5) for primary buttons and active navigation. No neon gradients, no glowing effects, no dark dashboard background. The homepage is deliberately organized like a clean tool site: a compact hero with one headline, one subline, one search bar and small trending chips; tool cards grouped under PDF Tools, Convert PDFs and Excel Tools; each card shows only an icon, a tool name and at most one very short line; clicking a card opens a clean workspace panel below the grid with inputs, one primary action button and a single short status line. All explanations — how tools work, privacy, limits, Google Analytics and AdSense notes — live in the FAQ accordion at the bottom of the page and in this README, not on tool cards or inside workspaces. The footer is compact, with a one-line About, Privacy, Terms and Contact. The clean, organized layout takes inspiration from the general design discipline of well-known tool sites; AK Premium is not affiliated with, endorsed by, or connected to any other tool site or brand.
 
 ## Brand
 
@@ -8,8 +12,8 @@ The official brand is **AK Premium** everywhere: title, headings, header, footer
 
 ## Files
 
-- `index.html` — all visual layout, SEO/AEO meta, Open Graph, JSON-LD, hero search, ad placeholders, tool cards, FAQ, About, Privacy Policy, Terms, and Contact.
-- `styles.css` — AK Premium dark theme, classical SaaS look, ad slots, tool cards, terminal, and responsive rules.
+- `index.html` — all visual layout, SEO/AEO meta, Open Graph, JSON-LD, hero search, ad placeholders, organized tool grids, workspace panels, and the FAQ accordion (which also carries the Privacy, Terms and Contact information).
+- `styles.css` — AK Premium light theme, organized tool grids, workspace panels, terminal, ad slots, and responsive rules.
 - `app.js` — all tool logic: SPA tabs, hero search filtering, PDF tools, converters, and the rule-based Excel engine. It also holds the Google Analytics and optional conversion configuration constants.
 - `README.md` — this file.
 
@@ -44,14 +48,14 @@ AK Premium is already prepared for AdSense, but approval is decided by Google, n
 
 1. **Ad slots are placeholders only.** The leaderboard (728x90), two sidebar slots (160x600), and inline boxes are labelled “Ad Space — Google AdSense / Ezoic placeholder”. Paste your real AdSense code inside those divs only when you receive it. Do not paste real ad code before approval.
 2. **Add `ads.txt`.** When AdSense gives you a publisher ID, publish an `ads.txt` file at your domain root with the exact line AdSense provides. This file is not included here because the publisher ID is not known yet.
-3. **Keep the required pages live.** This site already includes About, Privacy Policy, Terms, and Contact (contact email: nomanalicgr@gmail.com) on the same page, plus a visible FAQ. Keep them accurate and reachable from the footer.
+3. **Keep the required pages live.** This site includes a one-line About, Privacy and Terms answers in the FAQ, and Contact (contact email: nomanalicgr@gmail.com), all reachable from the compact footer and the FAQ section. Keep them accurate and reachable.
 4. **Use original content.** Keep the tool descriptions, FAQ answers, and About text original. Do not copy text, images, or files from other sites, and do not upload copyrighted material through the tools.
 5. **Make the site complete before applying.** Publish the site on its final domain, check that every button either works or explains honestly what is needed, remove any broken links, and ensure the site loads on mobile. AdSense typically rejects thin, unfinished, or mostly placeholder sites.
 6. **Traffic and policy.** Drive real, lawful traffic. Do not click your own ads, do not ask others to click ads, and do not place ads on pages that violate AdSense policies.
 
 ## Ad placeholders
 
-Search `index.html` for “Ad Space — Google AdSense / Ezoic placeholder” and for the HTML comments “Paste your AdSense … code inside this div later.” Those are the only places to paste ad code later. The layout is designed to stay intact with or without real ads.
+Search `index.html` for “Ad space” and for the HTML comments “Paste AdSense code inside this div later.” Those are the only places to paste ad code later. The layout is designed to stay intact with or without real ads.
 
 ## Contact
 
