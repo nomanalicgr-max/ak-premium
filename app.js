@@ -65,13 +65,58 @@ function addWrappedTextPaginated(doc, text) {
 }
 
 /* ---------- navigation categories + workspace (SPA) ---------- */
-const navButtons = document.querySelectorAll(".nav-btn");
-function showCategory(name) {
+/* Category pages: one section per category, shareable via URL hash.
+   Categories are views of this single page, not separate HTML files:
+   #pdf, #convert, #excel, #image, #everyday, #developer, #calculators,
+   #business, #design, #faq. "All Tools" shows everything, no hash. */
+const CATEGORY_SECTIONS = {
+  pdf: ["section-pdf"],
+  convert: ["section-convert"],
+  excel: ["section-excel"],
+  image: ["section-image"],
+  everyday: ["section-everyday"],
+  developer: ["section-developer"],
+  calculators: ["section-calculators"],
+  business: ["section-business"],
+  design: ["section-design"],
+  faq: ["section-faq"]
+};
+const ALL_SECTION_IDS = ["section-pdf", "section-convert", "section-excel", "section-image", "section-everyday", "section-developer", "section-calculators", "section-business", "section-design", "section-faq"];
+function categoryFromHash(hash) {
+  const name = String(hash || "").replace(/^#/, "");
+  return CATEGORY_SECTIONS[name] ? name : null;
+}
+function applyCategoryVisibility(name) {
+  const ids = name === "all" ? ALL_SECTION_IDS : (CATEGORY_SECTIONS[name] || ALL_SECTION_IDS);
+  ALL_SECTION_IDS.forEach((id) => { const sec = $(id); if (sec) sec.style.display = ids.indexOf(id) !== -1 ? "" : "none"; });
+  const ws = $("workspace");
+  if (ws) ws.style.display = (name === "faq") ? "none" : "";
+}
+function showCategory(name, opts) {
+  const options = opts || {};
   navButtons.forEach((b) => b.classList.toggle("active", b.dataset.category === name));
-  if (name === "faq") { const faq = $("section-faq"); if (faq) faq.scrollIntoView({ behavior: "smooth" }); return; }
+  if (typeof history !== "undefined" && history.replaceState) {
+    try {
+      if (name === "all") history.replaceState(null, "", window.location.pathname + window.location.search);
+      else history.replaceState(null, "", "#" + name);
+    } catch (e) { /* hash update is a convenience, never a blocker */ }
+  }
+  if (name === "faq") {
+    applyCategoryVisibility("faq");
+    const faq = $("section-faq");
+    if (faq && options.scroll !== false && faq.scrollIntoView) faq.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
   filterCards();
 }
+const navButtons = document.querySelectorAll(".nav-btn");
 navButtons.forEach((b) => b.addEventListener("click", () => showCategory(b.dataset.category)));
+if (typeof window !== "undefined" && window.addEventListener) {
+  window.addEventListener("hashchange", () => {
+    const name = categoryFromHash(window.location.hash);
+    if (name) showCategory(name, { scroll: false });
+  });
+}
 
 /* Clicking a tool card opens its workspace panel below the grid. */
 function openWorkspace(id, excelModule) {
@@ -79,7 +124,7 @@ function openWorkspace(id, excelModule) {
   document.querySelectorAll(".workspace-tool").forEach((w) => w.classList.toggle("active", w.id === id));
   const empty = $("workspaceEmpty"); if (empty) empty.style.display = "none";
   if (excelModule) { const btn = document.querySelector('.excel-tab-btn[data-excel-tab="' + excelModule + '"]'); if (btn) btn.click(); }
-  const ws = $("workspace"); if (ws) ws.scrollIntoView({ behavior: "smooth", block: "start" });
+  const ws = $("workspace"); if (ws) { ws.style.display = ""; if (ws.scrollIntoView) ws.scrollIntoView({ behavior: "smooth", block: "start" }); }
 }
 document.querySelectorAll(".tool-card").forEach((card) => {
   card.addEventListener("click", () => openWorkspace(card.dataset.target, card.dataset.excelModule));
@@ -99,15 +144,15 @@ function filterCards() {
     if (show) { visible++; const sec = card.closest(".tool-section"); if (sec) sectionsWithVisible.add(sec.id); }
   });
   if (searchStatus) { searchStatus.textContent = query ? "Found " + visible + " tool(s) matching \"" + heroSearch.value.trim() + "\"." : "Showing all tools."; }
-  const sectionIds = ["section-pdf", "section-convert", "section-excel", "section-image", "section-everyday", "section-developer", "section-calculators"];
   if (query) {
-    sectionIds.forEach((id) => { const sec = $(id); if (sec) sec.style.display = sectionsWithVisible.has(id) ? "" : "none"; });
+    // Search wins over the selected category page: show every section
+    // that has a matching card, whatever page the user is on.
+    ALL_SECTION_IDS.forEach((id) => { const sec = $(id); if (sec) sec.style.display = sectionsWithVisible.has(id) ? "" : "none"; });
+    const ws = $("workspace"); if (ws) ws.style.display = "";
   } else {
     const activeNav = document.querySelector(".nav-btn.active");
     const cat = activeNav ? activeNav.dataset.category : "all";
-    if (cat !== "faq") {
-      sectionIds.forEach((id) => { const sec = $(id); if (!sec) return; const show = cat === "all" || (cat === "pdf" && (id === "section-pdf" || id === "section-convert")) || (cat === "excel" && id === "section-excel"); sec.style.display = show ? "" : "none"; });
-    }
+    applyCategoryVisibility(cat);
   }
   return visible;
 }
@@ -884,8 +929,14 @@ if (excelCopyBtn) excelCopyBtn.addEventListener("click", async () => {
   }
 });
 
-/* Initial state */
-filterCards();
+/* Initial state: open the category from the URL hash when present,
+   otherwise show everything. */
+(function initCategoryFromHash() {
+  let name = null;
+  try { name = (typeof window !== "undefined" && window.location) ? categoryFromHash(window.location.hash) : null; } catch (e) { name = null; }
+  if (name) showCategory(name, { scroll: false });
+  else filterCards();
+})();
 
 /* ---------- Phase 1 tools: pure logic (testable) ---------- */
 function parseOrganizeOrder(input, count) {
@@ -1329,3 +1380,349 @@ if (bmiBtn) bmiBtn.addEventListener("click", () => {
   setStatus("bmiStatus", "Done.");
 });
 
+
+/* ---------- Phase 2 tools: pure logic (testable) ---------- */
+function parseInvoiceItems(text) {
+  const lines = String(text || "").split("\n").map((s) => s.trim()).filter(Boolean);
+  if (!lines.length) return { error: "Please add at least one item, one per line as: Item name, quantity, price." };
+  const items = [];
+  for (const line of lines) {
+    const parts = line.split(",").map((s) => s.trim());
+    if (parts.length !== 3 || !parts[0]) return { error: "Invalid item line: \"" + line + "\". Use: Item name, quantity, price." };
+    const qty = parseFloat(parts[1]);
+    const price = parseFloat(parts[2]);
+    if (isNaN(qty) || qty <= 0 || isNaN(price) || price < 0) return { error: "Invalid quantity or price in line: \"" + line + "\"." };
+    items.push({ name: parts[0], qty, price, amount: Math.round(qty * price * 100) / 100 });
+  }
+  return { items };
+}
+function invoiceTotals(items, taxPct) {
+  const subtotal = Math.round(items.reduce((sum, it) => sum + it.amount, 0) * 100) / 100;
+  const tax = Math.round(subtotal * (taxPct / 100) * 100) / 100;
+  const total = Math.round((subtotal + tax) * 100) / 100;
+  return { subtotal, tax, total };
+}
+function toTitleCase(text) {
+  return String(text || "").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+}
+function toSentenceCase(text) {
+  const s = String(text || "").toLowerCase();
+  return s.replace(/(^\s*[a-z]|[.!?]\s+[a-z])/g, (c) => c.toUpperCase());
+}
+function convertCase(text, mode) {
+  if (mode === "upper") return String(text || "").toUpperCase();
+  if (mode === "lower") return String(text || "").toLowerCase();
+  if (mode === "title") return toTitleCase(text);
+  if (mode === "sentence") return toSentenceCase(text);
+  return String(text || "");
+}
+function generateUuid(randomBytes) {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) return crypto.randomUUID();
+  const bytes = randomBytes || (typeof crypto !== "undefined" && crypto.getRandomValues ? crypto.getRandomValues(new Uint8Array(16)) : null);
+  if (!bytes) throw new Error("Secure random numbers are not available in this browser.");
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
+  return hex.slice(0, 8) + "-" + hex.slice(8, 12) + "-" + hex.slice(12, 16) + "-" + hex.slice(16, 20) + "-" + hex.slice(20);
+}
+function hexToHsl(hex) {
+  const clean = String(hex || "").replace("#", "");
+  const r = parseInt(clean.slice(0, 2), 16) / 255;
+  const g = parseInt(clean.slice(2, 4), 16) / 255;
+  const b = parseInt(clean.slice(4, 6), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  if (max === min) return { h: 0, s: 0, l: Math.round(l * 100) };
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) * 60;
+  else if (max === g) h = ((b - r) / d + 2) * 60;
+  else h = ((r - g) / d + 4) * 60;
+  return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+function hslToHex(h, s, l) {
+  h = ((h % 360) + 360) % 360; s /= 100; l /= 100;
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
+  let r = 0, g = 0, b = 0;
+  if (h < 60) { r = c; g = x; }
+  else if (h < 120) { r = x; g = c; }
+  else if (h < 180) { g = c; b = x; }
+  else if (h < 240) { g = x; b = c; }
+  else if (h < 300) { r = x; b = c; }
+  else { r = c; b = x; }
+  const toHex = (v) => Math.round((v + m) * 255).toString(16).padStart(2, "0");
+  return "#" + toHex(r) + toHex(g) + toHex(b);
+}
+function colorPalette(baseHex) {
+  if (!/^#[0-9a-fA-F]{6}$/.test(String(baseHex || ""))) return { error: "Please choose a valid color." };
+  const hsl = hexToHsl(baseHex);
+  const items = [
+    { label: "Base", hex: baseHex.toLowerCase() },
+    { label: "Complementary", hex: hslToHex(hsl.h + 180, hsl.s, hsl.l) },
+    { label: "Analogous -30", hex: hslToHex(hsl.h - 30, hsl.s, hsl.l) },
+    { label: "Analogous +30", hex: hslToHex(hsl.h + 30, hsl.s, hsl.l) },
+    { label: "Triadic +120", hex: hslToHex(hsl.h + 120, hsl.s, hsl.l) },
+    { label: "Triadic +240", hex: hslToHex(hsl.h + 240, hsl.s, hsl.l) }
+  ];
+  return { items };
+}
+function emiCalc(principal, annualRatePct, years) {
+  if (!principal || principal <= 0 || !years || years <= 0) return { error: "Please enter a positive loan amount and number of years." };
+  if (annualRatePct === null || annualRatePct === undefined || isNaN(annualRatePct) || annualRatePct < 0) return { error: "Please enter an interest rate of 0 or more." };
+  const n = Math.round(years * 12);
+  if (annualRatePct === 0) {
+    const emi = Math.round((principal / n) * 100) / 100;
+    return { emi, total: Math.round(emi * n * 100) / 100, interest: Math.round((emi * n - principal) * 100) / 100, months: n };
+  }
+  const r = annualRatePct / 1200;
+  const factor = Math.pow(1 + r, n);
+  const emi = Math.round(principal * r * factor / (factor - 1) * 100) / 100;
+  const total = Math.round(emi * n * 100) / 100;
+  return { emi, total, interest: Math.round((total - principal) * 100) / 100, months: n };
+}
+function parseCgpa(text) {
+  const lines = String(text || "").split("\n").map((s) => s.trim()).filter(Boolean);
+  if (!lines.length) return { error: "Please add at least one course, one per line as: Course, credit hours, grade point." };
+  let creditSum = 0, weighted = 0;
+  for (const line of lines) {
+    const parts = line.split(",").map((s) => s.trim());
+    if (parts.length !== 3 || !parts[0]) return { error: "Invalid course line: \"" + line + "\". Use: Course, credit hours, grade point." };
+    const credits = parseFloat(parts[1]);
+    const grade = parseFloat(parts[2]);
+    if (isNaN(credits) || credits <= 0 || isNaN(grade) || grade < 0) return { error: "Invalid credit hours or grade point in line: \"" + line + "\"." };
+    creditSum += credits; weighted += credits * grade;
+  }
+  if (!creditSum) return { error: "Total credit hours cannot be zero." };
+  return { cgpa: Math.round((weighted / creditSum) * 100) / 100, credits: creditSum };
+}
+function parseCsvLine(line) {
+  const fields = [];
+  let current = "", inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
+      else inQuotes = !inQuotes;
+    } else if (ch === "," && !inQuotes) { fields.push(current.trim()); current = ""; }
+    else current += ch;
+  }
+  fields.push(current.trim());
+  return fields;
+}
+function csvToJson(text) {
+  const lines = String(text || "").split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
+  if (lines.length < 2) return { error: "CSV needs a header row and at least one data row." };
+  const headers = parseCsvLine(lines[0]);
+  if (!headers.length || headers.some((h) => !h)) return { error: "The first row must be a valid header row." };
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const fields = parseCsvLine(lines[i]);
+    if (fields.length !== headers.length) return { error: "Row " + (i + 1) + " has " + fields.length + " fields but the header has " + headers.length + ". Please fix that row." };
+    const obj = {};
+    headers.forEach((h, j) => { obj[h] = fields[j]; });
+    rows.push(obj);
+  }
+  return { rows };
+}
+function diffTexts(original, changed) {
+  const a = String(original || "").split("\n");
+  const b = String(changed || "").split("\n");
+  const removed = [], added = [];
+  const aSet = new Set(a), bSet = new Set(b);
+  a.forEach((line) => { if (!bSet.has(line)) removed.push(line); });
+  b.forEach((line) => { if (!aSet.has(line)) added.push(line); });
+  const unchanged = a.filter((line) => bSet.has(line)).length;
+  return { removed, added, unchanged, identical: removed.length === 0 && added.length === 0 };
+}
+
+/* ---------- Phase 2 handlers: Business ---------- */
+const invoiceCalcBtn = $("invoiceCalcBtn");
+if (invoiceCalcBtn) invoiceCalcBtn.addEventListener("click", () => {
+  const parsed = parseInvoiceItems($("invoiceItems").value);
+  if (parsed.error) { setStatus("invoiceStatus", parsed.error); return; }
+  const tax = parseFloat($("invoiceTax").value);
+  if (isNaN(tax) || tax < 0) { setStatus("invoiceStatus", "Please enter a tax percentage of 0 or more."); return; }
+  const totals = invoiceTotals(parsed.items, tax);
+  const lines = parsed.items.map((it) => it.name + " x " + it.qty + " @ " + it.price + " = " + it.amount.toFixed(2));
+  $("invoiceSummary").textContent = lines.join("\n") + "\nSubtotal: " + totals.subtotal.toFixed(2) + "\nTax (" + tax + "%): " + totals.tax.toFixed(2) + "\nTotal: " + totals.total.toFixed(2);
+  setStatus("invoiceStatus", "Done. Summary calculated.");
+});
+const invoicePdfBtn = $("invoicePdfBtn");
+if (invoicePdfBtn) invoicePdfBtn.addEventListener("click", () => {
+  const JsPDF = getJsPdf();
+  if (!needLibrary(!!JsPDF, "jsPDF", "invoiceStatus")) return;
+  const business = ($("invoiceBusiness").value || "").trim();
+  const client = ($("invoiceClient").value || "").trim();
+  if (!business || !client) { setStatus("invoiceStatus", "Please enter both the business name and the client name."); return; }
+  const parsed = parseInvoiceItems($("invoiceItems").value);
+  if (parsed.error) { setStatus("invoiceStatus", parsed.error); return; }
+  const tax = parseFloat($("invoiceTax").value);
+  if (isNaN(tax) || tax < 0) { setStatus("invoiceStatus", "Please enter a tax percentage of 0 or more."); return; }
+  const totals = invoiceTotals(parsed.items, tax);
+  const doc = new JsPDF();
+  doc.setFontSize(18); doc.text("INVOICE", 15, 20);
+  doc.setFontSize(12);
+  doc.text("From: " + business, 15, 32);
+  doc.text("To: " + client, 15, 40);
+  if ($("invoiceDate").value) doc.text("Date: " + $("invoiceDate").value, 15, 48);
+  let y = 62;
+  parsed.items.forEach((it) => {
+    if (y > 270) { doc.addPage(); y = 20; }
+    doc.text(it.name + "  x " + it.qty + "  @ " + it.price + "  = " + it.amount.toFixed(2), 15, y); y += 8;
+  });
+  if (y > 250) { doc.addPage(); y = 20; }
+  doc.text("Subtotal: " + totals.subtotal.toFixed(2), 15, y + 6);
+  doc.text("Tax (" + tax + "%): " + totals.tax.toFixed(2), 15, y + 14);
+  doc.setFontSize(13); doc.text("Total: " + totals.total.toFixed(2), 15, y + 24);
+  doc.save("ak-premium-invoice.pdf");
+  setStatus("invoiceStatus", "Done. Invoice PDF downloaded.");
+});
+const resumeBtn = $("resumeBtn");
+if (resumeBtn) resumeBtn.addEventListener("click", () => {
+  const JsPDF = getJsPdf();
+  if (!needLibrary(!!JsPDF, "jsPDF", "resumeStatus")) return;
+  const name = ($("resumeName").value || "").trim();
+  const title = ($("resumeTitle").value || "").trim();
+  if (!name || !title) { setStatus("resumeStatus", "Please enter your full name and job title."); return; }
+  const doc = new JsPDF();
+  doc.setFontSize(20); doc.text(name, 15, 20);
+  doc.setFontSize(13); doc.text(title, 15, 29);
+  doc.setFontSize(11);
+  const contact = [($("resumeEmail").value || "").trim(), ($("resumePhone").value || "").trim()].filter(Boolean).join("  |  ");
+  if (contact) doc.text(contact, 15, 38);
+  let y = 52;
+  const skills = ($("resumeSkills").value || "").trim();
+  if (skills) {
+    doc.setFontSize(13); doc.text("Skills", 15, y); y += 8;
+    doc.setFontSize(11);
+    wrapPdfText(doc, skills, 170).forEach((line) => { if (y > 270) { doc.addPage(); y = 20; } doc.text(line, 15, y); y += 7; });
+    y += 6;
+  }
+  const exp = ($("resumeExperience").value || "").trim();
+  if (exp) {
+    if (y > 260) { doc.addPage(); y = 20; }
+    doc.setFontSize(13); doc.text("Experience", 15, y); y += 8;
+    doc.setFontSize(11);
+    addWrappedTextPaginatedFrom(doc, exp, y);
+  }
+  doc.save("ak-premium-resume.pdf");
+  setStatus("resumeStatus", "Done. Resume PDF downloaded.");
+});
+function addWrappedTextPaginatedFrom(doc, text, startY) {
+  let y = startY;
+  wrapPdfText(doc, text, 170).forEach((line) => {
+    if (y > 270) { doc.addPage(); y = 20; }
+    doc.text(line, 15, y); y += 7;
+  });
+}
+
+/* ---------- Phase 2 handlers: Developer ---------- */
+document.querySelectorAll("[data-case-mode]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const out = convertCase($("caseInput").value, btn.dataset.caseMode);
+    if ($("caseOutput")) $("caseOutput").textContent = out;
+    setStatus("caseStatus", "Done.");
+  });
+});
+const caseCopyBtn = $("caseCopyBtn");
+if (caseCopyBtn) caseCopyBtn.addEventListener("click", () => {
+  const text = $("caseOutput") ? $("caseOutput").textContent : "";
+  if (!text || text.startsWith("Converted text")) { setStatus("caseStatus", "Convert text first, then use Copy."); return; }
+  copyTextToClipboard(text, "caseStatus");
+});
+function renderUuids(count) {
+  try {
+    const list = [];
+    for (let i = 0; i < count; i++) list.push(generateUuid());
+    if ($("uuidOutput")) $("uuidOutput").textContent = list.join("\n");
+    setStatus("uuidStatus", "Done.");
+  } catch (e) { setStatus("uuidStatus", "Secure random numbers are not available in this browser."); }
+}
+const uuidBtn = $("uuidBtn");
+if (uuidBtn) uuidBtn.addEventListener("click", () => renderUuids(1));
+const uuidBtn5 = $("uuidBtn5");
+if (uuidBtn5) uuidBtn5.addEventListener("click", () => renderUuids(5));
+const uuidCopyBtn = $("uuidCopyBtn");
+if (uuidCopyBtn) uuidCopyBtn.addEventListener("click", () => {
+  const text = $("uuidOutput") ? $("uuidOutput").textContent : "";
+  if (!text || text.startsWith("Your UUID")) { setStatus("uuidStatus", "Generate a UUID first, then use Copy."); return; }
+  copyTextToClipboard(text, "uuidStatus");
+});
+const csvJsonBtn = $("csvJsonBtn");
+if (csvJsonBtn) csvJsonBtn.addEventListener("click", async () => {
+  let text = ($("csvJsonText").value || "").trim();
+  const file = ($("csvJsonFile").files || [])[0];
+  if (file) { try { text = await file.text(); } catch (e) { setStatus("csvJsonStatus", "Could not read this CSV file."); return; } }
+  const parsed = csvToJson(text);
+  if (parsed.error) { setStatus("csvJsonStatus", parsed.error); return; }
+  const json = JSON.stringify(parsed.rows, null, 2);
+  if ($("csvJsonOutput")) $("csvJsonOutput").textContent = json;
+  setStatus("csvJsonStatus", "Done. " + parsed.rows.length + " row(s) converted.");
+});
+const csvJsonCopyBtn = $("csvJsonCopyBtn");
+if (csvJsonCopyBtn) csvJsonCopyBtn.addEventListener("click", () => {
+  const text = $("csvJsonOutput") ? $("csvJsonOutput").textContent : "";
+  if (!text || text.startsWith("JSON output")) { setStatus("csvJsonStatus", "Convert CSV first, then use Copy."); return; }
+  copyTextToClipboard(text, "csvJsonStatus");
+});
+const csvJsonDownloadBtn = $("csvJsonDownloadBtn");
+if (csvJsonDownloadBtn) csvJsonDownloadBtn.addEventListener("click", () => {
+  const text = $("csvJsonOutput") ? $("csvJsonOutput").textContent : "";
+  if (!text || text.startsWith("JSON output")) { setStatus("csvJsonStatus", "Convert CSV first, then download."); return; }
+  downloadText(text, "ak-premium-data.json", "application/json;charset=utf-8");
+  setStatus("csvJsonStatus", "Done. JSON downloaded.");
+});
+const diffBtn = $("diffBtn");
+if (diffBtn) diffBtn.addEventListener("click", () => {
+  const result = diffTexts($("diffOriginal").value, $("diffChanged").value);
+  if (result.identical) { if ($("diffOutput")) $("diffOutput").textContent = "No differences found."; setStatus("diffStatus", "Done."); return; }
+  const parts = [];
+  if (result.removed.length) parts.push("Removed:\n- " + result.removed.join("\n- "));
+  if (result.added.length) parts.push("Added:\n+ " + result.added.join("\n+ "));
+  parts.push("Unchanged lines: " + result.unchanged);
+  if ($("diffOutput")) $("diffOutput").textContent = parts.join("\n\n");
+  setStatus("diffStatus", "Done.");
+});
+
+/* ---------- Phase 2 handlers: Design ---------- */
+const paletteBtn = $("paletteBtn");
+if (paletteBtn) paletteBtn.addEventListener("click", () => {
+  const parsed = colorPalette($("paletteBase").value);
+  if (parsed.error) { setStatus("paletteStatus", parsed.error); return; }
+  const out = $("paletteOutput");
+  if (out) {
+    out.innerHTML = "";
+    parsed.items.forEach((item) => {
+      const sw = document.createElement("button");
+      sw.type = "button"; sw.className = "swatch"; sw.dataset.hex = item.hex;
+      sw.title = "Click to copy " + item.hex;
+      sw.innerHTML = "<span class=\"swatch-color\" style=\"background:" + item.hex + "\"></span><span>" + item.label + "</span><span>" + item.hex + "</span>";
+      out.appendChild(sw);
+    });
+  }
+  setStatus("paletteStatus", "Done. Click a swatch to copy its hex code.");
+});
+const paletteOutput = $("paletteOutput");
+if (paletteOutput) paletteOutput.addEventListener("click", (event) => {
+  const sw = event.target.closest ? event.target.closest(".swatch") : null;
+  if (sw && sw.dataset.hex) copyTextToClipboard(sw.dataset.hex, "paletteStatus", "Copied " + sw.dataset.hex + ".");
+});
+
+/* ---------- Phase 2 handlers: Calculators ---------- */
+const emiBtn = $("emiBtn");
+if (emiBtn) emiBtn.addEventListener("click", () => {
+  const result = emiCalc(parseFloat($("emiPrincipal").value), parseFloat($("emiRate").value), parseFloat($("emiYears").value));
+  if (result.error) { setStatus("emiStatus", result.error); return; }
+  if ($("emiOutput")) $("emiOutput").textContent = "Monthly EMI: " + result.emi.toFixed(2) + "\nTotal payment: " + result.total.toFixed(2) + "\nTotal interest: " + result.interest.toFixed(2) + "\nMonths: " + result.months;
+  setStatus("emiStatus", "Done.");
+});
+const cgpaBtn = $("cgpaBtn");
+if (cgpaBtn) cgpaBtn.addEventListener("click", () => {
+  const result = parseCgpa($("cgpaInput").value);
+  if (result.error) { setStatus("cgpaStatus", result.error); return; }
+  if ($("cgpaOutput")) $("cgpaOutput").textContent = "CGPA: " + result.cgpa.toFixed(2) + "\nTotal credit hours: " + result.credits;
+  setStatus("cgpaStatus", "Done.");
+});
