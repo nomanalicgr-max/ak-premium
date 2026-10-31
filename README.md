@@ -4,7 +4,7 @@ AK Premium is a free, static, client-side toolkit with PDF tools and an Excel au
 
 ## Design
 
-Light theme only: white cards on a very light gray page (#f7f8fa), dark slate text, thin 1px borders, 14-16px rounded corners, soft subtle shadows, and one restrained indigo accent (#4f46e5) for primary buttons and active navigation. No neon gradients, no glowing effects, no dark dashboard background. The homepage is deliberately organized like a clean tool site: a compact hero with one headline, one subline, one search bar and small trending chips; tool cards grouped under PDF Tools, Convert PDFs and Excel Tools; each card shows only an icon, a tool name and at most one very short line; clicking a card opens a clean workspace panel below the grid with inputs, one primary action button and a single short status line. All explanations — how tools work, privacy, limits, Google Analytics and AdSense notes — live in the FAQ accordion at the bottom of the page and in this README, not on tool cards or inside workspaces. The footer is compact, with a one-line About, Privacy, Terms and Contact. The clean, organized layout takes inspiration from the general design discipline of well-known tool sites; AK Premium is not affiliated with, endorsed by, or connected to any other tool site or brand.
+Light theme only: white cards on a very light gray page (#f7f8fa), dark slate text, thin 1px borders, 14-16px rounded corners, soft subtle shadows, and one restrained indigo accent (#4f46e5) for primary buttons and active navigation. No neon gradients, no glowing effects, no dark dashboard background. The homepage is deliberately organized like a clean tool site: a compact hero with one headline, one subline, one search bar and small trending chips; tool cards grouped under PDF Tools, Convert PDFs and Excel Tools; each card shows only an icon, a tool name and at most one very short line; clicking a card opens a clean workspace panel below the grid with inputs, one primary action button and a single short status line. All explanations — how tools work, privacy, limits, Google Analytics and AdSense notes — live in the FAQ accordion at the bottom of the page and in this README, not on tool cards or inside workspaces. The footer is compact, with a one-line About, Privacy, Terms and Contact. The clean, organized layout takes inspiration from the general design discipline of well-known tool sites; AK Premium is not affiliated with, endorsed by, or connected to any other tool site or brand. Excel to CSV and CSV to Excel are placed in Excel Tools (the cleaner grouping for spreadsheet tools); the Convert PDFs heading is unchanged.
 
 ## Brand
 
@@ -19,7 +19,7 @@ The official brand is **AK Premium** everywhere: title, headings, header, footer
 
 ## Run locally
 
-Open `index.html` in a modern browser. No build step is required. An internet connection is needed for the CDN libraries (Tailwind, jsPDF, pdf-lib, pdf.js, SheetJS, JSZip, mammoth, docx, PptxGenJS). If a CDN fails, the affected tool shows a clear message instead of a fake result.
+Open `index.html` in a modern browser. No build step is required. An internet connection is needed for the CDN libraries (jsPDF, pdf-lib, pdf.js, SheetJS, JSZip, mammoth, docx, PptxGenJS). If a CDN fails, the affected tool shows a clear message instead of a fake result.
 
 ## Deploy
 
@@ -27,7 +27,8 @@ This is a static site. Upload or push these four files to any static host (for e
 
 ## What is client-side only — honest limits
 
-- **PDF tools:** merging, splitting, rotating, page numbers, text extraction, image rendering, and simple text-based conversions run in the browser with pdf-lib, pdf.js, jsPDF, SheetJS, docx, and PptxGenJS.
+- **PDF tools:** merging, splitting, removing pages, rotating, page numbers, watermarking, text extraction, image rendering, and simple text-based conversions run in the browser with pdf-lib, pdf.js, jsPDF, SheetJS, docx, and PptxGenJS. Remove Pages validates page numbers and ranges against the real page count and refuses to remove every page. Add Watermark stamps visible diagonal text on every page; it is not document security and does not prevent copying.
+- **Spreadsheet tools:** Excel to CSV exports the first sheet only. CSV to Excel accepts an uploaded .csv or pasted CSV text; quoted commas are handled by SheetJS parsing, with a plain line/comma fallback for simple CSV.
 - **Compress PDF:** re-saving a PDF in the browser does not fully recompress embedded images. Image-heavy PDFs may shrink only a little. The UI says this plainly.
 - **Protect / Unlock PDF:** full password encryption and removal are not implemented with the free client-side libraries here, so AK Premium does not fake them. Use a trusted desktop PDF app for encrypted files.
 - **e-Sign:** the canvas produces a visual signature PNG only. It is not a legal digital signature or certificate-based signing.

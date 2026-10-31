@@ -54,6 +54,15 @@ function newPdfDoc() {
 function wrapPdfText(doc, text, maxWidth) {
   return doc.splitTextToSize(String(text || ""), maxWidth);
 }
+// Write wrapped text across as many pages as needed, instead of clipping
+// everything past the first page.
+function addWrappedTextPaginated(doc, text) {
+  let y = 20;
+  wrapPdfText(doc, text, 170).forEach((line) => {
+    if (y > 270) { doc.addPage(); y = 20; }
+    doc.text(line, 15, y); y += 7;
+  });
+}
 
 /* ---------- navigation categories + workspace (SPA) ---------- */
 const navButtons = document.querySelectorAll(".nav-btn");
@@ -119,7 +128,7 @@ if (createPdfBtn) createPdfBtn.addEventListener("click", () => {
   if (!text) { setStatus("createPdfStatus", "Please type some text first."); return; }
   const doc = new JsPDF();
   doc.setFontSize(12);
-  doc.text(wrapPdfText(doc, text, 170), 15, 20);
+  addWrappedTextPaginated(doc, text);
   doc.save("ak-premium-created.pdf");
   setStatus("createPdfStatus", "Done. PDF downloaded.");
 });
@@ -144,8 +153,13 @@ if (imagesPdfBtn) imagesPdfBtn.addEventListener("click", async () => {
       const pageH = doc.internal.pageSize.getHeight();
       const ratio = Math.min((pageW - 20) / img.width, (pageH - 20) / img.height);
       const w = img.width * ratio, h = img.height * ratio;
-      const format = files[i].type.includes("png") ? "PNG" : "JPEG";
-      doc.addImage(dataUrl, format, (pageW - w) / 2, (pageH - h) / 2, w, h);
+      // Re-encode through a canvas as PNG: jsPDF cannot reliably add WebP
+      // (or some PNG variants) directly, which previously failed silently
+      // for WebP uploads even though WebP is listed as accepted.
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width; canvas.height = img.height;
+      canvas.getContext("2d").drawImage(img, 0, 0);
+      doc.addImage(canvas.toDataURL("image/png"), "PNG", (pageW - w) / 2, (pageH - h) / 2, w, h);
     }
     doc.save("ak-premium-images.pdf");
     setStatus("imagesPdfStatus", "Done. PDF downloaded.");
@@ -161,6 +175,7 @@ const mergePdfBtn = $("mergePdfBtn");
 if (mergePdfBtn) mergePdfBtn.addEventListener("click", async () => {
   const files = Array.from($("mergeInput").files || []);
   if (files.length < 2) { setStatus("mergePdfStatus", "Please select at least two PDF files to merge."); return; }
+  if (!needLibrary(!!window.PDFLib, "pdf-lib", "mergePdfStatus")) return;
   try {
     const out = await window.PDFLib.PDFDocument.create();
     for (const file of files) {
@@ -206,7 +221,12 @@ if (rotatePdfBtn) rotatePdfBtn.addEventListener("click", async () => {
   try {
     const doc = await loadPdfLibDoc(file, "rotatePdfStatus");
     if (!doc) return;
-    doc.getPages().forEach((page) => page.setRotation(window.PDFLib.degrees(angle)));
+    // Add to the page's existing rotation instead of replacing it, so a
+    // page already rotated 90 degrees becomes 180, not 90 again.
+    doc.getPages().forEach((page) => {
+      const current = page.getRotation().angle || 0;
+      page.setRotation(window.PDFLib.degrees((current + angle) % 360));
+    });
     const bytes = await doc.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-rotated.pdf");
     setStatus("rotatePdfStatus", "Done. Rotated PDF downloaded.");
@@ -247,6 +267,75 @@ if (compressPdfBtn) compressPdfBtn.addEventListener("click", async () => {
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-compressed.pdf");
     setStatus("compressPdfStatus", "Done. Re-saved: " + bytes.length + " bytes (was " + file.size + " bytes).");
   } catch (e) { setStatus("compressPdfStatus", "Could not compress this PDF. Please check the file."); }
+});
+
+/* ---------- New PDF tools: Remove Pages + Add Watermark ---------- */
+function parsePageSelection(input, count) {
+  const remove = new Set();
+  const tokens = String(input || "").split(",").map((s) => s.trim()).filter(Boolean);
+  if (!tokens.length) return { error: "Please enter page numbers, for example 2, 4-5." };
+  for (const token of tokens) {
+    if (token.includes("-")) {
+      const parts = token.split("-").map((s) => s.trim());
+      if (parts.length !== 2) return { error: "Invalid range: " + token + ". Use a range like 4-5." };
+      const a = parseInt(parts[0], 10), b = parseInt(parts[1], 10);
+      if (!a || !b || b < a || a < 1 || b > count) return { error: "Range " + token + " is outside 1 to " + count + "." };
+      for (let i = a; i <= b; i++) remove.add(i);
+    } else {
+      const n = parseInt(token, 10);
+      if (!n || String(n) !== token || n < 1 || n > count) return { error: "Page " + token + " is outside 1 to " + count + "." };
+      remove.add(n);
+    }
+  }
+  if (remove.size >= count) return { error: "You cannot remove every page. Keep at least one page." };
+  return { remove };
+}
+const removePagesBtn = $("removePagesBtn");
+if (removePagesBtn) removePagesBtn.addEventListener("click", async () => {
+  const file = ($("removePagesInput").files || [])[0];
+  if (!file) { setStatus("removePagesStatus", "Please select a PDF file first."); return; }
+  try {
+    const src = await loadPdfLibDoc(file, "removePagesStatus");
+    if (!src) return;
+    const count = src.getPageCount();
+    const parsed = parsePageSelection($("removePagesList").value, count);
+    if (parsed.error) { setStatus("removePagesStatus", parsed.error); return; }
+    const keep = [];
+    for (let i = 1; i <= count; i++) if (!parsed.remove.has(i)) keep.push(i - 1);
+    const out = await window.PDFLib.PDFDocument.create();
+    const pages = await out.copyPages(src, keep);
+    pages.forEach((p) => out.addPage(p));
+    const bytes = await out.save();
+    downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-pages-removed.pdf");
+    setStatus("removePagesStatus", "Done. Removed " + parsed.remove.size + " page(s); " + keep.length + " remain.");
+  } catch (e) { setStatus("removePagesStatus", "Could not remove pages from this PDF."); }
+});
+
+const watermarkBtn = $("watermarkBtn");
+if (watermarkBtn) watermarkBtn.addEventListener("click", async () => {
+  const file = ($("watermarkInput").files || [])[0];
+  if (!file) { setStatus("watermarkStatus", "Please select a PDF file first."); return; }
+  const text = ($("watermarkText").value || "").trim();
+  if (!text) { setStatus("watermarkStatus", "Please enter watermark text first."); return; }
+  if (text.length > 60) { setStatus("watermarkStatus", "Please keep the watermark under 60 characters."); return; }
+  try {
+    const doc = await loadPdfLibDoc(file, "watermarkStatus");
+    if (!doc) return;
+    const font = await doc.embedFont(window.PDFLib.StandardFonts.HelveticaBold);
+    const size = parseInt($("watermarkSize").value, 10) || 48;
+    const opacity = parseFloat($("watermarkOpacity").value) || 0.35;
+    doc.getPages().forEach((page) => {
+      const { width, height } = page.getSize();
+      page.drawText(text, {
+        x: width * 0.15, y: height * 0.5, size, font,
+        color: window.PDFLib.rgb(0.5, 0.5, 0.5), opacity,
+        rotate: window.PDFLib.degrees(-45)
+      });
+    });
+    const bytes = await doc.save();
+    downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-watermarked.pdf");
+    setStatus("watermarkStatus", "Done. Watermarked PDF downloaded.");
+  } catch (e) { setStatus("watermarkStatus", "Could not add a watermark to this PDF."); }
 });
 
 async function extractPdfText(file, statusId) {
@@ -295,6 +384,7 @@ if (pdfImagesBtn) pdfImagesBtn.addEventListener("click", async () => {
       canvas.width = viewport.width; canvas.height = viewport.height;
       await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
       const blob = await new Promise((res) => canvas.toBlob(res, "image/png"));
+      if (!blob) continue;
       blobs.push({ name: "ak-premium-page-" + i + ".png", blob });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob); a.download = "ak-premium-page-" + i + ".png"; a.textContent = "Download page " + i + " PNG";
@@ -318,12 +408,13 @@ if (esignCanvas) {
   const ctx = esignCanvas.getContext("2d");
   ctx.lineWidth = 2; ctx.lineCap = "round"; ctx.strokeStyle = "#111827";
   let drawing = false;
+  let hasSignature = false;
   function pos(e) {
     const r = esignCanvas.getBoundingClientRect();
     const t = e.touches ? e.touches[0] : e;
     return { x: (t.clientX - r.left) * (esignCanvas.width / r.width), y: (t.clientY - r.top) * (esignCanvas.height / r.height) };
   }
-  function start(e) { e.preventDefault(); drawing = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+  function start(e) { e.preventDefault(); drawing = true; hasSignature = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
   function move(e) { if (!drawing) return; e.preventDefault(); const p = pos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
   function stop() { drawing = false; }
   esignCanvas.addEventListener("mousedown", start);
@@ -334,9 +425,11 @@ if (esignCanvas) {
   esignCanvas.addEventListener("touchmove", move, { passive: false });
   esignCanvas.addEventListener("touchend", stop);
   const clearBtn = $("esignClearBtn");
-  if (clearBtn) clearBtn.addEventListener("click", () => { ctx.clearRect(0, 0, esignCanvas.width, esignCanvas.height); setStatus("esignStatus", "Signature cleared."); });
+  if (clearBtn) clearBtn.addEventListener("click", () => { ctx.clearRect(0, 0, esignCanvas.width, esignCanvas.height); hasSignature = false; setStatus("esignStatus", "Signature cleared."); });
   const dlBtn = $("esignDownloadBtn");
   if (dlBtn) dlBtn.addEventListener("click", () => {
+    // Previously a blank canvas still produced a "Done" PNG download.
+    if (!hasSignature) { setStatus("esignStatus", "Please draw a signature first."); return; }
     esignCanvas.toBlob((blob) => {
       if (!blob) { setStatus("esignStatus", "Please draw a signature first."); return; }
       downloadBlob(blob, "ak-premium-signature.png");
@@ -371,7 +464,8 @@ if (pdfWordBtn) pdfWordBtn.addEventListener("click", async () => {
   try {
     const text = await extractPdfText(file, "pdfWordStatus");
     if (text === null) return;
-    const doc = new window.docx.Document({ sections: [{ children: text.split("\n").map((line) => new window.docx.Paragraph(line)) }] });
+    // docx v8 Paragraph takes an options object, not a bare string.
+    const doc = new window.docx.Document({ sections: [{ children: text.split("\n").map((line) => new window.docx.Paragraph({ text: line })) }] });
     const blob = await window.docx.Packer.toBlob(doc);
     downloadBlob(blob, "ak-premium-pdf-to-word.docx");
     setStatus("pdfWordStatus", "Done. Word file downloaded.");
@@ -407,7 +501,7 @@ if (txtHtmlPdfBtn) txtHtmlPdfBtn.addEventListener("click", () => {
   const clean = raw.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
   const doc = new JsPDF();
   doc.setFontSize(12);
-  doc.text(wrapPdfText(doc, clean, 170), 15, 20);
+  addWrappedTextPaginated(doc, clean);
   doc.save("ak-premium-text-to-pdf.pdf");
   setStatus("txtHtmlPdfStatus", "Done. PDF downloaded.");
 });
@@ -421,8 +515,10 @@ if (excelPdfBtn) excelPdfBtn.addEventListener("click", async () => {
   try {
     const data = await readAsArrayBuffer(file);
     const wb = window.XLSX.read(data, { type: "array" });
+    if (!wb.SheetNames || !wb.SheetNames.length) { setStatus("excelPdfStatus", "No sheets were found in this Excel file."); return; }
     const sheet = wb.Sheets[wb.SheetNames[0]];
     const rows = window.XLSX.utils.sheet_to_json(sheet, { header: 1 });
+    if (!rows.length) { setStatus("excelPdfStatus", "The first sheet is empty. Nothing to convert."); return; }
     const doc = new JsPDF();
     let y = 20;
     doc.setFontSize(11);
@@ -447,6 +543,7 @@ if (wordPdfBtn) wordPdfBtn.addEventListener("click", async () => {
   try {
     const data = await readAsArrayBuffer(file);
     const result = await window.mammoth.extractRawText({ arrayBuffer: data });
+    if (!result.value || !result.value.trim()) { setStatus("wordPdfStatus", "No text was found in this Word file. Nothing to convert."); return; }
     const doc = new JsPDF();
     doc.setFontSize(12);
     let y = 20;
@@ -484,6 +581,46 @@ if (pptPdfBtn) pptPdfBtn.addEventListener("click", async () => {
     doc.save("ak-premium-ppt-to-pdf.pdf");
     setStatus("pptPdfStatus", "Done. PDF downloaded.");
   } catch (e) { setStatus("pptPdfStatus", "Could not convert this PowerPoint file to PDF. This is a basic, text-only conversion."); }
+});
+
+/* ---------- New spreadsheet tools: Excel to CSV + CSV to Excel ---------- */
+const excelCsvBtn = $("excelCsvBtn");
+if (excelCsvBtn) excelCsvBtn.addEventListener("click", async () => {
+  const file = ($("excelCsvInput").files || [])[0];
+  if (!file) { setStatus("excelCsvStatus", "Please select an Excel file first."); return; }
+  if (!needLibrary(!!window.XLSX, "SheetJS", "excelCsvStatus")) return;
+  try {
+    const data = await readAsArrayBuffer(file);
+    const wb = window.XLSX.read(data, { type: "array" });
+    if (!wb.SheetNames || !wb.SheetNames.length) { setStatus("excelCsvStatus", "No sheets were found in this Excel file."); return; }
+    const csv = window.XLSX.utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]]);
+    if (!csv.trim()) { setStatus("excelCsvStatus", "The first sheet is empty. Nothing to export."); return; }
+    downloadText(csv, "ak-premium-sheet.csv", "text/csv;charset=utf-8");
+    setStatus("excelCsvStatus", "Done. CSV downloaded (first sheet).");
+  } catch (e) { setStatus("excelCsvStatus", "Could not convert this Excel file to CSV."); }
+});
+
+const csvExcelBtn = $("csvExcelBtn");
+if (csvExcelBtn) csvExcelBtn.addEventListener("click", async () => {
+  if (!needLibrary(!!window.XLSX, "SheetJS", "csvExcelStatus")) return;
+  let csvText = "";
+  const file = ($("csvExcelInput").files || [])[0];
+  try {
+    if (file) csvText = await file.text();
+    else csvText = ($("csvExcelText").value || "").trim();
+    if (!csvText) { setStatus("csvExcelStatus", "Please upload a .csv file or paste CSV text first."); return; }
+    let wb = null;
+    try { wb = window.XLSX.read(csvText, { type: "string" }); } catch (e) { wb = null; }
+    if (!wb || !wb.SheetNames || !wb.SheetNames.length || !wb.Sheets[wb.SheetNames[0]] || !Object.keys(wb.Sheets[wb.SheetNames[0]]).length) {
+      // Fallback: simple line/comma split for plain CSV without quoted commas.
+      const rows = csvText.split(/\r?\n/).filter((l) => l.trim()).map((l) => l.split(","));
+      const ws = window.XLSX.utils.aoa_to_sheet(rows);
+      wb = window.XLSX.utils.book_new();
+      window.XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    }
+    window.XLSX.writeFile(wb, "ak-premium-csv-to-excel.xlsx");
+    setStatus("csvExcelStatus", "Done. Excel file downloaded.");
+  } catch (e) { setStatus("csvExcelStatus", "Could not convert this CSV to Excel."); }
 });
 
 /* ---------- Excel Automation Engine ---------- */

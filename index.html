@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AK Premium — Free PDF Tools &amp; Excel Automation | Merge PDF, Excel Formula Generator, VBA &amp; DAX</title>
 <meta name="description" content="AK Premium is a free, browser-based toolkit for PDFs and Excel. Merge, split and convert PDFs, and generate Excel formulas, VBA macros, regex and DAX — all in your browser.">
-<meta name="keywords" content="AK Premium, merge PDF, split PDF, PDF to Excel, PDF to Word, Excel formula generator, VBA macro writer, DAX query, regex creator, images to PDF, PDF tools free">
+<meta name="keywords" content="AK Premium, merge PDF, split PDF, remove pages PDF, add watermark PDF, PDF to Excel, PDF to Word, Excel to CSV, CSV to Excel, Excel formula generator, VBA macro writer, DAX query, regex creator, images to PDF, PDF tools free">
 <meta name="author" content="AK Premium">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://ak-premium.vercel.app/">
@@ -41,6 +41,8 @@
     {"@type": "Question", "name": "Is AK Premium free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The built-in tools in AK Premium are free to use in your browser, with no paid API required."}},
     {"@type": "Question", "name": "Do files leave my browser?", "acceptedAnswer": {"@type": "Answer", "text": "No. Built-in AK Premium tools process files locally in your browser using client-side JavaScript. Files are not uploaded to a server by AK Premium."}},
     {"@type": "Question", "name": "How do I merge PDFs?", "acceptedAnswer": {"@type": "Answer", "text": "Select Merge PDFs, choose two or more PDF files in the order you want, and download the combined PDF. All merging happens in your browser."}},
+    {"@type": "Question", "name": "How do I remove pages or add a watermark?", "acceptedAnswer": {"@type": "Answer", "text": "For Remove Pages, select a PDF and enter the pages to delete, for example 2, 4-5. The tool checks them against the real page count and downloads a copy with those pages removed. For Add Watermark, enter text and choose opacity and size; it is stamped diagonally on every page. A watermark is a visible mark, not document security."}},
+    {"@type": "Question", "name": "How do I convert between Excel and CSV?", "acceptedAnswer": {"@type": "Answer", "text": "Excel to CSV exports the first sheet of an .xlsx file as a .csv download. CSV to Excel accepts an uploaded .csv file or pasted CSV text and downloads it as an .xlsx file. Both run in your browser with SheetJS."}},
     {"@type": "Question", "name": "How do I generate an Excel formula?", "acceptedAnswer": {"@type": "Answer", "text": "Open the Excel Tools workspace, choose Formula Generator, describe what you want in plain words — for example sum with a condition — and AK Premium returns a template formula you can adapt with your own cell ranges."}},
     {"@type": "Question", "name": "What are the limits of AK Premium?", "acceptedAnswer": {"@type": "Answer", "text": "Compressing a PDF in the browser does not fully recompress embedded images, so image-heavy PDFs may shrink only a little. Protect and Unlock PDF are not offered, because full password encryption and removal cannot be done safely with the free client-side libraries used here. The e-Sign canvas produces a visual signature PNG only, not a legal digital signature. Complex PDF to Word, PDF to PPT and PPT to PDF conversions are text-based, so original layout, fonts, tables, images, charts and animations are not preserved. Scanned-image PDFs without a text layer cannot be read by text extraction. Generated formulas, VBA, regex and DAX are templates that have not been run against your workbook and must be tested on a copy of your data first."}},
     {"@type": "Question", "name": "How do I connect Google Analytics or apply for AdSense later?", "acceptedAnswer": {"@type": "Answer", "text": "Google Analytics can be connected by setting GA_MEASUREMENT_ID in app.js and redeploying; gtag loads only when that value is non-empty. AdSense code can be pasted into the labelled ad placeholders on the page. Approval is decided by Google, and the site keeps About, Privacy, Terms and Contact information reachable from the footer and FAQ."}}
@@ -70,6 +72,8 @@
     <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 6h16M12 6v12M9 18h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
     <symbol id="i-code" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13 5l-2 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4L17 4l3 3L8 19z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 7l3 3" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-remove" viewBox="0 0 24 24"><path d="M5 4h14v16H5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 20L20 4M6 17l9-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 4h14v16H5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
   </defs>
 </svg>
 
@@ -118,8 +122,10 @@
           <button type="button" class="tool-card" data-target="tool-images" data-keywords="images to pdf jpg png webp photo pdf"><span class="icon"><svg><use href="#i-image"/></svg></span><strong>Images to PDF</strong><span>Turn images into one PDF.</span></button>
           <button type="button" class="tool-card" data-target="tool-merge" data-keywords="merge pdf combine pdf join pdf"><span class="icon"><svg><use href="#i-merge"/></svg></span><strong>Merge PDF</strong><span>Combine PDFs into one file.</span></button>
           <button type="button" class="tool-card" data-target="tool-split" data-keywords="split pdf extract pages page range"><span class="icon"><svg><use href="#i-split"/></svg></span><strong>Split PDF</strong><span>Extract a page range.</span></button>
+          <button type="button" class="tool-card" data-target="tool-remove" data-keywords="remove pages delete pages pdf"><span class="icon"><svg><use href="#i-remove"/></svg></span><strong>Remove Pages</strong><span>Delete selected pages, keep rest.</span></button>
           <button type="button" class="tool-card" data-target="tool-rotate" data-keywords="rotate pdf pages rotation"><span class="icon"><svg><use href="#i-rotate"/></svg></span><strong>Rotate PDF</strong><span>Rotate all pages 90, 180, or 270 degrees.</span></button>
           <button type="button" class="tool-card" data-target="tool-numbers" data-keywords="add page numbers pdf numbering"><span class="icon"><svg><use href="#i-number"/></svg></span><strong>Add Page Numbers</strong><span>Number every page, bottom centre.</span></button>
+          <button type="button" class="tool-card" data-target="tool-watermark" data-keywords="add watermark stamp text pdf diagonal"><span class="icon"><svg><use href="#i-stamp"/></svg></span><strong>Add Watermark</strong><span>Stamp text diagonally on pages.</span></button>
           <button type="button" class="tool-card" data-target="tool-compress" data-keywords="compress pdf reduce size image quality"><span class="icon"><svg><use href="#i-compress"/></svg></span><strong>Compress PDF</strong><span>Re-save a PDF, smaller file.</span></button>
           <button type="button" class="tool-card" data-target="tool-pdftext" data-keywords="pdf to text extract text txt"><span class="icon"><svg><use href="#i-text"/></svg></span><strong>PDF to Text</strong><span>Extract text as a .txt file.</span></button>
           <button type="button" class="tool-card" data-target="tool-pdfimages" data-keywords="pdf to images png render pages zip"><span class="icon"><svg><use href="#i-image"/></svg></span><strong>PDF to Images</strong><span>Render pages as PNG images.</span></button>
@@ -150,6 +156,8 @@
           <button type="button" class="tool-card" data-target="tool-excel" data-excel-module="vba" data-keywords="vba macro writer userform automation"><span class="icon"><svg><use href="#i-code"/></svg></span><strong>VBA Macro Writer</strong><span>Describe it, get VBA code.</span></button>
           <button type="button" class="tool-card" data-target="tool-excel" data-excel-module="regex" data-keywords="regex creator email pattern date"><span class="icon"><svg><use href="#i-code"/></svg></span><strong>Regex Creator</strong><span>Build patterns, extract emails.</span></button>
           <button type="button" class="tool-card" data-target="tool-excel" data-excel-module="dax" data-keywords="dax query measure sales"><span class="icon"><svg><use href="#i-code"/></svg></span><strong>DAX Query</strong><span>Describe it, get a DAX measure.</span></button>
+          <button type="button" class="tool-card" data-target="tool-excelcsv" data-keywords="excel to csv xlsx csv export spreadsheet"><span class="icon"><svg><use href="#i-doc"/></svg></span><strong>Excel to CSV</strong><span>First sheet exported as CSV.</span></button>
+          <button type="button" class="tool-card" data-target="tool-csvxcel" data-keywords="csv to excel xlsx import spreadsheet csv"><span class="icon"><svg><use href="#i-doc"/></svg></span><strong>CSV to Excel</strong><span>CSV text saved as .xlsx.</span></button>
         </div>
       </section>
 
@@ -213,6 +221,30 @@
           <label>Quality <input id="compressQuality" type="range" min="10" max="100" value="70"> <span id="compressQualityLabel">70%</span></label>
           <button id="compressPdfBtn" type="button" class="btn-primary">Compress PDF</button>
           <p class="status" id="compressPdfStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-remove">
+          <h3>Remove Pages</h3>
+          <input id="removePagesInput" type="file" accept="application/pdf">
+          <label>Pages to remove <input id="removePagesList" type="text" placeholder="Example: 2, 4-5"></label>
+          <button id="removePagesBtn" type="button" class="btn-primary">Remove Pages</button>
+          <p class="status" id="removePagesStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-watermark">
+          <h3>Add Watermark</h3>
+          <input id="watermarkInput" type="file" accept="application/pdf">
+          <label>Watermark text <input id="watermarkText" type="text" placeholder="Example: DRAFT" maxlength="60"></label>
+          <div class="field-row">
+            <label>Opacity
+              <select id="watermarkOpacity"><option value="0.2">Light (0.2)</option><option value="0.35" selected>Medium (0.35)</option><option value="0.5">Strong (0.5)</option></select>
+            </label>
+            <label>Size
+              <select id="watermarkSize"><option value="24">Small</option><option value="48" selected>Medium</option><option value="72">Large</option></select>
+            </label>
+          </div>
+          <button id="watermarkBtn" type="button" class="btn-primary">Add Watermark</button>
+          <p class="status" id="watermarkStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-pdftext">
@@ -289,6 +321,22 @@
           <p class="status" id="pptPdfStatus"></p>
         </div>
 
+        <div class="workspace-tool" id="tool-excelcsv">
+          <h3>Excel to CSV</h3>
+          <input id="excelCsvInput" type="file" accept=".xlsx,.xls">
+          <button id="excelCsvBtn" type="button" class="btn-primary">Convert Excel to CSV</button>
+          <p class="status" id="excelCsvStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-csvxcel">
+          <h3>CSV to Excel</h3>
+          <input id="csvExcelInput" type="file" accept=".csv,text/csv">
+          <label class="sr-only" for="csvExcelText">Paste CSV text</label>
+          <textarea id="csvExcelText" rows="4" placeholder="Or paste CSV text here…"></textarea>
+          <button id="csvExcelBtn" type="button" class="btn-primary">Convert CSV to Excel</button>
+          <p class="status" id="csvExcelStatus"></p>
+        </div>
+
         <div class="workspace-tool" id="tool-excel">
           <h3>Excel Tools</h3>
           <div class="excel-layout">
@@ -327,8 +375,10 @@
         <details><summary>Is AK Premium free?</summary><p>Yes. The built-in tools are free to use in your browser, with no paid API required.</p></details>
         <details><summary>Do files leave my browser?</summary><p>No. Built-in tools process files locally in your browser using client-side JavaScript. Files are not uploaded to a server by AK Premium.</p></details>
         <details><summary>How do I merge PDFs?</summary><p>Select Merge PDF, choose two or more PDF files in the order you want, and download the combined PDF. All merging happens in your browser.</p></details>
+        <details><summary>How do I remove pages or add a watermark?</summary><p>For Remove Pages, select a PDF and enter the pages to delete, for example 2, 4-5. The tool checks them against the real page count and downloads a copy with those pages removed. For Add Watermark, enter text and choose opacity and size; it is stamped diagonally on every page. A watermark is a visible mark, not document security.</p></details>
+        <details><summary>How do I convert between Excel and CSV?</summary><p>Excel to CSV exports the first sheet of an .xlsx file as a .csv download. CSV to Excel accepts an uploaded .csv file or pasted CSV text and downloads it as an .xlsx file. Both run in your browser with SheetJS.</p></details>
         <details><summary>How do I generate an Excel formula?</summary><p>Open Formula Generator, describe what you want in plain words — for example sum with a condition — and AK Premium returns a template formula you can adapt with your own cell ranges.</p></details>
-        <details><summary>How does each tool work?</summary><p>Select a tool card to open its workspace. PDF tools use pdf-lib, pdf.js and jsPDF in your browser: Create PDF writes text with jsPDF, Images to PDF places each image on its own page, Merge combines pages in your selected order, Split extracts a page range, Rotate rotates every page, Add Page Numbers stamps a number at the bottom of each page, and Compress re-saves the PDF at your chosen quality setting. Converters extract text where a text layer exists and rebuild a simple file in the target format. The Excel engine is rule-based: it matches keywords in your description and returns a formula, VBA, regex or DAX template — it does not call a paid API and does not run against your workbook.</p></details>
+        <details><summary>How does each tool work?</summary><p>Select a tool card to open its workspace. PDF tools use pdf-lib, pdf.js and jsPDF in your browser: Create PDF writes text with jsPDF, Images to PDF places each image on its own page, Merge combines pages in your selected order, Split extracts a page range, Remove Pages deletes the pages you list after checking them against the real page count, Rotate rotates every page, Add Page Numbers stamps a number at the bottom of each page, Add Watermark stamps your text diagonally on every page, and Compress re-saves the PDF. Converters extract text where a text layer exists and rebuild a simple file in the target format; Excel to CSV exports the first sheet as CSV and CSV to Excel rebuilds an .xlsx from CSV text. The Excel engine is rule-based: it matches keywords in your description and returns a formula, VBA, regex or DAX template — it does not call a paid API and does not run against your workbook.</p></details>
         <details><summary>What are the limits?</summary><p>Compressing a PDF in the browser does not fully recompress embedded images, so image-heavy PDFs may shrink only a little. Protect PDF and Unlock PDF are not offered, because full password encryption and removal cannot be done safely with the free client-side libraries used here — use a trusted desktop PDF app for encrypted files. The e-Sign canvas produces a visual signature PNG only; it is not a legal digital signature or certificate-based signing. PDF to Word, PDF to PPT and PPT to PDF are text-based, so original layout, fonts, tables, images, charts and animations are not preserved. Scanned-image PDFs without a text layer cannot be read by text extraction. Generated formulas, VBA, regex and DAX are templates that have not been run against your workbook or model; replace placeholders with your own ranges, sheet names and columns, and test on a copy of your data first. The placeholder password in the advanced VBA template must be changed before real use.</p></details>
         <details id="faq-privacy"><summary>Privacy</summary><p>AK Premium does not collect, store or transmit your uploaded files. Built-in tools run in your browser. If you later connect Google Analytics, only the anonymous usage data described by Google Analytics will be collected, and only after a measurement ID is added. AK Premium does not sell personal data and does not require an account to use the built-in tools.</p></details>
         <details id="faq-terms"><summary>Terms</summary><p>Tools are provided as-is, for lawful use only. Do not upload files you do not have the right to use, and do not use generated templates, VBA or DAX code in production without reviewing and testing it in your own workbook. Keep original copies of important files.</p></details>
