@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AK Premium — Free PDF Studio & Excel Automation Tools | Merge PDF, Excel Formula Generator, VBA & DAX</title>
+<meta name="description" content="AK Premium is a free, client-side PDF Studio and Excel Automation Engine. Merge PDF, split PDF, convert PDF to Excel, Word and PPT, generate Excel formulas, VBA macros, regex and DAX — all in your browser, with no server uploads.">
+<meta name="keywords" content="AK Premium, merge PDF, split PDF, PDF to Excel, PDF to Word, Excel formula generator, VBA macro writer, DAX query, regex creator, images to PDF, PDF tools free">
+<meta name="author" content="AK Premium">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ak-premium.example.com/">
+<meta property="og:title" content="AK Premium — Free PDF Studio & Excel Automation Tools">
+<meta property="og:description" content="Merge, split, convert and protect PDFs, and generate Excel formulas, VBA, regex and DAX — 100% in your browser. No paid API, no server uploads.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ak-premium.example.com/">
+<meta property="og:site_name" content="AK Premium">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AK Premium — Free PDF Studio & Excel Automation Tools">
+<meta name="twitter:description" content="Client-side PDF tools and an Excel automation engine from AK Premium. Free, fast, and private by design.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AK Premium",
+  "url": "https://ak-premium.example.com/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web browser",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "description": "AK Premium provides client-side PDF tools and Excel automation, including PDF merging, splitting, conversion, formula generation, VBA, regex and DAX."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What is AK Premium?", "acceptedAnswer": {"@type": "Answer", "text": "AK Premium is a free, browser-based toolkit with a PDF Studio and an Excel Automation Engine. It helps you create, merge, split, rotate and convert PDFs, and generate Excel formulas, VBA macros, regex patterns and DAX measures."}},
+    {"@type": "Question", "name": "Is AK Premium free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The built-in tools in AK Premium are free to use in your browser, with no paid API required."}},
+    {"@type": "Question", "name": "Do files leave my browser?", "acceptedAnswer": {"@type": "Answer", "text": "No. Built-in AK Premium tools process files locally in your browser using client-side JavaScript. Files are not uploaded to a server by AK Premium."}},
+    {"@type": "Question", "name": "How do I generate an Excel formula?", "acceptedAnswer": {"@type": "Answer", "text": "Open the Excel Engine, choose Formula Generator, describe what you want in plain words — for example sum with a condition — and AK Premium returns a template formula you can adapt with your own cell ranges."}},
+    {"@type": "Question", "name": "How do I merge PDFs?", "acceptedAnswer": {"@type": "Answer", "text": "Open PDF Studio, choose Merge PDFs, select two or more PDF files in the order you want, and download the combined PDF. All merging happens in your browser."}}
+  ]
+}
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#top"><span class="brand-mark">AK</span><span>AK Premium</span></a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <button class="tab-btn active" data-tab="pdf" type="button">PDF Studio</button>
+      <button class="tab-btn" data-tab="excel" type="button">Excel Engine</button>
+      <button class="tab-btn" data-tab="converters" type="button">Converters</button>
+      <button class="tab-btn" data-tab="faq" type="button">FAQ</button>
+    </nav>
+    <a class="contact-link" href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-label="AK Premium hero">
+    <p class="eyebrow">AK Premium &middot; Client-side tools &middot; Zero server cost</p>
+    <h1>AK Premium: PDF Studio &amp; Excel Automation, in your browser</h1>
+    <p class="hero-sub">Merge PDFs, convert files, and generate Excel formulas, VBA, regex and DAX — without uploading your files to a server. Search a tool below and start in seconds.</p>
+    <label class="sr-only" for="heroSearch">Search AK Premium tools</label>
+    <input id="heroSearch" type="search" placeholder="Search tools — try: merge pdf, formula, vba, split…" autocomplete="off">
+    <p id="searchStatus" class="search-status" role="status">Showing all AK Premium tools.</p>
+    <div class="chips" aria-label="Trending searches">
+      <button type="button" class="chip" data-query="Excel Formula Generator">Excel Formula Generator</button>
+      <button type="button" class="chip" data-query="Merge PDF">Merge PDF</button>
+      <button type="button" class="chip" data-query="Images to PDF">Images to PDF</button>
+      <button type="button" class="chip" data-query="Split PDF">Split PDF</button>
+      <button type="button" class="chip" data-query="VBA Macro Writer">VBA Macro Writer</button>
+      <button type="button" class="chip" data-query="PDF to Text">PDF to Text</button>
+    </div>
+  </section>
+
+  <!-- Ad Space — Google AdSense / Ezoic placeholder : 728x90 Leaderboard -->
+  <!-- Paste your AdSense leaderboard code inside this div later. Layout is safe without real ads. -->
+  <div class="ad-leaderboard" role="complementary" aria-label="Advertisement placeholder">Ad Space — Google AdSense / Ezoic placeholder &middot; 728x90 Leaderboard</div>
+
+  <div class="layout">
+    <!-- Ad Space — Google AdSense / Ezoic placeholder : 160x600 Sidebar -->
+    <!-- Paste your AdSense vertical ad code inside this div later. -->
+    <aside class="ad-sidebar ad-left" role="complementary" aria-label="Advertisement placeholder">Ad Space — Google AdSense / Ezoic placeholder<br>160x600</aside>
+
+    <div class="content">
+      <!-- PDF STUDIO -->
+      <section id="tab-pdf" class="tab-panel active" aria-label="PDF Studio">
+        <h2>PDF Studio — work with PDFs, entirely in your browser</h2>
+        <p class="section-intro">Every tool below runs with client-side JavaScript. If a library fails to load, the tool will tell you clearly instead of pretending to work.</p>
+
+        <article class="tool-card" data-keywords="create pdf from scratch text pdf ak premium">
+          <h3>Create PDF from Scratch</h3>
+          <p>Write text, then download it instantly as a PDF. Nothing is uploaded.</p>
+          <label class="sr-only" for="createText">Text for your PDF</label>
+          <textarea id="createText" rows="5" placeholder="Type the text for your PDF here…"></textarea>
+          <button id="createPdfBtn" type="button" class="btn-primary">Create &amp; Download PDF</button>
+          <p class="status" id="createPdfStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="images to pdf jpg png webp photo pdf">
+          <h3>Images to PDF</h3>
+          <p>Select multiple JPG, PNG or WebP images. Pages keep the order you select them in.</p>
+          <input id="imagesInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+          <button id="imagesPdfBtn" type="button" class="btn-primary">Convert Images to PDF</button>
+          <p class="status" id="imagesPdfStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="merge pdf combine pdf join pdf">
+          <h3>Merge PDFs</h3>
+          <p>Combine two or more PDFs into one file, in the order you select them.</p>
+          <input id="mergeInput" type="file" accept="application/pdf" multiple>
+          <button id="mergePdfBtn" type="button" class="btn-primary">Merge PDFs</button>
+          <p class="status" id="mergePdfStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="split pdf extract pages page range">
+          <h3>Split PDF</h3>
+          <p>Extract a page range from a PDF. Pages are numbered from 1.</p>
+          <input id="splitInput" type="file" accept="application/pdf">
+          <div class="field-row">
+            <label>Start page <input id="splitStart" type="number" min="1" value="1"></label>
+            <label>End page <input id="splitEnd" type="number" min="1" value="1"></label>
+          </div>
+          <button id="splitPdfBtn" type="button" class="btn-primary">Split PDF</button>
+          <p class="status" id="splitPdfStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="rotate pdf pages rotation">
+          <h3>Rotate PDF Pages</h3>
+          <p>Rotate every page in a PDF by 90, 180 or 270 degrees.</p>
+          <input id="rotateInput" type="file" accept="application/pdf">
+          <label>Angle
+            <select id="rotateAngle"><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select>
+          </label>
+          <button id="rotatePdfBtn" type="button" class="btn-primary">Rotate PDF</button>
+          <p class="status" id="rotatePdfStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="add page numbers pdf numbering">
+          <h3>Add Page Numbers</h3>
+          <p>Add a simple page number to the bottom of every page.</p>
+          <input id="numbersInput" type="file" accept="application/pdf">
+          <button id="pageNumbersBtn" type="button" class="btn-primary">Add Page Numbers</button>
+          <p class="status" id="pageNumbersStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="compress pdf reduce size image quality">
+          <h3>Compress PDF</h3>
+          <p>Re-save a PDF with your chosen quality setting. Honest limit: browser re-saving does not fully recompress embedded images, so very image-heavy PDFs may shrink only a little. The slider is kept for your workflow preference and for future image handling.</p>
+          <input id="compressInput" type="file" accept="application/pdf">
+          <label>Quality <input id="compressQuality" type="range" min="10" max="100" value="70"> <span id="compressQualityLabel">70%</span></label>
+          <button id="compressPdfBtn" type="button" class="btn-primary">Compress PDF</button>
+          <p class="status" id="compressPdfStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="pdf to text extract text txt">
+          <h3>PDF to Text</h3>
+          <p>Extract readable text from a PDF and download it as a .txt file.</p>
+          <input id="pdfTextInput" type="file" accept="application/pdf">
+          <button id="pdfTextBtn" type="button" class="btn-primary">Extract Text</button>
+          <p class="status" id="pdfTextStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="pdf to images png render pages zip">
+          <h3>PDF to Images</h3>
+          <p>Render each PDF page as a PNG. If JSZip loads, you also get one ZIP download with all pages.</p>
+          <input id="pdfImagesInput" type="file" accept="application/pdf">
+          <button id="pdfImagesBtn" type="button" class="btn-primary">Convert Pages to Images</button>
+          <div id="pdfImagesOutput" class="image-output"></div>
+          <p class="status" id="pdfImagesStatus"></p>
+        </article>
+
+        <div class="ad-inline" role="complementary" aria-label="Advertisement placeholder">Ad Space — Google AdSense / Ezoic placeholder &middot; Inline ad box — paste AdSense code here later</div>
+        <div class="terminal-note">
+          <h3>Protect PDF, Unlock PDF &amp; e-Sign — what AK Premium does today</h3>
+          <p><strong>Protect / Unlock:</strong> Full password encryption and removal cannot be done safely with the free client-side libraries loaded here, so AK Premium does not fake it. Use the password tools in a trusted desktop PDF app for encrypted files, and use the e-Sign canvas below for a visual signature you can add to a document image or printed PDF.</p>
+          <p><strong>e-Sign canvas:</strong> Draw with mouse or touch, clear it, and download your signature as a PNG.</p>
+          <canvas id="esignCanvas" width="520" height="180" aria-label="Electronic signature drawing canvas"></canvas>
+          <div class="field-row">
+            <button id="esignClearBtn" type="button" class="btn-secondary">Clear Signature</button>
+            <button id="esignDownloadBtn" type="button" class="btn-primary">Download Signature PNG</button>
+          </div>
+          <p class="status" id="esignStatus"></p>
+        </div>
+      </section>
+
+      <!-- EXCEL ENGINE -->
+      <section id="tab-excel" class="tab-panel" aria-label="Excel Engine">
+        <h2>Excel Automation Engine — rule-based, no paid API</h2>
+        <p class="section-intro">Describe what you want in plain words. AK Premium matches keywords and returns a working template. Replace the placeholders with your own ranges, sheet names and criteria before using it in a real workbook. Generated code has not been run against your workbook.</p>
+        <div class="excel-layout">
+          <div class="excel-left">
+            <div class="excel-tabs" role="tablist" aria-label="Excel modules">
+              <button type="button" class="excel-tab-btn active" data-excel-tab="generator">Formula Generator</button>
+              <button type="button" class="excel-tab-btn" data-excel-tab="explainer">Formula Explainer</button>
+              <button type="button" class="excel-tab-btn" data-excel-tab="vba">VBA Macro Writer</button>
+              <button type="button" class="excel-tab-btn" data-excel-tab="regex">Regex Creator</button>
+              <button type="button" class="excel-tab-btn" data-excel-tab="dax">DAX Query</button>
+            </div>
+            <label class="sr-only" for="excelInput">Describe your Excel task</label>
+            <textarea id="excelInput" rows="6" placeholder="Example: sum with a condition if sales are above target…"></textarea>
+            <p id="excelHint" class="hint">Formula Generator: try “sum condition if”, “vlookup search table”, “average”, “countif”, “xlookup”, or “unique filter”.</p>
+            <button id="excelGenerateBtn" type="button" class="btn-primary">Generate</button>
+            <button id="excelCopyBtn" type="button" class="btn-secondary">One-Click Copy to Clipboard</button>
+            <p class="status" id="excelStatus"></p>
+          </div>
+          <div class="excel-right">
+            <h3>Code Terminal</h3>
+            <pre id="excelOutput" class="terminal" aria-live="polite">Your generated formula, VBA, regex or DAX will appear here.</pre>
+            <div class="ad-inline" role="complementary" aria-label="Advertisement placeholder">Ad Space — Google AdSense / Ezoic placeholder &middot; Inline ad box — paste AdSense code here later</div>
+            <p class="hint">Tip: the Copy button above copies whatever is currently in this terminal, for every Excel module.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONVERTERS -->
+      <section id="tab-converters" class="tab-panel" aria-label="Converters">
+        <h2>Converters — outbound and inbound, in your browser</h2>
+        <p class="section-intro">Complex original formatting is not preserved by simple text-based conversions. AK Premium tells you that plainly, instead of delivering a fake file. For pixel-perfect layout conversion, see the optional integration note in app.js and the README.</p>
+
+        <article class="tool-card" data-keywords="pdf to excel xlsx spreadsheet">
+          <h3>PDF to Excel</h3>
+          <p>Extracted PDF text lines become rows in an .xlsx file.</p>
+          <input id="pdfExcelInput" type="file" accept="application/pdf">
+          <button id="pdfExcelBtn" type="button" class="btn-primary">Convert PDF to Excel</button>
+          <p class="status" id="pdfExcelStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="pdf to word docx document">
+          <h3>PDF to Word</h3>
+          <p>Build a simple .docx from extracted PDF text. Original layout, fonts and tables are not preserved.</p>
+          <input id="pdfWordInput" type="file" accept="application/pdf">
+          <button id="pdfWordBtn" type="button" class="btn-primary">Convert PDF to Word</button>
+          <p class="status" id="pdfWordStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="pdf to ppt powerpoint presentation pptx">
+          <h3>PDF to PPT</h3>
+          <p>Build a simple .pptx from extracted PDF text, one section per slide. Original design is not preserved.</p>
+          <input id="pdfPptInput" type="file" accept="application/pdf">
+          <button id="pdfPptBtn" type="button" class="btn-primary">Convert PDF to PPT</button>
+          <p class="status" id="pdfPptStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="txt html to pdf text html pdf">
+          <h3>TXT / HTML to PDF</h3>
+          <p>Paste plain text or simple HTML. HTML tags are stripped for a clean, readable PDF.</p>
+          <textarea id="txtHtmlInput" rows="4" placeholder="Paste text or simple HTML here…"></textarea>
+          <button id="txtHtmlPdfBtn" type="button" class="btn-primary">Convert Text to PDF</button>
+          <p class="status" id="txtHtmlPdfStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="excel to pdf xlsx spreadsheet pdf">
+          <h3>Excel to PDF</h3>
+          <p>Read the first sheet of an .xlsx file and render its rows as a PDF.</p>
+          <input id="excelPdfInput" type="file" accept=".xlsx,.xls">
+          <button id="excelPdfBtn" type="button" class="btn-primary">Convert Excel to PDF</button>
+          <p class="status" id="excelPdfStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="word to pdf docx document pdf mammoth">
+          <h3>Word to PDF</h3>
+          <p>Extract text from a .docx file and render it as a PDF. Complex formatting is not preserved.</p>
+          <input id="wordPdfInput" type="file" accept=".docx">
+          <button id="wordPdfBtn" type="button" class="btn-primary">Convert Word to PDF</button>
+          <p class="status" id="wordPdfStatus"></p>
+        </article>
+
+        <article class="tool-card" data-keywords="ppt to pdf powerpoint pptx slides basic">
+          <h3>PPT to PDF (Basic)</h3>
+          <p>Basic slide-text extraction from a .pptx file, rendered as a PDF. This is a text-only, basic conversion — images, charts and animations are not preserved.</p>
+          <input id="pptPdfInput" type="file" accept=".pptx">
+          <button id="pptPdfBtn" type="button" class="btn-primary">Convert PPT to PDF</button>
+          <p class="status" id="pptPdfStatus"></p>
+        </article>
+      </section>
+
+      <!-- FAQ -->
+      <section id="tab-faq" class="tab-panel" aria-label="Frequently asked questions">
+        <h2>Frequently Asked Questions — AK Premium</h2>
+        <details open><summary>What is AK Premium?</summary><p>AK Premium is a free, browser-based toolkit with a PDF Studio and an Excel Automation Engine. It helps you create, merge, split, rotate and convert PDFs, and generate Excel formulas, VBA macros, regex patterns and DAX measures.</p></details>
+        <details><summary>Is AK Premium free?</summary><p>Yes. The built-in tools in AK Premium are free to use in your browser, with no paid API required.</p></details>
+        <details><summary>Do files leave my browser?</summary><p>No. Built-in AK Premium tools process files locally in your browser using client-side JavaScript. Files are not uploaded to a server by AK Premium.</p></details>
+        <details><summary>How do I generate an Excel formula?</summary><p>Open the Excel Engine, choose Formula Generator, describe what you want in plain words — for example sum with a condition — and AK Premium returns a template formula you can adapt with your own cell ranges.</p></details>
+        <details><summary>How do I merge PDFs?</summary><p>Open PDF Studio, choose Merge PDFs, select two or more PDF files in the order you want, and download the combined PDF. All merging happens in your browser.</p></details>
+      </section>
+    </div>
+
+    <!-- Ad Space — Google AdSense / Ezoic placeholder : 160x600 Sidebar -->
+    <!-- Paste your AdSense vertical ad code inside this div later. -->
+    <aside class="ad-sidebar ad-right" role="complementary" aria-label="Advertisement placeholder">Ad Space — Google AdSense / Ezoic placeholder<br>160x600</aside>
+  </div>
+
+  <section id="about" class="info-section">
+    <h2>About AK Premium</h2>
+    <p>AK Premium is built for students, analysts, small businesses and anyone who needs everyday document tools without installing software or paying for a server-backed service. The site is a static front-end: HTML for structure, CSS for design, and JavaScript for tools. That keeps costs at zero and keeps your files on your own device.</p>
+  </section>
+  <section id="privacy" class="info-section">
+    <h2>Privacy Policy — AK Premium</h2>
+    <p>AK Premium does not collect, store or transmit your uploaded files. Built-in tools run in your browser. If you later connect Google Analytics, only the anonymous usage data described by Google Analytics will be collected, and only after you add a measurement ID. AK Premium does not sell personal data and does not require an account to use the built-in tools.</p>
+  </section>
+  <section id="terms" class="info-section">
+    <h2>Terms of Use — AK Premium</h2>
+    <p>AK Premium tools are provided as-is, for lawful use only. Do not upload files you do not have the right to use, and do not use generated templates, VBA or DAX code in production without reviewing and testing it in your own workbook. AK Premium is not responsible for data loss; keep original copies of important files.</p>
+  </section>
+  <section id="contact" class="info-section">
+    <h2>Contact AK Premium</h2>
+    <p>Questions, corrections or partnership enquiries: <a href="mailto:nomanalicgr@gmail.com">nomanalicgr@gmail.com</a></p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2026 AK Premium. All rights reserved. Built by AK Premium — free, client-side PDF and Excel tools.</p>
+  <p><a href="#about">About</a> &middot; <a href="#privacy">Privacy Policy</a> &middot; <a href="#terms">Terms</a> &middot; <a href="#contact">Contact</a></p>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
