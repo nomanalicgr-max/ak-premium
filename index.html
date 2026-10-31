@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AK Premium — Free PDF Tools &amp; Excel Automation | Merge PDF, Excel Formula Generator, VBA &amp; DAX</title>
-<meta name="description" content="AK Premium is a free, browser-based toolkit for PDFs and Excel. Merge, split and convert PDFs, and generate Excel formulas, VBA macros, regex and DAX — all in your browser.">
-<meta name="keywords" content="AK Premium, merge PDF, split PDF, remove pages PDF, add watermark PDF, PDF to Excel, PDF to Word, Excel to CSV, CSV to Excel, Excel formula generator, VBA macro writer, DAX query, regex creator, images to PDF, PDF tools free">
+<title>AK Premium — Free PDF, Image &amp; Excel Tools | Merge PDF, QR Code, Password Generator, Calculators</title>
+<meta name="description" content="AK Premium is a free, browser-based toolkit for PDFs, images, Excel and everyday tasks. Merge, split and convert PDFs, compress images, generate QR codes and passwords, and use calculators — all in your browser.">
+<meta name="keywords" content="AK Premium, merge PDF, split PDF, remove pages PDF, add watermark PDF, organize PDF, edit PDF, image compressor, image resizer, image converter, image to text OCR, QR code generator, password generator, word counter, JSON formatter, base64, age calculator, percentage calculator, BMI calculator, PDF to Excel, PDF to Word, Excel to CSV, CSV to Excel, Excel formula generator, VBA macro writer, DAX query, regex creator, images to PDF, PDF tools free">
 <meta name="author" content="AK Premium">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://ak-premium.vercel.app/">
@@ -45,6 +45,8 @@
     {"@type": "Question", "name": "How do I convert between Excel and CSV?", "acceptedAnswer": {"@type": "Answer", "text": "Excel to CSV exports the first sheet of an .xlsx file as a .csv download. CSV to Excel accepts an uploaded .csv file or pasted CSV text and downloads it as an .xlsx file. Both run in your browser with SheetJS."}},
     {"@type": "Question", "name": "How do I generate an Excel formula?", "acceptedAnswer": {"@type": "Answer", "text": "Open the Excel Tools workspace, choose Formula Generator, describe what you want in plain words — for example sum with a condition — and AK Premium returns a template formula you can adapt with your own cell ranges."}},
     {"@type": "Question", "name": "What are the limits of AK Premium?", "acceptedAnswer": {"@type": "Answer", "text": "Compressing a PDF in the browser does not fully recompress embedded images, so image-heavy PDFs may shrink only a little. Protect and Unlock PDF are not offered, because full password encryption and removal cannot be done safely with the free client-side libraries used here. The e-Sign canvas produces a visual signature PNG only, not a legal digital signature. Complex PDF to Word, PDF to PPT and PPT to PDF conversions are text-based, so original layout, fonts, tables, images, charts and animations are not preserved. Scanned-image PDFs without a text layer cannot be read by text extraction. Generated formulas, VBA, regex and DAX are templates that have not been run against your workbook and must be tested on a copy of your data first."}},
+    {"@type": "Question", "name": "What image, everyday, developer and calculator tools does AK Premium offer?", "acceptedAnswer": {"@type": "Answer", "text": "Image tools compress, resize, convert and read text from images (OCR). Everyday tools generate QR codes and passwords and count words. Developer tools format and validate JSON and encode or decode Base64. Calculators compute exact age, percentages and BMI. All run in your browser."}},
+    {"@type": "Question", "name": "What are the limits of OCR, image compression and PDF editing?", "acceptedAnswer": {"@type": "Answer", "text": "OCR downloads language data on its first run and may take time; it works best on clear printed text and is not reliable for handwriting or low-quality photos. Image Compressor output is JPEG, so transparency is flattened. Edit PDF adds new text only; it does not edit or delete existing text in a PDF."}},
     {"@type": "Question", "name": "How do I connect Google Analytics or apply for AdSense later?", "acceptedAnswer": {"@type": "Answer", "text": "Google Analytics can be connected by setting GA_MEASUREMENT_ID in app.js and redeploying; gtag loads only when that value is non-empty. AdSense code can be pasted into the labelled ad placeholders on the page. Approval is decided by Google, and the site keeps About, Privacy, Terms and Contact information reachable from the footer and FAQ."}}
   ]
 }
@@ -57,6 +59,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -74,6 +78,11 @@
     <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4L17 4l3 3L8 19z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 7l3 3" stroke="currentColor" stroke-width="1.8"/></symbol>
     <symbol id="i-remove" viewBox="0 0 24 24"><path d="M5 4h14v16H5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
     <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 20L20 4M6 17l9-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 4h14v16H5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M14 14h3v3h-3zM18 18h3M14 21h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 12l8-8M16 7l3 3M19 4l2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-calc" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 7h8M8 11h2M12 11h2M16 11h-2M8 15h2M12 15h2M16 15h-2M8 19h2M12 19h2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-resize" viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 12h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
   </defs>
 </svg>
 
@@ -122,10 +131,12 @@
           <button type="button" class="tool-card" data-target="tool-images" data-keywords="images to pdf jpg png webp photo pdf"><span class="icon"><svg><use href="#i-image"/></svg></span><strong>Images to PDF</strong><span>Turn images into one PDF.</span></button>
           <button type="button" class="tool-card" data-target="tool-merge" data-keywords="merge pdf combine pdf join pdf"><span class="icon"><svg><use href="#i-merge"/></svg></span><strong>Merge PDF</strong><span>Combine PDFs into one file.</span></button>
           <button type="button" class="tool-card" data-target="tool-split" data-keywords="split pdf extract pages page range"><span class="icon"><svg><use href="#i-split"/></svg></span><strong>Split PDF</strong><span>Extract a page range.</span></button>
+          <button type="button" class="tool-card" data-target="tool-organize" data-keywords="organize pdf reorder pages order"><span class="icon"><svg><use href="#i-merge"/></svg></span><strong>Organize PDF</strong><span>Reorder pages, new order.</span></button>
           <button type="button" class="tool-card" data-target="tool-remove" data-keywords="remove pages delete pages pdf"><span class="icon"><svg><use href="#i-remove"/></svg></span><strong>Remove Pages</strong><span>Delete selected pages, keep rest.</span></button>
           <button type="button" class="tool-card" data-target="tool-rotate" data-keywords="rotate pdf pages rotation"><span class="icon"><svg><use href="#i-rotate"/></svg></span><strong>Rotate PDF</strong><span>Rotate all pages 90, 180, or 270 degrees.</span></button>
           <button type="button" class="tool-card" data-target="tool-numbers" data-keywords="add page numbers pdf numbering"><span class="icon"><svg><use href="#i-number"/></svg></span><strong>Add Page Numbers</strong><span>Number every page, bottom centre.</span></button>
           <button type="button" class="tool-card" data-target="tool-watermark" data-keywords="add watermark stamp text pdf diagonal"><span class="icon"><svg><use href="#i-stamp"/></svg></span><strong>Add Watermark</strong><span>Stamp text diagonally on pages.</span></button>
+          <button type="button" class="tool-card" data-target="tool-editpdf" data-keywords="edit pdf add text page stamp"><span class="icon"><svg><use href="#i-pen"/></svg></span><strong>Edit PDF</strong><span>Add text to one page.</span></button>
           <button type="button" class="tool-card" data-target="tool-compress" data-keywords="compress pdf reduce size image quality"><span class="icon"><svg><use href="#i-compress"/></svg></span><strong>Compress PDF</strong><span>Re-save a PDF, smaller file.</span></button>
           <button type="button" class="tool-card" data-target="tool-pdftext" data-keywords="pdf to text extract text txt"><span class="icon"><svg><use href="#i-text"/></svg></span><strong>PDF to Text</strong><span>Extract text as a .txt file.</span></button>
           <button type="button" class="tool-card" data-target="tool-pdfimages" data-keywords="pdf to images png render pages zip"><span class="icon"><svg><use href="#i-image"/></svg></span><strong>PDF to Images</strong><span>Render pages as PNG images.</span></button>
@@ -160,6 +171,48 @@
           <button type="button" class="tool-card" data-target="tool-csvxcel" data-keywords="csv to excel xlsx import spreadsheet csv"><span class="icon"><svg><use href="#i-doc"/></svg></span><strong>CSV to Excel</strong><span>CSV text saved as .xlsx.</span></button>
         </div>
       </section>
+
+      <!-- IMAGE TOOLS GRID -->
+      <section id="section-image" class="tool-section" aria-label="Image Tools">
+        <h2>Image Tools</h2>
+        <div class="tool-grid">
+          <button type="button" class="tool-card" data-target="tool-imgcompress" data-keywords="image compressor compress jpg png webp smaller"><span class="icon"><svg><use href="#i-compress"/></svg></span><strong>Image Compressor</strong><span>Smaller JPEGs, same images.</span></button>
+          <button type="button" class="tool-card" data-target="tool-imgresize" data-keywords="image resizer resize width height pixels"><span class="icon"><svg><use href="#i-resize"/></svg></span><strong>Image Resizer</strong><span>Resize by width and height.</span></button>
+          <button type="button" class="tool-card" data-target="tool-imgconvert" data-keywords="image converter jpg png webp format convert"><span class="icon"><svg><use href="#i-image"/></svg></span><strong>Image Converter</strong><span>Change JPG, PNG, WebP format.</span></button>
+          <button type="button" class="tool-card" data-target="tool-ocr" data-keywords="image to text ocr read text image"><span class="icon"><svg><use href="#i-scan"/></svg></span><strong>Image to Text</strong><span>Read text from an image.</span></button>
+        </div>
+      </section>
+
+      <!-- EVERYDAY TOOLS GRID -->
+      <section id="section-everyday" class="tool-section" aria-label="Everyday Tools">
+        <h2>Everyday Tools</h2>
+        <div class="tool-grid">
+          <button type="button" class="tool-card" data-target="tool-qr" data-keywords="qr code generator url text qr"><span class="icon"><svg><use href="#i-qr"/></svg></span><strong>QR Code Generator</strong><span>Text or URL as QR code.</span></button>
+          <button type="button" class="tool-card" data-target="tool-password" data-keywords="password generator strong random secure"><span class="icon"><svg><use href="#i-key"/></svg></span><strong>Password Generator</strong><span>Strong random passwords, instantly.</span></button>
+          <button type="button" class="tool-card" data-target="tool-wordcount" data-keywords="word counter words characters reading time"><span class="icon"><svg><use href="#i-text"/></svg></span><strong>Word Counter</strong><span>Words, characters, reading time.</span></button>
+        </div>
+      </section>
+
+      <!-- DEVELOPER TOOLS GRID -->
+      <section id="section-developer" class="tool-section" aria-label="Developer Tools">
+        <h2>Developer Tools</h2>
+        <div class="tool-grid">
+          <button type="button" class="tool-card" data-target="tool-json" data-keywords="json formatter minify validate json"><span class="icon"><svg><use href="#i-code"/></svg></span><strong>JSON Formatter</strong><span>Format, minify, validate JSON.</span></button>
+          <button type="button" class="tool-card" data-target="tool-base64" data-keywords="base64 encode decode text"><span class="icon"><svg><use href="#i-code"/></svg></span><strong>Base64</strong><span>Encode or decode Base64 text.</span></button>
+        </div>
+      </section>
+
+      <!-- CALCULATORS GRID -->
+      <section id="section-calculators" class="tool-section" aria-label="Calculators">
+        <h2>Calculators</h2>
+        <div class="tool-grid">
+          <button type="button" class="tool-card" data-target="tool-age" data-keywords="age calculator date birth years months days"><span class="icon"><svg><use href="#i-calc"/></svg></span><strong>Age Calculator</strong><span>Exact age in years, months, days.</span></button>
+          <button type="button" class="tool-card" data-target="tool-percent" data-keywords="percentage calculator percent increase decrease"><span class="icon"><svg><use href="#i-calc"/></svg></span><strong>Percentage Calculator</strong><span>Percent, share, and change.</span></button>
+          <button type="button" class="tool-card" data-target="tool-bmi" data-keywords="bmi calculator height weight body mass"><span class="icon"><svg><use href="#i-calc"/></svg></span><strong>BMI Calculator</strong><span>BMI and category from height, weight.</span></button>
+        </div>
+      </section>
+
+      <!-- WORKSPACE PANEL
 
       <!-- WORKSPACE PANEL: one tool at a time, below the grid -->
       <section id="workspace" class="workspace" aria-label="Tool workspace">
@@ -358,10 +411,169 @@
             <div class="excel-right">
               <h4>Output</h4>
               <pre id="excelOutput" class="terminal" aria-live="polite">Your generated formula, VBA, regex or DAX will appear here.</pre>
-              <!-- Ad space: inline. Paste AdSense code inside this div later. -->
+
+
+        <!-- Ad space: inline. Paste AdSense code inside this div later. -->
               <div class="ad-inline" role="complementary" aria-label="Advertisement">Ad space</div>
             </div>
           </div>
+        </div>
+
+        <div class="workspace-tool" id="tool-organize">
+          <h3>Organize PDF</h3>
+          <input id="organizeInput" type="file" accept="application/pdf">
+          <label>New page order <input id="organizeOrder" type="text" placeholder="Example: 3,1,2"></label>
+          <button id="organizeBtn" type="button" class="btn-primary">Reorder PDF</button>
+          <p class="status" id="organizeStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-editpdf">
+          <h3>Edit PDF</h3>
+          <input id="editPdfInput" type="file" accept="application/pdf">
+          <label>Text to add <input id="editPdfText" type="text" placeholder="Type text to add" maxlength="200"></label>
+          <div class="field-row">
+            <label>Page <input id="editPdfPage" type="number" min="1" value="1"></label>
+            <label>Position
+              <select id="editPdfPosition"><option value="top-left">Top left</option><option value="top-centre">Top centre</option><option value="bottom-centre" selected>Bottom centre</option><option value="centre">Centre</option></select>
+            </label>
+            <label>Font size
+              <select id="editPdfSize"><option value="12">12</option><option value="18" selected>18</option><option value="24">24</option><option value="36">36</option></select>
+            </label>
+          </div>
+          <button id="editPdfBtn" type="button" class="btn-primary">Add Text to PDF</button>
+          <p class="status" id="editPdfStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-imgcompress">
+          <h3>Image Compressor</h3>
+          <input id="imgCompressInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+          <label>Quality <input id="imgCompressQuality" type="range" min="10" max="100" value="80"> <span id="imgCompressQualityLabel">80%</span></label>
+          <button id="imgCompressBtn" type="button" class="btn-primary">Compress Images</button>
+          <div id="imgCompressOutput" class="image-output"></div>
+          <p class="status" id="imgCompressStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-imgresize">
+          <h3>Image Resizer</h3>
+          <input id="imgResizeInput" type="file" accept="image/jpeg,image/png,image/webp">
+          <div class="field-row">
+            <label>Width (px) <input id="imgResizeWidth" type="number" min="1" max="8000" placeholder="Width"></label>
+            <label>Height (px) <input id="imgResizeHeight" type="number" min="1" max="8000" placeholder="Height"></label>
+          </div>
+          <label><input id="imgResizeKeep" type="checkbox" checked> Keep aspect ratio</label>
+          <label>Output format
+            <select id="imgResizeFormat"><option value="png">PNG</option><option value="jpeg">JPEG</option></select>
+          </label>
+          <button id="imgResizeBtn" type="button" class="btn-primary">Resize Image</button>
+          <p class="status" id="imgResizeStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-imgconvert">
+          <h3>Image Converter</h3>
+          <input id="imgConvertInput" type="file" accept="image/jpeg,image/png,image/webp">
+          <label>Output format
+            <select id="imgConvertFormat"><option value="jpg">JPG</option><option value="png">PNG</option><option value="webp">WebP</option></select>
+          </label>
+          <button id="imgConvertBtn" type="button" class="btn-primary">Convert Image</button>
+          <p class="status" id="imgConvertStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-ocr">
+          <h3>Image to Text</h3>
+          <input id="ocrInput" type="file" accept="image/jpeg,image/png,image/webp">
+          <button id="ocrBtn" type="button" class="btn-primary">Read Text from Image</button>
+          <pre id="ocrOutput" class="terminal">Recognized text will appear here.</pre>
+          <button id="ocrCopyBtn" type="button" class="btn-secondary">Copy Text</button>
+          <p class="status" id="ocrStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-qr">
+          <h3>QR Code Generator</h3>
+          <label>Text or URL <input id="qrText" type="text" placeholder="https://example.com"></label>
+          <button id="qrBtn" type="button" class="btn-primary">Generate QR Code</button>
+          <div><canvas id="qrCanvas" width="220" height="220" aria-label="Generated QR code"></canvas></div>
+          <button id="qrDownloadBtn" type="button" class="btn-secondary">Download QR PNG</button>
+          <p class="status" id="qrStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-password">
+          <h3>Password Generator</h3>
+          <label>Length <input id="pwdLength" type="range" min="8" max="64" value="16"> <span id="pwdLengthLabel">16</span></label>
+          <div class="field-row">
+            <label><input id="pwdUpper" type="checkbox" checked> Uppercase</label>
+            <label><input id="pwdLower" type="checkbox" checked> Lowercase</label>
+            <label><input id="pwdNumbers" type="checkbox" checked> Numbers</label>
+            <label><input id="pwdSymbols" type="checkbox" checked> Symbols</label>
+          </div>
+          <button id="pwdBtn" type="button" class="btn-primary">Generate Password</button>
+          <pre id="pwdOutput" class="terminal">Your password will appear here.</pre>
+          <button id="pwdCopyBtn" type="button" class="btn-secondary">Copy Password</button>
+          <p class="status" id="pwdStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-wordcount">
+          <h3>Word Counter</h3>
+          <textarea id="wordCountInput" rows="6" placeholder="Type or paste text here…"></textarea>
+          <pre id="wordCountOutput" class="terminal">Words: 0 | Characters: 0 | Characters (no spaces): 0 | Sentences: 0 | Paragraphs: 0 | Reading time: 0 min</pre>
+          <p class="status" id="wordCountStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-json">
+          <h3>JSON Formatter</h3>
+          <textarea id="jsonInput" rows="6" placeholder='Paste JSON here, for example: {"name": "AK Premium"}'></textarea>
+          <div class="field-row">
+            <button id="jsonFormatBtn" type="button" class="btn-primary">Format</button>
+            <button id="jsonMinifyBtn" type="button" class="btn-secondary">Minify</button>
+            <button id="jsonValidateBtn" type="button" class="btn-secondary">Validate</button>
+          </div>
+          <pre id="jsonOutput" class="terminal">Formatted JSON will appear here.</pre>
+          <button id="jsonCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <p class="status" id="jsonStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-base64">
+          <h3>Base64</h3>
+          <textarea id="base64Input" rows="5" placeholder="Type text to encode, or Base64 to decode…"></textarea>
+          <div class="field-row">
+            <button id="base64EncodeBtn" type="button" class="btn-primary">Encode</button>
+            <button id="base64DecodeBtn" type="button" class="btn-secondary">Decode</button>
+          </div>
+          <pre id="base64Output" class="terminal">Result will appear here.</pre>
+          <button id="base64CopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <p class="status" id="base64Status"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-age">
+          <h3>Age Calculator</h3>
+          <label>Date of birth <input id="ageDob" type="date"></label>
+          <button id="ageBtn" type="button" class="btn-primary">Calculate Age</button>
+          <pre id="ageOutput" class="terminal">Your exact age will appear here.</pre>
+          <p class="status" id="ageStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-percent">
+          <h3>Percentage Calculator</h3>
+          <label>Calculation
+            <select id="percentMode"><option value="of">X% of Y</option><option value="share">X is what % of Y</option><option value="change">Percentage change from X to Y</option></select>
+          </label>
+          <div class="field-row">
+            <label>X <input id="percentX" type="number" placeholder="X"></label>
+            <label>Y <input id="percentY" type="number" placeholder="Y"></label>
+          </div>
+          <button id="percentBtn" type="button" class="btn-primary">Calculate</button>
+          <pre id="percentOutput" class="terminal">Result will appear here.</pre>
+          <p class="status" id="percentStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-bmi">
+          <h3>BMI Calculator</h3>
+          <div class="field-row">
+            <label>Height (cm) <input id="bmiHeight" type="number" min="1" placeholder="Height in cm"></label>
+            <label>Weight (kg) <input id="bmiWeight" type="number" min="1" placeholder="Weight in kg"></label>
+          </div>
+          <button id="bmiBtn" type="button" class="btn-primary">Calculate BMI</button>
+          <pre id="bmiOutput" class="terminal">Your BMI and category will appear here.</pre>
+          <p class="status" id="bmiStatus"></p>
         </div>
 
         <!-- Ad space: inline. Paste AdSense code inside this div later. -->
@@ -377,6 +589,9 @@
         <details><summary>How do I merge PDFs?</summary><p>Select Merge PDF, choose two or more PDF files in the order you want, and download the combined PDF. All merging happens in your browser.</p></details>
         <details><summary>How do I remove pages or add a watermark?</summary><p>For Remove Pages, select a PDF and enter the pages to delete, for example 2, 4-5. The tool checks them against the real page count and downloads a copy with those pages removed. For Add Watermark, enter text and choose opacity and size; it is stamped diagonally on every page. A watermark is a visible mark, not document security.</p></details>
         <details><summary>How do I convert between Excel and CSV?</summary><p>Excel to CSV exports the first sheet of an .xlsx file as a .csv download. CSV to Excel accepts an uploaded .csv file or pasted CSV text and downloads it as an .xlsx file. Both run in your browser with SheetJS.</p></details>
+        <details><summary>What image tools are available?</summary><p>Image Compressor re-encodes images as JPEG at your chosen quality, Image Resizer changes width and height, Image Converter changes JPG, PNG or WebP format, and Image to Text reads printed text from an image with OCR.</p></details>
+        <details><summary>What everyday, developer and calculator tools are available?</summary><p>QR Code Generator makes a downloadable QR PNG, Password Generator makes a random password with crypto.getRandomValues, and Word Counter counts words, characters, sentences, paragraphs and reading time. JSON Formatter formats, minifies and validates JSON, and Base64 encodes or decodes text. Calculators compute exact age, percentages and BMI.</p></details>
+        <details><summary>What are the limits of OCR, image compression and PDF editing?</summary><p>OCR downloads language data on its first run and may take time; it works best on clear printed text and is not reliable for handwriting or low-quality photos. Image Compressor output is JPEG, so transparency is flattened. Edit PDF adds new text only; it does not edit or delete existing text in a PDF.</p></details>
         <details><summary>How do I generate an Excel formula?</summary><p>Open Formula Generator, describe what you want in plain words — for example sum with a condition — and AK Premium returns a template formula you can adapt with your own cell ranges.</p></details>
         <details><summary>How does each tool work?</summary><p>Select a tool card to open its workspace. PDF tools use pdf-lib, pdf.js and jsPDF in your browser: Create PDF writes text with jsPDF, Images to PDF places each image on its own page, Merge combines pages in your selected order, Split extracts a page range, Remove Pages deletes the pages you list after checking them against the real page count, Rotate rotates every page, Add Page Numbers stamps a number at the bottom of each page, Add Watermark stamps your text diagonally on every page, and Compress re-saves the PDF. Converters extract text where a text layer exists and rebuild a simple file in the target format; Excel to CSV exports the first sheet as CSV and CSV to Excel rebuilds an .xlsx from CSV text. The Excel engine is rule-based: it matches keywords in your description and returns a formula, VBA, regex or DAX template — it does not call a paid API and does not run against your workbook.</p></details>
         <details><summary>What are the limits?</summary><p>Compressing a PDF in the browser does not fully recompress embedded images, so image-heavy PDFs may shrink only a little. Protect PDF and Unlock PDF are not offered, because full password encryption and removal cannot be done safely with the free client-side libraries used here — use a trusted desktop PDF app for encrypted files. The e-Sign canvas produces a visual signature PNG only; it is not a legal digital signature or certificate-based signing. PDF to Word, PDF to PPT and PPT to PDF are text-based, so original layout, fonts, tables, images, charts and animations are not preserved. Scanned-image PDFs without a text layer cannot be read by text extraction. Generated formulas, VBA, regex and DAX are templates that have not been run against your workbook or model; replace placeholders with your own ranges, sheet names and columns, and test on a copy of your data first. The placeholder password in the advanced VBA template must be changed before real use.</p></details>
@@ -392,7 +607,7 @@
 </main>
 
 <footer class="site-footer">
-  <p>AK Premium is a free, browser-based PDF and Excel toolkit.</p>
+  <p>AK Premium is a free, browser-based PDF, image, Excel and everyday toolkit.</p>
   <p><a href="#section-faq">FAQ</a> &middot; <a href="#faq-privacy">Privacy</a> &middot; <a href="#faq-terms">Terms</a> &middot; <a href="mailto:nomanalicgr@gmail.com">Contact: nomanalicgr@gmail.com</a> &middot; &copy; 2026 AK Premium</p>
 </footer>
 <script src="app.js"></script>

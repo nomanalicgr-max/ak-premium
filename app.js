@@ -99,14 +99,14 @@ function filterCards() {
     if (show) { visible++; const sec = card.closest(".tool-section"); if (sec) sectionsWithVisible.add(sec.id); }
   });
   if (searchStatus) { searchStatus.textContent = query ? "Found " + visible + " tool(s) matching \"" + heroSearch.value.trim() + "\"." : "Showing all tools."; }
-  const sectionIds = ["section-pdf", "section-convert", "section-excel"];
+  const sectionIds = ["section-pdf", "section-convert", "section-excel", "section-image", "section-everyday", "section-developer", "section-calculators"];
   if (query) {
     sectionIds.forEach((id) => { const sec = $(id); if (sec) sec.style.display = sectionsWithVisible.has(id) ? "" : "none"; });
   } else {
     const activeNav = document.querySelector(".nav-btn.active");
     const cat = activeNav ? activeNav.dataset.category : "all";
     if (cat !== "faq") {
-      sectionIds.forEach((id) => { const sec = $(id); if (!sec) return; sec.style.display = (cat === "all" || (id === "section-excel" ? cat === "excel" : cat === "pdf")) ? "" : "none"; });
+      sectionIds.forEach((id) => { const sec = $(id); if (!sec) return; const show = cat === "all" || (cat === "pdf" && (id === "section-pdf" || id === "section-convert")) || (cat === "excel" && id === "section-excel"); sec.style.display = show ? "" : "none"; });
     }
   }
   return visible;
@@ -886,3 +886,416 @@ if (excelCopyBtn) excelCopyBtn.addEventListener("click", async () => {
 
 /* Initial state */
 filterCards();
+
+/* ---------- Phase 1 tools: pure logic (testable) ---------- */
+function parseOrganizeOrder(input, count) {
+  const tokens = String(input || "").split(",").map((s) => s.trim()).filter(Boolean);
+  if (!tokens.length) return { error: "Please enter a page order, for example 3,1,2." };
+  const order = [];
+  for (const token of tokens) {
+    const n = parseInt(token, 10);
+    if (!n || String(n) !== token || n < 1 || n > count) return { error: "Page " + token + " is outside 1 to " + count + "." };
+    order.push(n);
+  }
+  if (order.length !== count) return { error: "The order must list every page from 1 to " + count + " exactly once." };
+  if (new Set(order).size !== count) return { error: "Duplicate page in the order. List every page from 1 to " + count + " exactly once." };
+  return { order };
+}
+function countWords(text) {
+  const s = String(text || "");
+  const trimmed = s.trim();
+  const words = trimmed ? trimmed.split(/\s+/).length : 0;
+  const chars = s.length;
+  const charsNoSpaces = s.replace(/\s/g, "").length;
+  const sentences = trimmed ? (trimmed.match(/[^.!?]+[.!?]+/g) || (trimmed ? [trimmed] : [])).length : 0;
+  const paragraphs = trimmed ? trimmed.split(/\n\s*\n/).filter((x) => x.trim()).length : 0;
+  const readingMinutes = Math.ceil(words / 200);
+  return { words, chars, charsNoSpaces, sentences, paragraphs, readingMinutes };
+}
+function prettyJson(text) { return JSON.stringify(JSON.parse(text), null, 2); }
+function minifyJson(text) { return JSON.stringify(JSON.parse(text)); }
+function base64EncodeText(text) {
+  const bytes = new TextEncoder().encode(String(text));
+  let binary = "";
+  bytes.forEach((b) => { binary += String.fromCharCode(b); });
+  return btoa(binary);
+}
+function base64DecodeText(text) {
+  const clean = String(text || "").replace(/\s/g, "");
+  if (!clean || clean.length % 4 === 1 || !/^[A-Za-z0-9+/]*={0,2}$/.test(clean)) throw new Error("Invalid Base64 text.");
+  const binary = atob(clean);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+function calculateAge(dobStr, todayStr) {
+  const dob = new Date(dobStr + "T00:00:00");
+  if (isNaN(dob.getTime())) return { error: "Please choose a valid date of birth." };
+  const today = todayStr ? new Date(todayStr + "T00:00:00") : new Date();
+  today.setHours(0, 0, 0, 0);
+  if (dob > today) return { error: "Date of birth cannot be in the future." };
+  let years = today.getFullYear() - dob.getFullYear();
+  let months = today.getMonth() - dob.getMonth();
+  let days = today.getDate() - dob.getDate();
+  if (days < 0) {
+    months -= 1;
+    const prevMonthLast = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+    days += prevMonthLast;
+  }
+  if (months < 0) { years -= 1; months += 12; }
+  return { years, months, days };
+}
+function percentageCalc(mode, x, y) {
+  if (isNaN(x) || isNaN(y)) return { error: "Please enter numbers for both X and Y." };
+  if (mode === "of") return { value: (x / 100) * y, text: x + "% of " + y + " = " + ((x / 100) * y) };
+  if (mode === "share") {
+    if (y === 0) return { error: "Y cannot be zero for this calculation." };
+    return { value: (x / y) * 100, text: x + " is " + ((x / y) * 100) + "% of " + y };
+  }
+  if (mode === "change") {
+    if (x === 0) return { error: "X cannot be zero for a percentage change." };
+    const v = ((y - x) / Math.abs(x)) * 100;
+    return { value: v, text: "Percentage change from " + x + " to " + y + " = " + v + "%" };
+  }
+  return { error: "Please choose a calculation type." };
+}
+function bmiCalc(heightCm, weightKg) {
+  if (!heightCm || heightCm <= 0 || !weightKg || weightKg <= 0) return { error: "Please enter a positive height and weight." };
+  const m = heightCm / 100;
+  const bmi = weightKg / (m * m);
+  const rounded = Math.round(bmi * 10) / 10;
+  let category = "Obese";
+  if (rounded < 18.5) category = "Underweight";
+  else if (rounded < 25) category = "Normal";
+  else if (rounded < 30) category = "Overweight";
+  return { bmi: rounded, category };
+}
+function defaultRandInt(n) {
+  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+    const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n;
+  }
+  throw new Error("Secure random numbers are not available in this browser.");
+}
+function generatePassword(length, opts, randInt) {
+  const rand = randInt || defaultRandInt;
+  const sets = [];
+  if (opts.upper) sets.push("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+  if (opts.lower) sets.push("abcdefghijklmnopqrstuvwxyz");
+  if (opts.numbers) sets.push("0123456789");
+  if (opts.symbols) sets.push("!@#$%^&*()-_=+[]{};:,.<>?");
+  if (!sets.length) return { error: "Please select at least one character set." };
+  if (length < sets.length) return { error: "Length must be at least the number of selected character sets." };
+  const all = sets.join("");
+  const chars = sets.map((s) => s[rand(s.length)]);
+  while (chars.length < length) chars.push(all[rand(all.length)]);
+  for (let i = chars.length - 1; i > 0; i--) { const j = rand(i + 1); const tmp = chars[i]; chars[i] = chars[j]; chars[j] = tmp; }
+  return { password: chars.join("") };
+}
+function passwordStrengthNote(length, setCount) {
+  if (length >= 16 && setCount >= 4) return "Strong: long, with all character types.";
+  if (length >= 12 && setCount >= 3) return "Good: use 16+ characters with all types for best strength.";
+  return "Weak: use a longer password with more character types.";
+}
+function copyTextToClipboard(text, statusId, doneMessage) {
+  const done = doneMessage || "Copied to clipboard.";
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text).then(() => setStatus(statusId, done)).catch(() => {
+      const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); setStatus(statusId, done);
+    });
+  }
+  const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); setStatus(statusId, done);
+  return Promise.resolve();
+}
+function loadImageFromFile(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("image load failed")); };
+    img.src = url;
+  });
+}
+function canvasToBlob(canvas, type, quality) {
+  return new Promise((resolve) => canvas.toBlob(resolve, type, quality));
+}
+
+/* ---------- Phase 1 handlers: PDF ---------- */
+const organizeBtn = $("organizeBtn");
+if (organizeBtn) organizeBtn.addEventListener("click", async () => {
+  const file = ($("organizeInput").files || [])[0];
+  if (!file) { setStatus("organizeStatus", "Please select a PDF file first."); return; }
+  try {
+    const src = await loadPdfLibDoc(file, "organizeStatus");
+    if (!src) return;
+    const count = src.getPageCount();
+    const parsed = parseOrganizeOrder($("organizeOrder").value, count);
+    if (parsed.error) { setStatus("organizeStatus", parsed.error); return; }
+    const out = await window.PDFLib.PDFDocument.create();
+    const pages = await out.copyPages(src, parsed.order.map((n) => n - 1));
+    pages.forEach((p) => out.addPage(p));
+    const bytes = await out.save();
+    downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-organized.pdf");
+    setStatus("organizeStatus", "Done. Reordered PDF downloaded.");
+  } catch (e) { setStatus("organizeStatus", "Could not reorder this PDF. Please check the file and order."); }
+});
+
+const editPdfBtn = $("editPdfBtn");
+if (editPdfBtn) editPdfBtn.addEventListener("click", async () => {
+  const file = ($("editPdfInput").files || [])[0];
+  if (!file) { setStatus("editPdfStatus", "Please select a PDF file first."); return; }
+  const text = ($("editPdfText").value || "").trim();
+  if (!text) { setStatus("editPdfStatus", "Please enter text to add first."); return; }
+  const pageNum = parseInt($("editPdfPage").value, 10);
+  const size = parseInt($("editPdfSize").value, 10) || 18;
+  const position = $("editPdfPosition").value;
+  try {
+    const doc = await loadPdfLibDoc(file, "editPdfStatus");
+    if (!doc) return;
+    const count = doc.getPageCount();
+    if (!pageNum || pageNum < 1 || pageNum > count) { setStatus("editPdfStatus", "This PDF has " + count + " page(s). Please choose a page inside 1 to " + count + "."); return; }
+    const font = await doc.embedFont(window.PDFLib.StandardFonts.Helvetica);
+    const page = doc.getPage(pageNum - 1);
+    const { width, height } = page.getSize();
+    const textWidth = font.widthOfTextAtSize(text, size);
+    let x = 40, y = height - 40;
+    if (position === "top-centre") { x = Math.max(20, (width - textWidth) / 2); y = height - 40; }
+    else if (position === "bottom-centre") { x = Math.max(20, (width - textWidth) / 2); y = 40; }
+    else if (position === "centre") { x = Math.max(20, (width - textWidth) / 2); y = height / 2; }
+    page.drawText(text, { x, y, size, font, color: window.PDFLib.rgb(0.11, 0.11, 0.11) });
+    const bytes = await doc.save();
+    downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-edited.pdf");
+    setStatus("editPdfStatus", "Done. Edited PDF downloaded.");
+  } catch (e) { setStatus("editPdfStatus", "Could not edit this PDF. Please check the file."); }
+});
+
+/* ---------- Phase 1 handlers: Image ---------- */
+const imgCompressQuality = $("imgCompressQuality");
+if (imgCompressQuality) imgCompressQuality.addEventListener("input", () => {
+  const label = $("imgCompressQualityLabel"); if (label) label.textContent = imgCompressQuality.value + "%";
+});
+const imgCompressBtn = $("imgCompressBtn");
+if (imgCompressBtn) imgCompressBtn.addEventListener("click", async () => {
+  const files = Array.from($("imgCompressInput").files || []);
+  if (!files.length) { setStatus("imgCompressStatus", "Please select at least one image first."); return; }
+  const quality = (parseInt($("imgCompressQuality").value, 10) || 80) / 100;
+  const out = $("imgCompressOutput"); if (out) out.innerHTML = "";
+  setStatus("imgCompressStatus", "Compressing " + files.length + " image(s)…");
+  try {
+    const blobs = [];
+    for (let i = 0; i < files.length; i++) {
+      const img = await loadImageFromFile(files[i]);
+      const canvas = document.createElement("canvas"); canvas.width = img.naturalWidth || img.width; canvas.height = img.naturalHeight || img.height;
+      const ctx = canvas.getContext("2d"); ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.drawImage(img, 0, 0);
+      const blob = await canvasToBlob(canvas, "image/jpeg", quality);
+      if (!blob) { setStatus("imgCompressStatus", "This browser could not encode a JPEG. Please try again."); return; }
+      const name = "ak-premium-compressed-" + (i + 1) + ".jpg"; blobs.push({ name, blob });
+      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name;
+      a.textContent = "Download " + name + " (" + files[i].size + " bytes -> " + blob.size + " bytes)";
+      if (out) { out.appendChild(a); out.appendChild(document.createElement("br")); }
+    }
+    if (window.JSZip && blobs.length > 1) {
+      const zip = new window.JSZip(); blobs.forEach((b) => zip.file(b.name, b.blob));
+      downloadBlob(await zip.generateAsync({ type: "blob" }), "ak-premium-compressed.zip");
+    }
+    setStatus("imgCompressStatus", "Done. JPEG output flattens transparency.");
+  } catch (e) { setStatus("imgCompressStatus", "Could not compress these images. Please try JPG or PNG files."); }
+});
+
+let resizeOriginal = null;
+const imgResizeInput = $("imgResizeInput");
+if (imgResizeInput) imgResizeInput.addEventListener("change", async () => {
+  const file = (imgResizeInput.files || [])[0]; if (!file) return;
+  try {
+    const img = await loadImageFromFile(file);
+    resizeOriginal = { w: img.naturalWidth || img.width, h: img.naturalHeight || img.height };
+    if ($("imgResizeWidth")) $("imgResizeWidth").value = resizeOriginal.w;
+    if ($("imgResizeHeight")) $("imgResizeHeight").value = resizeOriginal.h;
+    setStatus("imgResizeStatus", "Original size: " + resizeOriginal.w + " x " + resizeOriginal.h + " px.");
+  } catch (e) { setStatus("imgResizeStatus", "Could not read this image."); }
+});
+const imgResizeWidth = $("imgResizeWidth");
+if (imgResizeWidth) imgResizeWidth.addEventListener("input", () => {
+  if ($("imgResizeKeep") && $("imgResizeKeep").checked && resizeOriginal) {
+    const w = parseInt(imgResizeWidth.value, 10);
+    if (w > 0 && $("imgResizeHeight")) $("imgResizeHeight").value = Math.round((w * resizeOriginal.h) / resizeOriginal.w);
+  }
+});
+const imgResizeHeight = $("imgResizeHeight");
+if (imgResizeHeight) imgResizeHeight.addEventListener("input", () => {
+  if ($("imgResizeKeep") && $("imgResizeKeep").checked && resizeOriginal) {
+    const h = parseInt(imgResizeHeight.value, 10);
+    if (h > 0 && $("imgResizeWidth")) $("imgResizeWidth").value = Math.round((h * resizeOriginal.w) / resizeOriginal.h);
+  }
+});
+const imgResizeBtn = $("imgResizeBtn");
+if (imgResizeBtn) imgResizeBtn.addEventListener("click", async () => {
+  const file = ($("imgResizeInput").files || [])[0];
+  if (!file) { setStatus("imgResizeStatus", "Please select an image first."); return; }
+  const w = parseInt($("imgResizeWidth").value, 10), h = parseInt($("imgResizeHeight").value, 10);
+  if (!w || !h || w < 1 || h < 1 || w > 8000 || h > 8000) { setStatus("imgResizeStatus", "Please enter a width and height between 1 and 8000 px."); return; }
+  const format = $("imgResizeFormat").value;
+  try {
+    const img = await loadImageFromFile(file);
+    const canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (format === "jpeg") { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, w, h); }
+    ctx.drawImage(img, 0, 0, w, h);
+    const blob = await canvasToBlob(canvas, format === "jpeg" ? "image/jpeg" : "image/png", 0.92);
+    if (!blob) { setStatus("imgResizeStatus", "This browser could not encode this format."); return; }
+    downloadBlob(blob, "ak-premium-resized." + format);
+    setStatus("imgResizeStatus", "Done. Resized image downloaded (" + w + " x " + h + " px).");
+  } catch (e) { setStatus("imgResizeStatus", "Could not resize this image."); }
+});
+
+const imgConvertBtn = $("imgConvertBtn");
+if (imgConvertBtn) imgConvertBtn.addEventListener("click", async () => {
+  const file = ($("imgConvertInput").files || [])[0];
+  if (!file) { setStatus("imgConvertStatus", "Please select an image first."); return; }
+  const format = $("imgConvertFormat").value;
+  const mime = format === "jpg" ? "image/jpeg" : (format === "png" ? "image/png" : "image/webp");
+  try {
+    const img = await loadImageFromFile(file);
+    const canvas = document.createElement("canvas"); canvas.width = img.naturalWidth || img.width; canvas.height = img.naturalHeight || img.height;
+    const ctx = canvas.getContext("2d");
+    if (mime === "image/jpeg") { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+    ctx.drawImage(img, 0, 0);
+    const blob = await canvasToBlob(canvas, mime, 0.92);
+    if (!blob) { setStatus("imgConvertStatus", "This browser cannot encode " + format.toUpperCase() + ". Please choose PNG or JPG."); return; }
+    downloadBlob(blob, "ak-premium-converted." + format);
+    setStatus("imgConvertStatus", "Done. Converted image downloaded.");
+  } catch (e) { setStatus("imgConvertStatus", "Could not convert this image."); }
+});
+
+const ocrBtn = $("ocrBtn");
+if (ocrBtn) ocrBtn.addEventListener("click", async () => {
+  const file = ($("ocrInput").files || [])[0];
+  if (!file) { setStatus("ocrStatus", "Please select an image first."); return; }
+  if (!window.Tesseract) { setStatus("ocrStatus", "OCR library (Tesseract.js) did not load. Check your connection and try again."); return; }
+  setStatus("ocrStatus", "Working… first run downloads language data and may take time.");
+  try {
+    const result = await window.Tesseract.recognize(file, "eng", {
+      logger: (m) => { if (m && m.status === "recognizing text" && typeof m.progress === "number") setStatus("ocrStatus", "Working… " + Math.round(m.progress * 100) + "%."); }
+    });
+    const text = (result && result.data && result.data.text ? result.data.text : "").trim();
+    if ($("ocrOutput")) $("ocrOutput").textContent = text || "(No text recognized in this image.)";
+    setStatus("ocrStatus", text ? "Done. Text recognized." : "Done. No text recognized in this image.");
+  } catch (e) { setStatus("ocrStatus", "OCR failed. Please try a clear image with printed text."); }
+});
+const ocrCopyBtn = $("ocrCopyBtn");
+if (ocrCopyBtn) ocrCopyBtn.addEventListener("click", () => {
+  const text = $("ocrOutput") ? $("ocrOutput").textContent : "";
+  if (!text || text.startsWith("Recognized text")) { setStatus("ocrStatus", "Read text from an image first, then use Copy."); return; }
+  copyTextToClipboard(text, "ocrStatus");
+});
+
+/* ---------- Phase 1 handlers: Everyday ---------- */
+let qrGenerated = false;
+const qrBtn = $("qrBtn");
+if (qrBtn) qrBtn.addEventListener("click", () => {
+  const text = ($("qrText").value || "").trim();
+  if (!text) { setStatus("qrStatus", "Please enter text or a URL first."); return; }
+  if (!window.QRCode || !window.QRCode.toCanvas) { setStatus("qrStatus", "QR library did not load. Check your connection and try again."); return; }
+  const canvas = $("qrCanvas");
+  window.QRCode.toCanvas(canvas, text, { width: 220, margin: 1 }, (err) => {
+    if (err) { setStatus("qrStatus", "Could not generate this QR code. Please try shorter text."); return; }
+    qrGenerated = true; setStatus("qrStatus", "Done. QR code generated.");
+  });
+});
+const qrDownloadBtn = $("qrDownloadBtn");
+if (qrDownloadBtn) qrDownloadBtn.addEventListener("click", () => {
+  if (!qrGenerated) { setStatus("qrStatus", "Generate a QR code first, then download it."); return; }
+  $("qrCanvas").toBlob((blob) => {
+    if (!blob) { setStatus("qrStatus", "Could not download this QR code."); return; }
+    downloadBlob(blob, "ak-premium-qr.png"); setStatus("qrStatus", "Done. QR PNG downloaded.");
+  }, "image/png");
+});
+
+const pwdLength = $("pwdLength");
+if (pwdLength) pwdLength.addEventListener("input", () => { const l = $("pwdLengthLabel"); if (l) l.textContent = pwdLength.value; });
+const pwdBtn = $("pwdBtn");
+if (pwdBtn) pwdBtn.addEventListener("click", () => {
+  const length = parseInt($("pwdLength").value, 10) || 16;
+  const opts = { upper: !!$("pwdUpper").checked, lower: !!$("pwdLower").checked, numbers: !!$("pwdNumbers").checked, symbols: !!$("pwdSymbols").checked };
+  const setCount = Object.values(opts).filter(Boolean).length;
+  const result = generatePassword(length, opts);
+  if (result.error) { setStatus("pwdStatus", result.error); return; }
+  if ($("pwdOutput")) $("pwdOutput").textContent = result.password;
+  setStatus("pwdStatus", "Done. " + passwordStrengthNote(length, setCount));
+});
+const pwdCopyBtn = $("pwdCopyBtn");
+if (pwdCopyBtn) pwdCopyBtn.addEventListener("click", () => {
+  const text = $("pwdOutput") ? $("pwdOutput").textContent : "";
+  if (!text || text.startsWith("Your password")) { setStatus("pwdStatus", "Generate a password first, then use Copy."); return; }
+  copyTextToClipboard(text, "pwdStatus");
+});
+
+const wordCountInput = $("wordCountInput");
+if (wordCountInput) wordCountInput.addEventListener("input", () => {
+  const c = countWords(wordCountInput.value);
+  const out = $("wordCountOutput");
+  if (out) out.textContent = "Words: " + c.words + " | Characters: " + c.chars + " | Characters (no spaces): " + c.charsNoSpaces + " | Sentences: " + c.sentences + " | Paragraphs: " + c.paragraphs + " | Reading time: " + c.readingMinutes + " min";
+});
+
+/* ---------- Phase 1 handlers: Developer ---------- */
+const jsonFormatBtn = $("jsonFormatBtn");
+if (jsonFormatBtn) jsonFormatBtn.addEventListener("click", () => {
+  try { $("jsonOutput").textContent = prettyJson($("jsonInput").value); setStatus("jsonStatus", "Done. JSON formatted."); }
+  catch (e) { setStatus("jsonStatus", "Invalid JSON: " + e.message); }
+});
+const jsonMinifyBtn = $("jsonMinifyBtn");
+if (jsonMinifyBtn) jsonMinifyBtn.addEventListener("click", () => {
+  try { $("jsonOutput").textContent = minifyJson($("jsonInput").value); setStatus("jsonStatus", "Done. JSON minified."); }
+  catch (e) { setStatus("jsonStatus", "Invalid JSON: " + e.message); }
+});
+const jsonValidateBtn = $("jsonValidateBtn");
+if (jsonValidateBtn) jsonValidateBtn.addEventListener("click", () => {
+  try { JSON.parse($("jsonInput").value); $("jsonOutput").textContent = "Valid JSON."; setStatus("jsonStatus", "Done. JSON is valid."); }
+  catch (e) { setStatus("jsonStatus", "Invalid JSON: " + e.message); }
+});
+const jsonCopyBtn = $("jsonCopyBtn");
+if (jsonCopyBtn) jsonCopyBtn.addEventListener("click", () => {
+  const text = $("jsonOutput") ? $("jsonOutput").textContent : "";
+  if (!text || text.startsWith("Formatted JSON")) { setStatus("jsonStatus", "Format, minify or validate JSON first, then use Copy."); return; }
+  copyTextToClipboard(text, "jsonStatus");
+});
+
+const base64EncodeBtn = $("base64EncodeBtn");
+if (base64EncodeBtn) base64EncodeBtn.addEventListener("click", () => {
+  try { $("base64Output").textContent = base64EncodeText($("base64Input").value); setStatus("base64Status", "Done. Text encoded."); }
+  catch (e) { setStatus("base64Status", "Could not encode this text."); }
+});
+const base64DecodeBtn = $("base64DecodeBtn");
+if (base64DecodeBtn) base64DecodeBtn.addEventListener("click", () => {
+  try { $("base64Output").textContent = base64DecodeText($("base64Input").value); setStatus("base64Status", "Done. Text decoded."); }
+  catch (e) { setStatus("base64Status", "Invalid Base64: " + e.message); }
+});
+const base64CopyBtn = $("base64CopyBtn");
+if (base64CopyBtn) base64CopyBtn.addEventListener("click", () => {
+  const text = $("base64Output") ? $("base64Output").textContent : "";
+  if (!text || text.startsWith("Result will")) { setStatus("base64Status", "Encode or decode text first, then use Copy."); return; }
+  copyTextToClipboard(text, "base64Status");
+});
+
+/* ---------- Phase 1 handlers: Calculators ---------- */
+const ageBtn = $("ageBtn");
+if (ageBtn) ageBtn.addEventListener("click", () => {
+  const result = calculateAge($("ageDob").value);
+  if (result.error) { setStatus("ageStatus", result.error); return; }
+  if ($("ageOutput")) $("ageOutput").textContent = "Age: " + result.years + " years, " + result.months + " months, " + result.days + " days.";
+  setStatus("ageStatus", "Done.");
+});
+const percentBtn = $("percentBtn");
+if (percentBtn) percentBtn.addEventListener("click", () => {
+  const result = percentageCalc($("percentMode").value, parseFloat($("percentX").value), parseFloat($("percentY").value));
+  if (result.error) { setStatus("percentStatus", result.error); return; }
+  if ($("percentOutput")) $("percentOutput").textContent = result.text;
+  setStatus("percentStatus", "Done.");
+});
+const bmiBtn = $("bmiBtn");
+if (bmiBtn) bmiBtn.addEventListener("click", () => {
+  const result = bmiCalc(parseFloat($("bmiHeight").value), parseFloat($("bmiWeight").value));
+  if (result.error) { setStatus("bmiStatus", result.error); return; }
+  if ($("bmiOutput")) $("bmiOutput").textContent = "BMI: " + result.bmi + " (" + result.category + ")";
+  setStatus("bmiStatus", "Done.");
+});
+
