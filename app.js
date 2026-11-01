@@ -1986,3 +1986,67 @@ if (cgpaBtn) cgpaBtn.addEventListener("click", () => {
   if ($("cgpaOutput")) $("cgpaOutput").textContent = "CGPA: " + result.cgpa.toFixed(2) + "\nTotal credit hours: " + result.credits;
   setStatus("cgpaStatus", "Done.");
 });
+
+/* ---------- File preview: show the chosen file before converting ---------- */
+/* Runs for every file input on the page. For a PDF it renders page 1 with pdf.js,
+   plus name, size and page count, so the user can confirm it is the right document
+   before pressing Convert. For an image it shows a thumbnail. Files stay in the
+   browser; nothing is uploaded. If a PDF cannot be rendered (for example it is
+   password-protected), the name and size are still shown instead of failing. */
+function akFormatBytes(n){ if(!n && n!==0) return ""; if(n<1024) return n+" bytes"; if(n<1048576) return (n/1024).toFixed(1)+" KB"; return (n/1048576).toFixed(2)+" MB"; }
+async function akRenderFilePreview(input, box){
+  box.innerHTML=""; box.classList.remove("visible");
+  const files=input.files||[];
+  if(!files.length) return;
+  const meta=document.createElement("p"); meta.className="preview-meta";
+  const names=Array.from(files).map(f=>f.name).join(", ");
+  meta.innerHTML="<strong>Selected:</strong> "+names+" &middot; "+files.map(f=>akFormatBytes(f.size)).join(", ");
+  box.appendChild(meta); box.classList.add("visible");
+  const first=files[0];
+  const isPdf=(input.accept||"").indexOf("application/pdf")!==-1 || /\.pdf$/i.test(first.name||"");
+  const isImage=(input.accept||"").indexOf("image/")!==-1 || /^image\//.test(first.type||"");
+  if(isImage && typeof URL!=="undefined" && URL.createObjectURL){
+    try{
+      const img=document.createElement("img"); img.alt="Preview of "+first.name;
+      img.src=URL.createObjectURL(first); box.appendChild(img);
+      const note=document.createElement("p"); note.className="preview-note";
+      note.textContent=files.length>1 ? (files.length+" images selected. First image shown as a preview.") : "Check this is the right image before you continue.";
+      box.appendChild(note); return;
+    }catch(e){}
+  }
+  if(!isPdf) return;
+  const note=document.createElement("p"); note.className="preview-note";
+  note.textContent="Rendering page 1 preview…";
+  box.appendChild(note);
+  try{
+    if(!window.pdfjsLib) throw new Error("pdf.js not loaded");
+    const buf=await first.arrayBuffer();
+    const doc=await window.pdfjsLib.getDocument({data:buf}).promise;
+    meta.innerHTML="<strong>Selected:</strong> "+first.name+" &middot; "+akFormatBytes(first.size)+" &middot; "+doc.numPages+" page(s)";
+    if(files.length>1) meta.innerHTML+=" &middot; "+files.length+" files selected, first file previewed";
+    const page=await doc.getPage(1);
+    const viewport=page.getViewport({scale:1.4});
+    const canvas=document.createElement("canvas");
+    canvas.width=viewport.width; canvas.height=viewport.height;
+    await page.render({canvasContext:canvas.getContext("2d"), viewport}).promise;
+    box.insertBefore(canvas, note);
+    note.textContent="Page 1 of "+doc.numPages+". Check this is the right document before you convert it.";
+  }catch(e){
+    note.textContent="Page preview could not be rendered for this file (it may be password-protected or scanned). The file name and size above are still shown so you can confirm you picked the right file.";
+  }
+}
+document.querySelectorAll('input[type="file"]').forEach((input)=>{
+  if(input.dataset.akPreviewAttached) return; input.dataset.akPreviewAttached="1";
+  const box=document.createElement("div"); box.className="file-preview";
+  box.setAttribute("aria-live","polite");
+  input.insertAdjacentElement("afterend", box);
+  input.addEventListener("change", ()=>{ akRenderFilePreview(input, box); });
+  // Unlock tool: re-render the preview once the password is entered, if present.
+  const tool=input.closest ? input.closest(".workspace-tool") : null;
+  if(tool){
+    const pw=tool.querySelector('input[type="password"]');
+    if(pw && !pw.dataset.akPreviewAttached){ pw.dataset.akPreviewAttached="1";
+      pw.addEventListener("change", ()=>{ if(input.files && input.files.length) akRenderFilePreview(input, box); });
+    }
+  }
+});

@@ -48,7 +48,7 @@ a { color: var(--ak-accent); }
 .tool-section { margin-bottom: 36px; }
 .section-sub { color: var(--ak-muted); margin: -8px 0 14px; font-size: .95rem; }
 .tool-section h2, .faq-section h2 { font-size: 1.35rem; letter-spacing: -0.3px; color: var(--ak-heading); margin: 0 0 14px; }
-.tool-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
 .tool-card { background: var(--ak-card); border: 1px solid var(--ak-border); border-radius: 14px; padding: 18px 16px; text-align: left; cursor: pointer; font: inherit; color: var(--ak-text); box-shadow: 0 1px 2px rgba(0,0,0,.04); transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; display: flex; flex-direction: column; gap: 6px; }
 .tool-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.06); border-color: #c7d2fe; }
 .tool-card.active { border-color: var(--ak-accent); box-shadow: 0 0 0 3px rgba(79,70,229,.12); }
@@ -97,12 +97,12 @@ details p { color: var(--ak-muted); margin: 8px 0 0; }
 .site-footer { border-top: 1px solid var(--ak-border); background: #fff; text-align: center; padding: 24px 20px; color: var(--ak-muted); font-size: .95rem; }
 .site-footer p { margin: 4px 0; }
 @media (max-width: 1000px) {
-  .tool-grid { grid-template-columns: repeat(3, 1fr); }
+  .tool-grid { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
   .ad-sidebar { display: none; }
   .excel-layout { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
-  .tool-grid { grid-template-columns: repeat(2, 1fr); }
+  .tool-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
   .hero { padding-top: 28px; }
   .workspace { padding: 18px; }
 }
@@ -171,3 +171,12 @@ h1,h2,h3,.brand{font-family:"Plus Jakarta Sans","Inter",system-ui,sans-serif;let
 #section-calculators .tool-card .icon{background:#fef3c7;color:#d97706}
 #section-business .tool-card .icon{background:#dbeafe;color:#1d4ed8}
 #section-design .tool-card .icon{background:#fce7f3;color:#be185d}
+
+/* File preview: shown right under a file input, before any convert button runs */
+.file-preview{display:none;margin:10px 0 4px;border:1px solid #e5e7eb;border-radius:12px;background:#f7f8fa;padding:12px}
+.file-preview.visible{display:block}
+.file-preview .preview-meta{font-size:.9rem;color:#334155;margin:0 0 8px}
+.file-preview .preview-meta strong{color:#111827}
+.file-preview canvas{max-width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;display:block}
+.file-preview img{max-width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;display:block}
+.file-preview .preview-note{font-size:.85rem;color:#6b7280;margin:8px 0 0}

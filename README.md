@@ -25,3 +25,10 @@ Title, meta description, keywords, Open Graph and Twitter cards, WebApplication 
 
 ## Files
 index.html, styles.css, app.js, README.md, robots.txt, sitemap.xml. Live site: https://ak-premium.vercel.app/
+
+## File preview (2026-11-01 update)
+
+- When a PDF is chosen, AK Premium shows its name, size and page count and renders page 1 with pdf.js under the file chooser, before Convert is pressed, so the user can confirm the right document. Images show a thumbnail the same way.
+- Previews are made in the browser only; files are not uploaded.
+- If a PDF cannot be rendered (for example password-protected), the name and size are still shown.
+- Tool grid now uses auto-fit columns, so rows stretch to fill the row and no large empty slot is left at the end of a row.
