@@ -118,6 +118,18 @@ if (typeof window !== "undefined" && window.addEventListener) {
   });
 }
 
+/* ilovepdf-style category tabs: filter PDF cards by data-ilove, plus all other cards stay visible for 'all' */
+let currentIlove = "all";
+document.querySelectorAll(".ilove-tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".ilove-tab").forEach((t) => t.classList.toggle("active", t === tab));
+    currentIlove = tab.dataset.ilove || "all";
+    const activeNav = document.querySelector(".nav-btn.active");
+    if (activeNav && activeNav.dataset.category !== "all") { document.querySelectorAll(".nav-btn").forEach((b) => b.classList.toggle("active", b.dataset.category === "all")); }
+    filterCards();
+  });
+});
+const _origFilterCards = null;
 /* Clicking a tool card opens its workspace panel below the grid. */
 function openWorkspace(id, excelModule) {
   document.querySelectorAll(".tool-card").forEach((c) => c.classList.toggle("active", c.dataset.target === id));
@@ -139,7 +151,7 @@ function filterCards() {
   let visible = 0; const sectionsWithVisible = new Set();
   cards.forEach((card) => {
     const hay = ((card.dataset.keywords || "") + " " + card.textContent).toLowerCase();
-    const show = !query || hay.includes(query);
+    const show = (!query || hay.includes(query)) && (currentIlove === "all" || card.dataset.ilove === currentIlove);
     card.style.display = show ? "" : "none";
     if (show) { visible++; const sec = card.closest(".tool-section"); if (sec) sectionsWithVisible.add(sec.id); }
   });
@@ -149,6 +161,8 @@ function filterCards() {
     // that has a matching card, whatever page the user is on.
     ALL_SECTION_IDS.forEach((id) => { const sec = $(id); if (sec) sec.style.display = sectionsWithVisible.has(id) ? "" : "none"; });
     const ws = $("workspace"); if (ws) ws.style.display = "";
+  } else if (currentIlove !== "all") {
+    ALL_SECTION_IDS.forEach((id) => { const sec = $(id); if (sec) sec.style.display = sectionsWithVisible.has(id) ? "" : "none"; });
   } else {
     const activeNav = document.querySelector(".nav-btn.active");
     const cat = activeNav ? activeNav.dataset.category : "all";
@@ -450,7 +464,7 @@ if (pdfImagesBtn) pdfImagesBtn.addEventListener("click", async () => {
 /* ---------- e-Sign canvas ---------- */
 const esignCanvas = $("esignCanvas");
 if (esignCanvas) {
-  const ctx = esignCanvas.getContext("2d");
+  const ctx = esignCanvas.getContext("2d") || { lineWidth: 0, lineCap: "", strokeStyle: "", beginPath(){}, moveTo(){}, lineTo(){}, stroke(){}, clearRect(){}, getImageData(){ return { data: [] }; } };
   ctx.lineWidth = 2; ctx.lineCap = "round"; ctx.strokeStyle = "#111827";
   let drawing = false;
   let hasSignature = false;
@@ -928,6 +942,252 @@ if (excelCopyBtn) excelCopyBtn.addEventListener("click", async () => {
     setStatus("excelStatus", "Copied to clipboard (fallback).");
   }
 });
+
+
+/* ---------- New ilovepdf-style tools (all in browser) ---------- */
+async function extractPdfTextWithPassword(file, password, statusId) {
+  if (!needLibrary(!!window.pdfjsLib, "pdf.js", statusId)) return null;
+  if (window.pdfjsLib.GlobalWorkerOptions) window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const bytes = await readAsArrayBuffer(file);
+  const pdf = await window.pdfjsLib.getDocument({ data: bytes, password: password || undefined }).promise;
+  let lines = [];
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    lines.push("--- Page " + i + " ---");
+    lines.push(content.items.map((it) => it.str).join(" "));
+  }
+  return lines.join("\n");
+}
+const unlockPdfBtn = $("unlockPdfBtn");
+if (unlockPdfBtn) unlockPdfBtn.addEventListener("click", async () => {
+  const file = ($("unlockInput").files || [])[0];
+  if (!file) { setStatus("unlockPdfStatus", "Please select a PDF file first."); return; }
+  // Also support .akenc files created by Protect tool
+  if (file.name.endsWith(".akenc")) {
+    const password = $("unlockPassword").value || "";
+    if (!password) { setStatus("unlockPdfStatus", "Please enter the password used to encrypt this file."); return; }
+    try {
+      const data = new Uint8Array(await readAsArrayBuffer(file));
+      const salt = data.slice(0, 16), iv = data.slice(16, 28), ct = data.slice(28);
+      const keyMat = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+      const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 100000, hash: "SHA-256" }, keyMat, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+      const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ct);
+      downloadBlob(new Blob([plain], { type: "application/pdf" }), "ak-premium-unlocked.pdf");
+      setStatus("unlockPdfStatus", "Done. Browser-encrypted file decrypted and downloaded.");
+    } catch (e) { setStatus("unlockPdfStatus", "Could not decrypt this file. Please check the password."); }
+    return;
+  }
+  try {
+    const text = await extractPdfTextWithPassword(file, $("unlockPassword").value || "", "unlockPdfStatus");
+    if (text === null) return;
+    const JsPDF = getJsPdf(); if (!JsPDF) { setStatus("unlockPdfStatus", "jsPDF did not load."); return; }
+    const doc = new JsPDF(); addWrappedTextPaginated(doc, text); doc.save("ak-premium-unlocked.pdf");
+    setStatus("unlockPdfStatus", "Done. Unlocked text PDF downloaded. Layout may differ from the original.");
+  } catch (e) { setStatus("unlockPdfStatus", "Could not unlock this PDF. Please check the password and file."); }
+});
+const protectPdfBtn = $("protectPdfBtn");
+if (protectPdfBtn) protectPdfBtn.addEventListener("click", async () => {
+  const file = ($("protectInput").files || [])[0];
+  const password = $("protectPassword").value || "";
+  if (!file) { setStatus("protectPdfStatus", "Please select a PDF file first."); return; }
+  if (!password) { setStatus("protectPdfStatus", "Please enter a password first."); return; }
+  try {
+    const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+    const keyMat = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+    const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 100000, hash: "SHA-256" }, keyMat, { name: "AES-GCM", length: 256 }, false, ["encrypt"]);
+    const ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, await readAsArrayBuffer(file));
+    const out = new Uint8Array(salt.length + iv.length + ct.byteLength);
+    out.set(salt, 0); out.set(iv, 16); out.set(new Uint8Array(ct), 28);
+    downloadBlob(new Blob([out], { type: "application/octet-stream" }), "ak-premium-protected.pdf.akenc");
+    setStatus("protectPdfStatus", "Done. Browser-encrypted file downloaded. This is not a standard PDF password file.");
+  } catch (e) { setStatus("protectPdfStatus", "Could not encrypt this file in your browser."); }
+});
+const cropPdfBtn = $("cropPdfBtn");
+if (cropPdfBtn) cropPdfBtn.addEventListener("click", async () => {
+  const file = ($("cropInput").files || [])[0]; if (!file) { setStatus("cropPdfStatus", "Please select a PDF file first."); return; }
+  const m = parseFloat($("cropMargin").value) || 0;
+  try {
+    const doc = await loadPdfLibDoc(file, "cropPdfStatus"); if (!doc) return;
+    doc.getPages().forEach((page) => {
+      const { width, height } = page.getSize();
+      page.setCropBox(m, m, Math.max(10, width - 2*m), Math.max(10, height - 2*m));
+    });
+    const bytes = await doc.save(); downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-cropped.pdf");
+    setStatus("cropPdfStatus", "Done. Cropped PDF downloaded.");
+  } catch (e) { setStatus("cropPdfStatus", "Could not crop this PDF."); }
+});
+const redactPdfBtn = $("redactPdfBtn");
+if (redactPdfBtn) redactPdfBtn.addEventListener("click", async () => {
+  const file = ($("redactInput").files || [])[0]; const needle = ($("redactText").value || "").trim();
+  if (!file) { setStatus("redactPdfStatus", "Please select a PDF file first."); return; }
+  if (!needle) { setStatus("redactPdfStatus", "Please enter text to redact."); return; }
+  try {
+    if (!needLibrary(!!window.pdfjsLib, "pdf.js", "redactPdfStatus")) return;
+    if (window.pdfjsLib.GlobalWorkerOptions) window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    const bytes = await readAsArrayBuffer(file);
+    const pdf = await window.pdfjsLib.getDocument({ data: bytes }).promise;
+    const doc = await window.PDFLib.PDFDocument.load(bytes);
+    let found = 0;
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i); const content = await page.getTextContent(); const viewport = page.getViewport({ scale: 1 });
+      const p = doc.getPage(i-1); const { height } = p.getSize();
+      for (const item of content.items) {
+        if (String(item.str || "").toLowerCase().includes(needle.toLowerCase())) {
+          const tx = window.pdfjsLib.Util.transform(viewport.transform, item.transform);
+          const w = (item.width || 50) * viewport.scale, h = (item.height || 12) * viewport.scale;
+          p.drawRectangle({ x: tx[4], y: height - tx[5] - h, width: w, height: h + 2, color: window.PDFLib.rgb(0,0,0) });
+          found++;
+        }
+      }
+    }
+    if (!found) { setStatus("redactPdfStatus", "That text was not found in the PDF text layer."); return; }
+    const out = await doc.save(); downloadBlob(new Blob([out], { type: "application/pdf" }), "ak-premium-redacted.pdf");
+    setStatus("redactPdfStatus", "Done. Covered " + found + " match(es). Check the result before sharing sensitive files.");
+  } catch (e) { setStatus("redactPdfStatus", "Could not redact this PDF."); }
+});
+const pdfaPdfBtn = $("pdfaPdfBtn");
+if (pdfaPdfBtn) pdfaPdfBtn.addEventListener("click", async () => {
+  const file = ($("pdfaInput").files || [])[0]; if (!file) { setStatus("pdfaPdfStatus", "Please select a PDF file first."); return; }
+  try {
+    const doc = await loadPdfLibDoc(file, "pdfaPdfStatus"); if (!doc) return;
+    doc.setTitle($("pdfaTitle").value || "Archive document"); doc.setAuthor("AK Premium"); doc.setSubject("Archive copy"); doc.setKeywords(["archive", "PDF/A-style"]); doc.setProducer("AK Premium browser tool"); doc.setCreator("AK Premium");
+    const bytes = await doc.save(); downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-archive.pdf");
+    setStatus("pdfaPdfStatus", "Done. Archive-style copy downloaded. This is not a certified PDF/A validation.");
+  } catch (e) { setStatus("pdfaPdfStatus", "Could not make an archive copy."); }
+});
+const repairPdfBtn = $("repairPdfBtn");
+if (repairPdfBtn) repairPdfBtn.addEventListener("click", async () => {
+  const file = ($("repairInput").files || [])[0]; if (!file) { setStatus("repairPdfStatus", "Please select a PDF file first."); return; }
+  try {
+    const doc = await loadPdfLibDoc(file, "repairPdfStatus");
+    if (doc) { const bytes = await doc.save(); downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-repaired.pdf"); setStatus("repairPdfStatus", "Done. Re-saved PDF downloaded."); return; }
+  } catch (e) {}
+  try {
+    const text = await extractPdfText(file, "repairPdfStatus"); if (text === null) return;
+    const JsPDF = getJsPdf(); const doc = new JsPDF(); addWrappedTextPaginated(doc, text); doc.save("ak-premium-repaired-text.pdf");
+    setStatus("repairPdfStatus", "Done, from readable text only. Layout was rebuilt, not preserved.");
+  } catch (e2) { setStatus("repairPdfStatus", "Could not repair this PDF."); }
+});
+const comparePdfBtn = $("comparePdfBtn");
+if (comparePdfBtn) comparePdfBtn.addEventListener("click", async () => {
+  const a = ($("compareInputA").files || [])[0], b = ($("compareInputB").files || [])[0];
+  if (!a || !b) { setStatus("comparePdfStatus", "Please select two PDF files."); return; }
+  try {
+    const ta = await extractPdfText(a, "comparePdfStatus"); const tb = await extractPdfText(b, "comparePdfStatus");
+    const la = new Set(ta.split("\n").map(s=>s.trim()).filter(Boolean)); const lb = new Set(tb.split("\n").map(s=>s.trim()).filter(Boolean));
+    const onlyA = [...la].filter(x=>!lb.has(x)); const onlyB = [...lb].filter(x=>!la.has(x));
+    $("comparePdfOutput").textContent = "Only in first PDF:\n" + (onlyA.join("\n") || "(none)") + "\n\nOnly in second PDF:\n" + (onlyB.join("\n") || "(none)");
+    setStatus("comparePdfStatus", "Done. " + onlyA.length + " line(s) only in first, " + onlyB.length + " only in second.");
+  } catch (e) { setStatus("comparePdfStatus", "Could not compare these PDFs."); }
+});
+const pdfmdPdfBtn = $("pdfmdPdfBtn");
+if (pdfmdPdfBtn) pdfmdPdfBtn.addEventListener("click", async () => {
+  const file = ($("pdfmdInput").files || [])[0]; if (!file) { setStatus("pdfmdPdfStatus", "Please select a PDF file first."); return; }
+  try {
+    const text = await extractPdfText(file, "pdfmdPdfStatus"); if (text === null) return;
+    const md = text.split("\n").map((line) => {
+      const t = line.trim(); if (!t) return "";
+      if (/^--- Page/.test(t)) return "\n## " + t + "\n";
+      return t;
+    }).join("\n");
+    downloadText(md, "ak-premium-document.md", "text/markdown;charset=utf-8");
+    setStatus("pdfmdPdfStatus", "Done. Markdown file downloaded.");
+  } catch (e) { setStatus("pdfmdPdfStatus", "Could not convert this PDF to Markdown."); }
+});
+const scanPdfBtn = $("scanPdfBtn");
+if (scanPdfBtn) scanPdfBtn.addEventListener("click", async () => {
+  const file = ($("scanInput").files || [])[0]; if (!file) { setStatus("scanPdfStatus", "Please select a photo first."); return; }
+  try {
+    const JsPDF = getJsPdf(); if (!JsPDF) { setStatus("scanPdfStatus", "jsPDF did not load."); return; }
+    const url = URL.createObjectURL(file); const img = new Image(); img.src = url; await img.decode();
+    const canvas = document.createElement("canvas"); canvas.width = img.width; canvas.height = img.height; canvas.getContext("2d").drawImage(img, 0, 0);
+    const doc = new JsPDF(); const pageW = doc.internal.pageSize.getWidth(), pageH = doc.internal.pageSize.getHeight();
+    const ratio = Math.min(pageW / img.width, pageH / img.height); const w = img.width * ratio, h = img.height * ratio;
+    doc.addImage(canvas.toDataURL("image/png"), "PNG", (pageW-w)/2, (pageH-h)/2, w, h); doc.save("ak-premium-scan.pdf");
+    setStatus("scanPdfStatus", "Done. Scan PDF downloaded.");
+  } catch (e) { setStatus("scanPdfStatus", "Could not make a PDF from this photo."); }
+});
+const ocrpdfPdfBtn = $("ocrpdfPdfBtn");
+if (ocrpdfPdfBtn) ocrpdfPdfBtn.addEventListener("click", async () => {
+  const file = ($("ocrpdfInput").files || [])[0]; if (!file) { setStatus("ocrpdfPdfStatus", "Please select a PDF file first."); return; }
+  if (!window.Tesseract) { setStatus("ocrpdfPdfStatus", "OCR library did not load."); return; }
+  try {
+    if (!needLibrary(!!window.pdfjsLib, "pdf.js", "ocrpdfPdfStatus")) return;
+    if (window.pdfjsLib.GlobalWorkerOptions) window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    const bytes = await readAsArrayBuffer(file); const pdf = await window.pdfjsLib.getDocument({ data: bytes }).promise;
+    const JsPDF = getJsPdf(); const doc = new JsPDF(); let first = true;
+    for (let i = 1; i <= pdf.numPages; i++) {
+      setStatus("ocrpdfPdfStatus", "Reading page " + i + " of " + pdf.numPages + "…");
+      const page = await pdf.getPage(i); const viewport = page.getViewport({ scale: 1.5 });
+      const canvas = document.createElement("canvas"); canvas.width = viewport.width; canvas.height = viewport.height;
+      await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+      const result = await window.Tesseract.recognize(canvas, "eng", { logger: () => {} });
+      if (!first) doc.addPage(); first = false; addWrappedTextPaginated(doc, result.data.text || "");
+    }
+    doc.save("ak-premium-ocr.pdf"); setStatus("ocrpdfPdfStatus", "Done. OCR PDF downloaded.");
+  } catch (e) { setStatus("ocrpdfPdfStatus", "Could not OCR this PDF."); }
+});
+const formsPdfBtn = $("formsPdfBtn");
+if (formsPdfBtn) formsPdfBtn.addEventListener("click", async () => {
+  try {
+    if (!needLibrary(!!window.PDFLib, "pdf-lib", "formsPdfStatus")) return;
+    const doc = await window.PDFLib.PDFDocument.create(); const page = doc.addPage([595, 842]); const form = doc.getForm();
+    const font = await doc.embedFont(window.PDFLib.StandardFonts.HelveticaBold);
+    page.drawText($("formsTitle").value || "Application Form", { x: 50, y: 780, size: 20, font });
+    page.drawText("Full name:", { x: 50, y: 730, size: 12, font });
+    const nameField = form.createTextField("fullName"); nameField.addToPage(page, { x: 150, y: 715, width: 300, height: 20, borderWidth: 1 });
+    page.drawText("Email:", { x: 50, y: 690, size: 12, font });
+    const emailField = form.createTextField("email"); emailField.addToPage(page, { x: 150, y: 675, width: 300, height: 20, borderWidth: 1 });
+    page.drawText("Agree:", { x: 50, y: 650, size: 12, font });
+    const agree = form.createCheckBox("agree"); agree.addToPage(page, { x: 150, y: 640, width: 15, height: 15, borderWidth: 1 });
+    page.drawText("Category:", { x: 50, y: 610, size: 12, font });
+    const cat = form.createDropdown("category"); cat.addOptions(["General", "Support", "Sales"]); cat.select("General"); cat.addToPage(page, { x: 150, y: 595, width: 200, height: 20, borderWidth: 1 });
+    form.updateFieldAppearances();
+    const bytes = await doc.save(); downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-form.pdf");
+    setStatus("formsPdfStatus", "Done. Fillable form PDF downloaded.");
+  } catch (e) { setStatus("formsPdfStatus", "Could not create a form PDF."); }
+});
+const summaryPdfBtn = $("summaryPdfBtn");
+if (summaryPdfBtn) summaryPdfBtn.addEventListener("click", async () => {
+  const file = ($("summaryInput").files || [])[0]; if (!file) { setStatus("summaryPdfStatus", "Please select a PDF file first."); return; }
+  try {
+    const text = await extractPdfText(file, "summaryPdfStatus"); if (text === null) return;
+    const sentences = text.replace(/\n/g, " ").split(/(?<=[.!?])\s+/).map(s=>s.trim()).filter(s=>s.length > 30);
+    const words = text.toLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(w=>w.length > 3);
+    const freq = {}; words.forEach(w=>freq[w]=(freq[w]||0)+1);
+    const scored = sentences.map(s=>({ s, score: s.toLowerCase().split(/\s+/).reduce((a,w)=>a+(freq[w]||0),0) })).sort((a,b)=>b.score-a.score);
+    const n = parseInt($("summaryCount").value, 10) || 5;
+    $("summaryPdfOutput").textContent = scored.slice(0, n).map(x=>"- " + x.s).join("\n");
+    setStatus("summaryPdfStatus", "Done. Local summary shown above. No AI server was used.");
+  } catch (e) { setStatus("summaryPdfStatus", "Could not summarize this PDF."); }
+});
+const translatePdfBtn = $("translatePdfBtn");
+if (translatePdfBtn) translatePdfBtn.addEventListener("click", async () => {
+  const file = ($("translateInput").files || [])[0]; if (!file) { setStatus("translatePdfStatus", "Please select a PDF file first."); return; }
+  try {
+    const text = await extractPdfText(file, "translatePdfStatus"); if (text === null) return;
+    downloadText(text, "ak-premium-for-translation.txt"); setStatus("translatePdfStatus", "Done. Text file downloaded, ready to translate elsewhere. No text was sent to a translation server by AK Premium.");
+  } catch (e) { setStatus("translatePdfStatus", "Could not extract text from this PDF."); }
+});
+
+
+/* More dropdown: horizontal panel, closes on selection or outside click */
+const navMore = $("navMore"); const moreBtn = $("moreBtn");
+if (moreBtn && navMore) {
+  moreBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const open = navMore.classList.toggle("open");
+    moreBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  document.querySelectorAll(".more-item").forEach((item) => {
+    item.addEventListener("click", () => { navMore.classList.remove("open"); moreBtn.setAttribute("aria-expanded", "false"); moreBtn.classList.add("active"); });
+  });
+  document.addEventListener("click", (e) => { if (!navMore.contains(e.target)) { navMore.classList.remove("open"); moreBtn.setAttribute("aria-expanded", "false"); } });
+  document.querySelectorAll(".nav-btn:not(.more-item):not(.more-btn)").forEach((b) => {
+    b.addEventListener("click", () => { if (!["image","everyday","developer","calculators","business","design"].includes(b.dataset.category)) moreBtn.classList.remove("active"); });
+  });
+}
 
 /* Initial state: open the category from the URL hash when present,
    otherwise show everything. */
