@@ -39,3 +39,6 @@ index.html, styles.css, app.js, README.md, robots.txt, sitemap.xml. Live site: h
 - iLovePDF-style layout: light premium hero with balanced, centred text, centred tabs and chips, full-width grid (no ad sidebars) so 6 cards fit per row on desktop, taller cards, colourful icons kept.
 - Dedicated tool page: clicking a card hides the grid and shows that tool on its own page view, with a Back to all tools button, big file dropzone, centred file preview, and a shareable #tool-<id> link. All existing tool logic is kept; no tool was rewritten.
 - AdSense readiness: About, Privacy, Terms, Disclaimer and Contact pages with real content, footer links on every page, sitemap now lists home + 5 pages, robots allow all + sitemap link. AdSense/Adsterra ad code is NOT yet added; it needs an approved account and a code snippet from the provider.
+
+## Tool pages (3 November 2026)
+Every tool also has its own SEO page under `tools/<tool-slug>.html` with a unique title, meta description, H1, how-to steps and FAQ, plus a button that opens the real tool on the homepage (`index.html#tool-<id>`). `tools/index.html` lists all 62 tools by category, and `sitemap.xml` lists all 69 URLs (homepage, 5 info pages, tools index, 62 tool pages).
