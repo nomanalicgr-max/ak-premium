@@ -180,3 +180,42 @@ h1,h2,h3,.brand{font-family:"Plus Jakarta Sans","Inter",system-ui,sans-serif;let
 .file-preview canvas{max-width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;display:block}
 .file-preview img{max-width:100%;height:auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;display:block}
 .file-preview .preview-note{font-size:.85rem;color:#6b7280;margin:8px 0 0}
+
+/* ---------- v3: iLovePDF-style light premium look + dedicated tool page ---------- */
+.hero{background:#fff !important;color:#111827 !important;border:1px solid #e5e7eb;box-shadow:0 10px 30px rgba(15,23,42,.06);max-width:1180px;text-align:center}
+.hero h1{color:#111827 !important;text-wrap:balance}
+.hero-sub{color:#475569 !important;text-wrap:balance;max-width:720px;margin-left:auto;margin-right:auto}
+#heroSearch{border:1px solid #d1d5db !important;box-shadow:0 2px 10px rgba(15,23,42,.05) !important}
+.search-status{color:#64748b !important}
+.ilove-tabs{justify-content:center}
+.ilove-tab{background:#fff !important;color:#334155 !important;border:1px solid #e5e7eb !important}
+.ilove-tab.active{background:#111827 !important;color:#fff !important;border-color:#111827 !important;box-shadow:none !important}
+.chip{background:#fff !important;color:#334155 !important;border:1px solid #e5e7eb !important}
+.chip:hover{background:#111827 !important;color:#fff !important;border-color:#111827 !important}
+.ad-sidebar{display:none !important}
+.layout{max-width:1180px}
+.tool-grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr)) !important}
+.tool-card{min-height:195px;padding:22px 18px}
+.tool-card strong{text-wrap:balance}
+.tool-card span:last-child{text-wrap:balance}
+/* Dedicated tool page: hide the grid, show one tool like its own page */
+.tool-page-header{display:none;text-align:center;max-width:760px;margin:32px auto 20px}
+.tool-page-header h2{font-size:clamp(1.6rem,3.5vw,2.3rem);margin:10px 0 8px;text-wrap:balance}
+.tool-page-header p{color:#475569;text-wrap:balance}
+.tool-back{border:1px solid #e5e7eb;background:#fff;border-radius:999px;padding:8px 16px;font-weight:600;cursor:pointer}
+body.tool-open .tool-section, body.tool-open .ad-leaderboard, body.tool-open .hero{display:none !important}
+body.tool-open .tool-page-header{display:block}
+body.tool-open .workspace{display:block !important}
+.workspace-tool.active{max-width:760px;margin:0 auto}
+.workspace-tool.active h3{text-align:center;font-size:1.5rem}
+.workspace-tool.active input[type="file"]{width:100%;padding:28px 16px;border:2px dashed #cbd5e1;border-radius:16px;background:#f8fafc;text-align:center;cursor:pointer;margin:12px 0}
+.workspace-tool.active input[type="file"]::file-selector-button{background:#e11d48;color:#fff;border:0;border-radius:999px;padding:12px 22px;font-weight:700;cursor:pointer;margin-right:12px}
+.workspace-tool.active .btn-primary{padding:14px 28px;font-size:1.05rem;border-radius:999px}
+.workspace-tool.active .file-preview{max-width:420px;margin:16px auto;text-align:center}
+.workspace-tool.active .file-preview canvas,.workspace-tool.active .file-preview img{margin:0 auto}
+.tool-success{display:none;margin:16px 0;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:12px;padding:14px;text-align:center;font-weight:600;color:#166534}
+.tool-success.visible{display:block}
+@media (max-width:640px){
+  .tool-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr)) !important}
+  .tool-card{min-height:170px}
+}

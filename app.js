@@ -113,6 +113,8 @@ const navButtons = document.querySelectorAll(".nav-btn");
 navButtons.forEach((b) => b.addEventListener("click", () => showCategory(b.dataset.category)));
 if (typeof window !== "undefined" && window.addEventListener) {
   window.addEventListener("hashchange", () => {
+    const h = window.location.hash || "";
+    if (h.indexOf("#tool-") === 0) { const tid = h.replace("#tool-", ""); if (document.getElementById(tid)) { openWorkspace(tid); return; } }
     const name = categoryFromHash(window.location.hash);
     if (name) showCategory(name, { scroll: false });
   });
@@ -131,13 +133,32 @@ document.querySelectorAll(".ilove-tab").forEach((tab) => {
 });
 const _origFilterCards = null;
 /* Clicking a tool card opens its workspace panel below the grid. */
+function closeToolPage() {
+  document.body.classList.remove("tool-open");
+  document.querySelectorAll(".tool-card").forEach((c) => c.classList.remove("active"));
+  document.querySelectorAll(".workspace-tool").forEach((w) => w.classList.remove("active"));
+  const empty = $("workspaceEmpty"); if (empty) empty.style.display = "";
+  try { if (typeof history !== "undefined" && history.replaceState) history.replaceState(null, "", window.location.pathname + window.location.search); } catch (e) {}
+  const top = $("top"); if (top && top.scrollIntoView) top.scrollIntoView({ behavior: "smooth" });
+  filterCards();
+}
 function openWorkspace(id, excelModule) {
   document.querySelectorAll(".tool-card").forEach((c) => c.classList.toggle("active", c.dataset.target === id));
   document.querySelectorAll(".workspace-tool").forEach((w) => w.classList.toggle("active", w.id === id));
   const empty = $("workspaceEmpty"); if (empty) empty.style.display = "none";
   if (excelModule) { const btn = document.querySelector('.excel-tab-btn[data-excel-tab="' + excelModule + '"]'); if (btn) btn.click(); }
-  const ws = $("workspace"); if (ws) { ws.style.display = ""; if (ws.scrollIntoView) ws.scrollIntoView({ behavior: "smooth", block: "start" }); }
+  // Dedicated tool page, like iLovePDF: hide the grid, show this tool on its own.
+  const card = document.querySelector('.tool-card[data-target="' + id + '"]');
+  const titleEl = $("toolPageTitle"); const descEl = $("toolPageDesc");
+  if (titleEl && card) titleEl.textContent = (card.querySelector("strong") ? card.querySelector("strong").textContent : id);
+  if (descEl && card) { const spans = card.querySelectorAll("span"); descEl.textContent = spans.length ? spans[spans.length-1].textContent : ""; }
+  document.body.classList.add("tool-open");
+  try { if (typeof history !== "undefined" && history.replaceState) history.replaceState(null, "", "#tool-" + id); } catch (e) {}
+  const ws = $("workspace"); if (ws) { ws.style.display = ""; }
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
+const toolBackBtn = $("toolBackBtn");
+if (toolBackBtn) toolBackBtn.addEventListener("click", closeToolPage);
 document.querySelectorAll(".tool-card").forEach((card) => {
   card.addEventListener("click", () => openWorkspace(card.dataset.target, card.dataset.excelModule));
 });
@@ -151,7 +172,9 @@ function filterCards() {
   let visible = 0; const sectionsWithVisible = new Set();
   cards.forEach((card) => {
     const hay = ((card.dataset.keywords || "") + " " + card.textContent).toLowerCase();
-    const show = (!query || hay.includes(query)) && (currentIlove === "all" || card.dataset.ilove === currentIlove);
+    // Search wins over the PDF tab filter: a trending chip like "VBA Macro Writer"
+    // must find its tool even when a PDF tab (e.g. PDF Intelligence) was active before.
+    const show = query ? hay.includes(query) : (currentIlove === "all" || card.dataset.ilove === currentIlove);
     card.style.display = show ? "" : "none";
     if (show) { visible++; const sec = card.closest(".tool-section"); if (sec) sectionsWithVisible.add(sec.id); }
   });
@@ -173,6 +196,8 @@ function filterCards() {
 if (heroSearch) heroSearch.addEventListener("input", filterCards);
 document.querySelectorAll(".chip").forEach((chip) => {
   chip.addEventListener("click", () => {
+    currentIlove = "all";
+    document.querySelectorAll(".ilove-tab").forEach((t) => t.classList.toggle("active", t.dataset.ilove === "all"));
     if (heroSearch) { heroSearch.value = chip.dataset.query; heroSearch.focus(); }
     filterCards();
   });
@@ -1192,6 +1217,14 @@ if (moreBtn && navMore) {
 /* Initial state: open the category from the URL hash when present,
    otherwise show everything. */
 (function initCategoryFromHash() {
+  try {
+    const h = window.location.hash || "";
+    if (h.indexOf("#tool-") === 0) {
+      const toolId = h.replace("#tool-", "");
+      const w = document.getElementById(toolId);
+      if (w) { openWorkspace(toolId); return; }
+    }
+  } catch (e) {}
   let name = null;
   try { name = (typeof window !== "undefined" && window.location) ? categoryFromHash(window.location.hash) : null; } catch (e) { name = null; }
   if (name) showCategory(name, { scroll: false });

@@ -32,3 +32,10 @@ index.html, styles.css, app.js, README.md, robots.txt, sitemap.xml. Live site: h
 - Previews are made in the browser only; files are not uploaded.
 - If a PDF cannot be rendered (for example password-protected), the name and size are still shown.
 - Tool grid now uses auto-fit columns, so rows stretch to fill the row and no large empty slot is left at the end of a row.
+
+## v3 (2026-11-03, preview only, not yet deployed)
+- Fixed search bug: a trending chip (e.g. VBA Macro Writer) no longer returns 0 results when a PDF tab was active; search now wins over the PDF tab filter, and chip clicks reset the tab to All.
+- Fixed Privacy/Terms: footer now links to real pages (about.html, privacy.html, terms.html, disclaimer.html, contact.html) instead of closed FAQ anchors that could be hidden by category filtering.
+- iLovePDF-style layout: light premium hero with balanced, centred text, centred tabs and chips, full-width grid (no ad sidebars) so 6 cards fit per row on desktop, taller cards, colourful icons kept.
+- Dedicated tool page: clicking a card hides the grid and shows that tool on its own page view, with a Back to all tools button, big file dropzone, centred file preview, and a shareable #tool-<id> link. All existing tool logic is kept; no tool was rewritten.
+- AdSense readiness: About, Privacy, Terms, Disclaimer and Contact pages with real content, footer links on every page, sitemap now lists home + 5 pages, robots allow all + sitemap link. AdSense/Adsterra ad code is NOT yet added; it needs an approved account and a code snippet from the provider.
