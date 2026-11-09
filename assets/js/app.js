@@ -2682,3 +2682,25 @@ function numToWordsUr(n) {
     setStatus("explainerStatus", "Done.");
   });
 })();
+
+/* v4 tool pages: each tool page embeds exactly one workspace, and the
+   v3 CSS hides .workspace-tool until it gains .active (which only
+   happened on homepage card clicks). A tool page has no cards and no
+   #tool- hash, so without this the tool area stays an empty white box.
+   Activate the single workspace on any /tools/ page. */
+(function activateToolPageWorkspace() {
+  function activate() {
+    try {
+      var path = (window.location && window.location.pathname) || "";
+      var tools = document.querySelectorAll(".workspace-tool");
+      if (tools.length === 1 || path.indexOf("/tools/") === 0) {
+        tools.forEach(function (w) { w.classList.add("active"); });
+      }
+    } catch (e) {}
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", activate);
+  } else {
+    activate();
+  }
+})();
