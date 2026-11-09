@@ -3,7 +3,7 @@
    Self-hosted pinned build: /vendor/qpdf (@arshad-shah/qpdf-wasm@0.1.0).
    Passwords live only in this worker for the duration of one call. */
 import { configure, encrypt, decrypt, inspect } from "/vendor/qpdf/index.js";
-configure({ wasmUrl: "/vendor/qpdf/qpdf.wasm?v=2" });
+configure({ wasmUrl: "/vendor/qpdf/qpdf.wasm?v=3" });
 self.onmessage = async (e) => {
   const { op, bytes, password } = e.data || {};
   try {

@@ -11,7 +11,23 @@ function downloadBlob(blob, filename) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  /* Visible fallback link: the automatic download can be blocked or
+     missed, so always leave a clickable link in the active tool area
+     (the old version showed only a status line and no way to get the
+     file back). The link stays usable for 10 minutes. */
+  try {
+    const ws = document.querySelector(".workspace-tool.active") || document.querySelector(".workspace-tool");
+    if (ws) {
+      const old = ws.querySelector(".download-link"); if (old) old.remove();
+      const link = document.createElement("a");
+      link.className = "download-link"; link.href = url; link.download = filename;
+      link.textContent = "Download " + filename;
+      const status = ws.querySelector(".status");
+      if (status && status.parentNode) status.parentNode.insertBefore(link, status.nextSibling);
+      else ws.appendChild(link);
+    }
+  } catch (e) {}
+  setTimeout(() => URL.revokeObjectURL(url), 600000);
 }
 function downloadText(text, filename, type) {
   downloadBlob(new Blob([text], { type: type || "text/plain;charset=utf-8" }), filename);
@@ -1161,7 +1177,7 @@ async function extractPdfTextWithPassword(file, password, statusId) {
 function runQpdf(op, bytes, password, statusId) {
   return new Promise((resolve) => {
     let worker;
-    try { worker = new Worker("/assets/js/qpdf-worker.js?v=2", { type: "module" }); }
+    try { worker = new Worker("/assets/js/qpdf-worker.js?v=3", { type: "module" }); }
     catch (e) { setStatus(statusId, "PDF encryption could not start in this browser. Please try Chrome, Edge or Firefox."); resolve(null); return; }
     const timer = setTimeout(() => { try { worker.terminate(); } catch (e) {} setStatus(statusId, "PDF encryption is taking too long. Please try a smaller file."); resolve(null); }, 120000);
     worker.onmessage = (e) => {
@@ -1233,7 +1249,7 @@ if (redactPdfBtn) redactPdfBtn.addEventListener("click", async () => {
     const bytes = await readAsArrayBuffer(file);
     const pdf = await window.pdfjsLib.getDocument({ data: bytes }).promise;
     const doc = await window.PDFLib.PDFDocument.load(bytes);
-    let found = 0;
+    let found = 0; const matchedPages = new Set();
     for (let i = 1; i <= pdf.numPages; i++) {
       const page = await pdf.getPage(i); const content = await page.getTextContent(); const viewport = page.getViewport({ scale: 1 });
       const p = doc.getPage(i-1); const { height } = p.getSize();
@@ -1242,7 +1258,7 @@ if (redactPdfBtn) redactPdfBtn.addEventListener("click", async () => {
           const tx = window.pdfjsLib.Util.transform(viewport.transform, item.transform);
           const w = (item.width || 50) * viewport.scale, h = (item.height || 12) * viewport.scale;
           p.drawRectangle({ x: tx[4], y: height - tx[5] - h, width: w, height: h + 2, color: window.PDFLib.rgb(0,0,0) });
-          found++;
+          found++; matchedPages.add(i);
         }
       }
     }
@@ -1276,8 +1292,8 @@ if (redactPdfBtn) redactPdfBtn.addEventListener("click", async () => {
       pg.drawImage(jpg, { x: 0, y: 0, width, height });
     }
     const out = await outDoc.save(); downloadBlob(new Blob([out], { type: "application/pdf" }), "ak-premium-redacted.pdf");
-    setStatus("redactPdfStatus", "Done. Redacted " + found + " match(es) on " + new Set([...Array(pdf.numPages)].map((_, i) => i)).size + " page(s) — those pages are now images with no text layer, so the covered text cannot be copied. Check the result before sharing sensitive files.");
-  } catch (e) { setStatus("redactPdfStatus", "Could not redact this PDF."); }
+    setStatus("redactPdfStatus", "Done. Redacted " + found + " match(es) on " + matchedPages.size + " page(s) — those pages are now images with no text layer, so the covered text cannot be copied. Check the result before sharing sensitive files.");
+  } catch (e) { setStatus("redactPdfStatus", "Could not redact this PDF. (" + (e && e.message ? e.message : "unknown error") + ")"); }
 });
 const pdfaPdfBtn = $("pdfaPdfBtn");
 if (pdfaPdfBtn) pdfaPdfBtn.addEventListener("click", async () => {
@@ -2372,31 +2388,45 @@ document.querySelectorAll('input[type="file"]').forEach((input)=>{
 /* Each wizard: pick a task, fill labelled fields, get the exact formula/code
    with a plain-language explanation and an example. No keyword guessing. */
 function wizardField(id, label, placeholder) {
-  return '<label>' + label + ' <input id="' + id + '" type="text" placeholder="' + (placeholder || '') + '"></label>';
+  const ph = String(placeholder || "").replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+  return '<label>' + label + ' <input id="' + id + '" type="text" placeholder="' + ph + '"></label>';
+}
+/* Quote a wizard criteria/lookup value when it is plain text: a user
+   typing Lahore means the text "Lahore", not a cell reference. Numbers,
+   cell references, sheet references and comparisons are left alone, and
+   values already in quotes are not double-quoted. */
+function quoteCriteria(v) {
+  const t = String(v || "").trim();
+  if (!t) return t;
+  if (t.length >= 2 && t.startsWith('"') && t.endsWith('"')) return t;
+  if (/^-?\d+(\.\d+)?$/.test(t)) return t;
+  if (/^[A-Za-z]{1,3}\d+$/.test(t)) return t;
+  if (/^[A-Za-z0-9_]+![A-Za-z]{1,3}\d+(:[A-Za-z]{1,3}\d+)?$/.test(t)) return t;
+  return '"' + t.replace(/"/g, '""') + '"';
 }
 const FORMULA_TASKS = {
   sumif: { name: "SUMIF — add up values that meet one condition", fields: [["f_sum_range", "Range to add up", "B2:B20"], ["f_criteria_range", "Range to check", "A2:A20"], ["f_criteria", "Condition", "\"Approved\" or \">100\""]],
-    build: (v) => "=SUMIF(" + v.f_criteria_range + ", " + v.f_criteria + ", " + v.f_sum_range + ")",
+    build: (v) => "=SUMIF(" + v.f_criteria_range + ", " + quoteCriteria(v.f_criteria) + ", " + v.f_sum_range + ")",
     explain: (v) => "Adds up the numbers in " + v.f_sum_range + " only where " + v.f_criteria_range + " meets " + v.f_criteria + ".",
     example: "With sales in B2:B20 and region in A2:A20, =SUMIF(A2:A20, \"Lahore\", B2:B20) adds up Lahore sales only." },
   sumifs: { name: "SUMIFS — add up values that meet several conditions", fields: [["f_sum_range", "Range to add up", "C2:C20"], ["f_criteria_range1", "First range to check", "A2:A20"], ["f_criteria1", "First condition", "\"Lahore\""], ["f_criteria_range2", "Second range to check", "B2:B20"], ["f_criteria2", "Second condition", "\"2026\""]],
-    build: (v) => "=SUMIFS(" + v.f_sum_range + ", " + v.f_criteria_range1 + ", " + v.f_criteria1 + ", " + v.f_criteria_range2 + ", " + v.f_criteria2 + ")",
+    build: (v) => "=SUMIFS(" + v.f_sum_range + ", " + v.f_criteria_range1 + ", " + quoteCriteria(v.f_criteria1) + ", " + v.f_criteria_range2 + ", " + quoteCriteria(v.f_criteria2) + ")",
     explain: (v) => "Adds up " + v.f_sum_range + " only where both conditions are true at the same time.",
     example: "Add Lahore 2026 sales: =SUMIFS(C2:C20, A2:A20, \"Lahore\", B2:B20, \"2026\")." },
   countifs: { name: "COUNTIFS — count rows that meet several conditions", fields: [["f_criteria_range1", "First range to check", "A2:A20"], ["f_criteria1", "First condition", "\"Approved\""], ["f_criteria_range2", "Second range to check", "B2:B20"], ["f_criteria2", "Second condition", "\">100\""]],
-    build: (v) => "=COUNTIFS(" + v.f_criteria_range1 + ", " + v.f_criteria1 + ", " + v.f_criteria_range2 + ", " + v.f_criteria2 + ")",
+    build: (v) => "=COUNTIFS(" + v.f_criteria_range1 + ", " + quoteCriteria(v.f_criteria1) + ", " + v.f_criteria_range2 + ", " + quoteCriteria(v.f_criteria2) + ")",
     explain: (v) => "Counts the rows where both conditions are true.",
     example: "Count approved orders over 100: =COUNTIFS(A2:A20, \"Approved\", B2:B20, \">100\")." },
   vlookup: { name: "VLOOKUP — find a value in a table", fields: [["f_lookup", "Value to look up", "A2"], ["f_table", "Table to search", "Sheet2!A:B"], ["f_col", "Column number to return", "2"]],
-    build: (v) => "=VLOOKUP(" + v.f_lookup + ", " + v.f_table + ", " + v.f_col + ", FALSE)",
+    build: (v) => "=VLOOKUP(" + quoteCriteria(v.f_lookup) + ", " + v.f_table + ", " + v.f_col + ", FALSE)",
     explain: (v) => "Searches the first column of " + v.f_table + " for " + v.f_lookup + " and returns the value from column " + v.f_col + ". FALSE means exact match.",
     example: "Find a product price: =VLOOKUP(A2, Sheet2!A:B, 2, FALSE)." },
   xlookup: { name: "XLOOKUP — find a value (modern replacement for VLOOKUP)", fields: [["f_lookup", "Value to look up", "A2"], ["f_lookup_array", "Range to search", "Sheet2!A:A"], ["f_return_array", "Range to return from", "Sheet2!B:B"]],
-    build: (v) => "=XLOOKUP(" + v.f_lookup + ", " + v.f_lookup_array + ", " + v.f_return_array + ", \"Not found\")",
+    build: (v) => "=XLOOKUP(" + quoteCriteria(v.f_lookup) + ", " + v.f_lookup_array + ", " + v.f_return_array + ", \"Not found\")",
     explain: (v) => "Searches " + v.f_lookup_array + " for " + v.f_lookup + " and returns the matching value from " + v.f_return_array + ". Shows \"Not found\" if there is no match.",
     example: "Find a price: =XLOOKUP(A2, Sheet2!A:A, Sheet2!B:B, \"Not found\"). Needs Microsoft 365 or Excel 2021." },
   indexmatch: { name: "INDEX + MATCH — look up in any direction", fields: [["f_return_range", "Range to return from", "B2:B20"], ["f_lookup", "Value to look up", "A2"], ["f_lookup_range", "Range to search", "Sheet2!A2:A20"]],
-    build: (v) => "=INDEX(" + v.f_return_range + ", MATCH(" + v.f_lookup + ", " + v.f_lookup_range + ", 0))",
+    build: (v) => "=INDEX(" + v.f_return_range + ", MATCH(" + quoteCriteria(v.f_lookup) + ", " + v.f_lookup_range + ", 0))",
     explain: (v) => "MATCH finds the position of " + v.f_lookup + " in " + v.f_lookup_range + " (0 means exact match), and INDEX returns the value at that position from " + v.f_return_range + ". Unlike VLOOKUP it can look to the left.",
     example: "Find a price by product code: =INDEX(B2:B20, MATCH(A2, Sheet2!A2:A20, 0))." },
   ifformula: { name: "IF — one condition, two results", fields: [["f_condition", "Condition to test", "A2>100"], ["f_true", "Value if true", "\"High\""], ["f_false", "Value if false", "\"Low\""]],
