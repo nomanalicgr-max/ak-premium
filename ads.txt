@@ -1,0 +1,4 @@
+# AK Premium ads.txt — placeholder.
+# Add authorised ad seller lines here only after an ad network approves this site.
+# Example (do NOT use until issued to this site):
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
