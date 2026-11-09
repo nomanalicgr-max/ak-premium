@@ -1,0 +1,56 @@
+{
+  "country": "Pakistan",
+  "tax": "Salaried income tax (FBR, Income Tax Ordinance 2001, First Schedule)",
+  "verified": "2026-11-09",
+  "note": "Tax Year 2026 = FY 2025-26 (Finance Act 2025). Tax Year 2027 = FY 2026-27 (Finance Act 2026), the current tax year as of November 2026. Tax Year 2025 was NOT directly verified from an official FBR document in this session and is intentionally omitted — do not add it without verifying Circular No. 01 of 2024-25.",
+  "sources": {
+    "TY2026": [
+      "https://download1.fbr.gov.pk/Docs/2025841183918948CircularNo01of2025-26IncomeTax.pdf",
+      "http://download1.fbr.gov.pk/Docs/20258181281745641WHT-RateCard.pdf"
+    ],
+    "TY2027": [
+      "https://www.fbr.gov.pk/Downloads/?id=90590&Type=Docs",
+      "https://download1.fbr.gov.pk/Docs/202681113864992WithholdingTaxRatesCard2027.pdf",
+      "https://www.fbr.gov.pk/Budget2026-27/SalientFeatures/Salient-Feature.pdf"
+    ]
+  },
+  "years": [
+    {
+      "tax_year": "2026",
+      "label": "Tax Year 2026 (FY 2025-26, Finance Act 2025)",
+      "default": false,
+      "slabs": [
+        {"up_to": 600000, "rate": 0, "base_tax": 0},
+        {"up_to": 1200000, "rate": 0.01, "base_tax": 0},
+        {"up_to": 2200000, "rate": 0.11, "base_tax": 6000},
+        {"up_to": 3200000, "rate": 0.23, "base_tax": 116000},
+        {"up_to": 4100000, "rate": 0.30, "base_tax": 346000},
+        {"up_to": null, "rate": 0.35, "base_tax": 616000}
+      ],
+      "surcharge": {"threshold": 10000000, "rate": 0.09, "note": "9% surcharge on tax payable where taxable income exceeds Rs 10,000,000 (s.4AB)."}
+    },
+    {
+      "tax_year": "2027",
+      "label": "Tax Year 2027 (FY 2026-27, Finance Act 2026) — current",
+      "default": true,
+      "slabs": [
+        {"up_to": 600000, "rate": 0, "base_tax": 0},
+        {"up_to": 1200000, "rate": 0.01, "base_tax": 0},
+        {"up_to": 2200000, "rate": 0.11, "base_tax": 6000},
+        {"up_to": 3200000, "rate": 0.20, "base_tax": 116000},
+        {"up_to": 4100000, "rate": 0.25, "base_tax": 316000},
+        {"up_to": 5600000, "rate": 0.29, "base_tax": 541000},
+        {"up_to": 7000000, "rate": 0.32, "base_tax": 976000},
+        {"up_to": null, "rate": 0.35, "base_tax": 1424000}
+      ],
+      "surcharge": {"threshold": null, "rate": 0, "note": "The 9% surcharge for salaried individuals was withdrawn by Finance Act 2026 (s.4AB). No surcharge for salaried TY2027."}
+    }
+  ],
+  "zakat": {
+    "rate": 0.025,
+    "nisab_gold_tola": 7.5,
+    "nisab_silver_tola": 52.5,
+    "reported_bank_nisab_pkr_1446_47": 503529,
+    "reported_bank_nisab_status": "REPORTED ONLY — not directly verified from an official gov.pk / sbp.org.pk page in this session. Reported citation chain: Ministry of Poverty Alleviation & Social Safety notification, 16 Feb 2026, via SBP BPRD Circular Letter No. 03 of 2026, 17 Feb 2026. Government nisab is re-notified every year before Ramadan — verify before relying on it."
+  }
+}
