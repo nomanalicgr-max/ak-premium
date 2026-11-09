@@ -425,6 +425,13 @@ if (pageNumbersBtn) pageNumbersBtn.addEventListener("click", async () => {
   } catch (e) { setStatus("pageNumbersStatus", "Could not add page numbers to this PDF."); }
 });
 
+/* Honest size wording for Compress: a tiny text PDF re-rendered as images
+   can come out larger, and "0% smaller" would hide that. */
+function sizeChangeNote(oldSize, newSize) {
+  const pct = Math.round((1 - newSize / oldSize) * 100);
+  if (pct >= 0) return pct + "% smaller";
+  return (-pct) + "% larger — this file was already small, so re-rendering its pages as images made it bigger";
+}
 const compressQuality = $("compressQuality");
 if (compressQuality) compressQuality.addEventListener("input", () => {
   const label = $("compressQualityLabel");
@@ -443,8 +450,7 @@ if (compressPdfBtn) compressPdfBtn.addEventListener("click", async () => {
       if (!doc) return;
       const bytes = await doc.save({ useObjectStreams: true });
       downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-compressed.pdf");
-      const saved = Math.max(0, Math.round((1 - bytes.length / file.size) * 100));
-      setStatus("compressPdfStatus", "Done. Light: " + humanBytes(file.size) + " to " + humanBytes(bytes.length) + " (" + saved + "% smaller). Text stays selectable.");
+      setStatus("compressPdfStatus", "Done. Light: " + humanBytes(file.size) + " to " + humanBytes(bytes.length) + " (" + sizeChangeNote(file.size, bytes.length) + "). Text stays selectable.");
       return;
     }
     if (!(await ensurePdfJs("compressPdfStatus"))) return;
@@ -467,8 +473,7 @@ if (compressPdfBtn) compressPdfBtn.addEventListener("click", async () => {
     }
     const outBytes = await out.save({ useObjectStreams: true });
     downloadBlob(new Blob([outBytes], { type: "application/pdf" }), "ak-premium-compressed.pdf");
-    const saved = Math.max(0, Math.round((1 - outBytes.length / file.size) * 100));
-    setStatus("compressPdfStatus", "Done. " + (level === "strong" ? "Strong" : "Medium") + ": " + humanBytes(file.size) + " to " + humanBytes(outBytes.length) + " (" + saved + "% smaller). Warning: pages are now images, so text is not selectable and cannot be searched.");
+    setStatus("compressPdfStatus", "Done. " + (level === "strong" ? "Strong" : "Medium") + ": " + humanBytes(file.size) + " to " + humanBytes(outBytes.length) + " (" + sizeChangeNote(file.size, outBytes.length) + "). Warning: pages are now images, so text is not selectable and cannot be searched.");
   } catch (e) { setStatus("compressPdfStatus", "Could not compress this PDF. Please check the file."); }
 });
 
@@ -1177,7 +1182,7 @@ async function extractPdfTextWithPassword(file, password, statusId) {
 function runQpdf(op, bytes, password, statusId) {
   return new Promise((resolve) => {
     let worker;
-    try { worker = new Worker("/assets/js/qpdf-worker.js?v=3", { type: "module" }); }
+    try { worker = new Worker("/assets/js/qpdf-worker.js?v=4", { type: "module" }); }
     catch (e) { setStatus(statusId, "PDF encryption could not start in this browser. Please try Chrome, Edge or Firefox."); resolve(null); return; }
     const timer = setTimeout(() => { try { worker.terminate(); } catch (e) {} setStatus(statusId, "PDF encryption is taking too long. Please try a smaller file."); resolve(null); }, 120000);
     worker.onmessage = (e) => {
@@ -1247,7 +1252,10 @@ if (redactPdfBtn) redactPdfBtn.addEventListener("click", async () => {
     if (!needLibrary(!!window.pdfjsLib, "pdf.js", "redactPdfStatus")) return;
     if (window.pdfjsLib.GlobalWorkerOptions) window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
     const bytes = await readAsArrayBuffer(file);
-    const pdf = await window.pdfjsLib.getDocument({ data: bytes }).promise;
+    /* pdf.js sends its copy to a Web Worker, which detaches (empties) the
+       buffer — pdf-lib then fails with "detached ArrayBuffer". So pdf.js
+       gets a copy and pdf-lib keeps the original. */
+    const pdf = await window.pdfjsLib.getDocument({ data: bytes.slice(0) }).promise;
     const doc = await window.PDFLib.PDFDocument.load(bytes);
     let found = 0; const matchedPages = new Set();
     for (let i = 1; i <= pdf.numPages; i++) {
