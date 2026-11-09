@@ -155,6 +155,31 @@ see the "Fixed during testing" section at the end.
   loading, reserved ad slot heights, labels on inputs, aria-live
   results), but a real Lighthouse run should be done after deploy.
 
-## Live verification (after deploy)
-- To be filled in after the deploy browser task runs, with the commit
-  hash, Vercel status, and per-check results.
+## Live verification failure found and fixed (2026-11-09)
+
+The first live check after deploy found every tool page showing an
+empty white tool area. Cause: the v3 stylesheet hides
+`.workspace-tool` (`display: none`) until it gains the `active` class,
+and `active` was only ever added when a tool card was clicked on the
+homepage. A v4 tool page has no cards and no `#tool-` hash, so no
+workspace was ever activated. Local jsdom tests missed this because
+they query elements directly and `display: none` does not stop
+`getElementById` from finding them — a real lesson: test visibility,
+not just presence.
+
+Fix (two layers, either one alone makes the tools visible):
+- `assets/js/app.js`: on any `/tools/` page, or any page with exactly
+  one workspace, the single `.workspace-tool` gets the `active` class
+  at load.
+- `assets/css/styles.css` + generated pages: tool pages now carry
+  `<body class="tool-page">` and the stylesheet shows the workspace
+  under that class even if app.js fails to run.
+
+Verified locally after the fix: in jsdom the Merge PDF workspace has
+the `active` class and `body.tool-page` is present. A full live
+re-verification in a real browser follows the redeploy.
+
+## Live verification (after redeploy)
+- To be filled in after the fix is redeployed and the live browser
+  task re-runs, with the commit hash, Vercel status, and per-check
+  results.
