@@ -179,7 +179,35 @@ Verified locally after the fix: in jsdom the Merge PDF workspace has
 the `active` class and `body.tool-page` is present. A full live
 re-verification in a real browser follows the redeploy.
 
-## Live verification (after redeploy)
-- To be filled in after the fix is redeployed and the live browser
-  task re-runs, with the commit hash, Vercel status, and per-check
-  results.
+## Second live failure: stale browser cache (2026-11-09)
+
+After the workspace hotfix was deployed and Vercel showed Ready, a
+second live check still showed an empty tool area on Merge PDF, and
+the cookie banner's Reject button did not dismiss it. Direct checks
+of the live files (curl) proved the deployed code was correct: the
+merge page has `<body class="tool-page">`, app.js contains the
+activation code, styles.css contains the `body.tool-page` rule, and
+common.js returns 200. The cause was the site's own cache headers:
+vercel.json set `Cache-Control: public, max-age=31536000, immutable`
+on /assets/*, so any browser that had visited the site before the
+hotfix kept the old stylesheet and scripts for up to a year and never
+refetched them.
+
+Fix:
+- vercel.json now uses `public, max-age=3600, must-revalidate` for
+  /assets/* — no more year-long immutable caching of files that
+  change in place.
+- All local asset URLs are versioned with `?v=2` (stylesheet,
+  config.js, common.js, app.js, qpdf worker and qpdf wasm), so a
+  browser that cached the old URLs fetches the new ones.
+- Every page was regenerated and redeployed with the new URLs.
+
+Lesson: never ship `immutable` on files that are updated in place
+without a version in the filename or query string, and never trust a
+live check from a browser that visited the site before the fix —
+verify with a fresh profile or a hard refresh.
+
+## Live verification (after cache-bust redeploy)
+- To be filled in after the cache-bust redeploy and a FRESH-browser
+  live verification with real files, with the commit hash, Vercel
+  status, and per-check results.

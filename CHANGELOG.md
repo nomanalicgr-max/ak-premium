@@ -109,6 +109,18 @@ Pakistan/Urdu tools are added.
   Contact has a working mailto plus a form that opens the user's email
   app addressed to CONTACT_EMAIL.
 
+### Hotfix — 9 November 2026 (same day)
+- Tool pages showed an empty tool area because the v3 stylesheet
+  hides `.workspace-tool` until it gains `active`, and nothing on the
+  new per-tool pages added that class. Fixed in two layers: app.js
+  now activates the single workspace on `/tools/` pages, and tool
+  pages carry `<body class="tool-page">` with a stylesheet rule that
+  shows the workspace even if app.js fails.
+- A second live check still showed the old behaviour because
+  vercel.json had set year-long `immutable` caching on /assets/*.
+  Fixed: assets now cache for 1 hour with revalidation, and all local
+  asset URLs are versioned (`?v=2`) so browsers fetch the new files.
+
 ### Honesty and brand
 - No misleading claims. "Premium" is only the site name; there are no
   paid features, no upgrade prompts, and no capability a tool does not
