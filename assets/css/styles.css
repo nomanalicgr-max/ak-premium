@@ -60,6 +60,8 @@ a { color: var(--ak-accent); }
 .workspace-empty { color: var(--ak-muted); text-align: center; padding: 12px 0; }
 .workspace-tool { display: none; }
 .workspace-tool.active { display: block; }
+/* v4 tool pages: the single workspace is always visible, even if app.js fails to run. */
+body.tool-page .workspace-tool { display: block; }
 .workspace-tool h3 { margin: 0 0 14px; color: var(--ak-heading); font-size: 1.2rem; letter-spacing: -0.2px; }
 .workspace-tool input[type="file"], .workspace-tool input[type="number"], .workspace-tool select, textarea, select {
   width: 100%; background: var(--ak-input); color: var(--ak-text); border: 1px solid #d1d5db; border-radius: 10px; padding: 10px 12px; margin: 8px 0; font: inherit;
