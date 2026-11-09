@@ -207,7 +207,53 @@ without a version in the filename or query string, and never trust a
 live check from a browser that visited the site before the fix —
 verify with a fresh profile or a hard refresh.
 
-## Live verification (after cache-bust redeploy)
-- To be filled in after the cache-bust redeploy and a FRESH-browser
-  live verification with real files, with the commit hash, Vercel
-  status, and per-check results.
+## Fresh-browser verification (2026-11-09, after cache-bust) — 7 of 13 PASS
+
+The workspace fix and cache-bust worked: in a fresh browser the tool
+areas render, file pickers and buttons are visible, thumbnails appear,
+and these passed: Homepage (68 cards, search "tax" = 2 tools),
+Image Compressor (JPEG 380.4 KB -> 99.6 KB at a 100 KB target, link
+downloaded), Salary Tax Calculator (TY2027, Rs 200,000/month -> tax
+Rs 156,000/year, Rs 13,000/month, take-home Rs 187,000), Land
+Converter (1 Kanal = 20 Marla, 5,445 sq ft), Amount to Words
+(125,000 EN + UR), Sitemap (75 URLs), robots.txt, 404 page.
+
+Four failures found, all fixed below:
+1. Cookie consent: Accept/Reject did not dismiss the banner. Cause:
+   the stylesheet sets `.consent-banner{display:flex}`, which
+   overrides the `hidden` attribute's `display:none`, so
+   `banner.hidden = true` had no visual effect. The clicks did save
+   the choice; the banner just never disappeared. Fix: added
+   `.consent-banner[hidden]{display:none}` to styles.css.
+2. PDF tools (Merge, Split, Compress, Protect): the work completed
+   and the status said "downloaded", but no download button or link
+   was ever shown, so the result could not be opened or verified.
+   Fix: `downloadBlob` now always leaves a visible "Download
+   <filename>" link in the active tool area, next to the status
+   line, in addition to the automatic download. The link stays
+   usable for 10 minutes.
+3. Redact: "Could not redact this PDF." The full redact flow was
+   reproduced in Node with a real canvas and PASSES (page 1 text
+   destroyed, page 2 intact), so the logic is sound; the browser
+   failure reason was hidden by a generic catch. Fix: the error
+   message now shows the real reason, e.g. "Could not redact this
+   PDF. (…)", and the success message now reports the true number
+   of pages with matches (it previously reported the total page
+   count).
+4. Formula Generator: SUMIF built `=SUMIF(A2:A20, Lahore, B2:B20)`
+   without quotes around Lahore, and stray text `100">` rendered
+   next to the Condition field. Cause: the criteria value was
+   inserted raw, and the placeholder `"Approved" or ">100"` broke
+   the input HTML attribute. Fix: wizard fields now HTML-escape
+   placeholders, and a `quoteCriteria` helper quotes plain-text
+   criteria/lookup values (numbers, cell references, sheet
+   references and comparisons are left alone). Verified in jsdom:
+   SUMIF now builds `=SUMIF(A2:A20, "Lahore", B2:B20)`.
+
+Asset version bumped to ?v=3 for this redeploy so browsers fetch
+the new files.
+
+## Live re-verification (after ?v=3 fixes)
+- To be filled in after the ?v=3 redeploy and a fresh-browser live
+  re-verification of the four fixed items, with the commit hash,
+  Vercel status, and per-check results.

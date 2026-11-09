@@ -121,6 +121,20 @@ Pakistan/Urdu tools are added.
   Fixed: assets now cache for 1 hour with revalidation, and all local
   asset URLs are versioned (`?v=2`) so browsers fetch the new files.
 
+### Hotfix 2 — 9 November 2026 (same day, after fresh-browser verification)
+- Cookie consent banner could never be dismissed because the
+  stylesheet's `display:flex` overrode the `hidden` attribute.
+  Added `.consent-banner[hidden]{display:none}`.
+- PDF tools showed only a status line after a successful download.
+  `downloadBlob` now always leaves a visible "Download <filename>"
+  link in the tool area.
+- Formula Generator quoted plain-text criteria correctly now
+  (SUMIF with Lahore builds `=SUMIF(A2:A20, "Lahore", B2:B20)`),
+  and wizard placeholders with quotes no longer break the input HTML.
+- Redact now reports the real error instead of a generic message,
+  and its success message reports the true number of matched pages.
+- Asset version bumped to `?v=3`.
+
 ### Honesty and brand
 - No misleading claims. "Premium" is only the site name; there are no
   paid features, no upgrade prompts, and no capability a tool does not
