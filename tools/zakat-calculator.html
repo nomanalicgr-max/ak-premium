@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zakat Calculator Free Online | AK Premium</title>
+<meta name="description" content="Zakat at 2.5% with nisab by gold or silver rate. Free, in your browser. No sign-up.">
+<link rel="canonical" href="https://ak-premium.vercel.app/tools/zakat-calculator">
+<meta property="og:title" content="Zakat Calculator Free Online | AK Premium">
+<meta property="og:description" content="Zakat at 2.5% with nisab by gold or silver rate. Free, in your browser. No sign-up.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ak-premium.vercel.app/tools/zakat-calculator">
+<meta property="og:site_name" content="AK Premium">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zakat Calculator Free Online | AK Premium">
+<meta name="twitter:description" content="Zakat at 2.5% with nisab by gold or silver rate. Free, in your browser. No sign-up.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Zakat Calculator", "applicationCategory": "Pakistan Tools", "operatingSystem": "Web browser", "description": "Zakat at 2.5% with nisab by gold or silver rate. Free, in your browser. No sign-up.", "url": "https://ak-premium.vercel.app/tools/zakat-calculator", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "AK Premium", "url": "https://ak-premium.vercel.app/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Zakat Calculator free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Zakat Calculator on AK Premium is free to use in your browser, with no sign-up and no account."}}, {"@type": "Question", "name": "Do my files leave my browser when I use Zakat Calculator?", "acceptedAnswer": {"@type": "Answer", "text": "No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device."}}, {"@type": "Question", "name": "How do I use Zakat Calculator?", "acceptedAnswer": {"@type": "Answer", "text": "Open the tool on this page, follow the steps under How to use, and download or copy your result. The steps are written for this tool, not for a general PDF editor."}}, {"@type": "Question", "name": "What are the limits of Zakat Calculator?", "acceptedAnswer": {"@type": "Answer", "text": "This is an estimate only, not religious advice. The nisab is 7.5 tola gold or 52.5 tola silver, and Zakat is 2.5% of net zakatable wealth. The government bank-deduction nisab for Ramadan 2026 was reported as Rs 503,529, but that figure was not directly verified from an official source, so it is shown only as reported."}}, {"@type": "Question", "name": "What is the nisab?", "acceptedAnswer": {"@type": "Answer", "text": "The nisab is the minimum wealth above which Zakat is due: 7.5 tola of gold or 52.5 tola of silver. If your wealth is below it, no Zakat is due."}}, {"@type": "Question", "name": "How much Zakat do I pay?", "acceptedAnswer": {"@type": "Answer", "text": "2.5% of your net zakatable wealth, after subtracting debts, once it has been held for one lunar year."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ak-premium.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Pakistan Tools", "item": "https://ak-premium.vercel.app/tools"}, {"@type": "ListItem", "position": 3, "name": "Zakat Calculator", "item": "https://ak-premium.vercel.app/tools/zakat-calculator"}]}</script>
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><a class="brand" href="/"><span class="brand-mark">AK</span><span>AK Premium</span></a><nav class="main-nav" aria-label="Main navigation"><a class="nav-btn" href="/">All Tools</a><a class="nav-btn" href="/about">About</a><a class="nav-btn" href="/contact">Contact</a><button type="button" class="theme-toggle" id="darkModeToggle" aria-label="Toggle dark mode">Dark mode</button></nav></div></header><main class="page">
+<p><a href="/">← All tools</a> &middot; <a href="/tools">Pakistan Tools</a></p>
+<div class="ad-slot ad-slot-leaderboard" data-ad-slot="leaderboard" role="complementary" aria-label="Advertisement"></div><h1>Zakat Calculator</h1>
+<p><strong>Zakat at 2.5% with nisab by gold or silver rate.</strong></p>
+<section class="workspace" aria-label="Zakat Calculator tool">
+<div class="workspace-tool" id="tool-zakat">
+<h3>Zakat Calculator</h3>
+<div class="field-row"><label>Cash and bank (Rs) <input id="zakatCash" type="number" min="0" value="0"></label><label>Debts to subtract (Rs) <input id="zakatDebts" type="number" min="0" value="0"></label></div>
+<div class="field-row"><label>Gold (tola) <input id="zakatGold" type="number" min="0" step="any" value="0"></label><label>Gold rate per tola (Rs) <input id="zakatGoldRate" type="number" min="0" value="0"></label></div>
+<div class="field-row"><label>Silver (tola) <input id="zakatSilver" type="number" min="0" step="any" value="0"></label><label>Silver rate per tola (Rs) <input id="zakatSilverRate" type="number" min="0" value="0"></label></div>
+<button id="zakatBtn" type="button" class="btn-primary">Calculate Zakat</button>
+<pre id="zakatOutput" class="terminal" aria-live="polite">Your Zakat estimate will appear here.</pre>
+<p class="status" id="zakatStatus" aria-live="polite"></p>
+<p class="file-limit-note">Estimate only, not religious advice. Nisab is 7.5 tola gold or 52.5 tola silver.</p>
+</div>
+</section>
+<div class="ad-slot ad-slot-incontent" data-ad-slot="incontent" role="complementary" aria-label="Advertisement"></div><h2>What Zakat Calculator does</h2>
+<p>A Zakat calculator is for working out the Zakat due on cash, gold and silver held for one lunar year. It is used in Ramadan and at the end of a lunar year, when a person checks whether their wealth has reached the nisab.</p>
+<h2>How to use Zakat Calculator</h2>
+<ol><li>Enter your numbers in the labelled fields.</li><li>Press Calculate or Convert.</li><li>Read the result, which is shown on the page.</li></ol>
+<h2>Tips for a good result</h2>
+<p>Enter the current rate per tola for gold and silver, because the nisab depends on today&#x27;s prices. The calculator uses the silver nisab (52.5 tola) when you give a silver rate.</p>
+<h2>Limits to know about</h2>
+<p>This is an estimate only, not religious advice. The nisab is 7.5 tola gold or 52.5 tola silver, and Zakat is 2.5% of net zakatable wealth. The government bank-deduction nisab for Ramadan 2026 was reported as Rs 503,529, but that figure was not directly verified from an official source, so it is shown only as reported.</p>
+<h2>Example</h2>
+<p>Cash and gold worth Rs 1,000,000 above the nisab gives Rs 25,000 Zakat at 2.5%.</p>
+<h2>Your privacy</h2>
+<p>Your files are processed in your browser by Zakat Calculator. They are not uploaded to an AK Premium server, and you do not need an account to use the tool. The libraries the tool needs load from public CDNs, and those CDNs may log standard technical information, such as your IP address, when they serve a library file. If you later accept cookies, Google AdSense and Google Analytics may set their own cookies, as described in the <a href="/privacy">Privacy Policy</a>.</p>
+<h2>Frequently asked questions</h2>
+<h3>Is Zakat Calculator free?</h3>
+<p>Yes. Zakat Calculator on AK Premium is free to use in your browser, with no sign-up and no account.</p><h3>Do my files leave my browser when I use Zakat Calculator?</h3>
+<p>No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device.</p><h3>How do I use Zakat Calculator?</h3>
+<p>Open the tool on this page, follow the steps under How to use, and download or copy your result. The steps are written for this tool, not for a general PDF editor.</p><h3>What are the limits of Zakat Calculator?</h3>
+<p>This is an estimate only, not religious advice. The nisab is 7.5 tola gold or 52.5 tola silver, and Zakat is 2.5% of net zakatable wealth. The government bank-deduction nisab for Ramadan 2026 was reported as Rs 503,529, but that figure was not directly verified from an official source, so it is shown only as reported.</p><h3>What is the nisab?</h3>
+<p>The nisab is the minimum wealth above which Zakat is due: 7.5 tola of gold or 52.5 tola of silver. If your wealth is below it, no Zakat is due.</p><h3>How much Zakat do I pay?</h3>
+<p>2.5% of your net zakatable wealth, after subtracting debts, once it has been held for one lunar year.</p><div class="related">
+<h2>Related tools</h2>
+<ul><li><a href="/tools/land-converter">Land Converter</a> — Convert Marla, Kanal, Acre, sq ft, sq yd and sq m.</li><li><a href="/tools/pakistan-salary-tax-calculator">Pakistan Salary Tax Calculator</a> — FBR salary tax, monthly and annual, with take-home pay.</li><li><a href="/tools/amount-to-words">Amount to Words</a> — Write an amount in English and Urdu words.</li><li><a href="/tools/urdu-word-counter">Urdu Word Counter</a> — Count Urdu words, characters and reading time.</li></ul>
+<p><a href="/tools">Browse all AK Premium tools →</a></p>
+</div>
+<div class="ad-slot ad-slot-bottom" data-ad-slot="bottom" role="complementary" aria-label="Advertisement"></div></main>
+<footer class="site-footer"><p><a href="/about">About</a> &middot; <a href="/privacy">Privacy Policy</a> &middot; <a href="/terms">Terms of Service</a> &middot; <a href="/disclaimer">Disclaimer</a> &middot; <a href="/contact">Contact</a> &middot; <a href="/tools">All Tool Pages</a> &middot; &copy; 2026 AK Premium</p><p>AK Premium is a free, browser-based PDF, image, Excel, business and Pakistan toolkit. Files are processed in your browser and are not uploaded to an AK Premium server.</p></footer><div class="consent-banner" id="consentBanner" hidden><p>AK Premium uses cookies for ads and analytics only if you accept. Your files are processed in your browser and are never uploaded. <a href="/privacy">Read the Privacy Policy</a>.</p><button type="button" class="btn-primary" id="consentAccept">Accept</button><button type="button" class="btn-secondary" id="consentReject">Reject</button></div><script src="/config.js"></script>
+<script src="/assets/js/common.js"></script>
+<script src="/assets/js/app.js"></script>
+</body>
+</html>
