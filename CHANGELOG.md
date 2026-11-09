@@ -135,6 +135,17 @@ Pakistan/Urdu tools are added.
   and its success message reports the true number of matched pages.
 - Asset version bumped to `?v=3`.
 
+### Hotfix 3 — 9 November 2026 (same day)
+- Redact failed in the browser with "detached ArrayBuffer": pdf.js
+  transfers the file buffer to its Web Worker, which empties it, so
+  pdf-lib could not load the same buffer. pdf.js now gets a copy
+  (`bytes.slice(0)`) and pdf-lib keeps the original. Verified with a
+  real canvas: the redacted page's text layer is destroyed and other
+  pages stay intact.
+- Compress now says "N% larger" when the output is bigger than the
+  input, instead of the misleading "0% smaller".
+- Asset version bumped to `?v=4`.
+
 ### Honesty and brand
 - No misleading claims. "Premium" is only the site name; there are no
   paid features, no upgrade prompts, and no capability a tool does not

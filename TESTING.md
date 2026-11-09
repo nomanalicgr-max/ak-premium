@@ -253,7 +253,47 @@ Four failures found, all fixed below:
 Asset version bumped to ?v=3 for this redeploy so browsers fetch
 the new files.
 
-## Live re-verification (after ?v=3 fixes)
-- To be filled in after the ?v=3 redeploy and a fresh-browser live
-  re-verification of the four fixed items, with the commit hash,
-  Vercel status, and per-check results.
+## Re-verification (2026-11-09, ?v=3) — downloads verified independently
+
+The visible download links work: Merge, Split (both modes), Compress
+and Protect all produced real downloaded files, and I verified the
+files myself with pdf-lib/qpdf (the browser agent cannot open its
+own downloads):
+- Merged PDF: 10 pages (2 x 5-page inputs) — PASS
+- Split PDF (ranges 1-3, 5): 4 pages — PASS
+- Split ZIP: 5 one-page PDFs — PASS
+- Compressed PDF: 5 pages — PASS
+- Protected PDF: encrypted, needs password; decrypts with test1234
+  to 5 pages; wrong password rejected as WRONG_PASSWORD — PASS
+- Formula Generator: `=SUMIF(A2:A20, "Lahore", B2:B20)` with quotes,
+  no stray text — PASS
+- Tax Calculator and Land Converter spot re-checks — PASS
+
+Two items remained:
+1. Cookie consent: no banner appeared in the agent's "fresh" tabs,
+   because that browser profile is persistent and already holds a
+   stored choice from an earlier run. That is itself evidence the
+   choice now persists (the banner is hidden when a choice is
+   stored). The click-to-dismiss was verified in jsdom (Accept ->
+   banner hidden, localStorage "accepted") and the
+   `.consent-banner[hidden]{display:none}` rule is in the deployed
+   stylesheet diff. Treated as fixed; a true first-visit click test
+   is still worth doing in a brand-new incognito window.
+2. Redact: FAILED with the exact error "Cannot perform Construct on
+   a detached ArrayBuffer". Root cause found: pdf.js sends its copy
+   of the file to a Web Worker, which detaches (empties) the buffer,
+   so pdf-lib's `PDFDocument.load(bytes)` on the same buffer throws.
+   The same pattern exists nowhere else in app.js (only Redact
+   passes one buffer to both libraries). Fix: pdf.js now gets
+   `bytes.slice(0)` (a copy) and pdf-lib keeps the original.
+   Verified in Node with a real canvas: 1 match, page 1 text
+   destroyed, page 2 intact ("Second page, no secret here.").
+   Compress wording also fixed in the same patch: a larger output
+   now says "N% larger" instead of the misleading "0% smaller".
+
+Asset version bumped to ?v=4 for this redeploy.
+
+## Live re-verification (after ?v=4 redact fix)
+- To be filled in after the ?v=4 redeploy and a fresh-browser live
+  re-verification of Redact, Unlock (with the pre-protected sample),
+  consent in a true incognito window, and the Compress wording.
