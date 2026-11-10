@@ -361,5 +361,39 @@ Four issues, all with a real root cause found in the code:
    with tighter cards and header; at 420px it is a single column.
    Live mobile screenshot check still to do after deploy.
 
-Asset version bumped to ?v=5. Live verification (desktop + mobile
-screenshots, contact submit) to be recorded here after the ?v=5 deploy.
+Asset version bumped to ?v=5. Head commit: 8e52680 (Vercel Ready).
+
+Live verification 2026-11-10 14:48-14:49 PKT (fresh tab, 1920px):
+1. ICONS — PASS. Every card shows a small coloured icon tile.
+   Confirmed twice: the browser agent's report, and my own look at the
+   rendered homepage PDF (Create PDF pink doc icon, Images to PDF blue
+   image icon, Merge PDF merge icon, and so on). No empty cards.
+2. HERO — PASS. Hero edges line up with the tool grid (both span
+   x=330 to x=1570 in the 1920px screenshot).
+3. CONTACT — PASS. Fields stacked full-width; submitted Test User /
+   test@example.com / test message: page stayed put, no error page,
+   success note shown verbatim, Copy message button appeared. No
+   email was sent (mailto by design).
+4. MOBILE — NOT VERIFIED by a real render. The browser automation
+   cannot resize its window and DevTools/device emulation would not
+   open, and there is no local headless browser on this machine.
+   The mobile CSS rules (stacked form, 2 columns at 640px, 1 column
+   at 420px) are deployed and were checked structurally in jsdom, but
+   a real 390px render still needs checking on a phone.
+
+## v5.1 — Google Forms contact form (2026-11-10)
+
+User asked to replace the mailto contact form with a Google Form.
+Form created via the Google Forms connector in his own Google account:
+"Contact AK Premium", form ID 1CidO_9A3CcXY3KtnMM2iBfRgqlKX2k8fG-Q28fQfcjA,
+published and accepting responses. Questions: Your name (required),
+Your email (required), Which tool is this about? (optional), Message
+(required, paragraph). Email is asked as a question, not collected
+from a Google sign-in, so anyone can write in without an account.
+contact.html now embeds it as an iframe (?embedded=true) with an
+inline height (820px) so it renders correctly even before the updated
+stylesheet is re-fetched, plus a fallback link to open the form in a
+new tab. The old mailto form is gone; the "Email us" mailto button
+stays. jsdom check: iframe src correct, no mailto form, email button
+and fallback link present. Live verification of the rendered embed
+to be recorded here after deploy.

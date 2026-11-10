@@ -135,6 +135,12 @@ Pakistan/Urdu tools are added.
   and its success message reports the true number of matched pages.
 - Asset version bumped to `?v=3`.
 
+### v5.1 — 10 November 2026 (Google Forms contact form)
+- The mailto contact form is replaced by a real Google Form ("Contact
+  AK Premium") embedded on the contact page: Your name, Your email,
+  Which tool is this about?, Message. Responses go to Noman's Google
+  Forms account. Fallback link opens the form in a new tab.
+
 ### v5 — 10 November 2026 (user-reported fixes)
 - Tool cards were empty: the SVG sprite (18 icons) was never copied
   into the v4 pages, and the card used class `tool-icon` while the CSS
