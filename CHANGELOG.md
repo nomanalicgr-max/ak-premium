@@ -135,6 +135,12 @@ Pakistan/Urdu tools are added.
   and its success message reports the true number of matched pages.
 - Asset version bumped to `?v=3`.
 
+### v5.2 — 10 November 2026 (contact form on the right)
+- Contact page is now two columns: text on the left, Google Form on
+  the right. The form frame is taller (1000px, 1150px on phones) so
+  it does not scroll inside itself. Info and tool pages also get a
+  centred 1180px container with side padding.
+
 ### v5.1 — 10 November 2026 (Google Forms contact form)
 - The mailto contact form is replaced by a real Google Form ("Contact
   AK Premium") embedded on the contact page: Your name, Your email,

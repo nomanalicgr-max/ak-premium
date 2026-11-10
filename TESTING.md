@@ -395,5 +395,25 @@ inline height (820px) so it renders correctly even before the updated
 stylesheet is re-fetched, plus a fallback link to open the form in a
 new tab. The old mailto form is gone; the "Email us" mailto button
 stays. jsdom check: iframe src correct, no mailto form, email button
-and fallback link present. Live verification of the rendered embed
-to be recorded here after deploy.
+and fallback link present.
+Live verification 2026-11-10 15:06-15:09 PKT: deployed (GitHub HEAD
+5ccbfef, Vercel Ready). The contact page renders the embedded
+"Contact AK Premium" Google Form with all four fields, Submit/Clear
+form buttons, the fallback link, and the "Email us" button. PASS.
+
+## v5.2 — contact form on the right, no scroll (2026-11-10)
+
+User said the embedded form looked bad: it sat centred in the middle
+of the page, and it scrolled inside its frame. Fix: the contact page
+is now two columns — the text (intro, Email us button, What to tell
+us) on the left, the Google Form on the right. The iframe is taller
+(1000px desktop, 1150px on small screens) so the four questions and
+the Submit button fit without an inner scrollbar. The layout CSS is
+inlined in the contact page head so it applies on first load even
+while the stylesheet is still cached, and the same rules live in
+styles.css. Info and tool pages also gain a proper centred container
+(.page, max-width 1180px) — they had no side padding at all before.
+jsdom check: two columns, left has Email us + What to tell us, right
+has Send a message + iframe at 1000px, inline CSS present. Live
+verification (desktop screenshot + iframe scrollbar check) to be
+recorded here after deploy.
