@@ -135,6 +135,21 @@ Pakistan/Urdu tools are added.
   and its success message reports the true number of matched pages.
 - Asset version bumped to `?v=3`.
 
+### v5 — 10 November 2026 (user-reported fixes)
+- Tool cards were empty: the SVG sprite (18 icons) was never copied
+  into the v4 pages, and the card used class `tool-icon` while the CSS
+  styles `.tool-card .icon`. Both fixed — every card now shows its
+  icon in a coloured tile.
+- Contact form showed an error page on Send: it was a GET form to a
+  mailto: URL. It is now handled in JavaScript, building a proper
+  encoded mailto link and opening it without navigating the page,
+  with a success note and a Copy message fallback.
+- Hero now spans the same width as the tool grid (shared 1280px
+  container) instead of sitting narrower and centred.
+- Mobile: contact form fields stack full-width, grid is 2 equal
+  columns at 640px and a single column at 420px, tighter header.
+- Asset version bumped to `?v=5`.
+
 ### Hotfix 3 — 9 November 2026 (same day)
 - Redact failed in the browser with "detached ArrayBuffer": pdf.js
   transfers the file buffer to its Web Worker, which empties it, so

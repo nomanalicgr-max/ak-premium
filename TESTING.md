@@ -293,7 +293,73 @@ Two items remained:
 
 Asset version bumped to ?v=4 for this redeploy.
 
-## Live re-verification (after ?v=4 redact fix)
-- To be filled in after the ?v=4 redeploy and a fresh-browser live
-  re-verification of Redact, Unlock (with the pre-protected sample),
-  consent in a true incognito window, and the Compress wording.
+## Live re-verification (after ?v=4 redact fix) — 2026-11-09 12:24-12:27 PKT
+
+Head commit at test time: f3cd817. All three checks PASS, verified
+twice (browser agent + my own check of the downloaded files).
+
+1. REDACT — PASS. Live status: "Done. Redacted 1 match(es) on 1
+   page(s) — those pages are now images with no text layer, so the
+   covered text cannot be copied." Download link present
+   (ak-premium-redacted.pdf, 11,313 bytes). My own check of the
+   downloaded file: page 1 text is EMPTY (SecretWord gone, page is
+   an image), page 2 still reads "Second page, no secret here."
+   The detached-ArrayBuffer bug is fixed on live.
+2. UNLOCK — PASS. sample-protected.pdf (qpdf-encrypted, password
+   test1234) unlocked live: "Done. Unlocked PDF downloaded with its
+   original pages and layout." Downloaded file: 5 pages, NOT
+   encrypted. Wrong password ("wrongpassword") gives the exact
+   message: "Wrong password. Please check the password and try
+   again."
+3. MERGE — PASS. 2 files x 2 pages merged; downloaded file is
+   4 pages, visible download link present.
+4. CONSENT — NOT verified by a fresh first-visit click: the browser
+   automation has no incognito window, so a true first visit could
+   not be simulated. What stands: jsdom click test (Accept ->
+   banner hidden, localStorage "accepted"), the deployed
+   `.consent-banner[hidden]{display:none}` rule, and the banner
+   staying absent on repeat visits (stored choice honoured).
+   A real first-visit check on a fresh phone/browser is still
+   worth doing by hand.
+
+No console errors were reported in any round. Compress "N% larger"
+wording is live in code (sizeChangeNote); it was not re-run live
+in this round — the earlier live run already showed the honest
+numbers (2.3 KB -> 67.2 KB) and the wording only changes the label.
+
+## v5 fixes (2026-11-10) — user-reported: empty cards, contact form error, hero fit, mobile
+
+Four issues, all with a real root cause found in the code:
+
+1. EMPTY TOOL CARDS — the cards were blank white boxes with no icon.
+   Root cause (two bugs): (a) the card template uses `<use href="#i-...">`
+   but the 18 `<symbol>` definitions from the v3 index were never copied
+   into the v4 pages, so every icon reference pointed at nothing;
+   (b) the template used class `tool-icon` while the CSS styles
+   `.tool-card .icon`, so even a present icon would have had no tile.
+   Fix: the sprite is now injected after `<body>` on every generated
+   page, and the card class is `icon`. jsdom check: all 68 `<use>`
+   references on all 76 pages resolve to a `<symbol>` on the same page.
+2. CONTACT FORM ERROR — pressing Send showed an error page. Root cause:
+   the form was `<form action="mailto:..." method="get">`, which makes
+   the browser navigate to `mailto:...?name=...&email=...&body=...` —
+   invalid mailto parameters that browsers reject. Fix: the form is now
+   handled in common.js — it builds a proper
+   `mailto:?subject=...&body=...` with encodeURIComponent and opens it
+   with an anchor click, so the page never navigates anywhere. A success
+   note appears, and a Copy message button is revealed as a fallback
+   when no email app is set up. jsdom check: submit leaves the URL
+   unchanged, mailto is correctly encoded, success note shows.
+3. HERO DID NOT FIT — the hero was capped at 1180px and centered while
+   the tool grid spanned the full page width. Fix: the homepage now
+   uses one shared container (`.home-wrap`, max-width 1280px) and the
+   hero spans its full width, so hero and grid edges line up at every
+   screen size.
+4. MOBILE LAYOUT — the contact form fields sat side by side and
+   overflowed, and the grid stayed at 150px minimum columns. Fix:
+   form fields stack full-width; at 640px the grid is 2 equal columns
+   with tighter cards and header; at 420px it is a single column.
+   Live mobile screenshot check still to do after deploy.
+
+Asset version bumped to ?v=5. Live verification (desktop + mobile
+screenshots, contact submit) to be recorded here after the ?v=5 deploy.
