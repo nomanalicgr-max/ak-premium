@@ -252,3 +252,41 @@ html[data-theme="dark"] .site-header,html[data-theme="dark"] .tool-card,html[dat
 html[data-theme="dark"] .tool-card strong,html[data-theme="dark"] h1,html[data-theme="dark"] h2,html[data-theme="dark"] h3{color:#f8fafc}
 html[data-theme="dark"] .tool-card span:last-child,html[data-theme="dark"] .section-sub{color:#94a3b8}
 html[data-theme="dark"] input,html[data-theme="dark"] textarea,html[data-theme="dark"] select{background:#0f172a;color:#e2e8f0;border-color:#334155}
+
+/* ---------- v5: icons restored, hero fits the grid, contact form, mobile ---------- */
+/* Homepage container: the hero and the tool grid share one width, so the
+   hero no longer sits narrower than the grid on a wide screen. */
+.home-wrap{max-width:1280px;margin:0 auto;padding:0 16px}
+.home-wrap .hero{max-width:none;margin:22px 0 20px}
+/* Tool-card icon tile: the markup class is now "icon" (matching this CSS)
+   and every page carries the SVG sprite, so the icons render. */
+.tool-card .icon{flex:none}
+/* Contact form: stacked fields, full-width inputs (the old inline labels
+   overflowed on phones), and a visible status line. */
+.contact-form label{display:block;font-weight:600;margin:14px 0 4px}
+.contact-form input,.contact-form textarea{width:100%;background:var(--ak-input);color:var(--ak-text);border:1px solid #d1d5db;border-radius:10px;padding:10px 12px;margin:6px 0;font:inherit}
+.contact-form input:focus,.contact-form textarea:focus{outline:none;border-color:var(--ak-accent);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+.contact-form button{margin:10px 6px 0 0}
+#contactStatus{margin-top:14px}
+/* Mobile: two equal columns, then one column on very small phones; the
+   header and hero get tighter spacing so nothing overflows. */
+@media (max-width:640px){
+  .home-wrap{padding:0 12px}
+  .home-wrap .hero{margin:14px 0 16px;padding:26px 18px 20px}
+  .hero h1{font-size:clamp(1.5rem,6.5vw,1.9rem)}
+  .header-inner{padding:10px 12px;gap:12px}
+  .nav-btn{padding:8px 10px}
+  .tool-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .tool-card{min-height:0;padding:16px 14px}
+  .tool-card .icon{width:44px;height:44px}
+  .tool-card strong{font-size:.95rem}
+  .tool-card span:last-child{font-size:.85rem}
+  .workspace{padding:18px 14px}
+}
+@media (max-width:420px){
+  .tool-grid{grid-template-columns:1fr}
+  .tool-card{flex-direction:row;align-items:flex-start;gap:12px;padding:14px}
+  .tool-card .icon{margin-bottom:0}
+  .tool-card strong{display:block}
+  .tool-card span:last-child{display:block}
+}
