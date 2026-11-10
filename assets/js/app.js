@@ -1182,7 +1182,7 @@ async function extractPdfTextWithPassword(file, password, statusId) {
 function runQpdf(op, bytes, password, statusId) {
   return new Promise((resolve) => {
     let worker;
-    try { worker = new Worker("/assets/js/qpdf-worker.js?v=4", { type: "module" }); }
+    try { worker = new Worker("/assets/js/qpdf-worker.js?v=5", { type: "module" }); }
     catch (e) { setStatus(statusId, "PDF encryption could not start in this browser. Please try Chrome, Edge or Firefox."); resolve(null); return; }
     const timer = setTimeout(() => { try { worker.terminate(); } catch (e) {} setStatus(statusId, "PDF encryption is taking too long. Please try a smaller file."); resolve(null); }, 120000);
     worker.onmessage = (e) => {

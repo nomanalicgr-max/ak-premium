@@ -47,6 +47,49 @@
     if (c === "accepted") { loadAds(); loadAnalytics(); }
   }
   document.addEventListener("DOMContentLoaded", function () {
+    // Contact form: a plain GET form to a mailto: URL navigates the browser
+    // to "mailto:...?name=...&body=..." which browsers reject with an error
+    // page. Instead, build a proper mailto link in JavaScript and open it
+    // with an anchor click, so the page itself never navigates anywhere.
+    // If no email app is set up, the user can copy the message instead.
+    var contactForm = document.getElementById("contactForm");
+    if (contactForm) {
+      var contactBody = "";
+      contactForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var name = (document.getElementById("contactName") || {}).value || "";
+        var email = (document.getElementById("contactEmail") || {}).value || "";
+        var msg = (document.getElementById("contactMessage") || {}).value || "";
+        var status = document.getElementById("contactStatus");
+        name = name.trim(); email = email.trim(); msg = msg.trim();
+        if (!name || !msg) {
+          if (status) status.textContent = "Please add your name and a message before sending.";
+          return;
+        }
+        var to = (window.AK_CONFIG && window.AK_CONFIG.CONTACT_EMAIL) || "nomanalicgr@gmail.com";
+        var subject = "AK Premium feedback" + (name ? " from " + name : "");
+        contactBody = "Name: " + name + "\nEmail: " + (email || "(not given)") + "\n\n" + msg;
+        var mailto = "mailto:" + to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(contactBody);
+        var a = document.createElement("a");
+        a.href = mailto;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        if (status) status.textContent = "Your email app should open with the message ready — press Send there. If nothing opened, use the Copy message button and paste it into your email app.";
+        var copyBtn = document.getElementById("contactCopyBtn");
+        if (copyBtn) copyBtn.hidden = false;
+      });
+      var copyBtn = document.getElementById("contactCopyBtn");
+      if (copyBtn) copyBtn.addEventListener("click", function () {
+        var status = document.getElementById("contactStatus");
+        function done(ok) {
+          if (status) status.textContent = ok ? "Message copied. Paste it into your email app and send it to " + ((window.AK_CONFIG && window.AK_CONFIG.CONTACT_EMAIL) || "nomanalicgr@gmail.com") + "." : "Copy did not work in this browser. Select the text in the form and copy it by hand.";
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(contactBody).then(function () { done(true); }, function () { done(false); });
+        } else { done(false); }
+      });
+    }
     var accept = document.getElementById("consentAccept");
     var reject = document.getElementById("consentReject");
     if (accept) accept.addEventListener("click", function () { setConsent("accepted"); applyConsent(); });
