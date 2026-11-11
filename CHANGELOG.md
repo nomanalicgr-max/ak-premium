@@ -1,5 +1,52 @@
 # AK Premium — Changelog
 
+## v7 — 11 November 2026 (Phase 2: homepage, navigation, cards, icons, search)
+
+### Homepage and navigation
+- New hero: "Free PDF tools and Pakistan calculators. Your files never leave
+  your browser." with a one-line sub, an Urdu line, and a trust row
+  (No upload, No sign-up, Free). Search box is 52px with a clear button and
+  a "/" keyboard shortcut.
+- New section order: Popular tools, Pakistan Tools (highlighted band with
+  Urdu subtitles), PDF, Convert, Image, Excel, Calculators, More tools
+  (Everyday, Developer, Business and Design grouped), FAQ. A sticky
+  category jump bar sits under the header with scroll-spy.
+- Header: Tools mega-menu, Pakistan link, About, Contact, search icon and
+  the dark-mode toggle. On phones the links become a full-screen menu.
+  "All Tools" now links to /tools. New real footer with three columns
+  (Tools, Pakistan Tools, Company) and a "What's new" page generated from
+  this changelog. New /pakistan hub page listing the six Pakistan tools.
+
+### Cards and icons
+- Cards are now compact rows (icon left, title and description right),
+  about 72-88px tall, 1 column on phones, 2 columns from 480px.
+- All 62 inventory icons plus the 6 Pakistan icons are now real Lucide
+  line icons (ISC license), one per tool, shipped as a single inline SVG
+  sprite (68 symbols including search, menu and close). The old 18-icon
+  set is gone.
+- Badges on cards and tool pages: "Text only" (PDF to Word/Excel/PPT),
+  "Basic" (Word/Excel/PPT to PDF) and "Verified TY2027" (salary tax).
+  Convert cards carry a small format pill (PDF to DOCX, XLSX to PDF...).
+- Card descriptions rewritten for consistency; the misleading
+  "Re-save a PDF, smaller file" is now "Reduce PDF file size (Light,
+  Medium or Strong)".
+
+### Search
+- Synonyms and Urdu aliases for every tool (merge = join/combine,
+  zakat = زکوٰۃ, land = مرلہ/کنال...), spaceless matching ("pdftoword"
+  finds PDF to Word), word-prefix matching, and Arabic-to-Urdu letter
+  normalisation so either keyboard spelling matches.
+- No-results state with 4 popular suggestions and a contact link.
+  /?q=merge prefills the search (with SearchAction schema), Enter opens
+  the first result, arrow keys move between results.
+
+### Verification
+- run-v7.js: all checks pass (head contract on 78 pages, 74 homepage
+  cards, section order, badges, Urdu search, no-results, ?q= prefill,
+  dropdown and mobile menu toggles, "/" shortcut).
+- Not verified: real-browser render (desktop/mobile), Lighthouse scores,
+  dark-mode visual check of every component.
+
 ## v4 — 9 November 2026
 
 A full rebuild of the site as a clean, professional, AdSense-ready static
