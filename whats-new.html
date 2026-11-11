@@ -23,11 +23,16 @@
 <meta name="twitter:description" content="The latest changes to AK Premium, newest first.">
 <meta name="twitter:image" content="https://ak-premium.vercel.app/assets/og-image.png">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/plus-jakarta-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/styles.css?v=8">
+<link rel="stylesheet" href="/assets/css/styles.5d1f51d8d4.css">
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="i-archive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="5" x="2" y="3" rx="1" />
@@ -296,6 +301,57 @@
 <header class="site-header"><div class="header-inner"><a class="brand" href="/"><svg class="brand-mark" viewBox="0 0 40 40" width="34" height="34" aria-hidden="true" focusable="false"><rect width="40" height="40" rx="8"/><text x="20" y="27" text-anchor="middle">AK</text></svg><span>AK Premium</span><span class="brand-tag">Free tools. Private by design.</span></a><nav class="main-nav" aria-label="Main navigation"><div class="nav-drop"><button type="button" class="nav-btn" id="toolsMenuBtn" aria-expanded="false" aria-haspopup="true">Tools</button><div class="nav-menu" id="toolsMenu" role="menu" aria-label="Tool categories"><a href="/tools" role="menuitem">All tools</a><div class="nav-menu-head">Categories</div><a href="/#section-pdf" role="menuitem">PDF Tools</a><a href="/#section-convert" role="menuitem">Convert</a><a href="/#section-image" role="menuitem">Image Tools</a><a href="/#section-excel" role="menuitem">Excel Tools</a><a href="/#section-calculators" role="menuitem">Calculators</a><a href="/pakistan" role="menuitem">Pakistan Tools</a><a href="/#section-more" role="menuitem">More tools</a></div></div><a class="nav-btn nav-desktop" href="/pakistan">Pakistan</a><a class="nav-btn nav-desktop" href="/about">About</a><a class="nav-btn nav-desktop" href="/contact">Contact</a><a class="nav-btn nav-desktop nav-lang" href="/ur/" lang="ur">اردو</a><a class="nav-icon" href="/#heroSearch" id="headerSearchBtn" aria-label="Search tools"><svg aria-hidden="true"><use href="#i-search"/></svg></a><button type="button" class="theme-toggle" id="darkModeToggle" aria-label="Dark mode" aria-pressed="false"><svg class="theme-icon--moon" aria-hidden="true"><use href="#i-moon"/></svg><svg class="theme-icon--sun" aria-hidden="true"><use href="#i-sun"/></svg></button><button type="button" class="nav-burger" id="navBurger" aria-expanded="false" aria-controls="mobileMenu" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button></nav></div></header><div class="mobile-menu" id="mobileMenu" hidden><div class="mobile-menu-head"><span>AK Premium</span><button type="button" class="nav-icon" id="mobileMenuClose" aria-label="Close menu"><svg aria-hidden="true"><use href="#i-x"/></svg></button></div><a href="/tools">All tools</a><a href="/#section-pdf">PDF Tools</a><a href="/#section-convert">Convert</a><a href="/#section-image">Image Tools</a><a href="/#section-excel">Excel Tools</a><a href="/#section-calculators">Calculators</a><a href="/pakistan">Pakistan Tools</a><a href="/#section-more">More tools</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/ur/" lang="ur">اردو</a></div><main class="page" id="main">
 <h1>What&#x27;s new</h1>
 <p>The latest changes to AK Premium, newest first. Older entries are kept below, so you can see what changed and when.</p>
+<h2>v9 — 11 November 2026 (Phase 4: SEO, security, performance, accessibility, analytics, cleanup)</h2>
+<h3>SEO and social</h3>
+<ul>
+<li>Full favicon set (16, 32, apple-touch-icon 180, 192, 512, favicon.ico)</li>
+<p>plus site.webmanifest, all from the same flat indigo AK mark.</p>
+<li>Sitemap now uses the build date as lastmod on every URL and drops</li>
+<p>changefreq and priority.</p>
+<li>Tool pages now use a valid schema.org applicationCategory</li>
+<p>(UtilitiesApplication or BusinessApplication) instead of the display label, which was not a valid category.</p>
+</ul>
+<h3>Security</h3>
+<ul>
+<li>HSTS header (max-age 63072000, includeSubDomains) and a</li>
+<p>Content-Security-Policy-Report-Only header. Report-Only, not enforced, because there is no report endpoint to check violations against yet.</p>
+<li>SRI (SHA-384) integrity attributes on all 10 pinned CDN library scripts,</li>
+<p>static and lazy-loaded.</p>
+<li>Fixed a real bug found while computing the SRI hashes: the docx library</li>
+<p>URL pointed at docx@8.5.0/build/index.js, which is a 404. The package publishes /build/index.umd.js. PDF to Word could not load docx in a real browser; it now uses the correct file.</p>
+<li>WhatsApp link deliberately NOT added to the contact page: it would</li>
+<p>publish the maker&#x27;s phone number. The direct email link stays.</p>
+</ul>
+<h3>Performance</h3>
+<ul>
+<li>app.js (195 KB) is split into core.js (shared helpers, navigation,</li>
+<p>search, generic workspace UX, all pure-logic functions) plus one small bundle per tool category. A tool page loads core.js plus its own bundle only; the homepage loads core.js only.</p>
+<li>All first-party CSS and JS now use content-hashed filenames</li>
+<p>(styles.&lt;hash&gt;.css, core.&lt;hash&gt;.js) with immutable caching (1 year). The old unhashed files are removed from the repo.</p>
+<li>Service worker (sw.js) caches the hashed core assets and key pages and</li>
+<p>serves assets cache-first. No &quot;Works offline&quot; badge is shown until this is tested in a real browser.</p>
+</ul>
+<h3>Accessibility</h3>
+<ul>
+<li>Skip to content link on every page (visible on keyboard focus).</li>
+<li>Workspace status lines now carry aria-live=&quot;polite&quot; so screen readers</li>
+<p>announce results. Error messages already use role=&quot;alert&quot;.</p>
+</ul>
+<h3>Analytics</h3>
+<ul>
+<li>Consent-gated event plumbing only (AK.track in common.js): tool_view,</li>
+<p>tool_start, tool_success and tool_error, with the tool slug only. No file names are ever sent. Nothing is sent while the GA ID is empty or cookies are not accepted.</p>
+</ul>
+<h3>Repo hygiene</h3>
+<ul>
+<li>README.md, CHANGELOG.md and TESTING.md moved from the public root to</li>
+<p>/docs/ and excluded from the Vercel deployment with .vercelignore.</p>
+</ul>
+<h3>Not verified</h3>
+<ul>
+<li>Real-browser render (desktop/mobile), Lighthouse scores, CLS with the</li>
+<p>new hashed assets, dark-mode visual check of every component, keyboard-only walkthrough in a real browser, service worker behaviour offline, and whether the Report-Only CSP would block anything if enforced. Urdu copy still needs a native-speaker proofread, and /ur/ tool controls remain in English.</p>
+</ul>
 <h2>v8 — 11 November 2026 (Phase 3: tool pages, calculators, Urdu)</h2>
 <h3>Tool pages</h3>
 <ul>
@@ -536,8 +592,8 @@
 <p>b67e952, Vercel Production Ready.</p>
 </ul>
 </main>
-<footer class="site-footer"><div class="footer-inner"><div class="footer-col"><h3>Tools</h3><ul><li><a href="/#section-pdf">PDF Tools</a></li><li><a href="/#section-convert">Convert</a></li><li><a href="/#section-excel">Excel Tools</a></li><li><a href="/#section-image">Image Tools</a></li><li><a href="/#section-calculators">Calculators</a></li><li><a href="/tools">All tools</a></li></ul></div><div class="footer-col"><h3>Pakistan Tools</h3><ul><li><a href="/tools/pakistan-salary-tax-calculator">Salary Tax Calculator</a></li><li><a href="/tools/zakat-calculator">Zakat Calculator</a></li><li><a href="/tools/land-converter">Land Converter</a></li><li><a href="/tools/amount-to-words">Amount to Words</a></li><li><a href="/tools/urdu-word-counter">Urdu Word Counter</a></li><li><a href="/tools/percentage-marks-calculator">Percentage &amp; Merit Calculator</a></li><li><a href="/pakistan">All Pakistan tools</a></li></ul></div><div class="footer-col"><h3>Company</h3><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/whats-new">What&rsquo;s new</a></li><li><a href="/privacy">Privacy Policy</a></li><li><a href="/terms">Terms of Service</a></li><li><a href="/disclaimer">Disclaimer</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 AK Premium. Free tools, private by design. Files are processed in your browser and are not uploaded to an AK Premium server.</p></div></footer><div class="consent-banner" id="consentBanner" hidden><p>AK Premium uses cookies for ads and analytics only if you accept. Your files are processed in your browser and are never uploaded. <a href="/privacy">Read the Privacy Policy</a>.</p><button type="button" class="btn-primary" id="consentAccept">Accept</button><button type="button" class="btn-secondary" id="consentReject">Reject</button></div><script src="/config.js?v=8"></script>
-<script src="/assets/js/common.js?v=8"></script>
-<script src="/assets/js/app.js?v=8"></script>
+<footer class="site-footer"><div class="footer-inner"><div class="footer-col"><h3>Tools</h3><ul><li><a href="/#section-pdf">PDF Tools</a></li><li><a href="/#section-convert">Convert</a></li><li><a href="/#section-excel">Excel Tools</a></li><li><a href="/#section-image">Image Tools</a></li><li><a href="/#section-calculators">Calculators</a></li><li><a href="/tools">All tools</a></li></ul></div><div class="footer-col"><h3>Pakistan Tools</h3><ul><li><a href="/tools/pakistan-salary-tax-calculator">Salary Tax Calculator</a></li><li><a href="/tools/zakat-calculator">Zakat Calculator</a></li><li><a href="/tools/land-converter">Land Converter</a></li><li><a href="/tools/amount-to-words">Amount to Words</a></li><li><a href="/tools/urdu-word-counter">Urdu Word Counter</a></li><li><a href="/tools/percentage-marks-calculator">Percentage &amp; Merit Calculator</a></li><li><a href="/pakistan">All Pakistan tools</a></li></ul></div><div class="footer-col"><h3>Company</h3><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/whats-new">What&rsquo;s new</a></li><li><a href="/privacy">Privacy Policy</a></li><li><a href="/terms">Terms of Service</a></li><li><a href="/disclaimer">Disclaimer</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 AK Premium. Free tools, private by design. Files are processed in your browser and are not uploaded to an AK Premium server.</p></div></footer><div class="consent-banner" id="consentBanner" hidden><p>AK Premium uses cookies for ads and analytics only if you accept. Your files are processed in your browser and are never uploaded. <a href="/privacy">Read the Privacy Policy</a>.</p><button type="button" class="btn-primary" id="consentAccept">Accept</button><button type="button" class="btn-secondary" id="consentReject">Reject</button></div><script defer src="/config.js?v=9"></script>
+<script defer src="/assets/js/common.1c2d6d3640.js"></script>
+<script defer src="/assets/js/core.33593574e3.js"></script>
 </body>
 </html>
