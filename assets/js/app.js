@@ -151,12 +151,12 @@ if (typeof window !== "undefined" && window.addEventListener) {
   });
 }
 
-/* ilovepdf-style category tabs: filter PDF cards by data-ilove, plus all other cards stay visible for 'all' */
-let currentIlove = "all";
-document.querySelectorAll(".ilove-tab").forEach((tab) => {
+/* Category tabs: filter PDF cards by data-group, plus all other cards stay visible for 'all' */
+let currentGroup = "all";
+document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => {
-    document.querySelectorAll(".ilove-tab").forEach((t) => t.classList.toggle("active", t === tab));
-    currentIlove = tab.dataset.ilove || "all";
+    document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t === tab));
+    currentGroup = tab.dataset.group || "all";
     const activeNav = document.querySelector(".nav-btn.active");
     if (activeNav && activeNav.dataset.category !== "all") { document.querySelectorAll(".nav-btn").forEach((b) => b.classList.toggle("active", b.dataset.category === "all")); }
     filterCards();
@@ -178,7 +178,7 @@ function openWorkspace(id, excelModule) {
   document.querySelectorAll(".workspace-tool").forEach((w) => w.classList.toggle("active", w.id === id));
   const empty = $("workspaceEmpty"); if (empty) empty.style.display = "none";
   if (excelModule) { const btn = document.querySelector('.excel-tab-btn[data-excel-tab="' + excelModule + '"]'); if (btn) btn.click(); }
-  // Dedicated tool page, like iLovePDF: hide the grid, show this tool on its own.
+  // Dedicated tool page: hide the grid, show this tool on its own.
   const card = document.querySelector('.tool-card[data-target="' + id + '"]');
   const titleEl = $("toolPageTitle"); const descEl = $("toolPageDesc");
   if (titleEl && card) titleEl.textContent = (card.querySelector("strong") ? card.querySelector("strong").textContent : id);
@@ -205,7 +205,7 @@ function filterCards() {
     const hay = ((card.dataset.keywords || "") + " " + card.textContent).toLowerCase();
     // Search wins over the PDF tab filter: a trending chip like "VBA Macro Writer"
     // must find its tool even when a PDF tab (e.g. PDF Intelligence) was active before.
-    const show = query ? hay.includes(query) : (currentIlove === "all" || card.dataset.ilove === currentIlove);
+    const show = query ? hay.includes(query) : (currentGroup === "all" || card.dataset.group === currentGroup);
     card.style.display = show ? "" : "none";
     if (show) { visible++; const sec = card.closest(".tool-section"); if (sec) sectionsWithVisible.add(sec.id); }
   });
@@ -215,7 +215,7 @@ function filterCards() {
     // that has a matching card, whatever page the user is on.
     ALL_SECTION_IDS.forEach((id) => { const sec = $(id); if (sec) sec.style.display = sectionsWithVisible.has(id) ? "" : "none"; });
     const ws = $("workspace"); if (ws) ws.style.display = "";
-  } else if (currentIlove !== "all") {
+  } else if (currentGroup !== "all") {
     ALL_SECTION_IDS.forEach((id) => { const sec = $(id); if (sec) sec.style.display = sectionsWithVisible.has(id) ? "" : "none"; });
   } else {
     const activeNav = document.querySelector(".nav-btn.active");
@@ -227,8 +227,8 @@ function filterCards() {
 if (heroSearch) heroSearch.addEventListener("input", filterCards);
 document.querySelectorAll(".chip").forEach((chip) => {
   chip.addEventListener("click", () => {
-    currentIlove = "all";
-    document.querySelectorAll(".ilove-tab").forEach((t) => t.classList.toggle("active", t.dataset.ilove === "all"));
+    currentGroup = "all";
+    document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.group === "all"));
     if (heroSearch) { heroSearch.value = chip.dataset.query; heroSearch.focus(); }
     filterCards();
   });
@@ -1161,7 +1161,7 @@ if (excelCopyBtn) excelCopyBtn.addEventListener("click", async () => {
 });
 
 
-/* ---------- New ilovepdf-style tools (all in browser) ---------- */
+/* ---------- New tools (all in browser) ---------- */
 async function extractPdfTextWithPassword(file, password, statusId) {
   if (!needLibrary(!!window.pdfjsLib, "pdf.js", statusId)) return null;
   if (window.pdfjsLib.GlobalWorkerOptions) window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
