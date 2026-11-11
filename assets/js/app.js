@@ -17,17 +17,119 @@ function downloadBlob(blob, filename) {
      file back). The link stays usable for 10 minutes. */
   try {
     const ws = document.querySelector(".workspace-tool.active") || document.querySelector(".workspace-tool");
-    if (ws) {
-      const old = ws.querySelector(".download-link"); if (old) old.remove();
-      const link = document.createElement("a");
-      link.className = "download-link"; link.href = url; link.download = filename;
-      link.textContent = "Download " + filename;
-      const status = ws.querySelector(".status");
-      if (status && status.parentNode) status.parentNode.insertBefore(link, status.nextSibling);
-      else ws.appendChild(link);
-    }
+    showSuccess(ws, filename, url);
   } catch (e) {}
   setTimeout(() => URL.revokeObjectURL(url), 600000);
+}
+/* ---------- Phase 3.2: success card after a download ---------- */
+const NEXT_STEPS = {
+  "tool-merge": [["Compress PDF", "/tools/compress-pdf"], ["Split PDF", "/tools/split-pdf"], ["Organize PDF", "/tools/organize-pdf"]],
+  "tool-split": [["Merge PDF", "/tools/merge-pdf"], ["Organize PDF", "/tools/organize-pdf"], ["Compress PDF", "/tools/compress-pdf"]],
+  "tool-compress": [["Merge PDF", "/tools/merge-pdf"], ["Protect PDF", "/tools/protect-pdf"], ["Split PDF", "/tools/split-pdf"]],
+  "tool-organize": [["Merge PDF", "/tools/merge-pdf"], ["Split PDF", "/tools/split-pdf"], ["Compress PDF", "/tools/compress-pdf"]],
+  "tool-protect": [["Unlock PDF", "/tools/unlock-pdf"], ["Merge PDF", "/tools/merge-pdf"]],
+  "tool-unlock": [["Protect PDF", "/tools/protect-pdf"], ["Merge PDF", "/tools/merge-pdf"]],
+  "tool-redact": [["Protect PDF", "/tools/protect-pdf"], ["Merge PDF", "/tools/merge-pdf"]],
+  "tool-pdfword": [["PDF to Excel", "/tools/pdf-to-excel"], ["PDF to PPT", "/tools/pdf-to-ppt"], ["PDF to Text", "/tools/pdf-to-text"]],
+  "tool-pdfexcel": [["PDF to Word", "/tools/pdf-to-word"], ["Excel to PDF", "/tools/excel-to-pdf"], ["CSV to Excel", "/tools/csv-to-excel"]],
+  "tool-pdfppt": [["PDF to Word", "/tools/pdf-to-word"], ["PDF to Excel", "/tools/pdf-to-excel"]],
+  "tool-pdftext": [["PDF to Word", "/tools/pdf-to-word"], ["PDF to Markdown", "/tools/pdf-to-markdown"], ["Translate Helper", "/tools/translate-helper"]],
+  "tool-imgcompress": [["Image Resizer", "/tools/image-resizer"], ["Image Converter", "/tools/image-converter"], ["Images to PDF", "/tools/images-to-pdf"]],
+  "tool-ocrpdf": [["PDF to Word", "/tools/pdf-to-word"], ["Redact PDF", "/tools/redact-pdf"]],
+  "tool-ocr": [["PDF to Word", "/tools/pdf-to-word"], ["Translate Helper", "/tools/translate-helper"]],
+  "tool-images": [["Compress PDF", "/tools/compress-pdf"], ["Merge PDF", "/tools/merge-pdf"]],
+  "tool-pdfimages": [["Image Compressor", "/tools/image-compressor"], ["Images to PDF", "/tools/images-to-pdf"]]
+};
+function showSuccess(ws, filename, url) {
+  if (!ws) return;
+  const old = ws.querySelector(".tool-success"); if (old) old.remove();
+  const box = document.createElement("div");
+  box.className = "tool-success";
+  box.setAttribute("role", "status");
+  const title = document.createElement("p");
+  title.className = "tool-success-title";
+  title.textContent = "Done \u2014 your file is ready.";
+  box.appendChild(title);
+  const link = document.createElement("a");
+  link.className = "download-link"; link.href = url; link.download = filename;
+  link.textContent = "Download " + filename;
+  box.appendChild(link);
+  const actions = document.createElement("div");
+  actions.className = "tool-success-actions";
+  const again = document.createElement("button");
+  again.type = "button"; again.className = "btn-secondary"; again.textContent = "Start over";
+  again.addEventListener("click", () => {
+    ws.querySelectorAll("input, textarea, select").forEach((el) => {
+      if (el.type === "file") { el.value = ""; el.dispatchEvent(new Event("change", { bubbles: true })); }
+      else if (el.tagName === "SELECT") { el.selectedIndex = 0; }
+      else if (el.type === "checkbox" || el.type === "radio") { el.checked = false; }
+      else el.value = "";
+    });
+    ws.querySelectorAll(".file-preview").forEach((p) => { p.classList.remove("visible"); p.innerHTML = ""; });
+    const out = ws.querySelector(".terminal, .output-box");
+    if (out) out.textContent = "";
+    box.remove();
+    const primary = ws.querySelector(".btn-primary");
+    if (primary) primary.focus();
+  });
+  actions.appendChild(again);
+  (NEXT_STEPS[ws.id] || []).forEach(([label, href]) => {
+    const a = document.createElement("a");
+    a.className = "btn-ghost"; a.href = href; a.textContent = "Next: " + label;
+    actions.appendChild(a);
+  });
+  box.appendChild(actions);
+  const status = ws.querySelector(".status");
+  if (status && status.parentNode) status.parentNode.insertBefore(box, status.nextSibling);
+  else ws.appendChild(box);
+}
+/* ---------- Phase 3.2: friendly errors for the common PDF failures ---------- */
+function friendlyPdfError(err) {
+  const msg = String((err && err.message) || err || "");
+  if (/password|encrypted|PasswordException/i.test(msg)) return { text: "This PDF is password-protected. Unlock it first, then try again.", link: ["/tools/unlock-pdf", "Unlock PDF"] };
+  if (/no text|scanned|no extractable/i.test(msg)) return { text: "This PDF has no text layer. It looks like a scan \u2014 run OCR first, then try again.", link: ["/tools/ocr-pdf", "OCR PDF"] };
+  if (/damaged|corrupt|invalid|Invalid PDF/i.test(msg)) return { text: "This PDF looks damaged and could not be read. Try Repair PDF, or a fresh copy of the file.", link: ["/tools/repair-pdf", "Repair PDF"] };
+  return null;
+}
+function setPdfError(statusId, err) {
+  const f = friendlyPdfError(err);
+  const el = $(statusId);
+  if (f && el) {
+    el.textContent = "";
+    el.appendChild(document.createTextNode(f.text));
+    if (f.link) {
+      el.appendChild(document.createTextNode(" "));
+      const a = document.createElement("a"); a.href = f.link[0]; a.textContent = f.link[1]; el.appendChild(a);
+    }
+    el.setAttribute("role", "alert");
+    return true;
+  }
+  return false;
+}
+/* ---------- Phase 3.3: money formatting, western or lakh/crore grouping ---------- */
+function moneyGrouping() {
+  try { return window.localStorage.getItem("ak-money-grouping") === "lakh" ? "lakh" : "western"; } catch (e) { return "western"; }
+}
+function setMoneyGrouping(g) {
+  try { window.localStorage.setItem("ak-money-grouping", g); } catch (e) {}
+}
+function fmtMoney(n, decimals) {
+  const dec = decimals || 0;
+  const num = Number(n) || 0;
+  const parts = num.toFixed(dec).split(".");
+  let intPart = parts[0];
+  const neg = intPart.charAt(0) === "-";
+  if (neg) intPart = intPart.slice(1);
+  let grouped;
+  if (moneyGrouping() === "lakh") {
+    const last3 = intPart.slice(-3);
+    let rest = intPart.slice(0, -3);
+    grouped = last3;
+    while (rest.length > 0) { grouped = rest.slice(-2) + "," + grouped; rest = rest.slice(0, -2); }
+  } else {
+    grouped = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  return (neg ? "-" : "") + grouped + (parts[1] ? "." + parts[1] : "");
 }
 function downloadText(text, filename, type) {
   downloadBlob(new Blob([text], { type: type || "text/plain;charset=utf-8" }), filename);
@@ -398,7 +500,7 @@ if (imagesPdfBtn) imagesPdfBtn.addEventListener("click", async () => {
     }
     doc.save("ak-premium-images.pdf");
     setStatus("imagesPdfStatus", "Done. PDF downloaded.");
-  } catch (e) { setStatus("imagesPdfStatus", "Could not convert these images. Please try JPG or PNG files and try again."); }
+  } catch (e) { if (!setPdfError("imagesPdfStatus", e)) setStatus("imagesPdfStatus", "Could not convert these images. Please try JPG or PNG files and try again."); }
 });
 
 async function loadPdfLibDoc(file, statusId) {
@@ -456,7 +558,7 @@ if (mergePdfBtn) mergePdfBtn.addEventListener("click", async () => {
     const bytes = await out.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-merged.pdf");
     setStatus("mergePdfStatus", "Done. Merged " + files.length + " PDFs in the order shown above.");
-  } catch (e) { setStatus("mergePdfStatus", "Could not merge these PDFs. Please check that every file is a valid PDF."); }
+  } catch (e) { if (!setPdfError("mergePdfStatus", e)) setStatus("mergePdfStatus", "Could not merge these PDFs. Please check that every file is a valid PDF."); }
 });
 
 const splitPdfBtn = $("splitPdfBtn");
@@ -504,7 +606,7 @@ if (splitPdfBtn) splitPdfBtn.addEventListener("click", async () => {
     const bytes = await out.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-split.pdf");
     setStatus("splitPdfStatus", "Done. Extracted " + indices.length + " page(s) into one PDF.");
-  } catch (e) { setStatus("splitPdfStatus", "Could not split this PDF. Please check the file and page ranges."); }
+  } catch (e) { if (!setPdfError("splitPdfStatus", e)) setStatus("splitPdfStatus", "Could not split this PDF. Please check the file and page ranges."); }
 });
 
 const rotatePdfBtn = $("rotatePdfBtn");
@@ -524,7 +626,7 @@ if (rotatePdfBtn) rotatePdfBtn.addEventListener("click", async () => {
     const bytes = await doc.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-rotated.pdf");
     setStatus("rotatePdfStatus", "Done. Rotated PDF downloaded.");
-  } catch (e) { setStatus("rotatePdfStatus", "Could not rotate this PDF. Please check the file."); }
+  } catch (e) { if (!setPdfError("rotatePdfStatus", e)) setStatus("rotatePdfStatus", "Could not rotate this PDF. Please check the file."); }
 });
 
 const pageNumbersBtn = $("pageNumbersBtn");
@@ -542,7 +644,7 @@ if (pageNumbersBtn) pageNumbersBtn.addEventListener("click", async () => {
     const bytes = await doc.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-numbered.pdf");
     setStatus("pageNumbersStatus", "Done. Numbered PDF downloaded.");
-  } catch (e) { setStatus("pageNumbersStatus", "Could not add page numbers to this PDF."); }
+  } catch (e) { if (!setPdfError("pageNumbersStatus", e)) setStatus("pageNumbersStatus", "Could not add page numbers to this PDF."); }
 });
 
 /* Honest size wording for Compress: a tiny text PDF re-rendered as images
@@ -594,7 +696,7 @@ if (compressPdfBtn) compressPdfBtn.addEventListener("click", async () => {
     const outBytes = await out.save({ useObjectStreams: true });
     downloadBlob(new Blob([outBytes], { type: "application/pdf" }), "ak-premium-compressed.pdf");
     setStatus("compressPdfStatus", "Done. " + (level === "strong" ? "Strong" : "Medium") + ": " + humanBytes(file.size) + " to " + humanBytes(outBytes.length) + " (" + sizeChangeNote(file.size, outBytes.length) + "). Warning: pages are now images, so text is not selectable and cannot be searched.");
-  } catch (e) { setStatus("compressPdfStatus", "Could not compress this PDF. Please check the file."); }
+  } catch (e) { if (!setPdfError("compressPdfStatus", e)) setStatus("compressPdfStatus", "Could not compress this PDF. Please check the file."); }
 });
 
 /* ---------- New PDF tools: Remove Pages + Add Watermark ---------- */
@@ -636,7 +738,7 @@ if (removePagesBtn) removePagesBtn.addEventListener("click", async () => {
     const bytes = await out.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-pages-removed.pdf");
     setStatus("removePagesStatus", "Done. Removed " + parsed.remove.size + " page(s); " + keep.length + " remain.");
-  } catch (e) { setStatus("removePagesStatus", "Could not remove pages from this PDF."); }
+  } catch (e) { if (!setPdfError("removePagesStatus", e)) setStatus("removePagesStatus", "Could not remove pages from this PDF."); }
 });
 
 const watermarkBtn = $("watermarkBtn");
@@ -663,7 +765,7 @@ if (watermarkBtn) watermarkBtn.addEventListener("click", async () => {
     const bytes = await doc.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-watermarked.pdf");
     setStatus("watermarkStatus", "Done. Watermarked PDF downloaded.");
-  } catch (e) { setStatus("watermarkStatus", "Could not add a watermark to this PDF."); }
+  } catch (e) { if (!setPdfError("watermarkStatus", e)) setStatus("watermarkStatus", "Could not add a watermark to this PDF."); }
 });
 
 /* Group pdf.js text items into lines by y-coordinate (within 3pt) and sort
@@ -739,7 +841,7 @@ if (pdfTextBtn) pdfTextBtn.addEventListener("click", async () => {
     if (text === null) return;
     downloadText(text, "ak-premium-text.txt");
     setStatus("pdfTextStatus", "Done. Text file downloaded.");
-  } catch (e) { setStatus("pdfTextStatus", "Could not extract text from this PDF. Scanned-image PDFs without a text layer cannot be read this way."); }
+  } catch (e) { if (!setPdfError("pdfTextStatus", e)) setStatus("pdfTextStatus", "Could not extract text from this PDF. Scanned-image PDFs without a text layer cannot be read this way."); }
 });
 
 const pdfImagesBtn = $("pdfImagesBtn");
@@ -775,7 +877,7 @@ if (pdfImagesBtn) pdfImagesBtn.addEventListener("click", async () => {
     } else {
       setStatus("pdfImagesStatus", "Done. PNG links are above. ZIP needs JSZip, which did not load.");
     }
-  } catch (e) { setStatus("pdfImagesStatus", "Could not render this PDF to images. Please check the file."); }
+  } catch (e) { if (!setPdfError("pdfImagesStatus", e)) setStatus("pdfImagesStatus", "Could not render this PDF to images. Please check the file."); }
 });
 
 /* ---------- e-Sign canvas ---------- */
@@ -834,7 +936,7 @@ if (pdfExcelBtn) pdfExcelBtn.addEventListener("click", async () => {
     window.XLSX.utils.book_append_sheet(wb, ws, "Extracted Text");
     window.XLSX.writeFile(wb, "ak-premium-pdf-to-excel.xlsx");
     setStatus("pdfExcelStatus", "Done. Excel file downloaded.");
-  } catch (e) { setStatus("pdfExcelStatus", "Could not convert this PDF to Excel."); }
+  } catch (e) { if (!setPdfError("pdfExcelStatus", e)) setStatus("pdfExcelStatus", "Could not convert this PDF to Excel."); }
 });
 
 const pdfWordBtn = $("pdfWordBtn");
@@ -863,7 +965,7 @@ if (pdfWordBtn) pdfWordBtn.addEventListener("click", async () => {
     const blob = await window.docx.Packer.toBlob(doc);
     downloadBlob(blob, "ak-premium-pdf-to-word.docx");
     setStatus("pdfWordStatus", "Done. Word file downloaded.");
-  } catch (e) { setStatus("pdfWordStatus", "Could not convert this PDF to Word. Complex original formatting is not preserved by this simple conversion."); }
+  } catch (e) { if (!setPdfError("pdfWordStatus", e)) setStatus("pdfWordStatus", "Could not convert this PDF to Word. Complex original formatting is not preserved by this simple conversion."); }
 });
 
 const pdfPptBtn = $("pdfPptBtn");
@@ -885,7 +987,7 @@ if (pdfPptBtn) pdfPptBtn.addEventListener("click", async () => {
     });
     await pptx.writeFile({ fileName: "ak-premium-pdf-to-ppt.pptx" });
     setStatus("pdfPptStatus", "Done. Presentation file downloaded.");
-  } catch (e) { setStatus("pdfPptStatus", "Could not convert this PDF to PPT."); }
+  } catch (e) { if (!setPdfError("pdfPptStatus", e)) setStatus("pdfPptStatus", "Could not convert this PDF to PPT."); }
 });
 
 const txtHtmlPdfBtn = $("txtHtmlPdfBtn");
@@ -1361,7 +1463,7 @@ if (cropPdfBtn) cropPdfBtn.addEventListener("click", async () => {
     });
     const bytes = await doc.save(); downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-cropped.pdf");
     setStatus("cropPdfStatus", "Done. Cropped PDF downloaded.");
-  } catch (e) { setStatus("cropPdfStatus", "Could not crop this PDF."); }
+  } catch (e) { if (!setPdfError("cropPdfStatus", e)) setStatus("cropPdfStatus", "Could not crop this PDF."); }
 });
 const redactPdfBtn = $("redactPdfBtn");
 if (redactPdfBtn) redactPdfBtn.addEventListener("click", async () => {
@@ -1421,7 +1523,7 @@ if (redactPdfBtn) redactPdfBtn.addEventListener("click", async () => {
     }
     const out = await outDoc.save(); downloadBlob(new Blob([out], { type: "application/pdf" }), "ak-premium-redacted.pdf");
     setStatus("redactPdfStatus", "Done. Redacted " + found + " match(es) on " + matchedPages.size + " page(s) — those pages are now images with no text layer, so the covered text cannot be copied. Check the result before sharing sensitive files.");
-  } catch (e) { setStatus("redactPdfStatus", "Could not redact this PDF. (" + (e && e.message ? e.message : "unknown error") + ")"); }
+  } catch (e) { if (!setPdfError("redactPdfStatus", e)) setStatus("redactPdfStatus", "Could not redact this PDF. (" + (e && e.message ? e.message : "unknown error") + ")"); }
 });
 const pdfaPdfBtn = $("pdfaPdfBtn");
 if (pdfaPdfBtn) pdfaPdfBtn.addEventListener("click", async () => {
@@ -1431,7 +1533,7 @@ if (pdfaPdfBtn) pdfaPdfBtn.addEventListener("click", async () => {
     doc.setTitle($("pdfaTitle").value || "Archive document"); doc.setAuthor("AK Premium"); doc.setSubject("Archive copy"); doc.setKeywords(["archive", "PDF/A-style"]); doc.setProducer("AK Premium browser tool"); doc.setCreator("AK Premium");
     const bytes = await doc.save(); downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-archive.pdf");
     setStatus("pdfaPdfStatus", "Done. Archive-style copy downloaded. This is not a certified PDF/A validation.");
-  } catch (e) { setStatus("pdfaPdfStatus", "Could not make an archive copy."); }
+  } catch (e) { if (!setPdfError("pdfaPdfStatus", e)) setStatus("pdfaPdfStatus", "Could not make an archive copy."); }
 });
 const repairPdfBtn = $("repairPdfBtn");
 if (repairPdfBtn) repairPdfBtn.addEventListener("click", async () => {
@@ -1456,7 +1558,7 @@ if (comparePdfBtn) comparePdfBtn.addEventListener("click", async () => {
     const onlyA = [...la].filter(x=>!lb.has(x)); const onlyB = [...lb].filter(x=>!la.has(x));
     $("comparePdfOutput").textContent = "Only in first PDF:\n" + (onlyA.join("\n") || "(none)") + "\n\nOnly in second PDF:\n" + (onlyB.join("\n") || "(none)");
     setStatus("comparePdfStatus", "Done. " + onlyA.length + " line(s) only in first, " + onlyB.length + " only in second.");
-  } catch (e) { setStatus("comparePdfStatus", "Could not compare these PDFs."); }
+  } catch (e) { if (!setPdfError("comparePdfStatus", e)) setStatus("comparePdfStatus", "Could not compare these PDFs."); }
 });
 const pdfmdPdfBtn = $("pdfmdPdfBtn");
 if (pdfmdPdfBtn) pdfmdPdfBtn.addEventListener("click", async () => {
@@ -1470,7 +1572,7 @@ if (pdfmdPdfBtn) pdfmdPdfBtn.addEventListener("click", async () => {
     }).join("\n");
     downloadText(md, "ak-premium-document.md", "text/markdown;charset=utf-8");
     setStatus("pdfmdPdfStatus", "Done. Markdown file downloaded.");
-  } catch (e) { setStatus("pdfmdPdfStatus", "Could not convert this PDF to Markdown."); }
+  } catch (e) { if (!setPdfError("pdfmdPdfStatus", e)) setStatus("pdfmdPdfStatus", "Could not convert this PDF to Markdown."); }
 });
 const scanPdfBtn = $("scanPdfBtn");
 if (scanPdfBtn) scanPdfBtn.addEventListener("click", async () => {
@@ -1483,7 +1585,7 @@ if (scanPdfBtn) scanPdfBtn.addEventListener("click", async () => {
     const ratio = Math.min(pageW / img.width, pageH / img.height); const w = img.width * ratio, h = img.height * ratio;
     doc.addImage(canvas.toDataURL("image/png"), "PNG", (pageW-w)/2, (pageH-h)/2, w, h); doc.save("ak-premium-scan.pdf");
     setStatus("scanPdfStatus", "Done. Scan PDF downloaded.");
-  } catch (e) { setStatus("scanPdfStatus", "Could not make a PDF from this photo."); }
+  } catch (e) { if (!setPdfError("scanPdfStatus", e)) setStatus("scanPdfStatus", "Could not make a PDF from this photo."); }
 });
 const ocrpdfPdfBtn = $("ocrpdfPdfBtn");
 if (ocrpdfPdfBtn) ocrpdfPdfBtn.addEventListener("click", async () => {
@@ -1503,7 +1605,7 @@ if (ocrpdfPdfBtn) ocrpdfPdfBtn.addEventListener("click", async () => {
       if (!first) doc.addPage(); first = false; addWrappedTextPaginated(doc, result.data.text || "");
     }
     doc.save("ak-premium-ocr.pdf"); setStatus("ocrpdfPdfStatus", "Done. OCR PDF downloaded.");
-  } catch (e) { setStatus("ocrpdfPdfStatus", "Could not OCR this PDF."); }
+  } catch (e) { if (!setPdfError("ocrpdfPdfStatus", e)) setStatus("ocrpdfPdfStatus", "Could not OCR this PDF."); }
 });
 const formsPdfBtn = $("formsPdfBtn");
 if (formsPdfBtn) formsPdfBtn.addEventListener("click", async () => {
@@ -1523,7 +1625,7 @@ if (formsPdfBtn) formsPdfBtn.addEventListener("click", async () => {
     form.updateFieldAppearances();
     const bytes = await doc.save(); downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-form.pdf");
     setStatus("formsPdfStatus", "Done. Fillable form PDF downloaded.");
-  } catch (e) { setStatus("formsPdfStatus", "Could not create a form PDF."); }
+  } catch (e) { if (!setPdfError("formsPdfStatus", e)) setStatus("formsPdfStatus", "Could not create a form PDF."); }
 });
 const summaryPdfBtn = $("summaryPdfBtn");
 if (summaryPdfBtn) summaryPdfBtn.addEventListener("click", async () => {
@@ -1537,7 +1639,7 @@ if (summaryPdfBtn) summaryPdfBtn.addEventListener("click", async () => {
     const n = parseInt($("summaryCount").value, 10) || 5;
     $("summaryPdfOutput").textContent = scored.slice(0, n).map(x=>"- " + x.s).join("\n");
     setStatus("summaryPdfStatus", "Done. Local summary shown above. No AI server was used.");
-  } catch (e) { setStatus("summaryPdfStatus", "Could not summarize this PDF."); }
+  } catch (e) { if (!setPdfError("summaryPdfStatus", e)) setStatus("summaryPdfStatus", "Could not summarize this PDF."); }
 });
 const translatePdfBtn = $("translatePdfBtn");
 if (translatePdfBtn) translatePdfBtn.addEventListener("click", async () => {
@@ -1545,7 +1647,7 @@ if (translatePdfBtn) translatePdfBtn.addEventListener("click", async () => {
   try {
     const text = await extractPdfText(file, "translatePdfStatus"); if (text === null) return;
     downloadText(text, "ak-premium-for-translation.txt"); setStatus("translatePdfStatus", "Done. Text file downloaded, ready to translate elsewhere. No text was sent to a translation server by AK Premium.");
-  } catch (e) { setStatus("translatePdfStatus", "Could not extract text from this PDF."); }
+  } catch (e) { if (!setPdfError("translatePdfStatus", e)) setStatus("translatePdfStatus", "Could not extract text from this PDF."); }
 });
 
 
@@ -2443,7 +2545,9 @@ const emiBtn = $("emiBtn");
 if (emiBtn) emiBtn.addEventListener("click", () => {
   const result = emiCalc(parseFloat($("emiPrincipal").value), parseFloat($("emiRate").value), parseFloat($("emiYears").value));
   if (result.error) { setStatus("emiStatus", result.error); return; }
-  if ($("emiOutput")) $("emiOutput").textContent = "Monthly EMI: " + result.emi.toFixed(2) + "\nTotal payment: " + result.total.toFixed(2) + "\nTotal interest: " + result.interest.toFixed(2) + "\nMonths: " + result.months;
+  if ($("emiOutput")) $("emiOutput").textContent = "Monthly EMI: Rs " + fmtMoney(result.emi, 2) + "\nTotal payment: Rs " + fmtMoney(result.total, 2) + "\nTotal interest: Rs " + fmtMoney(result.interest, 2) + "\nMonths: " + result.months;
+  const bd = $("emiBreakdown");
+  if (bd) bd.innerHTML = "<table><tbody>" + "<tr><td>Monthly EMI</td><td>Rs " + fmtMoney(result.emi, 2) + "</td></tr>" + "<tr><td>Principal</td><td>Rs " + fmtMoney(parseFloat($("emiPrincipal").value) || 0, 2) + "</td></tr>" + "<tr><td>Total interest</td><td>Rs " + fmtMoney(result.interest, 2) + "</td></tr>" + "<tr><td>Total payment</td><td>Rs " + fmtMoney(result.total, 2) + "</td></tr>" + "<tr><td>Months</td><td>" + result.months + "</td></tr></tbody></table>";
   setStatus("emiStatus", "Done.");
 });
 const cgpaBtn = $("cgpaBtn");
@@ -2454,6 +2558,181 @@ if (cgpaBtn) cgpaBtn.addEventListener("click", () => {
   setStatus("cgpaStatus", "Done.");
 });
 
+/* ---------- Phase 3.3: calculators recalculate live while typing ---------- */
+const LIVE_CALCS = [
+  { btn: "ageBtn", inputs: ["ageDob"] },
+  { btn: "percentBtn", inputs: ["percentX", "percentY"] },
+  { btn: "bmiBtn", inputs: ["bmiHeight", "bmiWeight"] },
+  { btn: "emiBtn", inputs: ["emiPrincipal", "emiRate", "emiYears"] },
+  { btn: "cgpaBtn", inputs: ["cgpaInput"], cgpa: true },
+  { btn: "landBtn", inputs: ["landValue"], selects: ["landFrom"] },
+  { btn: "taxBtn", inputs: ["taxMonthly"], selects: ["taxYear"] },
+  { btn: "zakatBtn", inputs: ["zakatCash", "zakatDebts", "zakatGold", "zakatGoldRate", "zakatSilver", "zakatSilverRate", "zakatNisab"], zakat: true },
+  { btn: "amountWordsBtn", inputs: ["amountWordsInput"] },
+  { btn: "urduCounterBtn", inputs: ["urduCounterInput"] },
+  { btn: "meritBtn", inputs: ["meritObtained1", "meritTotal1", "meritWeight1", "meritObtained2", "meritTotal2", "meritWeight2", "meritObtained3", "meritTotal3", "meritWeight3"], merit: true }
+];
+LIVE_CALCS.forEach((c) => {
+  const btn = $(c.btn); if (!btn) return;
+  const fields = c.inputs.map((id) => $(id)).filter(Boolean);
+  const selects = (c.selects || []).map((id) => $(id)).filter(Boolean);
+  const num = (id) => parseFloat(($(id) || {}).value || "") || 0;
+  const ready = () => {
+    if (c.zakat) {
+      const wealth = num("zakatCash") + num("zakatGold") * num("zakatGoldRate") + num("zakatSilver") * num("zakatSilverRate");
+      return wealth > 0 && (num("zakatGoldRate") > 0 || num("zakatSilverRate") > 0 || num("zakatNisab") > 0);
+    }
+    if (c.merit) {
+      let sum = 0, rows = 0;
+      for (let i = 1; i <= 3; i++) {
+        if (num("meritTotal" + i) > 0 && num("meritWeight" + i) > 0) { sum += num("meritWeight" + i); rows++; }
+      }
+      return rows > 0 && Math.abs(sum - 100) < 0.01;
+    }
+    if (c.cgpa) {
+      const lines = String(($(c.inputs[0]) || {}).value || "").split("\n").map((s) => s.trim()).filter(Boolean);
+      return lines.length > 0 && lines.every((l) => l.split(",").length === 3);
+    }
+    return fields.every((f) => (f.value || "").trim() !== "");
+  };
+  const run = () => {
+    fields.forEach((f) => { if (f.type === "text" && f.value.indexOf(",") !== -1) f.value = f.value.replace(/,/g, ""); });
+    if (ready()) btn.click();
+  };
+  fields.forEach((f) => f.addEventListener("input", run));
+  selects.forEach((s) => s.addEventListener("change", run));
+});
+/* ---------- Phase 3.3: copy result / share link / print under calculator outputs ---------- */
+(function initCalcActions() {
+  const CALC_OUTPUTS = [
+    { out: "ageOutput", inputs: ["ageDob"] },
+    { out: "percentOutput", inputs: ["percentX", "percentY"], selects: ["percentMode"] },
+    { out: "bmiOutput", inputs: ["bmiHeight", "bmiWeight"] },
+    { out: "emiOutput", inputs: ["emiPrincipal", "emiRate", "emiYears"] },
+    { out: "cgpaOutput", inputs: ["cgpaInput"] },
+    { out: "landOutput", inputs: ["landValue"], selects: ["landFrom"] },
+    { out: "taxOutput", inputs: ["taxMonthly"], selects: ["taxYear"] },
+    { out: "zakatOutput", inputs: ["zakatCash", "zakatDebts", "zakatGold", "zakatGoldRate", "zakatSilver", "zakatSilverRate", "zakatNisab"] },
+    { out: "amountWordsOutput", inputs: ["amountWordsInput"] },
+    { out: "urduCounterOutput", inputs: ["urduCounterInput"] },
+    { out: "meritOutput", inputs: ["meritObtained1", "meritTotal1", "meritWeight1", "meritObtained2", "meritTotal2", "meritWeight2", "meritObtained3", "meritTotal3", "meritWeight3"] }
+  ];
+  CALC_OUTPUTS.forEach((c) => {
+    const out = $(c.out); if (!out) return;
+    const row = document.createElement("div");
+    row.className = "calc-actions";
+    const mkBtn = (label) => { const b = document.createElement("button"); b.type = "button"; b.className = "btn-ghost"; b.textContent = label; return b; };
+    const copyBtn = mkBtn("Copy result");
+    copyBtn.addEventListener("click", async () => {
+      const text = out.textContent || "";
+      let ok = false;
+      try { await navigator.clipboard.writeText(text); ok = true; }
+      catch (e) {
+        const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { ok = document.execCommand("copy"); } catch (e2) {}
+        ta.remove();
+      }
+      if (ok) { copyBtn.textContent = "Copied"; setTimeout(() => { copyBtn.textContent = "Copy result"; }, 1500); }
+    });
+    const shareBtn = mkBtn("Share link");
+    shareBtn.addEventListener("click", async () => {
+      const params = new URLSearchParams();
+      (c.inputs || []).forEach((id) => { const el = $(id); if (el && (el.value || "").trim() !== "") params.set(id, el.value.trim()); });
+      (c.selects || []).forEach((id) => { const el = $(id); if (el) params.set(id, el.value); });
+      const url = window.location.origin + window.location.pathname + (params.toString() ? "?" + params.toString() : "");
+      try { await navigator.clipboard.writeText(url); shareBtn.textContent = "Link copied"; setTimeout(() => { shareBtn.textContent = "Share link"; }, 1500); }
+      catch (e) { window.prompt("Copy this link:", url); }
+    });
+    const printBtn = mkBtn("Print");
+    printBtn.addEventListener("click", () => window.print());
+    row.appendChild(copyBtn); row.appendChild(shareBtn); row.appendChild(printBtn);
+    if (["taxOutput", "zakatOutput", "emiOutput"].includes(c.out)) {
+      const grpBtn = mkBtn("Grouping: " + (moneyGrouping() === "lakh" ? "lakh" : "1,23,456"));
+      grpBtn.addEventListener("click", () => {
+        setMoneyGrouping(moneyGrouping() === "lakh" ? "western" : "lakh");
+        grpBtn.textContent = "Grouping: " + (moneyGrouping() === "lakh" ? "lakh" : "1,23,456");
+        const btn = c.out === "taxOutput" ? $("taxBtn") : c.out === "zakatOutput" ? $("zakatBtn") : $("emiBtn");
+        if (btn) btn.click();
+      });
+      row.appendChild(grpBtn);
+    }
+    out.parentNode.insertBefore(row, out.nextSibling);
+  });
+  /* Prefill from a shared link (?taxMonthly=200000&taxYear=2027) and run the calc. */
+  try {
+    const params = new URLSearchParams(window.location.search);
+    let filled = false;
+    CALC_OUTPUTS.forEach((c) => {
+      (c.inputs || []).forEach((id) => { const el = $(id); if (el && params.has(id)) { el.value = params.get(id); filled = true; } });
+      (c.selects || []).forEach((id) => { const el = $(id); if (el && params.has(id)) { el.value = params.get(id); filled = true; } });
+    });
+    if (filled) {
+      setTimeout(() => {
+        const btn = document.querySelector(".workspace-tool .btn-primary");
+        if (btn) btn.click();
+      }, 400);
+    }
+  } catch (e) {}
+})();
+
+/* ---------- Phase 3.2: drag-and-drop zone for every file input ---------- */
+(function initDropzones() {
+  document.querySelectorAll('.workspace-tool input[type="file"]').forEach((input) => {
+    if (input.closest(".dropzone")) return;
+    const dz = document.createElement("div");
+    dz.className = "dropzone";
+    dz.setAttribute("role", "button");
+    dz.setAttribute("tabindex", "0");
+    dz.setAttribute("aria-label", "Choose a file or drag it here");
+    input.parentNode.insertBefore(dz, input);
+    dz.appendChild(input);
+    const hint = document.createElement("span");
+    hint.className = "dropzone-hint";
+    hint.textContent = input.multiple ? "Drag files here, or click to choose" : "Drag a file here, or click to choose";
+    dz.appendChild(hint);
+    const name = document.createElement("span");
+    name.className = "dropzone-name";
+    name.hidden = true;
+    dz.appendChild(name);
+    const showName = () => {
+      const files = input.files || [];
+      if (files.length) {
+        name.textContent = Array.from(files).map((f) => f.name).join(", ");
+        name.hidden = false;
+        dz.classList.add("has-file");
+      } else {
+        name.hidden = true;
+        dz.classList.remove("has-file");
+      }
+    };
+    input.addEventListener("change", showName);
+    dz.addEventListener("click", (e) => { if (e.target !== input) input.click(); });
+    dz.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+    ["dragenter", "dragover"].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add("drag-over"); }));
+    ["dragleave", "drop"].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove("drag-over"); }));
+    dz.addEventListener("drop", (e) => {
+      const dt = e.dataTransfer;
+      if (dt && dt.files && dt.files.length) {
+        try { input.files = dt.files; } catch (err) {}
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+    const ws = input.closest(".workspace-tool");
+    const status = ws && ws.querySelector(".status");
+    if (status && status.id) input.setAttribute("aria-describedby", status.id);
+  });
+})();
+/* ---------- Phase 3.2: keep a file tool's main button disabled until a file is chosen ---------- */
+(function initFileButtonGate() {
+  document.querySelectorAll(".workspace-tool").forEach((ws) => {
+    const fileInput = ws.querySelector('input[type="file"]');
+    const btn = ws.querySelector(".btn-primary");
+    if (!fileInput || !btn) return;
+    const update = () => { btn.disabled = !(fileInput.files && fileInput.files.length); };
+    fileInput.addEventListener("change", update);
+    update();
+  });
+})();
 /* ---------- File preview: show the chosen file before converting ---------- */
 /* Runs for every file input on the page. For a PDF it renders page 1 with pdf.js,
    plus name, size and page count, so the user can confirm it is the right document
@@ -2630,7 +2909,7 @@ initWizard("vba", VBA_TASKS, "vbaOutput", "vbaStatus");
 
 const REGEX_TASKS = {
   email: { name: "Email address", fields: [], build: () => "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}", explain: "Matches a normal email address: letters, numbers and . _ % + - before @, a domain after it, and a dot with at least 2 letters.", example: "Finds ali@example.com in a block of text." },
-  phonepk: { name: "Pakistan mobile number (03xx-xxxxxxx)", fields: [], build: () => "03\\d{2}[- ]?\\d{7}", explain: "Matches a Pakistan mobile number starting 03, with an optional dash or space.", example: "Finds 0317-7483793 and 03177483793." },
+  phonepk: { name: "Pakistan mobile number (03xx-xxxxxxx)", fields: [], build: () => "03\\d{2}[- ]?\\d{7}", explain: "Matches a Pakistan mobile number starting 03, with an optional dash or space.", example: "Finds 0300-1234567 and 03001234567." },
   date: { name: "Date (DD/MM/YYYY)", fields: [], build: () => "\\b\\d{2}/\\d{2}/\\d{4}\\b", explain: "Matches a date with two digits, slash, two digits, slash, four digits.", example: "Finds 09/11/2026." },
   url: { name: "Web link (http/https)", fields: [], build: () => "https?://[^\\s]+", explain: "Matches a link starting http:// or https:// up to the next space.", example: "Finds https://example.com/page." },
   numbers: { name: "Numbers in text", fields: [], build: () => "\\d+(\\.\\d+)?", explain: "Matches whole numbers and decimals.", example: "Finds 100, 25.5 and 2026 in text." },
@@ -2727,6 +3006,14 @@ function calcSalaryTax(income, yearData) {
   loadTaxData("taxStatus").then((d) => {
     if (!d || !sel) return;
     sel.innerHTML = d.years.map((y) => '<option value="' + y.tax_year + '"' + (y.default ? " selected" : "") + ">" + y.label + "</option>").join("");
+    try {
+      const y0 = d.years.find((y) => y.tax_year === sel.value) || d.years[0];
+      const ty = parseInt(y0.tax_year, 10);
+      const ts = $("taxSource");
+      if (ts) ts.textContent = "Tax Year " + y0.tax_year + " (FY " + (ty - 1) + "-" + String(ty).slice(2) + ") \u00b7 data verified " + (d.verified ? new Date(d.verified).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "9 Nov 2026") + " \u00b7 Source: FBR";
+      const urlY = new URLSearchParams(window.location.search).get("taxYear");
+      if (urlY && d.years.some((y) => y.tax_year === urlY)) sel.value = urlY;
+    } catch (e2) {}
   });
   btn.addEventListener("click", async () => {
     const d = await loadTaxData("taxStatus"); if (!d) return;
@@ -2736,7 +3023,21 @@ function calcSalaryTax(income, yearData) {
     const annual = monthly * 12;
     const r = calcSalaryTax(annual, year);
     const el = $("taxOutput");
-    if (el) el.textContent = year.label + "\nAnnual salary: Rs " + annual.toLocaleString("en-PK") + "\nTax on salary: Rs " + Math.round(r.tax).toLocaleString("en-PK") + "\nSurcharge: Rs " + Math.round(r.surcharge).toLocaleString("en-PK") + "\nTotal annual tax: Rs " + Math.round(r.total).toLocaleString("en-PK") + "\nMonthly tax: Rs " + Math.round(r.total / 12).toLocaleString("en-PK") + "\nTake-home per month: Rs " + Math.round(monthly - r.total / 12).toLocaleString("en-PK") + "\n\nEstimate only. " + (year.surcharge ? year.surcharge.note : "") + " This calculator uses FBR slabs for salaried individuals only and does not include rebates, allowances or other income.";
+    if (el) el.textContent = year.label + "\nAnnual salary: Rs " + fmtMoney(annual) + "\nTax on salary: Rs " + fmtMoney(r.tax) + "\nSurcharge: Rs " + fmtMoney(r.surcharge) + "\nTotal annual tax: Rs " + fmtMoney(r.total) + "\nMonthly tax: Rs " + fmtMoney(r.total / 12) + "\nTake-home per month: Rs " + fmtMoney(monthly - r.total / 12) + "\n\nEstimate only. " + (year.surcharge ? year.surcharge.note : "") + " This calculator uses FBR slabs for salaried individuals only and does not include rebates, allowances or other income.";
+    const ts = $("taxSource");
+    if (ts) { try { const ty = parseInt(year.tax_year, 10); ts.textContent = "Tax Year " + year.tax_year + " (FY " + (ty - 1) + "-" + String(ty).slice(2) + ") \u00b7 data verified " + (d.verified ? new Date(d.verified).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "9 Nov 2026") + " \u00b7 Source: FBR"; } catch (e2) {} }
+    const bd = $("taxBreakdown");
+    if (bd) {
+      let prev = 0; const rows = [];
+      for (const slab of year.slabs) {
+        const cap = slab.up_to === null ? annual : Math.min(annual, slab.up_to);
+        if (cap <= prev) break;
+        const portion = cap - prev;
+        rows.push("<tr><td>Rs " + fmtMoney(prev + 1) + " \u2013 " + (slab.up_to === null ? "above" : "Rs " + fmtMoney(slab.up_to)) + "</td><td>" + Math.round(slab.rate * 100) + "%</td><td>Rs " + fmtMoney(slab.rate * portion) + "</td></tr>");
+        prev = slab.up_to;
+      }
+      bd.innerHTML = "<table><thead><tr><th>Slab</th><th>Rate</th><th>Tax</th></tr></thead><tbody>" + rows.join("") + (r.surcharge ? "<tr><td>Surcharge</td><td></td><td>Rs " + fmtMoney(r.surcharge) + "</td></tr>" : "") + "<tr><td><strong>Total tax</strong></td><td></td><td><strong>Rs " + fmtMoney(r.total) + "</strong></td></tr></tbody></table>";
+    }
     setStatus("taxStatus", "Done. This is an estimate only, not tax advice.");
   });
 })();
@@ -2752,10 +3053,11 @@ function calcSalaryTax(income, yearData) {
     const silverRate = parseFloat(($("zakatSilverRate").value || "0")) || 0;
     const net = cash + gold * goldRate + silver * silverRate - debts;
     const nisabSilver = 52.5 * silverRate, nisabGold = 7.5 * goldRate;
-    const nisab = silverRate > 0 ? nisabSilver : nisabGold;
+    const customNisab = parseFloat(($("zakatNisab") && $("zakatNisab").value) || "0") || 0;
+    const nisab = customNisab > 0 ? customNisab : (silverRate > 0 ? nisabSilver : nisabGold);
     const due = net >= nisab && nisab > 0 ? net * 0.025 : 0;
     const el = $("zakatOutput");
-    if (el) el.textContent = "Net zakatable wealth: Rs " + Math.round(net).toLocaleString("en-PK") + "\nNisab (52.5 tola silver at your rate): Rs " + Math.round(nisab).toLocaleString("en-PK") + "\nZakat due (2.5%): Rs " + Math.round(due).toLocaleString("en-PK") + (due === 0 ? "\nNo Zakat is due, because your wealth is below the nisab." : "") + "\n\nNisab is 7.5 tola gold or 52.5 tola silver. The government bank-deduction nisab for Ramadan 2026 was reported as Rs 503,529, but that figure was not directly verified from an official source, and the government re-notifies it every year — verify before relying on it. This calculator is an estimate only, not religious advice.";
+    if (el) el.textContent = "Net zakatable wealth: Rs " + fmtMoney(net) + "\nNisab (" + (customNisab > 0 ? "your custom nisab" : "52.5 tola silver at your rate") + "): Rs " + fmtMoney(nisab) + "\nZakat due (2.5%): Rs " + fmtMoney(due) + (due === 0 ? "\nNo Zakat is due, because your wealth is below the nisab." : "") + "\n\nNisab is 7.5 tola gold or 52.5 tola silver. The government bank-deduction nisab for Ramadan 2026 was reported as Rs 503,529, but that figure was not directly verified from an official source, and the government re-notifies it every year — verify before relying on it. This calculator is an estimate only, not religious advice.";
     setStatus("zakatStatus", "Done. This is an estimate only.");
   });
 })();

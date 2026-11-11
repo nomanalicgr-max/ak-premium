@@ -1,5 +1,22 @@
 # AK Premium v4 — Testing Record
 
+## v8 (Phase 3) — 11 November 2026
+- Harness: ~/workspace/tools/jsdom-test/run-v8.js — ALL CHECKS PASSED
+  (85 pages: 68 tool pages + homepage + tools index + 6 info pages +
+  /pakistan + /whats-new + 7 Urdu pages; sitemap 84 URLs).
+- Known-answer checks, all pass: salary tax 200,000/month in Tax Year
+  2027 gives 156,000 annual tax (slab table has 5 rows, source line
+  "data verified 9 Nov 2026 · Source: FBR"); lakh grouping re-renders
+  156,000 as 1,56,000; Zakat with 1,000,000 cash and a silver rate of
+  10,000 gives 25,000 due; EMI of 1,000,000 at 12% for 5 years gives
+  22,244.45; share link ?taxMonthly=200000&taxYear=2027 prefills and
+  calculates on load.
+- Workspace checks, all pass: merge page wraps the file input in a
+  dropzone and the Merge button starts disabled; 25 calculator inputs
+  use a decimal keyboard and none is type=number any more.
+- Not verified: real-browser render, Lighthouse, CLS, dark-mode visual
+  pass of every component, Urdu copy proofread.
+
 Tested 2026-11-09, before deploy. Every tool was checked with realistic
 sample inputs. Failures found during testing were fixed before finishing;
 see the "Fixed during testing" section at the end.
@@ -81,7 +98,7 @@ see the "Fixed during testing" section at the end.
   sheet, column and condition from the fields; other templates
   (copy, filter, sort, hide sheet) build from their fields.
 - Regex Creator: Pakistan mobile pattern 03\d{2}[- ]?\d{7} matches
-  0317-7483793 and 03177483793; email, CNIC, date, URL and number
+  0300-1234567 and 03001234567; email, CNIC, date, URL and number
   patterns build from fixed templates.
 - DAX Query (wizard): YTD → TOTALYTD([Total Sales], 'Calendar'[Date]);
   Total Sales, Average, % of Total and Count Rows build correctly.

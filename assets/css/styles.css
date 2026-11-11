@@ -1,4 +1,4 @@
-/* AK Premium — design system, v7 (Phase 2: homepage, nav, cards, icons, search).
+/* AK Premium — design system, v8 (Phase 3: tool pages, calculators, Urdu/RTL).
    Phase 1 (v6) rewrote the file; Phase 2 changes the header, hero, cards
    and footer below. The rules at the top still hold.
    One clean file: tokens -> fonts -> reset/base -> layout -> components
@@ -312,6 +312,32 @@ body.tool-page .workspace-tool{display:block}
 .callout p{margin:0}
 .callout strong{color:var(--heading)}
 
+/* ---------- Phase 3: breadcrumb, badges, dropzone, success card, calc actions ---------- */
+.crumbs{font-size:.875rem;color:var(--muted);margin:0 0 var(--s-3)}
+.crumbs a{color:var(--primary);text-decoration:none}
+.crumbs a:hover{text-decoration:underline}
+.crumbs span[aria-hidden="true"]{margin:0 var(--s-1)}
+.tool-badges{margin:0 0 var(--s-2)}
+.dropzone{border:2px dashed var(--border);border-radius:var(--r-lg);padding:var(--s-4);background:var(--surface-2);cursor:pointer;margin:var(--s-3) 0}
+.dropzone.drag-over{border-color:var(--primary);background:var(--primary-soft)}
+.dropzone.has-file{border-style:solid;border-color:var(--primary)}
+.dropzone:focus-within{outline:2px solid var(--focus);outline-offset:2px}
+.dropzone input[type="file"]{border:0;background:transparent;padding:0;margin:0;box-shadow:none;width:100%}
+.dropzone-hint{display:block;text-align:center;color:var(--muted);font-size:.875rem;margin-top:var(--s-2)}
+.dropzone-name{display:block;text-align:center;font-weight:600;color:var(--heading);margin-top:var(--s-1);word-break:break-all}
+.tool-success{background:var(--pk-soft);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-3) var(--s-4);margin:var(--s-3) 0}
+.tool-success-title{font-weight:700;color:var(--heading);margin:0 0 var(--s-2)}
+.tool-success .download-link{display:block;margin:0 0 var(--s-2);font-weight:700}
+.tool-success-actions{display:flex;gap:var(--s-2);flex-wrap:wrap;align-items:center}
+.calc-actions{display:flex;gap:var(--s-2);flex-wrap:wrap;align-items:center;margin:var(--s-3) 0}
+.tax-source{font-size:.875rem;color:var(--muted);margin:var(--s-2) 0 0}
+#taxBreakdown table,#emiBreakdown table{margin:var(--s-3) 0 0}
+#taxBreakdown td:last-child,#emiBreakdown td:last-child{text-align:end}
+
+/* ---------- right-to-left (Urdu pages) ---------- */
+[dir="rtl"] input[inputmode="decimal"]{text-align:left;direction:ltr}
+[dir="rtl"] .crumbs span[aria-hidden="true"]{display:inline-block;transform:scaleX(-1)}
+
 /* ---------- FAQ, tables, related ---------- */
 .faq-section{margin-bottom:var(--s-6)}
 details{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-3) var(--s-4);margin:var(--s-2) 0}
@@ -394,7 +420,7 @@ html[data-theme="dark"]{
 
 /* ---------- print ---------- */
 @media print{
-  .site-header,.site-footer,.consent-banner,.ad-slot,.ad-inline,.theme-toggle,.jump-bar,.mobile-menu{display:none}
+  .site-header,.site-footer,.consent-banner,.ad-slot,.ad-inline,.theme-toggle,.jump-bar,.mobile-menu,.calc-actions,.tool-success-actions,.dropzone-hint{display:none}
   .tool-card,.workspace{box-shadow:none;break-inside:avoid}
 }
 

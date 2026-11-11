@@ -1,5 +1,57 @@
 # AK Premium — Changelog
 
+## v8 — 11 November 2026 (Phase 3: tool pages, calculators, Urdu)
+
+### Tool pages
+- Breadcrumb on every tool page (Home > category > tool), badges under the
+  H1, and a short limits callout plus a short privacy callout instead of
+  the long repeated paragraphs. FAQs are now collapsible details.
+- Related tools are shown as cards, curated by workflow (for example
+  Merge PDF suggests Split, Organize and Compress) instead of by category
+  alone. Steps are now specific to the top 20 tools and name the real
+  buttons and fields on the page.
+- Privacy fix: the regex-creator example no longer uses a real phone
+  number. It now uses the clearly generic 0300-1234567.
+
+### Workspace UX
+- Every file tool now has a drag-and-drop zone: drag a file onto it, or
+  click to choose. The file name shows once a file is chosen.
+- A file tool's main button stays disabled until a file is chosen, so a
+  press with no file does nothing instead of failing.
+- After a download, a success card appears with the download link, a
+  Start over button (clears the tool) and next-step links to related tools.
+- Friendly errors: a password-protected PDF points to Unlock PDF, a scan
+  with no text layer points to OCR PDF, a damaged PDF points to Repair PDF.
+
+### Calculators
+- Live results: calculators recalculate while typing, once the inputs are
+  complete. No more pressing Calculate for every change.
+- Copy result, Share link and Print buttons under every calculator output.
+  A share link pre-fills the inputs and runs the calculation on load.
+- Money grouping toggle on tax, Zakat and EMI: western (1,234,567) or
+  lakh/crore (12,34,567), remembered in the browser.
+- Salary tax shows a slab-wise breakdown table and a source line: "Tax
+  Year 2027 (FY 2026-27) · data verified 9 Nov 2026 · Source: FBR". EMI
+  shows a breakdown (EMI, principal, interest, total, months). Zakat
+  accepts a custom nisab in rupees.
+- Calculator number fields now use a decimal keyboard on phones instead
+  of the number spinner.
+
+### Urdu
+- New Urdu section: /ur/ index plus one Urdu page per Pakistan tool
+  (land, salary tax, Zakat, amount to words, Urdu word counter, merit),
+  with hreflang links both ways and an EN | اردو switch in the header.
+- Urdu elements carry lang="ur" dir="rtl". The six Pakistan tool pages
+  show their Urdu subtitle under the H1. The tool controls themselves
+  stay in English for now.
+- Urdu copy was written for this site but still needs a native-speaker
+  proofread before being called verified.
+
+### Not verified
+- Real-browser render (desktop/mobile), Lighthouse scores, CLS with the
+  new fonts, full dark-mode visual pass of every component. The automated
+  checks below cover structure and known-answer calculations only.
+
 ## v7 — 11 November 2026 (Phase 2: homepage, navigation, cards, icons, search)
 
 ### Homepage and navigation
