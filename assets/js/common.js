@@ -95,17 +95,29 @@
     if (accept) accept.addEventListener("click", function () { setConsent("accepted"); applyConsent(); });
     if (reject) reject.addEventListener("click", function () { setConsent("rejected"); applyConsent(); });
     applyConsent();
-    // Dark mode: follows the operating system, with a manual toggle in the header.
+    // Dark mode: the theme was already applied before first paint by the
+    // inline script in <head> (saved "ak-theme" choice, else the OS setting).
+    // Here we only keep the toggle button in sync and handle clicks.
     var toggle = document.getElementById("darkModeToggle");
-    var saved = null;
-    try { saved = localStorage.getItem("ak-theme"); } catch (e) {}
-    if (saved === "dark" || (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-      document.documentElement.setAttribute("data-theme", "dark");
+    function syncThemeToggle() {
+      if (!toggle) return;
+      toggle.setAttribute("aria-pressed", document.documentElement.getAttribute("data-theme") === "dark" ? "true" : "false");
     }
+    if (!document.documentElement.hasAttribute("data-theme")) {
+      var saved = null;
+      try { saved = localStorage.getItem("ak-theme"); } catch (e) {}
+      if (saved === "dark" || (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    }
+    syncThemeToggle();
     if (toggle) toggle.addEventListener("click", function () {
       var dark = document.documentElement.getAttribute("data-theme") === "dark";
       document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
       try { localStorage.setItem("ak-theme", dark ? "light" : "dark"); } catch (e) {}
+      syncThemeToggle();
     });
   });
   window.AK = window.AK || {};

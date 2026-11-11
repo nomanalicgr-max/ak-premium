@@ -135,6 +135,59 @@ Pakistan/Urdu tools are added.
   and its success message reports the true number of matched pages.
 - Asset version bumped to `?v=3`.
 
+### v6 — 11 November 2026 (Phase 1: design system)
+- `styles.css` rewritten as one clean file (was 5 stacked layers, v1-v5
+  overriding each other): tokens, fonts, base, layout, components,
+  pages, utilities, dark overrides (tokens only), print. Zero
+  `!important` except the reduced-motion rule. Dead rules removed
+  (`.more-panel`, `.nav-more`, `.ad-sidebar`, old gradient hero,
+  `.tool-page-header`, `.dropzone`, `.tool-success`, `.excel-layout`
+  — none of them had any live markup; dropzone returns in Phase 3
+  with real markup).
+- One colour system, tokens exactly as specified: single indigo
+  primary `#4f46e5`, Pakistan green accent, status colours, 4px
+  spacing scale, radius 8/12/16. No gradients on buttons, brand or
+  hero. No hard-coded colours in components — every colour is a
+  token. Icon tiles cut from 9 pastel colours to 4 variants
+  (default indigo, Pakistan green, Excel teal, warning amber),
+  with dark-mode equivalents. All checked pairs pass WCAG AA
+  (text 4.5:1, icons 3:1); one near-miss found and fixed in
+  verification (dark button hover `#6366f1` was 4.47:1, now
+  `#4338ca` at 7.9:1).
+- Fonts self-hosted in `/assets/fonts/`: Inter variable (Latin,
+  72,920 bytes), Plus Jakarta Sans variable (Latin, 27,348 bytes),
+  Noto Nastaliq Urdu (Arabic subset, 239,060 bytes, downloads only
+  when Urdu text is on the page via `unicode-range`). Preloaded in
+  every page head. No Google Fonts request, matching the privacy
+  promise. Type scale per spec; Urdu rules (Nastaliq, +12% size,
+  line-height 2.1, no letter-spacing).
+- Dark mode done properly: old 6-rule patch removed; everything
+  follows the tokens. Saved choice (`localStorage "ak-theme"`)
+  overrides the OS setting. Inline script in `<head>` before the
+  stylesheet prevents a theme flash. Toggle is now a 44px icon
+  button (sun/moon) with `aria-pressed` and `aria-label="Dark
+  mode"`. `theme-color` metas added for light/dark.
+- "iLovePDF" naming removed everywhere: `data-ilove` is now
+  `data-group`, `.ilove-tab` is now `.tab` (app.js selectors
+  updated together; search/filter verified working in jsdom).
+- Brand: flat indigo SVG logo + wordmark (no gradient square),
+  tagline "Free tools. Private by design." next to the logo, same
+  mark in `favicon.svg`, and a new 1200x630 `assets/og-image.png`
+  used for `og:image` / `twitter:image` (large summary card).
+- Contact page: the inlined `<style>` block is gone; its layout
+  rules now live only in `styles.css` (same two-column layout,
+  same 1000/1150px form heights).
+- Asset version bumped to `?v=6`. Content-hashed filenames are
+  deferred to Phase 4.3.
+- Verification: new `~/workspace/tools/jsdom-test/run-v6.js`,
+  37 checks, all PASS (76 pages: icons resolve, 1 h1, canonical,
+  valid JSON-LD, flash script before CSS, preloads, theme-color,
+  og:image, v6 assets; theme flash/toggle and search/filter run
+  live in jsdom; contrast computed for 25 token pairs).
+  Not verified in this phase: real-browser render (desktop +
+  mobile), Lighthouse scores, CLS with the new fonts — those need
+  the live browser check after deploy.
+
 ### v5.2 — 10 November 2026 (contact form on the right)
 - Contact page is now two columns: text on the left, Google Form on
   the right. The form frame is taller (1000px, 1150px on phones) so
