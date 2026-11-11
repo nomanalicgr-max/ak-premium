@@ -414,6 +414,45 @@ while the stylesheet is still cached, and the same rules live in
 styles.css. Info and tool pages also gain a proper centred container
 (.page, max-width 1180px) — they had no side padding at all before.
 jsdom check: two columns, left has Email us + What to tell us, right
-has Send a message + iframe at 1000px, inline CSS present. Live
-verification (desktop screenshot + iframe scrollbar check) to be
-recorded here after deploy.
+has Send a message + iframe at 1000px, inline CSS present.
+Live verification 2026-11-10 15:15 PKT (fresh tab, 1920px, HEAD
+3c5b203): LAYOUT PASS — two columns, text left, form right, content
+centred in a 1180px container (margins match the CSS exactly).
+FORM PASS — all four fields and Submit visible, no inner scrollbar
+(the full form renders inside the frame). TEXT PASS — left column
+reads cleanly, no overlap. Note: the saved page PDF renders single
+column because it is Letter-size print (816px wide), which is below
+the 820px stacking breakpoint — that is the print view, not the
+screen view. The live HTML was also confirmed served with the new
+layout by curl.
+
+## v6 — Phase 1 design system (2026-11-11)
+
+New harness: `~/workspace/tools/jsdom-test/run-v6.js`, 37 checks, ALL PASS.
+- 76 pages: every `<use>` resolves to a `<symbol>` on the same page (220 uses);
+  1 h1, canonical, title, valid JSON-LD on every page; theme flash script
+  present before the stylesheet link; 2 font preloads; 2 theme-color metas;
+  og:image + summary_large_image; `?v=6` on all four assets; no `ilove`
+  naming anywhere; icon theme toggle (sun/moon, aria-pressed) and flat SVG
+  brand mark + tagline on every page.
+- Homepage: 68 cards, all with `data-group`; 6 Pakistan (green tile),
+  7 Excel (teal tile), 6 limited tools (warning tile).
+- CSS: `!important` only in the reduced-motion rule; no gradients; no
+  dead classes; no hard-coded colour outside the token blocks; tokens
+  match the spec exactly; 3 @font-face rules; Urdu typography rules;
+  focus-visible, callout and loading-button styles present.
+- Fonts on disk verified as woff2 (Inter 72,920 B; Plus Jakarta Sans
+  27,348 B; Noto Nastaliq Urdu 239,060 B). OG image verified 1200x630.
+- Functional in jsdom: flash script applies a saved dark theme, follows
+  OS dark with nothing saved, defaults to light; toggle syncs
+  aria-pressed, flips theme and saves it; search "merge" shows only
+  Merge PDF and announces the count; clearing search shows all 68.
+- Contrast computed in Python for 25 token pairs: all pass WCAG AA
+  (text >= 4.5:1, icons >= 3:1). One failure found and fixed before
+  deploy: dark button hover #6366f1 was 4.47:1, changed to #4338ca
+  (7.9:1); dark button press #3730a3 is 9.93:1.
+- NOT verified in this phase: real-browser render (desktop/mobile),
+  Lighthouse scores, CLS with the new self-hosted fonts, dark-mode
+  visual check of every component (hero, chips, tabs, FAQ, footer,
+  dropzone, thumbs, output-box, terminal, consent banner, swatches,
+  forms, tables). Those need the live browser check after deploy.
