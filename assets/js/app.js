@@ -105,14 +105,17 @@ const CATEGORY_SECTIONS = {
   convert: ["section-convert"],
   excel: ["section-excel"],
   image: ["section-image"],
-  everyday: ["section-everyday"],
-  developer: ["section-developer"],
   calculators: ["section-calculators"],
-  business: ["section-business"],
-  design: ["section-design"],
+  pakistan: ["section-pakistan"],
+  popular: ["section-popular"],
+  more: ["section-more"],
+  everyday: ["section-more"],
+  developer: ["section-more"],
+  business: ["section-more"],
+  design: ["section-more"],
   faq: ["section-faq"]
 };
-const ALL_SECTION_IDS = ["section-pdf", "section-convert", "section-excel", "section-image", "section-everyday", "section-developer", "section-calculators", "section-business", "section-design", "section-faq"];
+const ALL_SECTION_IDS = ["section-popular", "section-pakistan", "section-pdf", "section-convert", "section-image", "section-excel", "section-calculators", "section-more", "section-faq"];
 function categoryFromHash(hash) {
   const name = String(hash || "").replace(/^#/, "");
   return CATEGORY_SECTIONS[name] ? name : null;
@@ -141,7 +144,7 @@ function showCategory(name, opts) {
   filterCards();
 }
 const navButtons = document.querySelectorAll(".nav-btn");
-navButtons.forEach((b) => b.addEventListener("click", () => showCategory(b.dataset.category)));
+navButtons.forEach((b) => { if (b.dataset.category) b.addEventListener("click", () => showCategory(b.dataset.category)); });
 if (typeof window !== "undefined" && window.addEventListener) {
   window.addEventListener("hashchange", () => {
     const h = window.location.hash || "";
@@ -170,7 +173,7 @@ function closeToolPage() {
   document.querySelectorAll(".workspace-tool").forEach((w) => w.classList.remove("active"));
   const empty = $("workspaceEmpty"); if (empty) empty.style.display = "";
   try { if (typeof history !== "undefined" && history.replaceState) history.replaceState(null, "", window.location.pathname + window.location.search); } catch (e) {}
-  const top = $("top"); if (top && top.scrollIntoView) top.scrollIntoView({ behavior: "smooth" });
+  const main = $("main"); if (main && main.scrollIntoView) main.scrollIntoView({ behavior: "smooth" });
   filterCards();
 }
 function openWorkspace(id, excelModule) {
@@ -182,7 +185,7 @@ function openWorkspace(id, excelModule) {
   const card = document.querySelector('.tool-card[data-target="' + id + '"]');
   const titleEl = $("toolPageTitle"); const descEl = $("toolPageDesc");
   if (titleEl && card) titleEl.textContent = (card.querySelector("strong") ? card.querySelector("strong").textContent : id);
-  if (descEl && card) { const spans = card.querySelectorAll("span"); descEl.textContent = spans.length ? spans[spans.length-1].textContent : ""; }
+  if (descEl && card) { const d = card.querySelector(".tool-card-desc"); descEl.textContent = d ? d.textContent : ""; }
   document.body.classList.add("tool-open");
   try { if (typeof history !== "undefined" && history.replaceState) history.replaceState(null, "", "#tool-" + id); } catch (e) {}
   const ws = $("workspace"); if (ws) { ws.style.display = ""; }
@@ -197,19 +200,45 @@ document.querySelectorAll(".tool-card").forEach((card) => {
 /* ---------- hero search: filter tool cards on every keypress ---------- */
 const heroSearch = $("heroSearch");
 const searchStatus = $("searchStatus");
+/* Search normalisation: lower-case, punctuation to spaces, and a spaceless
+   form so "pdftoword" still finds "PDF to Word". */
+function normText(s) { return String(s || "").toLowerCase().replace(/[\u0629]/g, "\u06c3").replace(/[\u064a]/g, "\u06cc").replace(/[\u0643]/g, "\u06a9").replace(/[^a-z0-9\u0600-\u06ff\u0750-\u077f\u08a0-\u08ff]+/g, " ").replace(/\s+/g, " ").trim(); }
+function normCompact(s) { return normText(s).replace(/ /g, ""); }
+function cardMatches(card, query) {
+  if (!query) return true;
+  const q = normText(query), qc = normCompact(query);
+  const hay = normText((card.dataset.keywords || "") + " " + card.textContent);
+  if (normCompact(hay).indexOf(qc) !== -1) return true;
+  // Every query word must start some word in the card (prefix match).
+  return q.split(" ").every((w) => hay.split(" ").some((hw) => hw.indexOf(w) === 0));
+}
+function visibleCards() {
+  return Array.from(document.querySelectorAll(".tool-card")).filter((c) => {
+    if (c.style.display === "none") return false;
+    const sec = c.closest(".tool-section");
+    return !sec || sec.style.display !== "none";
+  });
+}
 function filterCards() {
-  const query = (heroSearch ? heroSearch.value : "").trim().toLowerCase();
+  const query = (heroSearch ? heroSearch.value : "").trim();
   const cards = document.querySelectorAll(".tool-card");
   let visible = 0; const sectionsWithVisible = new Set();
   cards.forEach((card) => {
-    const hay = ((card.dataset.keywords || "") + " " + card.textContent).toLowerCase();
     // Search wins over the PDF tab filter: a trending chip like "VBA Macro Writer"
-    // must find its tool even when a PDF tab (e.g. PDF Intelligence) was active before.
-    const show = query ? hay.includes(query) : (currentGroup === "all" || card.dataset.group === currentGroup);
+    // must find its tool even when a PDF tab was active before.
+    const show = query ? cardMatches(card, query) : (currentGroup === "all" || card.dataset.group === currentGroup);
     card.style.display = show ? "" : "none";
     if (show) { visible++; const sec = card.closest(".tool-section"); if (sec) sectionsWithVisible.add(sec.id); }
   });
-  if (searchStatus) { searchStatus.textContent = query ? "Found " + visible + " tool(s) matching \"" + heroSearch.value.trim() + "\"." : "Showing all tools."; }
+  if (searchStatus) { searchStatus.textContent = query ? "Found " + visible + " tool(s) matching \"" + query + "\"." : ""; }
+  const noResults = $("noResults");
+  if (noResults) {
+    const showEmpty = !!query && visible === 0;
+    noResults.hidden = !showEmpty;
+    if (showEmpty) { const qEl = $("noResultsQuery"); if (qEl) qEl.textContent = query; }
+  }
+  const clearBtn = $("heroSearchClear");
+  if (clearBtn) clearBtn.hidden = !query;
   if (query) {
     // Search wins over the selected category page: show every section
     // that has a matching card, whatever page the user is on.
@@ -233,6 +262,97 @@ document.querySelectorAll(".chip").forEach((chip) => {
     filterCards();
   });
 });
+
+/* ---------- header nav + search keyboard UX (Phase 2) ---------- */
+(function headerNav() {
+  // Tools dropdown (desktop).
+  const drop = document.querySelector(".nav-drop");
+  const dropBtn = $("toolsMenuBtn");
+  if (drop && dropBtn) {
+    dropBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = drop.classList.toggle("open");
+      dropBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    document.addEventListener("click", (e) => {
+      if (!drop.contains(e.target)) { drop.classList.remove("open"); dropBtn.setAttribute("aria-expanded", "false"); }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { drop.classList.remove("open"); dropBtn.setAttribute("aria-expanded", "false"); }
+    });
+  }
+  // Mobile full-screen menu.
+  const burger = $("navBurger"), menu = $("mobileMenu"), closeBtn = $("mobileMenuClose");
+  function setMenu(open) {
+    if (!menu) return;
+    menu.hidden = !open;
+    if (burger) burger.setAttribute("aria-expanded", open ? "true" : "false");
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+  if (burger) burger.addEventListener("click", () => setMenu(menu.hidden));
+  if (closeBtn) closeBtn.addEventListener("click", () => setMenu(false));
+  if (menu) menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+  // Header search icon: focus the search box when on the homepage.
+  const searchBtn = $("headerSearchBtn");
+  if (searchBtn && heroSearch) {
+    searchBtn.addEventListener("click", (e) => {
+      if (window.location.pathname === "/" || window.location.pathname === "/index.html") {
+        e.preventDefault();
+        heroSearch.focus();
+        heroSearch.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  }
+  // Sticky jump-bar scroll-spy (homepage only).
+  const jumpBar = document.querySelector(".jump-bar");
+  if (jumpBar && typeof IntersectionObserver !== "undefined") {
+    const links = Array.from(jumpBar.querySelectorAll("a"));
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          links.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id));
+        }
+      });
+    }, { rootMargin: "-30% 0px -60% 0px" });
+    document.querySelectorAll(".tool-section[id], #section-faq").forEach((sec) => obs.observe(sec));
+  }
+  // "/" focuses search; Enter opens the first visible result; arrows move
+  // focus between the search box and the visible cards.
+  if (heroSearch) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "/" && !/^(input|textarea|select)$/i.test((document.activeElement && document.activeElement.tagName) || "")) {
+        e.preventDefault(); heroSearch.focus();
+      }
+    });
+    heroSearch.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const first = visibleCards()[0];
+        if (first) { e.preventDefault(); first.click(); }
+      } else if (e.key === "ArrowDown") {
+        const first = visibleCards()[0];
+        if (first) { e.preventDefault(); first.focus(); }
+      }
+    });
+    document.querySelectorAll(".tool-card").forEach((card) => {
+      card.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+        const list = visibleCards();
+        const i = list.indexOf(card);
+        if (e.key === "ArrowDown" && list[i + 1]) { e.preventDefault(); list[i + 1].focus(); }
+        if (e.key === "ArrowUp") {
+          e.preventDefault();
+          if (list[i - 1]) list[i - 1].focus();
+          else heroSearch.focus();
+        }
+      });
+    });
+    const clearBtn = $("heroSearchClear");
+    if (clearBtn) clearBtn.addEventListener("click", () => {
+      heroSearch.value = ""; heroSearch.focus(); filterCards();
+    });
+  }
+})();
 
 /* ---------- PDF Studio ---------- */
 const createPdfBtn = $("createPdfBtn");
@@ -1449,6 +1569,12 @@ if (moreBtn && navMore) {
 /* Initial state: open the category from the URL hash when present,
    otherwise show everything. */
 (function initCategoryFromHash() {
+  // /?q=... prefill (SearchAction) and #heroSearch focus from the header icon.
+  try {
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (q && heroSearch) { heroSearch.value = q; }
+    if (window.location.hash === "#heroSearch" && heroSearch) { heroSearch.focus(); }
+  } catch (e) {}
   try {
     const h = window.location.hash || "";
     if (h.indexOf("#tool-") === 0) {

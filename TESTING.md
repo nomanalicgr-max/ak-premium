@@ -456,3 +456,21 @@ New harness: `~/workspace/tools/jsdom-test/run-v6.js`, 37 checks, ALL PASS.
   visual check of every component (hero, chips, tabs, FAQ, footer,
   dropzone, thumbs, output-box, terminal, consent banner, swatches,
   forms, tables). Those need the live browser check after deploy.
+
+## v7 (Phase 2) — 11 November 2026
+
+- Harness: ~/workspace/tools/jsdom-test/run-v7.js — all checks pass.
+  Covers the v6 head contract on 78 pages (new: /pakistan, /whats-new),
+  74 homepage cards (68 + 6 Popular), section order, badges, format
+  pills, Urdu subtitles, SearchAction JSON-LD, header dropdown/burger/
+  mobile menu, footer columns, sitemap (77 URLs), and functional search
+  (spaceless "pdftoword", Urdu "زکوٰۃ", no-results box, clear button,
+  "/" shortcut, /?q=merge prefill).
+- Fixed during testing: footer had no /pakistan link (added); Zakat was
+  spelled with Arabic teh marbuta U+0629 instead of Urdu U+06C3 (fixed
+  in build.py, plus Arabic-to-Urdu letter normalisation in normText);
+  the whats-new page legitimately mentions the old "ilove" naming and
+  ?v=6 in its history, so the harness exempts it from those two checks.
+- Not verified: real-browser render (desktop/mobile), Lighthouse scores,
+  dark-mode visual check of every component, keyboard-only walkthrough
+  in a real browser.
