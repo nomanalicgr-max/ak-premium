@@ -14,6 +14,13 @@
   to core.*.js and the stale files removed.
 - SRI hashes computed by downloading all 10 pinned CDN files and hashing
   with SHA-384 (saved in ~/workspace/ak-premium-v4-build/sri.json).
+- The first immutable-caching header used a regex source with [^/] and
+  {10}; Vercel rejected it ("invalid source pattern") and the PR check
+  failed, so the batch was left unmerged. Fixed with two rules in
+  Vercel's supported (.*) syntax, /assets/css/(.*) and /assets/js/(.*).
+  /assets/css holds only the hashed stylesheet after cleanup; /assets/js
+  holds the hashed bundles plus qpdf-worker.js, which is versioned by ?v=
+  in code, so per-URL immutability is safe there too.
   While doing that, the docx URL was found to be a 404
   (docx@8.5.0/build/index.js does not exist; the package publishes
   /build/index.umd.js), so PDF to Word could not load docx in a real
