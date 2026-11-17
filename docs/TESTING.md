@@ -1,5 +1,35 @@
 # AK Premium v4 — Testing Record
 
+## v11 (Global shell) — 17 November 2026
+- Harness: ~/workspace/tools/jsdom-test/run-v11.js — ALL CHECKS PASSED
+  (187 checks, 0 failed; 96 pages + hubs/locales/redirect checks). The
+  v10 harness fails on the new tree, all expected: its homepage card
+  counts, section order, hero copy, footer columns and sitemap count
+  are the old v10 shell.
+- Diff vs the pre-shell snapshot: every page changed (header/footer/
+  card markup), and the tool workspaces themselves are byte-identical
+  apart from the header, footer, breadcrumb hub link and related cards
+  (spot-checked merge-pdf and the tax calculator). Known-answer checks
+  still pass (tax 200,000/month TY2027 -> 156,000; zakat 1,000,000 ->
+  25,000; EMI 1,000,000 @ 12% x 5y -> 22,244.45).
+- Found while testing: clicking a favourite star also opened the tool
+  workspace (the card's click handler ran before the star's delegated
+  handler, which stops propagation too late). Fixed in app.js: the card
+  handler now ignores clicks from .fav-btn. Split re-verified lossless
+  after the fix (3,312 code lines, 0 missing/extra).
+- Also fixed: "See all 1 tools" / "All 1 tools" for the single-tool
+  Design category (now "See all 1 tool" / "All 1 tool").
+- Functional checks in jsdom (fetch stubbed with the real
+  search-index.json): star toggles Favourites on/off and renders the
+  section from the index; seeded Recently used renders in order and
+  clears; header search finds Zakat; globe panel saves ak-prefs;
+  country tabs switch panels; hub grid/list toggle switches
+  .list-view.
+- Not verified: real-browser render, Lighthouse, dark-mode visual pass,
+  keyboard walkthrough, service-worker offline behaviour, Report-Only
+  CSP enforcement, Urdu native-speaker proofread, /ur/ controls in
+  English. Same list as v10.
+
 ## v10 (Foundation) — 17 November 2026
 - Harness: ~/workspace/tools/jsdom-test/run-v10.js — ALL CHECKS PASSED
   (151 checks, 0 failed; 85 pages + registry/search-index/generator

@@ -89,7 +89,7 @@ pre code{background:none;padding:0}
 
 /* ---------- layout: header / page / footer ---------- */
 .site-header{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border)}
-.header-inner{max-width:1200px;margin:0 auto;padding:var(--s-3) var(--s-4);display:flex;align-items:center;gap:var(--s-5);flex-wrap:wrap}
+.header-inner{position:relative;max-width:1200px;margin:0 auto;padding:var(--s-3) var(--s-4);display:flex;align-items:center;gap:var(--s-5);flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:var(--s-2);font-family:var(--font-head);font-weight:800;font-size:1.15rem;color:var(--heading);text-decoration:none;letter-spacing:-0.02em}
 .brand-mark{width:34px;height:34px;flex:none;border-radius:var(--r-sm)}
 .brand-mark rect{fill:var(--primary)}
@@ -104,7 +104,6 @@ pre code{background:none;padding:0}
 .nav-drop.open .nav-menu{display:block}
 .nav-menu a{display:block;padding:10px 12px;border-radius:var(--r-sm);color:var(--text);text-decoration:none;font-weight:500}
 .nav-menu a:hover{background:var(--primary-soft)}
-.nav-menu-head{font-size:.75rem;font-weight:700;color:var(--muted);padding:8px 12px 4px;text-transform:uppercase;letter-spacing:.04em}
 .nav-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-height:44px;border-radius:var(--r-sm);color:var(--text);text-decoration:none;background:transparent;border:0;cursor:pointer;padding:0}
 .nav-icon:hover{background:var(--primary-soft);color:var(--primary)}
 .nav-icon svg{width:22px;height:22px}
@@ -140,7 +139,6 @@ html[data-theme="dark"] .theme-icon--moon{display:none}
 .hero{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow-1);padding:var(--s-5) var(--s-4) var(--s-4);margin:var(--s-5) 0;text-align:center}
 .hero h1{text-wrap:balance}
 .hero-sub{color:var(--muted);text-wrap:balance;max-width:72ch;margin:0 auto var(--s-3);font-size:1.05rem}
-.hero-ur{color:var(--muted);max-width:72ch;margin:0 auto var(--s-4);text-align:center}
 .search-box{position:relative;max-width:620px;margin:0 auto}
 #heroSearch{width:100%;max-width:none;min-height:52px;padding:12px 88px 12px 16px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);font:inherit;font-size:1.05rem;box-shadow:var(--shadow-1)}
 #heroSearch:focus{border-color:var(--primary)}
@@ -231,17 +229,23 @@ input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="tr
 .tool-section h2{margin:0 0 var(--s-3)}
 .section-sub{color:var(--muted);margin:calc(var(--s-2) * -1) 0 var(--s-3);font-size:.875rem}
 .tool-section.cv{content-visibility:auto;contain-intrinsic-size:auto 600px}
-.pk-band{background:var(--pk-soft);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s-5) var(--s-4);margin-bottom:var(--s-6)}
-.pk-band h2{color:var(--pk-hover);margin:0 0 var(--s-2)}
-.pk-band .tool-card{background:var(--surface)}
+.pk-band,.country-band{background:var(--pk-soft);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s-5) var(--s-4);margin-bottom:var(--s-6)}
+.pk-band h2,.country-band h2{color:var(--pk-hover);margin:0 0 var(--s-2)}
+.pk-band .tool-card,.country-band .tool-card{background:var(--surface)}
 .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--s-3)}
 .tool-card{
   position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);
   padding:14px 16px;box-shadow:var(--shadow-1);
-  display:flex;flex-direction:row;align-items:flex-start;gap:12px;text-align:left;cursor:pointer;
+  display:flex;flex-direction:row;align-items:flex-start;gap:8px;text-align:left;
   font:inherit;color:var(--text);text-decoration:none;
   transition:border-color 150ms ease;
 }
+/* The card is a <div> (Global shell) so the favourite star can be a real
+   button next to the link. The link keeps the row layout. */
+.tool-card-link{flex:1;min-width:0;display:flex;flex-direction:row;align-items:flex-start;gap:12px;color:inherit;text-decoration:none;cursor:pointer}
+.fav-btn{flex:none;width:28px;height:28px;min-height:28px;margin:0;padding:0;border:0;background:transparent;color:var(--muted);font-size:1.05rem;line-height:1;cursor:pointer;border-radius:var(--r-sm)}
+.fav-btn:hover{color:var(--primary);background:var(--primary-soft)}
+.fav-btn.on{color:var(--icon-warn-fg)}
 .tool-card:hover{border-color:var(--primary)}
 .tool-card.active{border-color:var(--primary)}
 .tool-card .icon{width:40px;height:40px;flex:none;border-radius:var(--r-md);background:var(--icon-bg);color:var(--icon-fg);display:grid;place-items:center}
@@ -380,6 +384,7 @@ th{color:var(--heading);font-weight:700}
   .contact-layout{grid-template-columns:1fr;gap:var(--s-2)}
   .google-form-embed{height:1150px}
   .nav-desktop{display:none}
+  .nav-drop{display:none}
   .nav-burger{display:inline-flex}
 }
 @media (max-width:720px){
@@ -403,6 +408,56 @@ th{color:var(--heading);font-weight:700}
 @media (max-width:420px){
   .tool-grid{grid-template-columns:1fr}
 }
+
+/* ---------- Global shell (v11): mega-menu, header search, globe panel, country tabs, hubs ---------- */
+/* Mega-menu: a full-width panel under the header. The drop is
+   position:static so the panel anchors to the header, not the button. */
+.nav-drop--mega{position:static}
+.nav-menu--mega{left:var(--s-4);right:var(--s-4);width:auto;min-width:0;padding:16px}
+.mega-all{display:block;padding:10px 12px;border-radius:var(--r-sm);color:var(--text);text-decoration:none;font-weight:700}
+.mega-all:hover{background:var(--primary-soft)}
+.mega-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 24px;margin-top:8px}
+.mega-col h3{margin:0 0 2px;font-size:.95rem}
+.mega-col h3 a{color:var(--heading);text-decoration:none}
+.mega-col h3 a:hover{color:var(--primary)}
+.mega-col ul{list-style:none;margin:0;padding:0}
+.mega-col a{display:block;padding:6px 8px;border-radius:var(--r-sm);color:var(--text);text-decoration:none;font-weight:500;font-size:.92rem}
+.mega-col a:hover{background:var(--primary-soft)}
+.mega-seeall{color:var(--primary);font-weight:600}
+/* Header search dropdown + globe panel (absolute, under the header). */
+.header-search,.globe-panel{position:absolute;top:calc(100% + 8px);right:var(--s-4);z-index:40;width:min(420px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);box-shadow:var(--shadow-2);padding:12px}
+.header-search[hidden],.globe-panel[hidden]{display:none}
+#headerSearchInput{margin:0 0 8px}
+.header-search-results a{display:flex;justify-content:space-between;gap:12px;padding:9px 10px;border-radius:var(--r-sm);color:var(--text);text-decoration:none;font-weight:500}
+.header-search-results a:hover,.header-search-results a:focus{background:var(--primary-soft)}
+.header-search-results a span{color:var(--muted);font-size:.82rem;white-space:nowrap}
+.header-search-hint{color:var(--muted);font-size:.875rem;margin:4px 2px}
+.globe-panel h2{margin:0 0 8px;font-size:1rem}
+.globe-panel label{margin:var(--s-2) 0 0}
+.globe-panel select{margin:2px 0 var(--s-1)}
+.globe-note{color:var(--muted);font-size:.85rem;margin:var(--s-2) 0 0}
+/* Country tools tabs (green accent, like the Pakistan band). */
+.country-tabs{display:flex;flex-wrap:wrap;gap:var(--s-2);margin:var(--s-3) 0 var(--s-4)}
+.country-tab{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:7px 16px;font:inherit;font-weight:700;cursor:pointer}
+.country-tab:hover{border-color:var(--primary);color:var(--primary)}
+.country-tab.active{background:var(--pk);color:var(--bg);border-color:var(--pk)}
+.country-panel p{margin:0 0 var(--s-3)}
+/* Hub pages: category tabs, view toggle, list view. */
+.hub-tabs{display:flex;flex-wrap:wrap;gap:var(--s-2);margin:var(--s-3) 0 var(--s-4)}
+.hub-tab{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:7px 14px;font:inherit;font-weight:600;text-decoration:none}
+.hub-tab:hover{border-color:var(--primary);color:var(--primary)}
+.hub-tab[aria-current="page"]{background:var(--heading);color:var(--bg);border-color:var(--heading)}
+.hub-tools-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);flex-wrap:wrap;margin:var(--s-4) 0 var(--s-3)}
+.hub-tools-head h2{margin:0}
+.view-toggle{display:flex;gap:4px}
+.view-toggle button{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:var(--r-sm);padding:7px 12px;font:inherit;font-weight:600;cursor:pointer}
+.view-toggle button.active{background:var(--heading);color:var(--bg);border-color:var(--heading)}
+.tool-grid.list-view{grid-template-columns:1fr}
+/* See-all links + the hero country link. */
+.see-all{margin:var(--s-3) 0 0}
+.see-all a{font-weight:600}
+.country-link{margin:var(--s-3) 0 0;font-size:.9rem;color:var(--muted)}
+.country-link a{font-weight:600}
 
 /* ---------- dark mode: tokens only ---------- */
 html[data-theme="dark"]{

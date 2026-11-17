@@ -331,7 +331,10 @@ function openWorkspace(id, excelModule) {
 const toolBackBtn = $("toolBackBtn");
 if (toolBackBtn) toolBackBtn.addEventListener("click", closeToolPage);
 document.querySelectorAll(".tool-card").forEach((card) => {
-  card.addEventListener("click", () => openWorkspace(card.dataset.target, card.dataset.excelModule));
+  card.addEventListener("click", (e) => {
+    if (e.target.closest(".fav-btn")) return; // the star only toggles a favourite
+    openWorkspace(card.dataset.target, card.dataset.excelModule);
+  });
 });
 
 /* ---------- hero search: filter tool cards on every keypress ---------- */
@@ -367,7 +370,11 @@ function filterCards() {
     card.style.display = show ? "" : "none";
     if (show) { visible++; const sec = card.closest(".tool-section"); if (sec) sectionsWithVisible.add(sec.id); }
   });
-  if (searchStatus) { searchStatus.textContent = query ? "Found " + visible + " tool(s) matching \"" + query + "\"." : ""; }
+  if (searchStatus) {
+    // Search status from the UI strings (Global shell, locales/en.json).
+    const tpl = (window.AK_STRINGS && window.AK_STRINGS.search && window.AK_STRINGS.search.found) || "Found {n} tool(s) matching \"{q}\".";
+    searchStatus.textContent = query ? tpl.replace("{n}", String(visible)).replace("{q}", query) : "";
+  }
   const noResults = $("noResults");
   if (noResults) {
     const showEmpty = !!query && visible === 0;
@@ -391,6 +398,15 @@ function filterCards() {
   return visible;
 }
 if (heroSearch) heroSearch.addEventListener("input", filterCards);
+/* /?q= prefill (Global shell, design brief 2.7): a shared link like /?q=merge
+   fills the search box and filters the cards on load. */
+(function prefillSearchFromQuery() {
+  if (!heroSearch) return;
+  try {
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (q) { heroSearch.value = q; filterCards(); }
+  } catch (e) { /* a bad query string never blocks the page */ }
+})();
 document.querySelectorAll(".chip").forEach((chip) => {
   chip.addEventListener("click", () => {
     currentGroup = "all";
@@ -430,17 +446,8 @@ document.querySelectorAll(".chip").forEach((chip) => {
   if (closeBtn) closeBtn.addEventListener("click", () => setMenu(false));
   if (menu) menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
-  // Header search icon: focus the search box when on the homepage.
-  const searchBtn = $("headerSearchBtn");
-  if (searchBtn && heroSearch) {
-    searchBtn.addEventListener("click", (e) => {
-      if (window.location.pathname === "/" || window.location.pathname === "/index.html") {
-        e.preventDefault();
-        heroSearch.focus();
-        heroSearch.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    });
-  }
+  // (Header search is now a dropdown handled by the Global shell section;
+  // the search icon no longer just focuses the hero search box.)
   // Sticky jump-bar scroll-spy (homepage only).
   const jumpBar = document.querySelector(".jump-bar");
   if (jumpBar && typeof IntersectionObserver !== "undefined") {
@@ -463,32 +470,309 @@ document.querySelectorAll(".chip").forEach((chip) => {
       }
     });
     heroSearch.addEventListener("keydown", (e) => {
+      // The card is a <div> now (Global shell), so Enter / ArrowDown focus
+      // and click its inner link, not the card itself.
       if (e.key === "Enter") {
         const first = visibleCards()[0];
-        if (first) { e.preventDefault(); first.click(); }
+        const link = first && first.querySelector(".tool-card-link");
+        if (link) { e.preventDefault(); link.click(); }
       } else if (e.key === "ArrowDown") {
         const first = visibleCards()[0];
-        if (first) { e.preventDefault(); first.focus(); }
+        const link = first && first.querySelector(".tool-card-link");
+        if (link) { e.preventDefault(); link.focus(); }
       }
     });
-    document.querySelectorAll(".tool-card").forEach((card) => {
-      card.addEventListener("keydown", (e) => {
-        if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
-        const list = visibleCards();
-        const i = list.indexOf(card);
-        if (e.key === "ArrowDown" && list[i + 1]) { e.preventDefault(); list[i + 1].focus(); }
-        if (e.key === "ArrowUp") {
-          e.preventDefault();
-          if (list[i - 1]) list[i - 1].focus();
-          else heroSearch.focus();
-        }
-      });
+    // Arrow keys move between the visible card links (delegated, so cards
+    // built later by the favourites / recently-used sections work too).
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+      const link = e.target && e.target.closest ? e.target.closest(".tool-card-link") : null;
+      if (!link) return;
+      const list = visibleCards().map((c) => c.querySelector(".tool-card-link")).filter(Boolean);
+      const i = list.indexOf(link);
+      if (i === -1) return;
+      if (e.key === "ArrowDown" && list[i + 1]) { e.preventDefault(); list[i + 1].focus(); }
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (list[i - 1]) list[i - 1].focus();
+        else heroSearch.focus();
+      }
     });
     const clearBtn = $("heroSearchClear");
     if (clearBtn) clearBtn.addEventListener("click", () => {
       heroSearch.value = ""; heroSearch.focus(); filterCards();
     });
   }
+})();
+
+/* ---------- Global shell: favourites & recently used ---------- */
+/* Favourites (star) and Recently used live only in the browser
+   (localStorage, try/catch). No file names or contents are ever stored.
+   The two homepage sections are rendered empty and hidden; this fills them
+   from /data/search-index.json, so any of the 68 tools can appear. */
+const FAV_KEY = "ak-favourites";
+const RECENT_KEY = "ak-recent";
+function escHtml(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function readStoredList(key) {
+  try { const v = JSON.parse(localStorage.getItem(key) || "[]"); return Array.isArray(v) ? v.filter((x) => typeof x === "string") : []; } catch (e) { return []; }
+}
+function writeStoredList(key, arr) {
+  try { localStorage.setItem(key, JSON.stringify(arr)); } catch (e) { /* private mode: it just does not persist */ }
+}
+/* Read a dotted UI string from window.AK_STRINGS (locales/en.json). */
+function str(key) {
+  let cur = window.AK_STRINGS || {};
+  for (const p of String(key).split(".")) { cur = cur && cur[p]; if (cur === undefined) return ""; }
+  return typeof cur === "string" ? cur : "";
+}
+function fillTemplate(tpl, vars) {
+  let out = tpl || "";
+  Object.keys(vars || {}).forEach((k) => { out = out.split("{" + k + "}").join(String(vars[k])); });
+  return out;
+}
+/* The search index, fetched once and cached. The header search and the
+   favourites / recently-used sections both read it. */
+let _searchIndexPromise = null;
+function getSearchIndex() {
+  if (!_searchIndexPromise) {
+    _searchIndexPromise = (typeof fetch === "function" ? fetch("/data/search-index.json").then((r) => r.json()) : Promise.resolve({ tools: [] }))
+      .catch(() => ({ tools: [] }));
+  }
+  return _searchIndexPromise;
+}
+function isFav(slug) { return readStoredList(FAV_KEY).indexOf(slug) !== -1; }
+function favCardHTML(tool, fav) {
+  /* Same card shape as build.py card_html(), built from a search-index entry. */
+  const badge = (tool.badges && tool.badges[0]) ? '<span class="badge ' + escHtml(tool.badges[0].class) + '">' + escHtml(tool.badges[0].label) + '</span>' : "";
+  const fmt = tool.format ? '<span class="format">' + escHtml(tool.format) + '</span>' : "";
+  const iconCls = tool.iconClass ? " " + tool.iconClass : "";
+  const label = fillTemplate(str(fav ? "favourites.remove" : "favourites.add"), { name: tool.title });
+  return '<div class="tool-card' + iconCls + '" data-slug="' + escHtml(tool.slug) + '">'
+    + '<a class="tool-card-link" href="/tools/' + escHtml(tool.slug) + '"><span class="icon"><svg aria-hidden="true"><use href="#' + escHtml(tool.icon) + '"/></svg></span>'
+    + '<span class="tool-card-body"><span class="tool-card-head"><strong>' + escHtml(tool.title) + '</strong>' + fmt + badge + '</span>'
+    + '<span class="tool-card-desc">' + escHtml(tool.short) + '</span></span></a>'
+    + '<button type="button" class="fav-btn' + (fav ? " on" : "") + '" data-slug="' + escHtml(tool.slug) + '" aria-pressed="' + (fav ? "true" : "false") + '" aria-label="' + escHtml(label) + '" title="' + escHtml(label) + '">\u2605</button></div>';
+}
+function renderToolListSection(gridId, sectionId, slugs) {
+  const grid = $(gridId), section = $(sectionId);
+  if (!grid || !section) return;
+  if (!slugs.length) { section.hidden = true; grid.innerHTML = ""; return; }
+  getSearchIndex().then((d) => {
+    const bySlug = {};
+    (d.tools || []).forEach((t) => { bySlug[t.slug] = t; });
+    const cards = slugs.map((s) => bySlug[s]).filter(Boolean).map((t) => favCardHTML(t, isFav(t.slug))).join("");
+    grid.innerHTML = cards;
+    section.hidden = cards === "";
+    syncFavButtons();
+  });
+}
+function renderFavSection() { renderToolListSection("favGrid", "section-favourites", readStoredList(FAV_KEY)); }
+function renderRecentSection() { renderToolListSection("recentGrid", "section-recent", readStoredList(RECENT_KEY)); }
+function syncFavButtons() {
+  document.querySelectorAll(".fav-btn").forEach((b) => {
+    const on = isFav(b.dataset.slug);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    b.classList.toggle("on", on);
+    const card = b.closest(".tool-card");
+    const name = (card && card.querySelector("strong") && card.querySelector("strong").textContent) || b.dataset.slug;
+    const label = fillTemplate(str(on ? "favourites.remove" : "favourites.add"), { name: name });
+    b.setAttribute("aria-label", label);
+    b.setAttribute("title", label);
+  });
+}
+function toggleFav(slug) {
+  const list = readStoredList(FAV_KEY);
+  const i = list.indexOf(slug);
+  if (i === -1) list.unshift(slug); else list.splice(i, 1);
+  writeStoredList(FAV_KEY, list);
+  syncFavButtons();
+  renderFavSection();
+}
+/* Delegated favourite toggle (covers cards built by JS too). */
+document.addEventListener("click", (e) => {
+  const btn = e.target && e.target.closest ? e.target.closest(".fav-btn") : null;
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  toggleFav(btn.dataset.slug);
+});
+/* Record a tool-page visit (the tool page body carries data-tool). */
+(function recordToolVisit() {
+  const slug = document.body && document.body.dataset ? document.body.dataset.tool : null;
+  if (!slug) return;
+  const list = readStoredList(RECENT_KEY).filter((s) => s !== slug);
+  list.unshift(slug);
+  writeStoredList(RECENT_KEY, list.slice(0, 8));
+})();
+/* Clear the recently-used list. */
+(function initRecentClear() {
+  const btn = $("recentClear");
+  if (btn) btn.addEventListener("click", () => { writeStoredList(RECENT_KEY, []); renderRecentSection(); });
+})();
+/* Sync the stars and fill the two sections on load. */
+(function initFavRecent() {
+  syncFavButtons();
+  renderFavSection();
+  renderRecentSection();
+})();
+
+/* ---------- Global shell: language & region preferences ---------- */
+/* Preferences live only in the browser (localStorage, try/catch). Defaults
+   come from navigator.language and the timezone. No IP or geo lookup.
+   Region, units and paper size set the defaults for calculators and PDF
+   tools; only Pakistan has country tools today, so the Country tools band
+   still opens on the Pakistan tab. */
+const PREFS_KEY = "ak-prefs";
+function readPrefs() {
+  try { const v = JSON.parse(localStorage.getItem(PREFS_KEY) || "{}"); return v && typeof v === "object" ? v : {}; } catch (e) { return {}; }
+}
+function writePrefs(p) { try { localStorage.setItem(PREFS_KEY, JSON.stringify(p)); } catch (e) {} }
+function regionFromLocale() {
+  try {
+    const lang = (navigator.language || "").toLowerCase();
+    const m = lang.match(/-(pk|in|ae|sa|gb|uk|us)$/);
+    if (m) return { pk: "pk", in: "in", ae: "ae", sa: "ae", gb: "uk", uk: "uk", us: "us" }[m[1]] || "global";
+    const tz = (Intl.DateTimeFormat().resolvedOptions() || {}).timeZone || "";
+    if (/Karachi|Islamabad|Lahore/.test(tz)) return "pk";
+    if (/Kolkata|Calcutta|Mumbai|Delhi/.test(tz)) return "in";
+    if (/Dubai|Riyadh|Jeddah/.test(tz)) return "ae";
+    if (/London/.test(tz)) return "uk";
+    if (/^(America|Canada)\//.test(tz)) return "us";
+  } catch (e) { /* fall through to global */ }
+  return "global";
+}
+function defaultPrefs() {
+  const region = regionFromLocale();
+  return {
+    language: "en",
+    region: region,
+    units: region === "us" ? "imperial" : "metric",
+    paper: region === "us" ? "letter" : "a4",
+  };
+}
+function getPrefs() {
+  const saved = readPrefs(), d = defaultPrefs();
+  return {
+    language: saved.language || d.language,
+    region: saved.region || d.region,
+    units: saved.units || d.units,
+    paper: saved.paper || d.paper,
+  };
+}
+(function initGlobePanel() {
+  const btn = $("globeBtn"), panel = $("globePanel");
+  if (!btn || !panel) return;
+  const prefs = getPrefs();
+  const langSel = $("prefLanguage"), regionSel = $("prefRegion"), unitsSel = $("prefUnits"), paperSel = $("prefPaper");
+  if (langSel) langSel.value = prefs.language;
+  if (regionSel) regionSel.value = prefs.region;
+  if (unitsSel) unitsSel.value = prefs.units;
+  if (paperSel) paperSel.value = prefs.paper;
+  function save() {
+    writePrefs({
+      language: langSel ? langSel.value : "en",
+      region: regionSel ? regionSel.value : "global",
+      units: unitsSel ? unitsSel.value : "metric",
+      paper: paperSel ? paperSel.value : "a4",
+    });
+  }
+  [langSel, regionSel, unitsSel, paperSel].forEach((sel) => { if (sel) sel.addEventListener("change", save); });
+  function setOpen(open) {
+    panel.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  btn.addEventListener("click", (e) => { e.stopPropagation(); setOpen(panel.hidden); });
+  document.addEventListener("click", (e) => { if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) setOpen(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+})();
+
+/* ---------- Global shell: header search ---------- */
+/* The header search icon opens a dropdown that searches every tool from
+   /data/search-index.json (fetched once). Enter opens the first result. */
+(function headerSearch() {
+  const btn = $("headerSearchBtn"), panel = $("headerSearch"), input = $("headerSearchInput"), results = $("headerSearchResults");
+  if (!btn || !panel || !input || !results) return;
+  function matchIndex(tool, q) {
+    const qc = normCompact(q);
+    const hay = normText(tool.title + " " + tool.category + " " + (tool.keywords || []).join(" ") + " " + tool.short);
+    if (normCompact(hay).indexOf(qc) !== -1) return true;
+    const words = normText(q).split(" ");
+    return words.every((w) => hay.split(" ").some((hw) => hw.indexOf(w) === 0));
+  }
+  function resultHTML(tool) {
+    return '<a href="/tools/' + escHtml(tool.slug) + '" role="option"><strong>' + escHtml(tool.title) + '</strong><span>' + escHtml(tool.category) + '</span></a>';
+  }
+  function renderMatches(q) {
+    const query = String(q || "").trim();
+    if (!query) {
+      results.innerHTML = '<p class="header-search-hint">' + escHtml(str("headerSearch.hint")) + '</p>';
+      return;
+    }
+    getSearchIndex().then((d) => {
+      const hits = (d.tools || []).filter((t) => matchIndex(t, query)).slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits.map(resultHTML).join("")
+        : '<p class="header-search-hint">' + escHtml(str("headerSearch.empty")) + '</p>';
+    });
+  }
+  function setOpen(open) {
+    panel.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) { input.focus(); renderMatches(input.value); }
+  }
+  btn.addEventListener("click", (e) => { e.stopPropagation(); setOpen(panel.hidden); });
+  document.addEventListener("click", (e) => { if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) setOpen(false); });
+  input.addEventListener("input", () => renderMatches(input.value));
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const first = results.querySelector("a");
+      if (first) { e.preventDefault(); first.click(); }
+    } else if (e.key === "ArrowDown") {
+      const first = results.querySelector("a");
+      if (first) { e.preventDefault(); first.focus(); }
+    } else if (e.key === "Escape") {
+      setOpen(false); btn.focus();
+    }
+  });
+  results.addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+    const links = Array.from(results.querySelectorAll("a"));
+    const i = links.indexOf(document.activeElement);
+    if (e.key === "ArrowDown" && links[i + 1]) { e.preventDefault(); links[i + 1].focus(); }
+    if (e.key === "ArrowUp") { e.preventDefault(); if (links[i - 1]) links[i - 1].focus(); else input.focus(); }
+  });
+})();
+
+/* ---------- Global shell: country tabs ---------- */
+/* The Country tools band on the homepage: one tab per country, Pakistan
+   first and fullest. Only Pakistan has tools today; the other tabs say so
+   honestly and link to Contact. */
+(function countryTabs() {
+  const tabs = document.querySelectorAll(".country-tab");
+  if (!tabs.length) return;
+  function activate(tab) {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.classList.toggle("active", on);
+      const panel = document.querySelector('.country-panel[data-panel="' + t.dataset.country + '"]');
+      if (panel) panel.hidden = !on;
+    });
+  }
+  tabs.forEach((t) => t.addEventListener("click", () => activate(t)));
+})();
+
+/* ---------- Global shell: hub view toggle ---------- */
+/* Category hub pages: switch the tool grid between a grid and a list. */
+(function hubViewToggle() {
+  const grid = $("hubGrid");
+  const btns = document.querySelectorAll(".view-toggle button");
+  if (!grid || !btns.length) return;
+  btns.forEach((b) => b.addEventListener("click", () => {
+    const list = b.dataset.view === "list";
+    grid.classList.toggle("list-view", list);
+    btns.forEach((x) => { const on = x === b; x.classList.toggle("active", on); x.setAttribute("aria-pressed", on ? "true" : "false"); });
+  }));
 })();
 
 /* ---------- PDF Studio ---------- */
@@ -911,6 +1195,7 @@ if (moreBtn && navMore) {
 })();
 
 /* ---------- Phase 1 tools: pure logic (testable) ---------- */
+
 function parseOrganizeOrder(input, count) {
   const tokens = String(input || "").split(",").map((s) => s.trim()).filter(Boolean);
   if (!tokens.length) return { error: "Please enter a page order, for example 3,1,2." };
@@ -924,6 +1209,7 @@ function parseOrganizeOrder(input, count) {
   if (new Set(order).size !== count) return { error: "Duplicate page in the order. List every page from 1 to " + count + " exactly once." };
   return { order };
 }
+
 function countWords(text) {
   const s = String(text || "");
   const trimmed = s.trim();
@@ -935,14 +1221,18 @@ function countWords(text) {
   const readingMinutes = Math.ceil(words / 200);
   return { words, chars, charsNoSpaces, sentences, paragraphs, readingMinutes };
 }
+
 function prettyJson(text) { return JSON.stringify(JSON.parse(text), null, 2); }
+
 function minifyJson(text) { return JSON.stringify(JSON.parse(text)); }
+
 function base64EncodeText(text) {
   const bytes = new TextEncoder().encode(String(text));
   let binary = "";
   bytes.forEach((b) => { binary += String.fromCharCode(b); });
   return btoa(binary);
 }
+
 function base64DecodeText(text) {
   const clean = String(text || "").replace(/\s/g, "");
   if (!clean || clean.length % 4 === 1 || !/^[A-Za-z0-9+/]*={0,2}$/.test(clean)) throw new Error("Invalid Base64 text.");
@@ -951,6 +1241,7 @@ function base64DecodeText(text) {
   for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
   return new TextDecoder().decode(bytes);
 }
+
 function calculateAge(dobStr, todayStr) {
   const dob = new Date(dobStr + "T00:00:00");
   if (isNaN(dob.getTime())) return { error: "Please choose a valid date of birth." };
@@ -968,6 +1259,7 @@ function calculateAge(dobStr, todayStr) {
   if (months < 0) { years -= 1; months += 12; }
   return { years, months, days };
 }
+
 function percentageCalc(mode, x, y) {
   if (isNaN(x) || isNaN(y)) return { error: "Please enter numbers for both X and Y." };
   if (mode === "of") return { value: (x / 100) * y, text: x + "% of " + y + " = " + ((x / 100) * y) };
@@ -982,6 +1274,7 @@ function percentageCalc(mode, x, y) {
   }
   return { error: "Please choose a calculation type." };
 }
+
 function bmiCalc(heightCm, weightKg) {
   if (!heightCm || heightCm <= 0 || !weightKg || weightKg <= 0) return { error: "Please enter a positive height and weight." };
   const m = heightCm / 100;
@@ -993,12 +1286,14 @@ function bmiCalc(heightCm, weightKg) {
   else if (rounded < 30) category = "Overweight";
   return { bmi: rounded, category };
 }
+
 function defaultRandInt(n) {
   if (typeof crypto !== "undefined" && crypto.getRandomValues) {
     const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n;
   }
   throw new Error("Secure random numbers are not available in this browser.");
 }
+
 function generatePassword(length, opts, randInt) {
   const rand = randInt || defaultRandInt;
   const sets = [];
@@ -1014,11 +1309,13 @@ function generatePassword(length, opts, randInt) {
   for (let i = chars.length - 1; i > 0; i--) { const j = rand(i + 1); const tmp = chars[i]; chars[i] = chars[j]; chars[j] = tmp; }
   return { password: chars.join("") };
 }
+
 function passwordStrengthNote(length, setCount) {
   if (length >= 16 && setCount >= 4) return "Strong: long, with all character types.";
   if (length >= 12 && setCount >= 3) return "Good: use 16+ characters with all types for best strength.";
   return "Weak: use a longer password with more character types.";
 }
+
 function copyTextToClipboard(text, statusId, doneMessage) {
   const done = doneMessage || "Copied to clipboard.";
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1029,6 +1326,7 @@ function copyTextToClipboard(text, statusId, doneMessage) {
   const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); setStatus(statusId, done);
   return Promise.resolve();
 }
+
 function loadImageFromFile(file) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
@@ -1038,6 +1336,7 @@ function loadImageFromFile(file) {
     img.src = url;
   });
 }
+
 function canvasToBlob(canvas, type, quality) {
   return new Promise((resolve) => canvas.toBlob(resolve, type, quality));
 }
@@ -1047,6 +1346,7 @@ let organizePages = []; /* [{index (0-based), rotation}] */
 let qrGenerated = false;
 
 /* ---------- Phase 2 tools: pure logic (testable) ---------- */
+
 function parseInvoiceItems(text) {
   const lines = String(text || "").split("\n").map((s) => s.trim()).filter(Boolean);
   if (!lines.length) return { error: "Please add at least one item, one per line as: Item name, quantity, price." };
@@ -1061,19 +1361,23 @@ function parseInvoiceItems(text) {
   }
   return { items };
 }
+
 function invoiceTotals(items, taxPct) {
   const subtotal = Math.round(items.reduce((sum, it) => sum + it.amount, 0) * 100) / 100;
   const tax = Math.round(subtotal * (taxPct / 100) * 100) / 100;
   const total = Math.round((subtotal + tax) * 100) / 100;
   return { subtotal, tax, total };
 }
+
 function toTitleCase(text) {
   return String(text || "").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 }
+
 function toSentenceCase(text) {
   const s = String(text || "").toLowerCase();
   return s.replace(/(^\s*[a-z]|[.!?]\s+[a-z])/g, (c) => c.toUpperCase());
 }
+
 function convertCase(text, mode) {
   if (mode === "upper") return String(text || "").toUpperCase();
   if (mode === "lower") return String(text || "").toLowerCase();
@@ -1081,6 +1385,7 @@ function convertCase(text, mode) {
   if (mode === "sentence") return toSentenceCase(text);
   return String(text || "");
 }
+
 function generateUuid(randomBytes) {
   if (typeof crypto !== "undefined" && crypto.randomUUID) return crypto.randomUUID();
   const bytes = randomBytes || (typeof crypto !== "undefined" && crypto.getRandomValues ? crypto.getRandomValues(new Uint8Array(16)) : null);
@@ -1090,6 +1395,7 @@ function generateUuid(randomBytes) {
   const hex = Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
   return hex.slice(0, 8) + "-" + hex.slice(8, 12) + "-" + hex.slice(12, 16) + "-" + hex.slice(16, 20) + "-" + hex.slice(20);
 }
+
 function hexToHsl(hex) {
   const clean = String(hex || "").replace("#", "");
   const r = parseInt(clean.slice(0, 2), 16) / 255;
@@ -1106,6 +1412,7 @@ function hexToHsl(hex) {
   else h = ((r - g) / d + 4) * 60;
   return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
 }
+
 function hslToHex(h, s, l) {
   h = ((h % 360) + 360) % 360; s /= 100; l /= 100;
   const c = (1 - Math.abs(2 * l - 1)) * s;
@@ -1121,6 +1428,7 @@ function hslToHex(h, s, l) {
   const toHex = (v) => Math.round((v + m) * 255).toString(16).padStart(2, "0");
   return "#" + toHex(r) + toHex(g) + toHex(b);
 }
+
 function colorPalette(baseHex) {
   if (!/^#[0-9a-fA-F]{6}$/.test(String(baseHex || ""))) return { error: "Please choose a valid color." };
   const hsl = hexToHsl(baseHex);
@@ -1134,6 +1442,7 @@ function colorPalette(baseHex) {
   ];
   return { items };
 }
+
 function emiCalc(principal, annualRatePct, years) {
   if (!principal || principal <= 0 || !years || years <= 0) return { error: "Please enter a positive loan amount and number of years." };
   if (annualRatePct === null || annualRatePct === undefined || isNaN(annualRatePct) || annualRatePct < 0) return { error: "Please enter an interest rate of 0 or more." };
@@ -1148,6 +1457,7 @@ function emiCalc(principal, annualRatePct, years) {
   const total = Math.round(emi * n * 100) / 100;
   return { emi, total, interest: Math.round((total - principal) * 100) / 100, months: n };
 }
+
 function parseCgpa(text) {
   const lines = String(text || "").split("\n").map((s) => s.trim()).filter(Boolean);
   if (!lines.length) return { error: "Please add at least one course, one per line as: Course, credit hours, grade point." };
@@ -1163,6 +1473,7 @@ function parseCgpa(text) {
   if (!creditSum) return { error: "Total credit hours cannot be zero." };
   return { cgpa: Math.round((weighted / creditSum) * 100) / 100, credits: creditSum };
 }
+
 function parseCsvLine(line) {
   const fields = [];
   let current = "", inQuotes = false;
@@ -1177,6 +1488,7 @@ function parseCsvLine(line) {
   fields.push(current.trim());
   return fields;
 }
+
 function csvToJson(text) {
   const lines = String(text || "").split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
   if (lines.length < 2) return { error: "CSV needs a header row and at least one data row." };
@@ -1192,6 +1504,7 @@ function csvToJson(text) {
   }
   return { rows };
 }
+
 function diffTexts(original, changed) {
   const a = String(original || "").split("\n");
   const b = String(changed || "").split("\n");
@@ -1399,13 +1712,16 @@ LIVE_CALCS.forEach((c) => {
   });
 })();
 
-/* ---------- File preview: show the chosen file before converting ---------- */
 /* Runs for every file input on the page. For a PDF it renders page 1 with pdf.js,
    plus name, size and page count, so the user can confirm it is the right document
    before pressing Convert. For an image it shows a thumbnail. Files stay in the
    browser; nothing is uploaded. If a PDF cannot be rendered (for example it is
    password-protected), the name and size are still shown instead of failing. */
+
+/* ---------- File preview: show the chosen file before converting ---------- */
+
 function akFormatBytes(n){ if(!n && n!==0) return ""; if(n<1024) return n+" bytes"; if(n<1048576) return (n/1024).toFixed(1)+" KB"; return (n/1048576).toFixed(2)+" MB"; }
+
 async function akRenderFilePreview(input, box){
   box.innerHTML=""; box.classList.remove("visible");
   const files=input.files||[];

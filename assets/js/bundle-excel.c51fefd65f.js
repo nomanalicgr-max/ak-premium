@@ -1,4 +1,4 @@
-/* AK Premium v9 — bundle-excel (split from app.js, Phase 4.3). Loads after core.js. */
+/* AK Premium v11 — bundle-excel (split from app.js, Global shell). Loads after core.js. */
 
 /* ---------- New spreadsheet tools: Excel to CSV + CSV to Excel ---------- */
 

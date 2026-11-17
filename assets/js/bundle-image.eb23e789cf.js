@@ -1,4 +1,4 @@
-/* AK Premium v9 — bundle-image (split from app.js, Phase 4.3). Loads after core.js. */
+/* AK Premium v11 — bundle-image (split from app.js, Global shell). Loads after core.js. */
 
 /* ---------- Phase 1 handlers: Image ---------- */
 

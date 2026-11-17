@@ -1,6 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/pakistan",
+      "destination": "/country/pakistan",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "headers": [
