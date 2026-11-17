@@ -301,6 +301,30 @@
 <header class="site-header"><div class="header-inner"><a class="brand" href="/"><svg class="brand-mark" viewBox="0 0 40 40" width="34" height="34" aria-hidden="true" focusable="false"><rect width="40" height="40" rx="8"/><text x="20" y="27" text-anchor="middle">AK</text></svg><span>AK Premium</span><span class="brand-tag">Free tools. Private by design.</span></a><nav class="main-nav" aria-label="Main navigation"><div class="nav-drop"><button type="button" class="nav-btn" id="toolsMenuBtn" aria-expanded="false" aria-haspopup="true">Tools</button><div class="nav-menu" id="toolsMenu" role="menu" aria-label="Tool categories"><a href="/tools" role="menuitem">All tools</a><div class="nav-menu-head">Categories</div><a href="/#section-pdf" role="menuitem">PDF Tools</a><a href="/#section-convert" role="menuitem">Convert</a><a href="/#section-image" role="menuitem">Image Tools</a><a href="/#section-excel" role="menuitem">Excel Tools</a><a href="/#section-calculators" role="menuitem">Calculators</a><a href="/pakistan" role="menuitem">Pakistan Tools</a><a href="/#section-more" role="menuitem">More tools</a></div></div><a class="nav-btn nav-desktop" href="/pakistan">Pakistan</a><a class="nav-btn nav-desktop" href="/about">About</a><a class="nav-btn nav-desktop" href="/contact">Contact</a><a class="nav-btn nav-desktop nav-lang" href="/ur/" lang="ur">اردو</a><a class="nav-icon" href="/#heroSearch" id="headerSearchBtn" aria-label="Search tools"><svg aria-hidden="true"><use href="#i-search"/></svg></a><button type="button" class="theme-toggle" id="darkModeToggle" aria-label="Dark mode" aria-pressed="false"><svg class="theme-icon--moon" aria-hidden="true"><use href="#i-moon"/></svg><svg class="theme-icon--sun" aria-hidden="true"><use href="#i-sun"/></svg></button><button type="button" class="nav-burger" id="navBurger" aria-expanded="false" aria-controls="mobileMenu" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button></nav></div></header><div class="mobile-menu" id="mobileMenu" hidden><div class="mobile-menu-head"><span>AK Premium</span><button type="button" class="nav-icon" id="mobileMenuClose" aria-label="Close menu"><svg aria-hidden="true"><use href="#i-x"/></svg></button></div><a href="/tools">All tools</a><a href="/#section-pdf">PDF Tools</a><a href="/#section-convert">Convert</a><a href="/#section-image">Image Tools</a><a href="/#section-excel">Excel Tools</a><a href="/#section-calculators">Calculators</a><a href="/pakistan">Pakistan Tools</a><a href="/#section-more">More tools</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/ur/" lang="ur">اردو</a></div><main class="page" id="main">
 <h1>What&#x27;s new</h1>
 <p>The latest changes to AK Premium, newest first. Older entries are kept below, so you can see what changed and when.</p>
+<h2>v10 — 17 November 2026 (Foundation: tool registry + generator)</h2>
+<h3>Registry (expansion brief §3.1)</h3>
+<ul>
+<li>All 68 tools now live in one registry, `data/tools.json`, the single</li>
+<p>source of truth. Cards, menus, search, sitemap, related tools, breadcrumbs and JSON-LD are generated from it; nothing is hard-coded per tool any more. `build.py` reads the registry (the old `inventory.json` is superseded and no longer read).</p>
+<li>The registry carries, per tool: slug, workspace, title/short (English),</li>
+<p>category, group, icon, keywords, libs, engine, maxFileMB, wave, status, regions, lastReviewed, plus badges, format, related, steps, content (use/tip/limit/example/FAQ), meta description and Urdu copy where they exist. Every value was migrated from the old build data and verified equal by 11 automated equivalence checks; the regenerated site is byte-identical to the v9 site except for the items below.</p>
+<li>A public copy of the registry ships at `/data/tools.json`, and</li>
+<p>`/data/search-index.json` (all 68 published tools) is generated for the homepage search to use instead of the DOM.</p>
+</ul>
+<h3>Generator</h3>
+<ul>
+<li>The generator (`build.py` + its README) now ships in the repo under</li>
+<p>`build/` (excluded from deployment by `.vercelignore`), with the vendored v3 workspace index and the registry source. It runs from wherever it sits: in the repo, or in the workspace build folder.</p>
+<li>Sitemap `&lt;lastmod&gt;` is now the real per-page date: the last commit</li>
+<p>that changed that file on main. Before, every URL carried the build date. If a page will change in the next commit, or git is unavailable, the build date is used instead.</p>
+<li>The per-tool JavaScript split stays as `core.js` + one bundle per</li>
+<p>category (not one file per tool): 68 files would duplicate the shared helpers, and the split is already verified lossless. See `build/README.md`.</p>
+</ul>
+<h3>Fixed with this deploy</h3>
+<ul>
+<li>The live `/tools` page was still the old v8 page (it was missed in the</li>
+<p>v9 deploy): it loaded `/assets/css/styles.css?v=8` and `/assets/js/app.js?v=8`, both deleted in v9, so it rendered unstyled and its search did not work. This deploy ships the v9 page.</p>
+</ul>
 <h2>v9 — 11 November 2026 (Phase 4: SEO, security, performance, accessibility, analytics, cleanup)</h2>
 <h3>SEO and social</h3>
 <ul>

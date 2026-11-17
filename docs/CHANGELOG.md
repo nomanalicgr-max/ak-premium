@@ -1,5 +1,43 @@
 # AK Premium — Changelog
 
+## v10 — 17 November 2026 (Foundation: tool registry + generator)
+
+### Registry (expansion brief §3.1)
+- All 68 tools now live in one registry, `data/tools.json`, the single
+  source of truth. Cards, menus, search, sitemap, related tools,
+  breadcrumbs and JSON-LD are generated from it; nothing is hard-coded
+  per tool any more. `build.py` reads the registry (the old
+  `inventory.json` is superseded and no longer read).
+- The registry carries, per tool: slug, workspace, title/short (English),
+  category, group, icon, keywords, libs, engine, maxFileMB, wave, status,
+  regions, lastReviewed, plus badges, format, related, steps, content
+  (use/tip/limit/example/FAQ), meta description and Urdu copy where they
+  exist. Every value was migrated from the old build data and verified
+  equal by 11 automated equivalence checks; the regenerated site is
+  byte-identical to the v9 site except for the items below.
+- A public copy of the registry ships at `/data/tools.json`, and
+  `/data/search-index.json` (all 68 published tools) is generated for the
+  homepage search to use instead of the DOM.
+
+### Generator
+- The generator (`build.py` + its README) now ships in the repo under
+  `build/` (excluded from deployment by `.vercelignore`), with the
+  vendored v3 workspace index and the registry source. It runs from
+  wherever it sits: in the repo, or in the workspace build folder.
+- Sitemap `<lastmod>` is now the real per-page date: the last commit
+  that changed that file on main. Before, every URL carried the build
+  date. If a page will change in the next commit, or git is unavailable,
+  the build date is used instead.
+- The per-tool JavaScript split stays as `core.js` + one bundle per
+  category (not one file per tool): 68 files would duplicate the shared
+  helpers, and the split is already verified lossless. See `build/README.md`.
+
+### Fixed with this deploy
+- The live `/tools` page was still the old v8 page (it was missed in the
+  v9 deploy): it loaded `/assets/css/styles.css?v=8` and
+  `/assets/js/app.js?v=8`, both deleted in v9, so it rendered unstyled
+  and its search did not work. This deploy ships the v9 page.
+
 ## v9 — 11 November 2026 (Phase 4: SEO, security, performance, accessibility, analytics, cleanup)
 
 ### SEO and social
