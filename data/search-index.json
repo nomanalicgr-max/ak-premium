@@ -1,0 +1,813 @@
+{
+ "version": 1,
+ "tools": [
+  {
+   "slug": "create-pdf",
+   "title": "Create PDF",
+   "short": "Write text, download a PDF.",
+   "category": "pdf",
+   "keywords": [
+    "blank pdf",
+    "write pdf",
+    "new pdf"
+   ],
+   "icon": "i-file-plus"
+  },
+  {
+   "slug": "images-to-pdf",
+   "title": "Images to PDF",
+   "short": "Turn images into one PDF.",
+   "category": "pdf",
+   "keywords": [
+    "jpg to pdf",
+    "png to pdf",
+    "photos to pdf"
+   ],
+   "icon": "i-images"
+  },
+  {
+   "slug": "merge-pdf",
+   "title": "Merge PDF",
+   "short": "Combine PDFs into one file.",
+   "category": "pdf",
+   "keywords": [
+    "join pdf",
+    "combine pdf",
+    "pdf joiner",
+    "merge pdf files"
+   ],
+   "icon": "i-merge"
+  },
+  {
+   "slug": "split-pdf",
+   "title": "Split PDF",
+   "short": "Extract a page range into a new PDF.",
+   "category": "pdf",
+   "keywords": [
+    "extract pages",
+    "cut pdf",
+    "pdf splitter"
+   ],
+   "icon": "i-split"
+  },
+  {
+   "slug": "organize-pdf",
+   "title": "Organize PDF",
+   "short": "Reorder, rotate and delete pages.",
+   "category": "pdf",
+   "keywords": [
+    "reorder pages",
+    "rearrange pdf",
+    "sort pages"
+   ],
+   "icon": "i-layout-grid"
+  },
+  {
+   "slug": "remove-pages",
+   "title": "Remove Pages",
+   "short": "Delete selected pages and keep the rest.",
+   "category": "pdf",
+   "keywords": [
+    "delete pages",
+    "remove pdf pages"
+   ],
+   "icon": "i-file-minus"
+  },
+  {
+   "slug": "rotate-pdf",
+   "title": "Rotate PDF",
+   "short": "Rotate all pages 90, 180, or 270 degrees.",
+   "category": "pdf",
+   "keywords": [
+    "turn pages",
+    "flip pdf"
+   ],
+   "icon": "i-rotate-cw"
+  },
+  {
+   "slug": "add-page-numbers",
+   "title": "Add Page Numbers",
+   "short": "Number every page, bottom centre.",
+   "category": "pdf",
+   "keywords": [
+    "page numbers",
+    "paginate pdf"
+   ],
+   "icon": "i-list-ordered"
+  },
+  {
+   "slug": "add-watermark",
+   "title": "Add Watermark",
+   "short": "Stamp text diagonally on pages.",
+   "category": "pdf",
+   "keywords": [
+    "stamp pdf",
+    "watermark pdf"
+   ],
+   "icon": "i-droplet"
+  },
+  {
+   "slug": "edit-pdf",
+   "title": "Edit PDF",
+   "short": "Add text to one page.",
+   "category": "pdf",
+   "keywords": [
+    "write on pdf",
+    "annotate pdf",
+    "add text to pdf"
+   ],
+   "icon": "i-file-pen"
+  },
+  {
+   "slug": "compress-pdf",
+   "title": "Compress PDF",
+   "short": "Reduce PDF file size (Light, Medium or Strong).",
+   "category": "pdf",
+   "keywords": [
+    "reduce pdf size",
+    "shrink pdf",
+    "make pdf smaller"
+   ],
+   "icon": "i-minimize-2"
+  },
+  {
+   "slug": "pdf-to-text",
+   "title": "PDF to Text",
+   "short": "Extract text as a .txt file.",
+   "category": "pdf",
+   "keywords": [
+    "extract text",
+    "pdf to txt"
+   ],
+   "icon": "i-file-text"
+  },
+  {
+   "slug": "pdf-to-images",
+   "title": "PDF to Images",
+   "short": "Render pages as PNG images.",
+   "category": "pdf",
+   "keywords": [
+    "pdf to png",
+    "pdf to jpg",
+    "extract images"
+   ],
+   "icon": "i-file-image"
+  },
+  {
+   "slug": "e-sign",
+   "title": "e-Sign",
+   "short": "Draw a signature, download PNG.",
+   "category": "pdf",
+   "keywords": [
+    "sign pdf",
+    "signature",
+    "electronic signature"
+   ],
+   "icon": "i-pen-tool"
+  },
+  {
+   "slug": "unlock-pdf",
+   "title": "Unlock PDF",
+   "short": "Remove the password from a PDF you own.",
+   "category": "pdf",
+   "keywords": [
+    "remove password",
+    "unlock pdf",
+    "decrypt pdf"
+   ],
+   "icon": "i-lock-open"
+  },
+  {
+   "slug": "protect-pdf",
+   "title": "Protect PDF",
+   "short": "Lock a PDF with a password (AES-256).",
+   "category": "pdf",
+   "keywords": [
+    "password protect",
+    "lock pdf",
+    "encrypt pdf"
+   ],
+   "icon": "i-lock"
+  },
+  {
+   "slug": "crop-pdf",
+   "title": "Crop PDF",
+   "short": "Crop margins on every page.",
+   "category": "pdf",
+   "keywords": [
+    "trim pdf",
+    "crop margins"
+   ],
+   "icon": "i-crop"
+  },
+  {
+   "slug": "redact-pdf",
+   "title": "Redact PDF",
+   "short": "Permanently cover matching text in black.",
+   "category": "pdf",
+   "keywords": [
+    "black out text",
+    "hide text",
+    "remove sensitive text"
+   ],
+   "icon": "i-eye-off"
+  },
+  {
+   "slug": "pdf-to-pdf-a",
+   "title": "PDF to PDF/A",
+   "short": "Archive-style copy with metadata.",
+   "category": "pdf",
+   "keywords": [
+    "pdf/a",
+    "archive pdf"
+   ],
+   "icon": "i-archive"
+  },
+  {
+   "slug": "repair-pdf",
+   "title": "Repair PDF",
+   "short": "Re-save a damaged PDF, best effort.",
+   "category": "pdf",
+   "keywords": [
+    "fix pdf",
+    "recover pdf",
+    "corrupted pdf"
+   ],
+   "icon": "i-wrench"
+  },
+  {
+   "slug": "compare-pdf",
+   "title": "Compare PDF",
+   "short": "Compare text in two PDFs.",
+   "category": "pdf",
+   "keywords": [
+    "diff pdf",
+    "compare documents"
+   ],
+   "icon": "i-columns-2"
+  },
+  {
+   "slug": "pdf-to-markdown",
+   "title": "PDF to Markdown",
+   "short": "Extracted text as Markdown.",
+   "category": "pdf",
+   "keywords": [
+    "pdf to md",
+    "markdown"
+   ],
+   "icon": "i-file-code"
+  },
+  {
+   "slug": "scan-to-pdf",
+   "title": "Scan to PDF",
+   "short": "Camera photo or image to PDF.",
+   "category": "pdf",
+   "keywords": [
+    "photo to pdf",
+    "camera scan"
+   ],
+   "icon": "i-scan-line"
+  },
+  {
+   "slug": "ocr-pdf",
+   "title": "OCR PDF",
+   "short": "Read scanned pages and save them as a text PDF.",
+   "category": "pdf",
+   "keywords": [
+    "ocr",
+    "scanned pdf to text",
+    "read scanned pdf"
+   ],
+   "icon": "i-scan-text"
+  },
+  {
+   "slug": "pdf-forms",
+   "title": "PDF Forms",
+   "short": "Make a fillable form PDF.",
+   "category": "pdf",
+   "keywords": [
+    "fillable pdf",
+    "pdf form",
+    "form fields"
+   ],
+   "icon": "i-square-pen"
+  },
+  {
+   "slug": "local-summarizer",
+   "title": "Local Summarizer",
+   "short": "Key sentences, in your browser.",
+   "category": "pdf",
+   "keywords": [
+    "summarize pdf",
+    "summary",
+    "tldr"
+   ],
+   "icon": "i-text-quote"
+  },
+  {
+   "slug": "translate-helper",
+   "title": "Translate Helper",
+   "short": "Extract text ready to translate.",
+   "category": "pdf",
+   "keywords": [
+    "translate pdf",
+    "translation"
+   ],
+   "icon": "i-languages"
+  },
+  {
+   "slug": "pdf-to-excel",
+   "title": "PDF to Excel",
+   "short": "Extracted text into an .xlsx file.",
+   "category": "convert",
+   "keywords": [
+    "pdf to xlsx",
+    "pdf to spreadsheet",
+    "pdf table to excel"
+   ],
+   "icon": "i-file-spreadsheet"
+  },
+  {
+   "slug": "pdf-to-word",
+   "title": "PDF to Word",
+   "short": "Extracted text into a .docx file.",
+   "category": "convert",
+   "keywords": [
+    "pdf to docx",
+    "convert pdf to word"
+   ],
+   "icon": "i-file-text"
+  },
+  {
+   "slug": "pdf-to-ppt",
+   "title": "PDF to PPT",
+   "short": "Extracted text into a .pptx file.",
+   "category": "convert",
+   "keywords": [
+    "pdf to pptx",
+    "pdf to powerpoint",
+    "pdf to slides"
+   ],
+   "icon": "i-presentation"
+  },
+  {
+   "slug": "txt-html-to-pdf",
+   "title": "TXT / HTML to PDF",
+   "short": "Paste text, download a PDF.",
+   "category": "convert",
+   "keywords": [
+    "text to pdf",
+    "html to pdf"
+   ],
+   "icon": "i-file-code"
+  },
+  {
+   "slug": "excel-to-pdf",
+   "title": "Excel to PDF",
+   "short": "First sheet rendered as PDF.",
+   "category": "convert",
+   "keywords": [
+    "xlsx to pdf",
+    "spreadsheet to pdf"
+   ],
+   "icon": "i-file-spreadsheet"
+  },
+  {
+   "slug": "word-to-pdf",
+   "title": "Word to PDF",
+   "short": "Word text rendered as PDF.",
+   "category": "convert",
+   "keywords": [
+    "docx to pdf",
+    "word to pdf"
+   ],
+   "icon": "i-file-text"
+  },
+  {
+   "slug": "ppt-to-pdf",
+   "title": "PPT to PDF",
+   "short": "Basic slide text as PDF.",
+   "category": "convert",
+   "keywords": [
+    "pptx to pdf",
+    "powerpoint to pdf",
+    "slides to pdf"
+   ],
+   "icon": "i-presentation"
+  },
+  {
+   "slug": "formula-generator",
+   "title": "Formula Generator",
+   "short": "Describe it, get a formula.",
+   "category": "excel",
+   "keywords": [
+    "excel formula",
+    "sumif",
+    "vlookup",
+    "xlookup"
+   ],
+   "icon": "i-sigma"
+  },
+  {
+   "slug": "formula-explainer",
+   "title": "Formula Explainer",
+   "short": "Paste a formula, understand it.",
+   "category": "excel",
+   "keywords": [
+    "explain formula",
+    "understand excel formula"
+   ],
+   "icon": "i-lightbulb"
+  },
+  {
+   "slug": "vba-macro-writer",
+   "title": "VBA Macro Writer",
+   "short": "Describe it, get VBA code.",
+   "category": "excel",
+   "keywords": [
+    "excel macro",
+    "vba code",
+    "automate excel"
+   ],
+   "icon": "i-terminal-square"
+  },
+  {
+   "slug": "regex-creator",
+   "title": "Regex Creator",
+   "short": "Build patterns, extract emails.",
+   "category": "excel",
+   "keywords": [
+    "regular expression",
+    "pattern",
+    "extract emails"
+   ],
+   "icon": "i-regex"
+  },
+  {
+   "slug": "dax-query",
+   "title": "DAX Query",
+   "short": "Describe it, get a DAX measure.",
+   "category": "excel",
+   "keywords": [
+    "power bi",
+    "dax measure",
+    "dax formula"
+   ],
+   "icon": "i-chart-column"
+  },
+  {
+   "slug": "excel-to-csv",
+   "title": "Excel to CSV",
+   "short": "First sheet exported as CSV.",
+   "category": "excel",
+   "keywords": [
+    "xlsx to csv",
+    "spreadsheet to csv"
+   ],
+   "icon": "i-table"
+  },
+  {
+   "slug": "csv-to-excel",
+   "title": "CSV to Excel",
+   "short": "CSV text saved as .xlsx.",
+   "category": "excel",
+   "keywords": [
+    "csv to xlsx",
+    "csv to spreadsheet"
+   ],
+   "icon": "i-table-properties"
+  },
+  {
+   "slug": "image-compressor",
+   "title": "Image Compressor",
+   "short": "Shrink photos and images for sharing.",
+   "category": "image",
+   "keywords": [
+    "reduce image size",
+    "shrink photo",
+    "compress jpg",
+    "compress png"
+   ],
+   "icon": "i-image-down"
+  },
+  {
+   "slug": "image-resizer",
+   "title": "Image Resizer",
+   "short": "Resize by width and height.",
+   "category": "image",
+   "keywords": [
+    "resize image",
+    "change image size",
+    "resize photo"
+   ],
+   "icon": "i-scaling"
+  },
+  {
+   "slug": "image-converter",
+   "title": "Image Converter",
+   "short": "Change JPG, PNG, WebP format.",
+   "category": "image",
+   "keywords": [
+    "jpg to png",
+    "png to webp",
+    "convert image"
+   ],
+   "icon": "i-replace"
+  },
+  {
+   "slug": "image-to-text",
+   "title": "Image to Text",
+   "short": "Read text from an image.",
+   "category": "image",
+   "keywords": [
+    "ocr image",
+    "read text from image",
+    "picture to text"
+   ],
+   "icon": "i-scan-text"
+  },
+  {
+   "slug": "qr-code-generator",
+   "title": "QR Code Generator",
+   "short": "Text or URL as QR code.",
+   "category": "everyday",
+   "keywords": [
+    "qr code",
+    "barcode",
+    "qr maker"
+   ],
+   "icon": "i-qr-code"
+  },
+  {
+   "slug": "password-generator",
+   "title": "Password Generator",
+   "short": "Strong random passwords, instantly.",
+   "category": "everyday",
+   "keywords": [
+    "random password",
+    "strong password"
+   ],
+   "icon": "i-key-round"
+  },
+  {
+   "slug": "word-counter",
+   "title": "Word Counter",
+   "short": "Words, characters, reading time.",
+   "category": "everyday",
+   "keywords": [
+    "count words",
+    "word count",
+    "character count"
+   ],
+   "icon": "i-whole-word"
+  },
+  {
+   "slug": "json-formatter",
+   "title": "JSON Formatter",
+   "short": "Format, minify, validate JSON.",
+   "category": "developer",
+   "keywords": [
+    "format json",
+    "beautify json",
+    "validate json",
+    "json lint"
+   ],
+   "icon": "i-braces"
+  },
+  {
+   "slug": "base64",
+   "title": "Base64",
+   "short": "Encode or decode Base64 text.",
+   "category": "developer",
+   "keywords": [
+    "base64 encode",
+    "base64 decode"
+   ],
+   "icon": "i-binary"
+  },
+  {
+   "slug": "case-converter",
+   "title": "Case Converter",
+   "short": "Change text case, four ways.",
+   "category": "developer",
+   "keywords": [
+    "uppercase",
+    "lowercase",
+    "title case",
+    "text case"
+   ],
+   "icon": "i-case-sensitive"
+  },
+  {
+   "slug": "uuid-generator",
+   "title": "UUID Generator",
+   "short": "Secure random UUIDs, instantly.",
+   "category": "developer",
+   "keywords": [
+    "guid",
+    "unique id",
+    "random id"
+   ],
+   "icon": "i-fingerprint"
+  },
+  {
+   "slug": "csv-to-json",
+   "title": "CSV to JSON",
+   "short": "CSV rows as JSON objects.",
+   "category": "developer",
+   "keywords": [
+    "csv to json converter"
+   ],
+   "icon": "i-arrow-right-left"
+  },
+  {
+   "slug": "text-diff-checker",
+   "title": "Text Diff Checker",
+   "short": "Compare two texts, line by line.",
+   "category": "developer",
+   "keywords": [
+    "compare text",
+    "diff checker",
+    "text difference"
+   ],
+   "icon": "i-diff"
+  },
+  {
+   "slug": "age-calculator",
+   "title": "Age Calculator",
+   "short": "Exact age in years, months, days.",
+   "category": "calculators",
+   "keywords": [
+    "calculate age",
+    "date of birth",
+    "dob age"
+   ],
+   "icon": "i-cake"
+  },
+  {
+   "slug": "percentage-calculator",
+   "title": "Percentage Calculator",
+   "short": "Percent, share, and change.",
+   "category": "calculators",
+   "keywords": [
+    "percent calculator",
+    "percentage increase",
+    "percentage decrease"
+   ],
+   "icon": "i-percent"
+  },
+  {
+   "slug": "bmi-calculator",
+   "title": "BMI Calculator",
+   "short": "BMI and category from height, weight.",
+   "category": "calculators",
+   "keywords": [
+    "body mass index",
+    "bmi chart"
+   ],
+   "icon": "i-scale"
+  },
+  {
+   "slug": "loan-emi-calculator",
+   "title": "Loan / EMI Calculator",
+   "short": "Monthly EMI, interest and total.",
+   "category": "calculators",
+   "keywords": [
+    "emi calculator",
+    "loan calculator",
+    "monthly installment"
+   ],
+   "icon": "i-landmark"
+  },
+  {
+   "slug": "cgpa-calculator",
+   "title": "CGPA Calculator",
+   "short": "Weighted CGPA from course grades.",
+   "category": "calculators",
+   "keywords": [
+    "gpa calculator",
+    "grade point average"
+   ],
+   "icon": "i-graduation-cap"
+  },
+  {
+   "slug": "invoice-generator",
+   "title": "Invoice Generator",
+   "short": "Bill items, tax and total PDF.",
+   "category": "business",
+   "keywords": [
+    "bill maker",
+    "invoice pdf",
+    "receipt maker"
+   ],
+   "icon": "i-receipt"
+  },
+  {
+   "slug": "resume-builder",
+   "title": "Resume Builder",
+   "short": "Clean PDF resume, quickly.",
+   "category": "business",
+   "keywords": [
+    "cv maker",
+    "resume maker",
+    "cv builder"
+   ],
+   "icon": "i-file-user"
+  },
+  {
+   "slug": "color-palette",
+   "title": "Color Palette",
+   "short": "Palette from one base color.",
+   "category": "design",
+   "keywords": [
+    "color picker",
+    "colour scheme",
+    "palette generator"
+   ],
+   "icon": "i-palette"
+  },
+  {
+   "slug": "land-converter",
+   "title": "Land Converter",
+   "short": "Convert Marla, Kanal, Acre, sq ft, sq yd and sq m.",
+   "category": "pakistan",
+   "keywords": [
+    "marla",
+    "kanal",
+    "acre",
+    "مرلہ",
+    "کنال",
+    "ایکڑ",
+    "square feet"
+   ],
+   "icon": "i-ruler"
+  },
+  {
+   "slug": "pakistan-salary-tax-calculator",
+   "title": "Pakistan Salary Tax Calculator",
+   "short": "FBR salary tax, monthly and annual, with take-home pay.",
+   "category": "pakistan",
+   "keywords": [
+    "income tax",
+    "fbr tax",
+    "tax slab",
+    "salary tax",
+    "تنخواہ ٹیکس",
+    "fbr"
+   ],
+   "icon": "i-receipt-text"
+  },
+  {
+   "slug": "zakat-calculator",
+   "title": "Zakat Calculator",
+   "short": "Zakat at 2.5% with nisab by gold or silver rate.",
+   "category": "pakistan",
+   "keywords": [
+    "nisab",
+    "zakat on gold",
+    "زکوٰۃ",
+    "نصاب"
+   ],
+   "icon": "i-hand-coins"
+  },
+  {
+   "slug": "amount-to-words",
+   "title": "Amount to Words",
+   "short": "Write an amount in English and Urdu words.",
+   "category": "pakistan",
+   "keywords": [
+    "cheque amount",
+    "amount in words",
+    "رقم الفاظ میں",
+    "rupees in words"
+   ],
+   "icon": "i-type"
+  },
+  {
+   "slug": "urdu-word-counter",
+   "title": "Urdu Word Counter",
+   "short": "Count Urdu words, characters and reading time.",
+   "category": "pakistan",
+   "keywords": [
+    "urdu words",
+    "اردو الفاظ",
+    "urdu character count"
+   ],
+   "icon": "i-letter-text"
+  },
+  {
+   "slug": "percentage-marks-calculator",
+   "title": "Percentage & Merit Calculator",
+   "short": "Weighted marks and merit aggregate with your own weights.",
+   "category": "pakistan",
+   "keywords": [
+    "merit",
+    "aggregate",
+    "میرٹ",
+    "marks percentage",
+    "merit calculator"
+   ],
+   "icon": "i-award"
+  }
+ ]
+}

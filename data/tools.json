@@ -1,0 +1,2628 @@
+{
+  "version": 1,
+  "tools": [
+    {
+      "slug": "create-pdf",
+      "workspace": "tool-create",
+      "title": {
+        "en": "Create PDF"
+      },
+      "short": {
+        "en": "Write text, download a PDF."
+      },
+      "category": "pdf",
+      "group": "organize",
+      "icon": "i-file-plus",
+      "keywords": [
+        "blank pdf",
+        "write pdf",
+        "new pdf"
+      ],
+      "libs": [
+        "jspdf"
+      ],
+      "engine": "tool-create",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Create a PDF from your own text, free in your browser. Type or paste, then download a clean PDF with no sign-up."
+    },
+    {
+      "slug": "images-to-pdf",
+      "workspace": "tool-images",
+      "title": {
+        "en": "Images to PDF"
+      },
+      "short": {
+        "en": "Turn images into one PDF."
+      },
+      "category": "pdf",
+      "group": "convert",
+      "icon": "i-images",
+      "keywords": [
+        "jpg to pdf",
+        "png to pdf",
+        "photos to pdf"
+      ],
+      "libs": [
+        "jspdf"
+      ],
+      "engine": "tool-images",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Turn JPG, PNG and WebP images into one PDF for free, in your browser. No upload and no sign-up needed."
+    },
+    {
+      "slug": "merge-pdf",
+      "workspace": "tool-merge",
+      "title": {
+        "en": "Merge PDF"
+      },
+      "short": {
+        "en": "Combine PDFs into one file."
+      },
+      "category": "pdf",
+      "group": "organize",
+      "icon": "i-merge",
+      "keywords": [
+        "join pdf",
+        "combine pdf",
+        "pdf joiner",
+        "merge pdf files"
+      ],
+      "libs": [
+        "pdf-lib",
+        "pdfjs"
+      ],
+      "engine": "tool-merge",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "split-pdf",
+        "organize-pdf",
+        "compress-pdf",
+        "pdf-to-word"
+      ],
+      "steps": [
+        "Choose two or more PDF files with the file button. Each one shows a thumbnail of its first page.",
+        "Drag the thumbnails into the order you want the pages to appear.",
+        "Press Merge PDFs and download the single combined file."
+      ],
+      "content": {
+        "use": "People merge PDFs when a report, invoice set or application form is split across several files and needs to be sent as one document. A teacher merges chapter PDFs into one handout, a shop owner merges daily bills into one monthly file, and a student merges assignment pages before uploading them to a portal.",
+        "tip": "Check the file order in the thumbnail list before you merge. Drag a file up or down if it is in the wrong place, because the merged PDF keeps exactly the order you see.",
+        "limit": "Merged PDFs keep the original pages as they are. The tool does not flatten forms, remove passwords from a protected file, or fix a damaged PDF. A protected PDF must be unlocked first.",
+        "example": "Merging a 3-page invoice, a 2-page delivery note and a 1-page cover letter gives one 6-page PDF in that order.",
+        "faq": [
+          [
+            "Can I change the order of the PDFs before merging?",
+            "Yes. After you choose the files, each one shows a thumbnail of its first page. Drag the thumbnails into the order you want, then press Merge PDFs."
+          ],
+          [
+            "Is there a limit on how many PDFs I can merge?",
+            "You can merge as many as your browser can hold in memory. Very large files over 50 MB per file are refused with a friendly message, because the browser would run out of memory."
+          ]
+        ]
+      },
+      "meta_description": "Merge multiple PDF files into one PDF for free, in your browser. Keep your page order and download instantly."
+    },
+    {
+      "slug": "split-pdf",
+      "workspace": "tool-split",
+      "title": {
+        "en": "Split PDF"
+      },
+      "short": {
+        "en": "Extract a page range into a new PDF."
+      },
+      "category": "pdf",
+      "group": "organize",
+      "icon": "i-split",
+      "keywords": [
+        "extract pages",
+        "cut pdf",
+        "pdf splitter"
+      ],
+      "libs": [
+        "pdf-lib",
+        "jszip"
+      ],
+      "engine": "tool-split",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "merge-pdf",
+        "organize-pdf",
+        "remove-pages",
+        "pdf-to-text"
+      ],
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Pick Page ranges, or Extract every page for one PDF per page.",
+        "Type ranges like 1-3, 5, 8-10, press Split PDF and download the result."
+      ],
+      "content": {
+        "use": "Splitting is for the opposite job: taking only the pages you need out of a long PDF. A student extracts chapters 2 and 3 from a 200-page book, a manager pulls one contract clause out of a full agreement, and a shop owner separates one month's invoices from a yearly file.",
+        "tip": "Use ranges like 1-3, 5, 8-10 to take several separate parts in one go. The tool keeps the pages in the order you list them.",
+        "limit": "Split pages keep their original content and formatting. The tool cannot split a password-protected PDF, and it does not rebuild text from a scanned page.",
+        "example": "Splitting pages 1-3, 5 from a 10-page PDF gives a new PDF with exactly those 4 pages.",
+        "faq": [
+          [
+            "Can I split a PDF into single pages?",
+            "Yes. Choose Extract every page and the tool downloads a ZIP file with one PDF per page, named page-1.pdf, page-2.pdf and so on."
+          ],
+          [
+            "What happens if I enter a page that does not exist?",
+            "The tool checks your ranges against the real page count first and tells you which range is outside it, so nothing is downloaded by mistake."
+          ]
+        ]
+      },
+      "meta_description": "Split a PDF and extract only the page range you need, free in your browser. No upload, no sign-up."
+    },
+    {
+      "slug": "organize-pdf",
+      "workspace": "tool-organize",
+      "title": {
+        "en": "Organize PDF"
+      },
+      "short": {
+        "en": "Reorder, rotate and delete pages."
+      },
+      "category": "pdf",
+      "group": "organize",
+      "icon": "i-layout-grid",
+      "keywords": [
+        "reorder pages",
+        "rearrange pdf",
+        "sort pages"
+      ],
+      "libs": [
+        "pdf-lib",
+        "pdfjs"
+      ],
+      "engine": "tool-organize",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "merge-pdf",
+        "split-pdf",
+        "remove-pages",
+        "rotate-pdf"
+      ],
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Drag the page thumbnails into the order you want. Use Rotate 90 on a sideways page and Delete on a blank page.",
+        "Press Download and save the organised PDF."
+      ],
+      "content": {
+        "use": "Organizing a PDF is for fixing page order after scanning or merging: a scanned book with two pages swapped, a report with the appendix in the wrong place, or a set of pages that were merged in the wrong order. It is also how you delete a blank or duplicate page.",
+        "tip": "Drag the page thumbnails into the order you want. Use Rotate 90 on a page that was scanned sideways, and Delete on a blank or duplicate page, before you download.",
+        "limit": "Organizing reorders, rotates and deletes pages. It does not edit the text or images on a page, and it cannot split one page into two.",
+        "example": "Moving page 3 to the front of a 5-page PDF, rotating page 2, and deleting page 5 gives a clean 4-page file.",
+        "faq": [
+          [
+            "Can I rotate only one page?",
+            "Yes. Each thumbnail has its own Rotate 90 button, so only that page turns. Press it again to turn the page further."
+          ],
+          [
+            "Do I have to type the page order as numbers?",
+            "No. Drag the thumbnails to reorder visually. Typing a number order like 3,1,2 still works if you prefer it."
+          ]
+        ]
+      },
+      "meta_description": "Reorder PDF pages into a new order, free in your browser. Drag-free, simple page ordering with no upload."
+    },
+    {
+      "slug": "remove-pages",
+      "workspace": "tool-remove",
+      "title": {
+        "en": "Remove Pages"
+      },
+      "short": {
+        "en": "Delete selected pages and keep the rest."
+      },
+      "category": "pdf",
+      "group": "organize",
+      "icon": "i-file-minus",
+      "keywords": [
+        "delete pages",
+        "remove pdf pages"
+      ],
+      "libs": [
+        "pdf-lib"
+      ],
+      "engine": "tool-remove",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Delete selected pages from a PDF and keep the rest, free in your browser. Your file never leaves your device."
+    },
+    {
+      "slug": "rotate-pdf",
+      "workspace": "tool-rotate",
+      "title": {
+        "en": "Rotate PDF"
+      },
+      "short": {
+        "en": "Rotate all pages 90, 180, or 270 degrees."
+      },
+      "category": "pdf",
+      "group": "organize",
+      "icon": "i-rotate-cw",
+      "keywords": [
+        "turn pages",
+        "flip pdf"
+      ],
+      "libs": [
+        "pdf-lib"
+      ],
+      "engine": "tool-rotate",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Rotate all PDF pages by 90, 180 or 270 degrees, free in your browser. No upload and no account needed."
+    },
+    {
+      "slug": "add-page-numbers",
+      "workspace": "tool-numbers",
+      "title": {
+        "en": "Add Page Numbers"
+      },
+      "short": {
+        "en": "Number every page, bottom centre."
+      },
+      "category": "pdf",
+      "group": "edit",
+      "icon": "i-list-ordered",
+      "keywords": [
+        "page numbers",
+        "paginate pdf"
+      ],
+      "libs": [
+        "pdf-lib"
+      ],
+      "engine": "tool-numbers",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Add page numbers to every page of a PDF, free in your browser. Numbers appear at the bottom centre of each page."
+    },
+    {
+      "slug": "add-watermark",
+      "workspace": "tool-watermark",
+      "title": {
+        "en": "Add Watermark"
+      },
+      "short": {
+        "en": "Stamp text diagonally on pages."
+      },
+      "category": "pdf",
+      "group": "edit",
+      "icon": "i-droplet",
+      "keywords": [
+        "stamp pdf",
+        "watermark pdf"
+      ],
+      "libs": [
+        "pdf-lib"
+      ],
+      "engine": "tool-watermark",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Stamp a diagonal text watermark on PDF pages, free in your browser. Your file stays on your device."
+    },
+    {
+      "slug": "edit-pdf",
+      "workspace": "tool-editpdf",
+      "title": {
+        "en": "Edit PDF"
+      },
+      "short": {
+        "en": "Add text to one page."
+      },
+      "category": "pdf",
+      "group": "edit",
+      "icon": "i-file-pen",
+      "keywords": [
+        "write on pdf",
+        "annotate pdf",
+        "add text to pdf"
+      ],
+      "libs": [
+        "pdf-lib"
+      ],
+      "engine": "tool-editpdf",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Add text to a page of your PDF, free in your browser. A simple way to stamp a note without installing software."
+    },
+    {
+      "slug": "compress-pdf",
+      "workspace": "tool-compress",
+      "title": {
+        "en": "Compress PDF"
+      },
+      "short": {
+        "en": "Reduce PDF file size (Light, Medium or Strong)."
+      },
+      "category": "pdf",
+      "group": "optimize",
+      "icon": "i-minimize-2",
+      "keywords": [
+        "reduce pdf size",
+        "shrink pdf",
+        "make pdf smaller"
+      ],
+      "libs": [
+        "pdf-lib",
+        "pdfjs"
+      ],
+      "engine": "tool-compress",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "merge-pdf",
+        "pdf-to-images",
+        "image-compressor",
+        "split-pdf"
+      ],
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Pick a level: Light keeps text selectable, Medium re-encodes pages as images, Strong makes the smallest file but text is not selectable.",
+        "Set the quality if you want, press Compress PDF and download the result."
+      ],
+      "content": {
+        "use": "A PDF that is too large to email or upload is the usual reason to compress one. Admission forms, job applications and WhatsApp forwards often have a file-size limit, and a compressed copy is what gets through. Compressing also helps when a PDF is stored on a phone with little free space.",
+        "tip": "Start with Light if the PDF is mostly text. Use Medium for a PDF with photos, and Strong only when size matters more than being able to select or search the text.",
+        "limit": "Light re-saves the file and only helps a little on image-heavy PDFs. Medium and Strong turn pages into images, so text on those pages is no longer selectable or searchable. Compression cannot fix a damaged PDF.",
+        "example": "A 12 MB scanned PDF with photos often drops to about 4 MB on Medium and under 2 MB on Strong, depending on the images.",
+        "faq": [
+          [
+            "Why is my compressed PDF still large?",
+            "Image-heavy PDFs compress by re-encoding the images. If the images are already small or the PDF is mostly vector graphics, there is little left to save, and Light may only remove a few kilobytes."
+          ],
+          [
+            "Does Strong compression change my text?",
+            "Yes. Strong renders each page as an image, so the text becomes part of the picture. You can still read it, but you cannot select, copy or search it. Use Light or Medium if you need selectable text."
+          ]
+        ]
+      },
+      "meta_description": "Compress a PDF and reduce its file size, free in your browser. Best for text PDFs; image-heavy files compress less."
+    },
+    {
+      "slug": "pdf-to-text",
+      "workspace": "tool-pdftext",
+      "title": {
+        "en": "PDF to Text"
+      },
+      "short": {
+        "en": "Extract text as a .txt file."
+      },
+      "category": "pdf",
+      "group": "convert",
+      "icon": "i-file-text",
+      "keywords": [
+        "extract text",
+        "pdf to txt"
+      ],
+      "libs": [
+        "pdfjs"
+      ],
+      "engine": "tool-pdftext",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "If the PDF is a scan, tick the OCR option first.",
+        "Press Convert and download the .txt file."
+      ],
+      "meta_description": "Extract text from a PDF into a .txt file, free in your browser. Works on PDFs that already have a text layer."
+    },
+    {
+      "slug": "pdf-to-images",
+      "workspace": "tool-pdfimages",
+      "title": {
+        "en": "PDF to Images"
+      },
+      "short": {
+        "en": "Render pages as PNG images."
+      },
+      "category": "pdf",
+      "group": "convert",
+      "icon": "i-file-image",
+      "keywords": [
+        "pdf to png",
+        "pdf to jpg",
+        "extract images"
+      ],
+      "libs": [
+        "pdfjs",
+        "jszip"
+      ],
+      "engine": "tool-pdfimages",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Render PDF pages as PNG images and download them, free in your browser. No upload, no sign-up."
+    },
+    {
+      "slug": "e-sign",
+      "workspace": "tool-esign",
+      "title": {
+        "en": "e-Sign"
+      },
+      "short": {
+        "en": "Draw a signature, download PNG."
+      },
+      "category": "pdf",
+      "group": "edit",
+      "icon": "i-pen-tool",
+      "keywords": [
+        "sign pdf",
+        "signature",
+        "electronic signature"
+      ],
+      "libs": [],
+      "engine": "tool-esign",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Draw your signature and download it as a PNG, free in your browser. A visual signature for documents and forms."
+    },
+    {
+      "slug": "unlock-pdf",
+      "workspace": "tool-unlock",
+      "title": {
+        "en": "Unlock PDF"
+      },
+      "short": {
+        "en": "Remove the password from a PDF you own."
+      },
+      "category": "pdf",
+      "group": "security",
+      "icon": "i-lock-open",
+      "keywords": [
+        "remove password",
+        "unlock pdf",
+        "decrypt pdf"
+      ],
+      "libs": [],
+      "engine": "tool-unlock",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "protect-pdf",
+        "merge-pdf",
+        "pdf-to-text",
+        "split-pdf"
+      ],
+      "steps": [
+        "Choose the protected PDF with the file button.",
+        "Type the exact password, including capital letters.",
+        "Press Unlock PDF and download the ordinary PDF that opens without a password."
+      ],
+      "content": {
+        "use": "Unlocking is for a PDF you own and know the password for, but no longer want to type it every time you open it. It is also the way to get a clean copy of a protected file for printing or for a tool that does not accept protected PDFs.",
+        "tip": "Make sure you type the exact password, including capital letters. A wrong password gives a clear wrong-password message, not a broken file.",
+        "limit": "The tool does real standard PDF decryption and keeps the original pages and layout. It does not guess or crack passwords, and it cannot unlock a file whose password you do not know.",
+        "example": "Unlocking a protected fee receipt gives you an ordinary PDF that opens without a password.",
+        "faq": [
+          [
+            "Does Unlock remove the password or just show me the text?",
+            "It removes the password properly and downloads a normal PDF with the original pages and layout. It is not the old text-only rebuild."
+          ],
+          [
+            "What if the PDF is not protected?",
+            "The tool checks first and tells you the PDF is not password-protected, so you do not waste time on a file that does not need unlocking."
+          ]
+        ]
+      },
+      "meta_description": "Unlock a PDF in your browser with the AK Premium Unlock tool. Rebuilds a readable PDF from the file you provide."
+    },
+    {
+      "slug": "protect-pdf",
+      "workspace": "tool-protect",
+      "title": {
+        "en": "Protect PDF"
+      },
+      "short": {
+        "en": "Lock a PDF with a password (AES-256)."
+      },
+      "category": "pdf",
+      "group": "security",
+      "icon": "i-lock",
+      "keywords": [
+        "password protect",
+        "lock pdf",
+        "encrypt pdf"
+      ],
+      "libs": [],
+      "engine": "tool-protect",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "unlock-pdf",
+        "redact-pdf",
+        "merge-pdf",
+        "e-sign"
+      ],
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Type a password you can remember. There is no way to recover it if you forget it.",
+        "Press Protect PDF and download the encrypted file. It opens in any PDF reader with the password."
+      ],
+      "content": {
+        "use": "Protecting a PDF is for files that should only be opened by someone who knows the password: a salary slip, a contract draft, a fee receipt or a report with personal details. The password travels with the file, so it works in Acrobat and Chrome without any account.",
+        "tip": "Use a password you can remember or store safely, because there is no way to recover it. A password of 8 or more characters with letters and numbers is much harder to guess than a short word.",
+        "limit": "The tool uses standard AES-256 PDF encryption (qpdf, revision 6). It does not stop someone from photographing the screen or re-sharing the file once they have opened it, and a forgotten password cannot be recovered by this site.",
+        "example": "Protecting a salary slip with a password means only the person who knows that password can open it in a PDF reader.",
+        "faq": [
+          [
+            "Is this a real PDF password, or a special file only this site can open?",
+            "It is a real standard PDF password. The file is a normal .pdf, encrypted with AES-256, and it opens in Acrobat, Chrome and other PDF readers with the password."
+          ],
+          [
+            "What happens if I forget the password?",
+            "The file cannot be opened without it. This site does not store your password and cannot reset it, so keep it somewhere safe before you share the file."
+          ]
+        ]
+      },
+      "meta_description": "Protect a PDF with a password in your browser. Files are encrypted locally and only this site&#x27;s Unlock tool can reopen them."
+    },
+    {
+      "slug": "crop-pdf",
+      "workspace": "tool-crop",
+      "title": {
+        "en": "Crop PDF"
+      },
+      "short": {
+        "en": "Crop margins on every page."
+      },
+      "category": "pdf",
+      "group": "edit",
+      "icon": "i-crop",
+      "keywords": [
+        "trim pdf",
+        "crop margins"
+      ],
+      "libs": [
+        "pdf-lib"
+      ],
+      "engine": "tool-crop",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Crop the margins of every page in a PDF, free in your browser. Tidy page edges without uploading your file."
+    },
+    {
+      "slug": "redact-pdf",
+      "workspace": "tool-redact",
+      "title": {
+        "en": "Redact PDF"
+      },
+      "short": {
+        "en": "Permanently cover matching text in black."
+      },
+      "category": "pdf",
+      "group": "edit",
+      "icon": "i-eye-off",
+      "keywords": [
+        "black out text",
+        "hide text",
+        "remove sensitive text"
+      ],
+      "libs": [
+        "pdf-lib",
+        "pdfjs"
+      ],
+      "engine": "tool-redact",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "protect-pdf",
+        "ocr-pdf",
+        "pdf-to-text",
+        "unlock-pdf"
+      ],
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Type the exact text to redact, including spaces.",
+        "Press Redact and download the PDF. Open it in a PDF reader to confirm the covered text cannot be selected."
+      ],
+      "content": {
+        "use": "Redaction is for removing sensitive details before a document is shared: a CNIC number, a phone number, a bank account number or a name in a report. It is used when a document must be shared but a few details in it must not be seen by anyone.",
+        "tip": "Type the exact text to redact, including spaces. Check the downloaded PDF before you share it, and open it in a PDF reader to confirm the covered text cannot be selected or copied.",
+        "limit": "Redaction works on the text layer of a PDF. Pages that contain a match are rebuilt as images with the black box burned in, so the covered text is gone from those pages. Pages without a match are copied unchanged. A scanned PDF has no text layer, so redact it after OCR, not before.",
+        "example": "Redacting 35202-1234567-1 from a form covers every place that CNIC appears with a black box.",
+        "faq": [
+          [
+            "Is the redacted text really gone, or just covered?",
+            "It is really gone from the affected pages. Those pages are rebuilt as images with the box burned into the picture, and the original text layer on those pages is destroyed, so the text cannot be selected or copied out."
+          ],
+          [
+            "Can I redact a scanned PDF?",
+            "Not directly. A scanned PDF has no text layer to search. Run OCR PDF first to make a text PDF, then redact that copy."
+          ]
+        ]
+      },
+      "meta_description": "Black out matching text in a PDF, free in your browser. Cover sensitive words before you share a document."
+    },
+    {
+      "slug": "pdf-to-pdf-a",
+      "workspace": "tool-pdfa",
+      "title": {
+        "en": "PDF to PDF/A"
+      },
+      "short": {
+        "en": "Archive-style copy with metadata."
+      },
+      "category": "pdf",
+      "group": "optimize",
+      "icon": "i-archive",
+      "keywords": [
+        "pdf/a",
+        "archive pdf"
+      ],
+      "libs": [
+        "pdf-lib"
+      ],
+      "engine": "tool-pdfa",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Make an archive-style PDF/A copy of your PDF, free in your browser. Adds archive metadata to your file."
+    },
+    {
+      "slug": "repair-pdf",
+      "workspace": "tool-repair",
+      "title": {
+        "en": "Repair PDF"
+      },
+      "short": {
+        "en": "Re-save a damaged PDF, best effort."
+      },
+      "category": "pdf",
+      "group": "optimize",
+      "icon": "i-wrench",
+      "keywords": [
+        "fix pdf",
+        "recover pdf",
+        "corrupted pdf"
+      ],
+      "libs": [
+        "pdf-lib",
+        "pdfjs",
+        "jspdf"
+      ],
+      "engine": "tool-repair",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Try to repair a damaged PDF by re-saving it, free in your browser. Best-effort recovery for files that will not open."
+    },
+    {
+      "slug": "compare-pdf",
+      "workspace": "tool-compare",
+      "title": {
+        "en": "Compare PDF"
+      },
+      "short": {
+        "en": "Compare text in two PDFs."
+      },
+      "category": "pdf",
+      "group": "intelligence",
+      "icon": "i-columns-2",
+      "keywords": [
+        "diff pdf",
+        "compare documents"
+      ],
+      "libs": [
+        "pdfjs"
+      ],
+      "engine": "tool-compare",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Compare the text in two PDFs and spot the differences, free in your browser. No upload, no sign-up."
+    },
+    {
+      "slug": "pdf-to-markdown",
+      "workspace": "tool-pdfmd",
+      "title": {
+        "en": "PDF to Markdown"
+      },
+      "short": {
+        "en": "Extracted text as Markdown."
+      },
+      "category": "pdf",
+      "group": "convert",
+      "icon": "i-file-code",
+      "keywords": [
+        "pdf to md",
+        "markdown"
+      ],
+      "libs": [
+        "pdfjs"
+      ],
+      "engine": "tool-pdfmd",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Convert PDF text into Markdown notes, free in your browser. Handy for notes and for working with AI tools."
+    },
+    {
+      "slug": "scan-to-pdf",
+      "workspace": "tool-scan",
+      "title": {
+        "en": "Scan to PDF"
+      },
+      "short": {
+        "en": "Camera photo or image to PDF."
+      },
+      "category": "pdf",
+      "group": "organize",
+      "icon": "i-scan-line",
+      "keywords": [
+        "photo to pdf",
+        "camera scan"
+      ],
+      "libs": [
+        "jspdf"
+      ],
+      "engine": "tool-scan",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Turn a camera photo or image into a PDF, free in your browser. Scan a page with your camera and save it as PDF."
+    },
+    {
+      "slug": "ocr-pdf",
+      "workspace": "tool-ocrpdf",
+      "title": {
+        "en": "OCR PDF"
+      },
+      "short": {
+        "en": "Read scanned pages and save them as a text PDF."
+      },
+      "category": "pdf",
+      "group": "intelligence",
+      "icon": "i-scan-text",
+      "keywords": [
+        "ocr",
+        "scanned pdf to text",
+        "read scanned pdf"
+      ],
+      "libs": [
+        "pdfjs",
+        "tesseract",
+        "jspdf"
+      ],
+      "engine": "tool-ocrpdf",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Read scanned PDF pages as text and save a text PDF, free in your browser. Needs a first-run language download."
+    },
+    {
+      "slug": "pdf-forms",
+      "workspace": "tool-forms",
+      "title": {
+        "en": "PDF Forms"
+      },
+      "short": {
+        "en": "Make a fillable form PDF."
+      },
+      "category": "pdf",
+      "group": "edit",
+      "icon": "i-square-pen",
+      "keywords": [
+        "fillable pdf",
+        "pdf form",
+        "form fields"
+      ],
+      "libs": [
+        "pdf-lib",
+        "jspdf"
+      ],
+      "engine": "tool-forms",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Make a fillable form PDF with text fields and checkboxes, free in your browser. No sign-up needed."
+    },
+    {
+      "slug": "local-summarizer",
+      "workspace": "tool-summary",
+      "title": {
+        "en": "Local Summarizer"
+      },
+      "short": {
+        "en": "Key sentences, in your browser."
+      },
+      "category": "pdf",
+      "group": "intelligence",
+      "icon": "i-text-quote",
+      "keywords": [
+        "summarize pdf",
+        "summary",
+        "tldr"
+      ],
+      "libs": [
+        "pdfjs"
+      ],
+      "engine": "tool-summary",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Summarize a PDF in your browser with key sentences picked locally. No file is sent to an external AI service."
+    },
+    {
+      "slug": "translate-helper",
+      "workspace": "tool-translate",
+      "title": {
+        "en": "Translate Helper"
+      },
+      "short": {
+        "en": "Extract text ready to translate."
+      },
+      "category": "pdf",
+      "group": "intelligence",
+      "icon": "i-languages",
+      "keywords": [
+        "translate pdf",
+        "translation"
+      ],
+      "libs": [
+        "pdfjs"
+      ],
+      "engine": "tool-translate",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Extract PDF text ready to translate, free in your browser. It prepares the text; translation itself happens elsewhere."
+    },
+    {
+      "slug": "pdf-to-excel",
+      "workspace": "tool-pdfexcel",
+      "title": {
+        "en": "PDF to Excel"
+      },
+      "short": {
+        "en": "Extracted text into an .xlsx file."
+      },
+      "category": "convert",
+      "group": "convert",
+      "icon": "i-file-spreadsheet",
+      "keywords": [
+        "pdf to xlsx",
+        "pdf to spreadsheet",
+        "pdf table to excel"
+      ],
+      "libs": [
+        "pdfjs",
+        "xlsx"
+      ],
+      "engine": "tool-pdfexcel",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "badges": [
+        {
+          "label": "Text only",
+          "class": "badge--warn"
+        }
+      ],
+      "format": "PDF→XLSX",
+      "related": [
+        "pdf-to-word",
+        "pdf-to-ppt",
+        "excel-to-pdf",
+        "csv-to-excel"
+      ],
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "If the PDF is a scan, tick the OCR option first.",
+        "Press Convert and download the .xlsx file, then check a few cells before trusting a total."
+      ],
+      "content": {
+        "use": "Converting a PDF to Excel is for getting numbers out of a PDF table: a bank statement, a price list, a stock report or a fee table that needs to be sorted, totalled or charted. Once the numbers are in Excel, formulas can work on them.",
+        "tip": "Tables with clear gaps between columns convert best. If a table has no gaps, the whole line lands in one cell and you can use Text to Columns in Excel to split it.",
+        "limit": "Columns are detected from the gaps between words on each line. Tables with merged cells, no gaps or rotated text may not split cleanly, and numbers are stored as text in some cases, so check a few cells before you trust a total.",
+        "example": "A price list PDF with item, quantity and price columns becomes a spreadsheet with those three columns.",
+        "faq": [
+          [
+            "Why did my table land in one column?",
+            "The PDF had no clear gap between its columns, so the tool kept the whole line together. In Excel, select the column, use Data, Text to Columns, and split on spaces or a delimiter."
+          ],
+          [
+            "Are the numbers in my Excel file real numbers?",
+            "They are text in most cases, because a PDF does not say whether a word is a number. In Excel, select the column and use Paste Special, Values, or multiply by 1 to turn text numbers into real numbers."
+          ]
+        ]
+      },
+      "meta_description": "Turn extracted PDF text into an .xlsx spreadsheet, free in your browser. Text-based conversion, layout is not preserved."
+    },
+    {
+      "slug": "pdf-to-word",
+      "workspace": "tool-pdfword",
+      "title": {
+        "en": "PDF to Word"
+      },
+      "short": {
+        "en": "Extracted text into a .docx file."
+      },
+      "category": "convert",
+      "group": "convert",
+      "icon": "i-file-text",
+      "keywords": [
+        "pdf to docx",
+        "convert pdf to word"
+      ],
+      "libs": [
+        "pdfjs",
+        "docx",
+        "tesseract"
+      ],
+      "engine": "tool-pdfword",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "badges": [
+        {
+          "label": "Text only",
+          "class": "badge--warn"
+        }
+      ],
+      "format": "PDF→DOCX",
+      "related": [
+        "pdf-to-excel",
+        "pdf-to-ppt",
+        "pdf-to-text",
+        "word-to-pdf"
+      ],
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "If the PDF is a scan, tick the OCR option first, otherwise the tool finds no text.",
+        "Press Convert and download the .docx file."
+      ],
+      "content": {
+        "use": "Converting a PDF to Word is for editing a document that only exists as a PDF: a letter, a report or a form that needs changes. The Word file can then be edited, spell-checked and printed like any other document.",
+        "tip": "If the PDF is a scan, tick the OCR option before converting. Otherwise the tool will find no text to convert and will tell you so.",
+        "limit": "Paragraphs are rebuilt from the text positions in the PDF, so headings, plain paragraphs and simple tables usually survive. Original fonts, exact spacing, images, charts and complex tables are not preserved. This is a text reconstruction, not a pixel-perfect copy.",
+        "example": "A 2-page letter becomes a Word document with the same paragraphs in the same order, ready to edit.",
+        "faq": [
+          [
+            "Will my Word file look exactly like the PDF?",
+            "No. It keeps the text and paragraph order, and short first lines are treated as headings, but fonts, spacing and images are not carried over. For exact appearance, keep the PDF."
+          ],
+          [
+            "What if my PDF is a scanned image?",
+            "Tick the OCR option. The tool reads the scanned pages with text recognition first, then builds the Word file from that text. Handwriting and blurry scans give poor results."
+          ]
+        ]
+      },
+      "meta_description": "Turn extracted PDF text into a .docx document, free in your browser. Text-based conversion, layout is not preserved."
+    },
+    {
+      "slug": "pdf-to-ppt",
+      "workspace": "tool-pdfppt",
+      "title": {
+        "en": "PDF to PPT"
+      },
+      "short": {
+        "en": "Extracted text into a .pptx file."
+      },
+      "category": "convert",
+      "group": "convert",
+      "icon": "i-presentation",
+      "keywords": [
+        "pdf to pptx",
+        "pdf to powerpoint",
+        "pdf to slides"
+      ],
+      "libs": [
+        "pdfjs",
+        "pptxgenjs"
+      ],
+      "engine": "tool-pdfppt",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "badges": [
+        {
+          "label": "Text only",
+          "class": "badge--warn"
+        }
+      ],
+      "format": "PDF→PPTX",
+      "meta_description": "Turn extracted PDF text into a .pptx presentation, free in your browser. Text-based conversion, layout is not preserved."
+    },
+    {
+      "slug": "txt-html-to-pdf",
+      "workspace": "tool-txthtml",
+      "title": {
+        "en": "TXT / HTML to PDF"
+      },
+      "short": {
+        "en": "Paste text, download a PDF."
+      },
+      "category": "convert",
+      "group": "convert",
+      "icon": "i-file-code",
+      "keywords": [
+        "text to pdf",
+        "html to pdf"
+      ],
+      "libs": [
+        "jspdf"
+      ],
+      "engine": "tool-txthtml",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "format": "TXT→PDF",
+      "meta_description": "Paste text or HTML and download it as a PDF, free in your browser. No upload, no sign-up."
+    },
+    {
+      "slug": "excel-to-pdf",
+      "workspace": "tool-excelpdf",
+      "title": {
+        "en": "Excel to PDF"
+      },
+      "short": {
+        "en": "First sheet rendered as PDF."
+      },
+      "category": "convert",
+      "group": "convert",
+      "icon": "i-file-spreadsheet",
+      "keywords": [
+        "xlsx to pdf",
+        "spreadsheet to pdf"
+      ],
+      "libs": [
+        "jspdf",
+        "xlsx"
+      ],
+      "engine": "tool-excelpdf",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "badges": [
+        {
+          "label": "Basic",
+          "class": "badge--warn"
+        }
+      ],
+      "format": "XLSX→PDF",
+      "content": {
+        "use": "Converting Excel to PDF is for sharing a sheet that must not be changed: a price list, a report, or a table for a client. The PDF shows the numbers as they are, without formulas.",
+        "tip": "Check that the first sheet is the one you want, because only the first sheet is converted. Keep the sheet simple for the best result.",
+        "limit": "This is a basic text conversion. Only the first sheet is rendered, as plain text rows. Cell colours, formulas, charts and multiple sheets are not preserved.",
+        "example": "A price list sheet becomes a PDF with each row on its own line.",
+        "faq": [
+          [
+            "Why is only the first sheet converted?",
+            "This basic conversion reads the first sheet only. If you need another sheet, move it to the front in Excel and convert again."
+          ],
+          [
+            "Are the formulas in my Excel file kept?",
+            "No. The PDF shows the values, not the formulas. The numbers are what you see in the sheet."
+          ]
+        ]
+      },
+      "meta_description": "Render the first sheet of an Excel file as a PDF, free in your browser. Your spreadsheet never leaves your device."
+    },
+    {
+      "slug": "word-to-pdf",
+      "workspace": "tool-wordpdf",
+      "title": {
+        "en": "Word to PDF"
+      },
+      "short": {
+        "en": "Word text rendered as PDF."
+      },
+      "category": "convert",
+      "group": "convert",
+      "icon": "i-file-text",
+      "keywords": [
+        "docx to pdf",
+        "word to pdf"
+      ],
+      "libs": [
+        "jspdf",
+        "mammoth"
+      ],
+      "engine": "tool-wordpdf",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "badges": [
+        {
+          "label": "Basic",
+          "class": "badge--warn"
+        }
+      ],
+      "format": "DOCX→PDF",
+      "content": {
+        "use": "Converting Word to PDF is for sending a document that must look the same everywhere: a CV, a letter, or a form. A PDF cannot be edited by mistake, and it opens on any phone or computer.",
+        "tip": "Keep the Word file simple. Headings, lists and tables survive, but complex formatting, images and tracked changes do not.",
+        "limit": "This is a basic text conversion. Headings, lists and tables are kept where the structure allows, but fonts, images, headers, footers and exact page layout are not preserved.",
+        "example": "A simple Word letter becomes a PDF with the same paragraphs in the same order.",
+        "faq": [
+          [
+            "Is this a full Word to PDF conversion?",
+            "No. It is a basic text conversion. It keeps the text, headings, lists and tables where possible, but not the exact layout, fonts or images."
+          ],
+          [
+            "What if my Word file has images?",
+            "Images are not carried into the PDF by this basic conversion. For a document with images, use Word itself to save as PDF."
+          ]
+        ]
+      },
+      "meta_description": "Render Word document text as a PDF, free in your browser. Text-based rendering, layout is not preserved."
+    },
+    {
+      "slug": "ppt-to-pdf",
+      "workspace": "tool-pptpdf",
+      "title": {
+        "en": "PPT to PDF"
+      },
+      "short": {
+        "en": "Basic slide text as PDF."
+      },
+      "category": "convert",
+      "group": "convert",
+      "icon": "i-presentation",
+      "keywords": [
+        "pptx to pdf",
+        "powerpoint to pdf",
+        "slides to pdf"
+      ],
+      "libs": [
+        "jspdf",
+        "jszip"
+      ],
+      "engine": "tool-pptpdf",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "badges": [
+        {
+          "label": "Basic",
+          "class": "badge--warn"
+        }
+      ],
+      "format": "PPTX→PDF",
+      "content": {
+        "use": "Converting PowerPoint to PDF is for sharing slides that must look the same on any device, or for printing a deck without PowerPoint. A PDF is also easier to attach to an email than a large presentation file.",
+        "tip": "Keep the slides simple. The tool reads the text on each slide, one slide per PDF page.",
+        "limit": "This is a basic text conversion. Only the slide text is carried over. Slide designs, images, charts, animations and transitions are not preserved.",
+        "example": "A 5-slide deck becomes a 5-page PDF with the text from each slide.",
+        "faq": [
+          [
+            "Is this a full PowerPoint to PDF conversion?",
+            "No. It is a basic, text-only conversion. Designs, images and animations are not carried over."
+          ],
+          [
+            "What if a slide has no text?",
+            "That slide becomes a page that says there is no text on the slide, so the page count still matches the deck."
+          ]
+        ]
+      },
+      "meta_description": "Turn PowerPoint slide text into a PDF, free in your browser. Basic slide text as PDF, layout is not preserved."
+    },
+    {
+      "slug": "formula-generator",
+      "workspace": "tool-excel-formula",
+      "title": {
+        "en": "Formula Generator"
+      },
+      "short": {
+        "en": "Describe it, get a formula."
+      },
+      "category": "excel",
+      "group": "",
+      "icon": "i-sigma",
+      "keywords": [
+        "excel formula",
+        "sumif",
+        "vlookup",
+        "xlookup"
+      ],
+      "libs": [],
+      "engine": "tool-excel-formula",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "formula-explainer",
+        "vba-macro-writer",
+        "dax-query",
+        "excel-to-csv"
+      ],
+      "steps": [
+        "Pick the task from the list, for example SUMIF or VLOOKUP.",
+        "Fill in the labelled fields with your own ranges and values.",
+        "Press Generate, copy the formula and paste it into Excel, then test it on a copy of your data."
+      ],
+      "content": {
+        "use": "An Excel formula generator is for the everyday spreadsheet jobs that are easy to describe but hard to write from memory: adding up sales for one city, counting approved orders, or looking up a price from another sheet. It turns a plain description into a formula you can paste.",
+        "tip": "Pick the task first, then fill in the labelled fields with your own ranges. The formula is built from exactly what you typed, so double-check the ranges before you paste it into Excel.",
+        "limit": "The tool builds formulas from fixed templates, not from AI. It does not read your workbook and cannot guess your cell addresses. Always test a formula on a copy of your data first.",
+        "example": "Choosing SUMIF, entering B2:B20 as the range to add, A2:A20 as the range to check, and Lahore as the condition gives =SUMIF(A2:A20, \"Lahore\", B2:B20).",
+        "faq": [
+          [
+            "Is this AI?",
+            "No. The tool uses fixed, parameterized templates. You pick the task and fill in the fields, and it builds the exact formula from those values. It does not guess or learn from your data."
+          ],
+          [
+            "Why does my formula show an error in Excel?",
+            "The most common reason is a range that does not exist in your sheet, or a sheet name that needs quotes. Check the ranges, and test on a copy of your data."
+          ]
+        ]
+      },
+      "meta_description": "Generate Excel formulas from a plain-words description, free in your browser. Describe the task, get the formula."
+    },
+    {
+      "slug": "formula-explainer",
+      "workspace": "tool-excel-explainer",
+      "title": {
+        "en": "Formula Explainer"
+      },
+      "short": {
+        "en": "Paste a formula, understand it."
+      },
+      "category": "excel",
+      "group": "",
+      "icon": "i-lightbulb",
+      "keywords": [
+        "explain formula",
+        "understand excel formula"
+      ],
+      "libs": [],
+      "engine": "tool-excel-explainer",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Paste an Excel formula and understand what it does, free in your browser. A plain-words explanation, step by step."
+    },
+    {
+      "slug": "vba-macro-writer",
+      "workspace": "tool-excel-vba",
+      "title": {
+        "en": "VBA Macro Writer"
+      },
+      "short": {
+        "en": "Describe it, get VBA code."
+      },
+      "category": "excel",
+      "group": "",
+      "icon": "i-terminal-square",
+      "keywords": [
+        "excel macro",
+        "vba code",
+        "automate excel"
+      ],
+      "libs": [],
+      "engine": "tool-excel-vba",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "content": {
+        "use": "A VBA macro writer is for repeating a job in Excel without doing it by hand every time: marking rows that meet a condition, copying data to a report sheet, filtering a table, or hiding a settings sheet. The macro does the clicks for you.",
+        "tip": "Start with a small task, such as looping through rows, and test the macro on a copy of your workbook. Press Alt + F11 in Excel, insert a module, paste the code, and run it from there.",
+        "limit": "The tool builds macros from fixed templates. It does not write a macro for a job it has no template for, and it cannot test the macro against your workbook. Macros only run in Excel for Windows or Mac with macros enabled.",
+        "example": "Choosing Loop through rows, with sheet Data, column A and the condition over 100, gives a macro that marks those rows High in column B.",
+        "faq": [
+          [
+            "How do I run the macro in Excel?",
+            "Press Alt + F11, insert a module, paste the code, close the editor, then press Alt + F8 and run the macro. Save the file as .xlsm if you want to keep the macro."
+          ],
+          [
+            "Is the macro safe to run?",
+            "Read it first. It only does what the template says: it works on the sheet and range you entered. Test it on a copy of your workbook before you run it on real data."
+          ]
+        ]
+      },
+      "meta_description": "Write Excel VBA macros from a plain-words description, free in your browser. Describe the automation, get VBA code."
+    },
+    {
+      "slug": "regex-creator",
+      "workspace": "tool-excel-regex",
+      "title": {
+        "en": "Regex Creator"
+      },
+      "short": {
+        "en": "Build patterns, extract emails."
+      },
+      "category": "excel",
+      "group": "",
+      "icon": "i-regex",
+      "keywords": [
+        "regular expression",
+        "pattern",
+        "extract emails"
+      ],
+      "libs": [],
+      "engine": "tool-excel-regex",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "content": {
+        "use": "A regex creator is for finding or checking a pattern in text: an email address, a Pakistan mobile number, a CNIC, a date, or a web link. It is used in spreadsheets, text editors and data cleaning, where a pattern is faster than reading every line.",
+        "tip": "Paste some of your own text in the test box and press Generate. The tool shows you exactly which parts matched, so you can see if the pattern is right before you use it anywhere else.",
+        "limit": "The tool gives you a fixed pattern for a named task. It does not build a pattern for a new, unusual format, and a pattern that matches your test text may still miss a different format of the same thing.",
+        "example": "Choosing Pakistan mobile number gives 03\\d{2}[- ]?\\d{7}, which finds 0300-1234567 and 03001234567.",
+        "faq": [
+          [
+            "What is a regex?",
+            "A regular expression is a short pattern that describes a shape of text, such as an email address. A program can then find every piece of text with that shape."
+          ],
+          [
+            "Can I use this pattern in Excel?",
+            "Yes, with VBA, or in Google Sheets with REGEXEXTRACT. Paste the pattern exactly as shown, including the backslashes."
+          ]
+        ]
+      },
+      "meta_description": "Build regex patterns and extract emails and dates, free in your browser. Describe the pattern, get working regex."
+    },
+    {
+      "slug": "dax-query",
+      "workspace": "tool-excel-dax",
+      "title": {
+        "en": "DAX Query"
+      },
+      "short": {
+        "en": "Describe it, get a DAX measure."
+      },
+      "category": "excel",
+      "group": "",
+      "icon": "i-chart-column",
+      "keywords": [
+        "power bi",
+        "dax measure",
+        "dax formula"
+      ],
+      "libs": [],
+      "engine": "tool-excel-dax",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "content": {
+        "use": "A DAX measure is for Power BI and Excel Power Pivot: a total, an average, a year-to-date figure, or a share of the total that updates when a user filters the report. It is the calculation behind most Power BI cards and charts.",
+        "tip": "Use your real table and column names in the fields. The measure name is the name that will appear in your report, so make it clear, such as Total Sales.",
+        "limit": "The tool builds measures from fixed templates. It does not connect to your Power BI file and cannot check that your table or column names are right. Paste the measure into Power BI and test it there.",
+        "example": "Choosing Total Sales, with table Sales and column Amount, gives Total Sales = SUM(Sales[Amount]).",
+        "faq": [
+          [
+            "What is DAX?",
+            "DAX is the formula language of Power BI and Excel Power Pivot. A measure is a calculation, such as a total, that is worked out when a user looks at the report."
+          ],
+          [
+            "Why does my measure show an error in Power BI?",
+            "The table or column name is usually the reason. Check the spelling and the square brackets, and make sure the table exists in your model."
+          ]
+        ]
+      },
+      "meta_description": "Write DAX measures for Power BI from a plain-words description, free in your browser. Describe the measure, get DAX."
+    },
+    {
+      "slug": "excel-to-csv",
+      "workspace": "tool-excelcsv",
+      "title": {
+        "en": "Excel to CSV"
+      },
+      "short": {
+        "en": "First sheet exported as CSV."
+      },
+      "category": "excel",
+      "group": "",
+      "icon": "i-table",
+      "keywords": [
+        "xlsx to csv",
+        "spreadsheet to csv"
+      ],
+      "libs": [
+        "xlsx"
+      ],
+      "engine": "tool-excelcsv",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Export the first sheet of an Excel file as CSV, free in your browser. Your file never leaves your device."
+    },
+    {
+      "slug": "csv-to-excel",
+      "workspace": "tool-csvxcel",
+      "title": {
+        "en": "CSV to Excel"
+      },
+      "short": {
+        "en": "CSV text saved as .xlsx."
+      },
+      "category": "excel",
+      "group": "",
+      "icon": "i-table-properties",
+      "keywords": [
+        "csv to xlsx",
+        "csv to spreadsheet"
+      ],
+      "libs": [
+        "xlsx"
+      ],
+      "engine": "tool-csvxcel",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Save CSV text as an .xlsx spreadsheet, free in your browser. Paste CSV rows and download Excel instantly."
+    },
+    {
+      "slug": "image-compressor",
+      "workspace": "tool-imgcompress",
+      "title": {
+        "en": "Image Compressor"
+      },
+      "short": {
+        "en": "Shrink photos and images for sharing."
+      },
+      "category": "image",
+      "group": "",
+      "icon": "i-image-down",
+      "keywords": [
+        "reduce image size",
+        "shrink photo",
+        "compress jpg",
+        "compress png"
+      ],
+      "libs": [
+        "jszip"
+      ],
+      "engine": "tool-imgcompress",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "steps": [
+        "Choose one or more images with the file button.",
+        "Pick JPEG, PNG or WebP and set the quality, or enter a target size in KB.",
+        "Press Compress and download the smaller image, or the ZIP file if there is more than one."
+      ],
+      "content": {
+        "use": "Compressing images is for photos that are too large to upload, email or post: a product photo for an online store, a scanned document photo, or a picture for a website. Smaller images load faster and use less data.",
+        "tip": "If you need a file under a specific size, enter the target size in KB and let the tool lower the quality step by step until it fits. WebP usually gives the smallest file at good quality.",
+        "limit": "JPEG output flattens transparency, so a PNG with a transparent background becomes a white background. PNG output keeps transparency but may stay large. The tool works on one image at a time in the browser, so very large batches take a while.",
+        "example": "A 4 MB phone photo at 80% JPEG quality often becomes about 800 KB with no visible difference on a screen.",
+        "faq": [
+          [
+            "Which format should I choose?",
+            "JPEG for photos, PNG when you need transparency or sharp text, WebP when you want the smallest file and the place you are uploading it accepts WebP."
+          ],
+          [
+            "Can I compress many images at once?",
+            "Yes. Choose several images and they are all compressed. If there is more than one, you also get a ZIP file with all of them in it."
+          ]
+        ]
+      },
+      "meta_description": "Compress JPG, PNG and WebP images into smaller JPEGs, free in your browser. Same images, smaller files."
+    },
+    {
+      "slug": "image-resizer",
+      "workspace": "tool-imgresize",
+      "title": {
+        "en": "Image Resizer"
+      },
+      "short": {
+        "en": "Resize by width and height."
+      },
+      "category": "image",
+      "group": "",
+      "icon": "i-scaling",
+      "keywords": [
+        "resize image",
+        "change image size",
+        "resize photo"
+      ],
+      "libs": [],
+      "engine": "tool-imgresize",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Resize images by width and height in pixels, free in your browser. No upload, no sign-up."
+    },
+    {
+      "slug": "image-converter",
+      "workspace": "tool-imgconvert",
+      "title": {
+        "en": "Image Converter"
+      },
+      "short": {
+        "en": "Change JPG, PNG, WebP format."
+      },
+      "category": "image",
+      "group": "",
+      "icon": "i-replace",
+      "keywords": [
+        "jpg to png",
+        "png to webp",
+        "convert image"
+      ],
+      "libs": [],
+      "engine": "tool-imgconvert",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Change image format between JPG, PNG and WebP, free in your browser. Convert images without uploading them."
+    },
+    {
+      "slug": "image-to-text",
+      "workspace": "tool-ocr",
+      "title": {
+        "en": "Image to Text"
+      },
+      "short": {
+        "en": "Read text from an image."
+      },
+      "category": "image",
+      "group": "",
+      "icon": "i-scan-text",
+      "keywords": [
+        "ocr image",
+        "read text from image",
+        "picture to text"
+      ],
+      "libs": [
+        "tesseract"
+      ],
+      "engine": "tool-ocr",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "ocr-pdf",
+        "pdf-to-text",
+        "image-compressor",
+        "translate-helper"
+      ],
+      "steps": [
+        "Choose an image with the file button.",
+        "Pick the language of the text in the image (English, Urdu, Arabic or Hindi).",
+        "Press Read Text and copy the result. The first run downloads language data, so it takes longer."
+      ],
+      "content": {
+        "use": "Reading text from an image is for typed notes, a screenshot of a message, a photo of a notice board, or a scanned page that needs to become editable text. It saves retyping the whole thing by hand.",
+        "tip": "Choose the right language before you start. Urdu text needs the Urdu option, and a clear, straight photo with good light gives far better results than a tilted or blurry one.",
+        "limit": "Text recognition works best on clear printed text. Handwriting, fancy fonts, low light and tilted photos give poor results. The first run downloads language data, so it takes longer the first time.",
+        "example": "A photo of a shop notice in Urdu becomes editable Urdu text you can paste into a document.",
+        "faq": [
+          [
+            "Does it read Urdu text?",
+            "Yes. Choose Urdu (urd) in the language list before you press Read Text. English, Arabic and Hindi are also available."
+          ],
+          [
+            "Why is some text wrong or missing?",
+            "The photo may be tilted, blurry or low contrast. Try a straighter, brighter photo, and crop out anything that is not text before you upload it."
+          ]
+        ]
+      },
+      "meta_description": "Read text from an image with OCR, free in your browser. Best on clear printed text; needs a language download first."
+    },
+    {
+      "slug": "qr-code-generator",
+      "workspace": "tool-qr",
+      "title": {
+        "en": "QR Code Generator"
+      },
+      "short": {
+        "en": "Text or URL as QR code."
+      },
+      "category": "everyday",
+      "group": "",
+      "icon": "i-qr-code",
+      "keywords": [
+        "qr code",
+        "barcode",
+        "qr maker"
+      ],
+      "libs": [
+        "qrcode"
+      ],
+      "engine": "tool-qr",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "password-generator",
+        "word-counter",
+        "base64",
+        "uuid-generator"
+      ],
+      "steps": [
+        "Type the text or web address in the box.",
+        "Press Generate QR Code.",
+        "Download the QR image, or copy it into your document."
+      ],
+      "meta_description": "Generate QR codes from text or a URL, free in your browser. Download your QR code as a PNG instantly."
+    },
+    {
+      "slug": "password-generator",
+      "workspace": "tool-password",
+      "title": {
+        "en": "Password Generator"
+      },
+      "short": {
+        "en": "Strong random passwords, instantly."
+      },
+      "category": "everyday",
+      "group": "",
+      "icon": "i-key-round",
+      "keywords": [
+        "random password",
+        "strong password"
+      ],
+      "libs": [],
+      "engine": "tool-password",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Generate strong random passwords instantly, free in your browser. Passwords are created locally, never sent anywhere."
+    },
+    {
+      "slug": "word-counter",
+      "workspace": "tool-wordcount",
+      "title": {
+        "en": "Word Counter"
+      },
+      "short": {
+        "en": "Words, characters, reading time."
+      },
+      "category": "everyday",
+      "group": "",
+      "icon": "i-whole-word",
+      "keywords": [
+        "count words",
+        "word count",
+        "character count"
+      ],
+      "libs": [],
+      "engine": "tool-wordcount",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Count words, characters and reading time, free in your browser. Paste text and see the counts instantly."
+    },
+    {
+      "slug": "json-formatter",
+      "workspace": "tool-json",
+      "title": {
+        "en": "JSON Formatter"
+      },
+      "short": {
+        "en": "Format, minify, validate JSON."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-braces",
+      "keywords": [
+        "format json",
+        "beautify json",
+        "validate json",
+        "json lint"
+      ],
+      "libs": [],
+      "engine": "tool-json",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Format, minify and validate JSON, free in your browser. Paste JSON and clean it up instantly."
+    },
+    {
+      "slug": "base64",
+      "workspace": "tool-base64",
+      "title": {
+        "en": "Base64"
+      },
+      "short": {
+        "en": "Encode or decode Base64 text."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-binary",
+      "keywords": [
+        "base64 encode",
+        "base64 decode"
+      ],
+      "libs": [],
+      "engine": "tool-base64",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Encode or decode Base64 text, free in your browser. Convert text both ways instantly, with no sign-up."
+    },
+    {
+      "slug": "case-converter",
+      "workspace": "tool-case",
+      "title": {
+        "en": "Case Converter"
+      },
+      "short": {
+        "en": "Change text case, four ways."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-case-sensitive",
+      "keywords": [
+        "uppercase",
+        "lowercase",
+        "title case",
+        "text case"
+      ],
+      "libs": [],
+      "engine": "tool-case",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Change text case four ways — upper, lower, title and sentence case — free in your browser."
+    },
+    {
+      "slug": "uuid-generator",
+      "workspace": "tool-uuid",
+      "title": {
+        "en": "UUID Generator"
+      },
+      "short": {
+        "en": "Secure random UUIDs, instantly."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-fingerprint",
+      "keywords": [
+        "guid",
+        "unique id",
+        "random id"
+      ],
+      "libs": [],
+      "engine": "tool-uuid",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Generate secure random UUIDs instantly, free in your browser. Unique IDs created locally on your device."
+    },
+    {
+      "slug": "csv-to-json",
+      "workspace": "tool-csvjson",
+      "title": {
+        "en": "CSV to JSON"
+      },
+      "short": {
+        "en": "CSV rows as JSON objects."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-arrow-right-left",
+      "keywords": [
+        "csv to json converter"
+      ],
+      "libs": [],
+      "engine": "tool-csvjson",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Convert CSV rows into JSON objects, free in your browser. Paste CSV and get clean JSON instantly."
+    },
+    {
+      "slug": "text-diff-checker",
+      "workspace": "tool-diff",
+      "title": {
+        "en": "Text Diff Checker"
+      },
+      "short": {
+        "en": "Compare two texts, line by line."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-diff",
+      "keywords": [
+        "compare text",
+        "diff checker",
+        "text difference"
+      ],
+      "libs": [],
+      "engine": "tool-diff",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Compare two texts line by line and see what changed, free in your browser. Added and removed lines shown clearly."
+    },
+    {
+      "slug": "age-calculator",
+      "workspace": "tool-age",
+      "title": {
+        "en": "Age Calculator"
+      },
+      "short": {
+        "en": "Exact age in years, months, days."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-cake",
+      "keywords": [
+        "calculate age",
+        "date of birth",
+        "dob age"
+      ],
+      "libs": [],
+      "engine": "tool-age",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Calculate exact age in years, months and days, free in your browser. Enter a birth date and get the exact age."
+    },
+    {
+      "slug": "percentage-calculator",
+      "workspace": "tool-percent",
+      "title": {
+        "en": "Percentage Calculator"
+      },
+      "short": {
+        "en": "Percent, share, and change."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-percent",
+      "keywords": [
+        "percent calculator",
+        "percentage increase",
+        "percentage decrease"
+      ],
+      "libs": [],
+      "engine": "tool-percent",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Calculate percentages, shares and percent change, free in your browser. Quick percent maths with no sign-up."
+    },
+    {
+      "slug": "bmi-calculator",
+      "workspace": "tool-bmi",
+      "title": {
+        "en": "BMI Calculator"
+      },
+      "short": {
+        "en": "BMI and category from height, weight."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-scale",
+      "keywords": [
+        "body mass index",
+        "bmi chart"
+      ],
+      "libs": [],
+      "engine": "tool-bmi",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Calculate BMI and its category from height and weight, free in your browser. Instant, private, no sign-up."
+    },
+    {
+      "slug": "loan-emi-calculator",
+      "workspace": "tool-emi",
+      "title": {
+        "en": "Loan / EMI Calculator"
+      },
+      "short": {
+        "en": "Monthly EMI, interest and total."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-landmark",
+      "keywords": [
+        "emi calculator",
+        "loan calculator",
+        "monthly installment"
+      ],
+      "libs": [],
+      "engine": "tool-emi",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Calculate monthly EMI, total interest and total payment, free in your browser. Plan a loan in seconds."
+    },
+    {
+      "slug": "cgpa-calculator",
+      "workspace": "tool-cgpa",
+      "title": {
+        "en": "CGPA Calculator"
+      },
+      "short": {
+        "en": "Weighted CGPA from course grades."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-graduation-cap",
+      "keywords": [
+        "gpa calculator",
+        "grade point average"
+      ],
+      "libs": [],
+      "engine": "tool-cgpa",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Calculate weighted CGPA from course grades and credits, free in your browser. Enter courses, get your CGPA."
+    },
+    {
+      "slug": "invoice-generator",
+      "workspace": "tool-invoice",
+      "title": {
+        "en": "Invoice Generator"
+      },
+      "short": {
+        "en": "Bill items, tax and total PDF."
+      },
+      "category": "business",
+      "group": "",
+      "icon": "i-receipt",
+      "keywords": [
+        "bill maker",
+        "invoice pdf",
+        "receipt maker"
+      ],
+      "libs": [
+        "jspdf"
+      ],
+      "engine": "tool-invoice",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "content": {
+        "use": "An invoice generator is for freelancers, shops and small businesses that need a clean bill for a client: the work done, the quantity, the price, the tax and the total, as a PDF that can be sent on WhatsApp or email.",
+        "tip": "Enter one item per line as item, quantity, price. Choose a template before you download. Template 2 has a coloured header and a notes line, Template 1 is plain and simple.",
+        "limit": "The invoice is a simple formatted PDF, not a Word template or an accounting file. It does not store your invoices, and it does not calculate GST rules for you.",
+        "example": "Design work, 2, 5000 with 0% tax gives a subtotal of 10,000 and a total of 10,000.",
+        "faq": [
+          [
+            "Can I add tax to my invoice?",
+            "Yes. Enter the tax percentage and the tool adds it to the subtotal before showing the total."
+          ],
+          [
+            "Are there different invoice templates?",
+            "Yes, two. Template 1 is a plain, simple invoice. Template 2 has a coloured header and a notes line for payment details."
+          ]
+        ]
+      },
+      "meta_description": "Generate a bill with items, tax and total as a PDF, free in your browser. A clean invoice for your business."
+    },
+    {
+      "slug": "resume-builder",
+      "workspace": "tool-resume",
+      "title": {
+        "en": "Resume Builder"
+      },
+      "short": {
+        "en": "Clean PDF resume, quickly."
+      },
+      "category": "business",
+      "group": "",
+      "icon": "i-file-user",
+      "keywords": [
+        "cv maker",
+        "resume maker",
+        "cv builder"
+      ],
+      "libs": [
+        "jspdf"
+      ],
+      "engine": "tool-resume",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "content": {
+        "use": "A resume builder is for a job seeker who needs a clean, one-page resume quickly: name, job title, contact details, skills and experience, as a PDF that can be attached to an application.",
+        "tip": "Keep the experience short and specific, with numbers where you can: how many records, how many reports, how much time saved. Choose a template before you download.",
+        "limit": "The resume is a simple formatted PDF, not a Word template. It does not store your resume, and it does not write the content for you.",
+        "example": "A data analyst resume with a name, title, email, phone, skills and two jobs becomes a clean PDF in one click.",
+        "faq": [
+          [
+            "Are there different resume templates?",
+            "Yes, two. Template 1 is a classic single-column resume. Template 2 has a coloured header and a different skills layout."
+          ],
+          [
+            "Can I edit the resume after downloading it?",
+            "The PDF is not editable. If you need changes, edit the fields on this page and download it again."
+          ]
+        ]
+      },
+      "meta_description": "Build a clean PDF resume quickly, free in your browser. Add your name, skills and experience, then download."
+    },
+    {
+      "slug": "color-palette",
+      "workspace": "tool-palette",
+      "title": {
+        "en": "Color Palette"
+      },
+      "short": {
+        "en": "Palette from one base color."
+      },
+      "category": "design",
+      "group": "",
+      "icon": "i-palette",
+      "keywords": [
+        "color picker",
+        "colour scheme",
+        "palette generator"
+      ],
+      "libs": [],
+      "engine": "tool-palette",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [],
+      "lastReviewed": "2026-11-17",
+      "meta_description": "Create a colour palette from one base colour, free in your browser. Complementary, analogous and triadic palettes."
+    },
+    {
+      "slug": "land-converter",
+      "workspace": "tool-land",
+      "title": {
+        "en": "Land Converter"
+      },
+      "short": {
+        "en": "Convert Marla, Kanal, Acre, sq ft, sq yd and sq m."
+      },
+      "category": "pakistan",
+      "group": "",
+      "icon": "i-ruler",
+      "keywords": [
+        "marla",
+        "kanal",
+        "acre",
+        "مرلہ",
+        "کنال",
+        "ایکڑ",
+        "square feet"
+      ],
+      "libs": [],
+      "engine": "tool-land",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "pk"
+      ],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "pakistan-salary-tax-calculator",
+        "zakat-calculator",
+        "percentage-calculator",
+        "amount-to-words"
+      ],
+      "steps": [
+        "Enter the area in the unit you have.",
+        "Pick the unit you are converting from (Marla, Kanal, Acre, square feet, square yards or square metres).",
+        "Press Convert Land Area. All six units are shown at once."
+      ],
+      "content": {
+        "use": "A land converter is for the units used in Pakistan property deals: Marla, Kanal, Acre, square feet, square yards and square metres. A buyer, a seller, a patwari or a property dealer uses it to check that a 10 Marla plot and a 1 Kanal plot are being compared fairly.",
+        "tip": "Enter the area in the unit you have, and the tool shows all the other units at once. 1 Kanal is 20 Marla, and 1 Acre is 8 Kanal.",
+        "limit": "The tool converts area only. It does not give a price, a location, or legal advice about a plot, and it uses the standard Punjab unit sizes.",
+        "example": "1 Kanal is 20 Marla, 5,445 square feet and 605 square yards.",
+        "faq": [
+          [
+            "How many Marla are in 1 Kanal?",
+            "20 Marla. 1 Marla is 272.25 square feet, so 20 Marla is 5,445 square feet."
+          ],
+          [
+            "How many Kanal are in 1 Acre?",
+            "8 Kanal. 1 Acre is 43,560 square feet."
+          ]
+        ]
+      },
+      "ur_sub": "رقبہ کنورٹر (مرلہ، کنال، ایکڑ)",
+      "ur": {
+        "name": "زمین کا کنورٹر",
+        "desc": "مرلہ، کنال، ایکڑ، مربع فٹ، مربع گز اور مربع میٹر کے درمیان رقبہ تبدیل کریں۔",
+        "steps": [
+          "اپنے پاس موجود رقبہ درج کریں۔",
+          "یونٹ منتخب کریں، مثلاً مرلہ یا کنال۔",
+          "Convert دبائیں، تمام چھ یونٹ ایک ساتھ نظر آئیں گے۔"
+        ],
+        "tip": "مرلہ اور کنال پاکستان میں سب سے زیادہ استعمال ہونے والے یونٹ ہیں۔",
+        "limit": "یہ کنورٹر پاکستان کے معیاری یونٹ استعمال کرتا ہے۔ ایک مرلہ 272.25 مربع فٹ کے برابر ہے۔",
+        "faq": [
+          [
+            "کیا یہ کنورٹر مفت ہے؟",
+            "جی ہاں، تمام ٹولز مفت ہیں اور آپ کی فائل یا ڈیٹا براؤزر سے باہر نہیں جاتا۔"
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "pakistan-salary-tax-calculator",
+      "workspace": "tool-tax",
+      "title": {
+        "en": "Pakistan Salary Tax Calculator"
+      },
+      "short": {
+        "en": "FBR salary tax, monthly and annual, with take-home pay."
+      },
+      "category": "pakistan",
+      "group": "",
+      "icon": "i-receipt-text",
+      "keywords": [
+        "income tax",
+        "fbr tax",
+        "tax slab",
+        "salary tax",
+        "تنخواہ ٹیکس",
+        "fbr"
+      ],
+      "libs": [],
+      "engine": "tool-tax",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "pk"
+      ],
+      "lastReviewed": "2026-11-17",
+      "badges": [
+        {
+          "label": "Verified TY2027",
+          "class": "badge--pk"
+        }
+      ],
+      "related": [
+        "zakat-calculator",
+        "amount-to-words",
+        "percentage-calculator",
+        "loan-emi-calculator"
+      ],
+      "steps": [
+        "Enter your gross monthly salary in rupees.",
+        "Pick the tax year. Tax Year 2027 (FY 2026-27) is the current year.",
+        "Press Calculate Tax. The page shows annual tax, monthly tax and take-home pay."
+      ],
+      "content": {
+        "use": "A Pakistan salary tax calculator is for checking how much income tax is taken from a monthly salary, and what the take-home pay is. It is used before accepting a job offer, at the start of a tax year, and when a salary changes.",
+        "tip": "Enter your gross monthly salary and pick the tax year. The current year is Tax Year 2027 (FY 2026-27). The calculator shows the annual tax, the monthly tax and the take-home pay.",
+        "limit": "This is an estimate only, using FBR slabs for salaried individuals. It does not include rebates, allowances, other income, or tax already deducted. It is not tax advice. Tax Year 2025 is not included because its slabs were not directly verified from an official FBR document.",
+        "example": "A monthly salary of Rs 200,000 is Rs 2,400,000 a year. In Tax Year 2027 the tax is Rs 156,000 a year, about Rs 13,000 a month.",
+        "faq": [
+          [
+            "Which tax year should I choose?",
+            "Tax Year 2027 (FY 2026-27) is the current year as of November 2026. Tax Year 2026 (FY 2025-26) is there for last year's figures."
+          ],
+          [
+            "Is this the exact tax I will pay?",
+            "No. It is an estimate from the FBR slabs only. Your employer may apply rebates and allowances, so check your payslip or ask a tax adviser for the exact figure."
+          ]
+        ]
+      },
+      "ur_sub": "تنخواہ ٹیکس کیلکولیٹر",
+      "ur": {
+        "name": "پاکستان سیلری ٹیکس کیلکولیٹر",
+        "desc": "اپنی ماہانہ تنخواہ پر ایف بی آر ٹیکس کا تخمینہ لگائیں۔",
+        "steps": [
+          "اپنی مجموعی ماہانہ تنخواہ روپوں میں درج کریں۔",
+          "ٹیکس سال منتخب کریں۔ ٹیکس سال 2027 موجودہ سال ہے۔",
+          "Calculate Tax دبائیں، سالانہ ٹیکس، ماہانہ ٹیکس اور گھر لے جانے والی تنخواہ نظر آئے گی۔"
+        ],
+        "tip": "یہ صرف تنخواہ پر ٹیکس کا تخمینہ ہے، چھوٹ یا الاؤنس شامل نہیں۔",
+        "limit": "یہ ایک تخمینہ ہے، ٹیکس مشورہ نہیں۔ ٹیکس سلیب ایف بی آر سے تصدیق شدہ ہیں، 9 نومبر 2026۔",
+        "faq": [
+          [
+            "ٹیکس سال 2027 کا کیا مطلب ہے؟",
+            "ٹیکس سال 2027 مالی سال 2026-27 ہے، جو موجودہ سال ہے۔"
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "zakat-calculator",
+      "workspace": "tool-zakat",
+      "title": {
+        "en": "Zakat Calculator"
+      },
+      "short": {
+        "en": "Zakat at 2.5% with nisab by gold or silver rate."
+      },
+      "category": "pakistan",
+      "group": "",
+      "icon": "i-hand-coins",
+      "keywords": [
+        "nisab",
+        "zakat on gold",
+        "زکوٰۃ",
+        "نصاب"
+      ],
+      "libs": [],
+      "engine": "tool-zakat",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "pk"
+      ],
+      "lastReviewed": "2026-11-17",
+      "related": [
+        "pakistan-salary-tax-calculator",
+        "amount-to-words",
+        "land-converter",
+        "percentage-marks-calculator"
+      ],
+      "steps": [
+        "Enter your cash and bank balance, and subtract any debts.",
+        "Enter your gold and silver in tola, with the current rate per tola for each.",
+        "Press Calculate Zakat. The page shows net wealth, the nisab and the Zakat due at 2.5%."
+      ],
+      "content": {
+        "use": "A Zakat calculator is for working out the Zakat due on cash, gold and silver held for one lunar year. It is used in Ramadan and at the end of a lunar year, when a person checks whether their wealth has reached the nisab.",
+        "tip": "Enter the current rate per tola for gold and silver, because the nisab depends on today's prices. The calculator uses the silver nisab (52.5 tola) when you give a silver rate.",
+        "limit": "This is an estimate only, not religious advice. The nisab is 7.5 tola gold or 52.5 tola silver, and Zakat is 2.5% of net zakatable wealth. The government bank-deduction nisab for Ramadan 2026 was reported as Rs 503,529, but that figure was not directly verified from an official source, so it is shown only as reported.",
+        "example": "Cash and gold worth Rs 1,000,000 above the nisab gives Rs 25,000 Zakat at 2.5%.",
+        "faq": [
+          [
+            "What is the nisab?",
+            "The nisab is the minimum wealth above which Zakat is due: 7.5 tola of gold or 52.5 tola of silver. If your wealth is below it, no Zakat is due."
+          ],
+          [
+            "How much Zakat do I pay?",
+            "2.5% of your net zakatable wealth, after subtracting debts, once it has been held for one lunar year."
+          ]
+        ]
+      },
+      "ur_sub": "زکوٰۃ کیلکولیٹر",
+      "ur": {
+        "name": "زکوٰۃ کیلکولیٹر",
+        "desc": "اپنی زکوٰۃ 2.5 فیصد کے حساب سے معلوم کریں۔",
+        "steps": [
+          "نقد رقم اور بینک بیلنس درج کریں، اور قرضے منہا کریں۔",
+          "سونا اور چاندی تولہ میں درج کریں، موجودہ نرخ کے ساتھ۔",
+          "Calculate Zakat دبائیں، نصاب اور زکوٰۃ نظر آئے گی۔"
+        ],
+        "tip": "نصاب ساڑھے سات تولہ سونا یا ساڑھے باون تولہ چاندی ہے۔",
+        "limit": "یہ ایک تخمینہ ہے، مذہبی مشورہ نہیں۔ سرکاری نصاب ہر سال دوبارہ جاری ہوتا ہے۔",
+        "faq": [
+          [
+            "زکوٰۃ کتنی فیصد ہے؟",
+            "زکوٰۃ نصاب سے زیادہ دولت پر 2.5 فیصد ہے۔"
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "amount-to-words",
+      "workspace": "tool-amountwords",
+      "title": {
+        "en": "Amount to Words"
+      },
+      "short": {
+        "en": "Write an amount in English and Urdu words."
+      },
+      "category": "pakistan",
+      "group": "",
+      "icon": "i-type",
+      "keywords": [
+        "cheque amount",
+        "amount in words",
+        "رقم الفاظ میں",
+        "rupees in words"
+      ],
+      "libs": [],
+      "engine": "tool-amountwords",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "pk"
+      ],
+      "lastReviewed": "2026-11-17",
+      "steps": [
+        "Type the amount in rupees, with or without commas.",
+        "Press Write in Words.",
+        "Copy the English line, the Urdu line, or both."
+      ],
+      "content": {
+        "use": "Amount to words is for invoices, cheques and receipts, where an amount must be written out in words as well as figures. A shop, a school and a freelancer all use it so the amount cannot be changed by adding a digit.",
+        "tip": "Type the amount with or without commas. The tool shows the amount in English and in Urdu, with the Urdu line reading right to left.",
+        "limit": "The tool handles amounts from 0 to 999,999,999. It writes rupees and paisa only, and it does not handle other currencies.",
+        "example": "125,000 becomes one hundred twenty-five thousand rupees only, and ایک لاکھ پچیس ہزار روپے صرف.",
+        "faq": [
+          [
+            "Why do I need words on a cheque?",
+            "Words are harder to change than figures. A cheque with the amount in words is harder to alter, which is why banks and businesses ask for both."
+          ],
+          [
+            "Does it work for paisa too?",
+            "Yes. An amount such as 1,250.50 becomes one thousand two hundred fifty rupees and fifty paisa only."
+          ]
+        ]
+      },
+      "ur_sub": "رقم الفاظ میں",
+      "ur": {
+        "name": "رقم الفاظ میں",
+        "desc": "رقم کو انگریزی اور اردو میں الفاظ میں لکھیں۔",
+        "steps": [
+          "رقم روپوں میں درج کریں۔",
+          "Write in Words دبائیں۔",
+          "انگریزی یا اردو لائن کاپی کریں۔"
+        ],
+        "tip": "یہ چیک اور رسیدوں کے لیے کارآمد ہے۔",
+        "limit": "زیادہ سے زیادہ رقم 999,999,999 روپے ہے۔",
+        "faq": [
+          [
+            "کیا اردو میں بھی لکھا جاتا ہے؟",
+            "جی ہاں، انگریزی اور اردو دونوں لائنیں ایک ساتھ بنتی ہیں۔"
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "urdu-word-counter",
+      "workspace": "tool-urducount",
+      "title": {
+        "en": "Urdu Word Counter"
+      },
+      "short": {
+        "en": "Count Urdu words, characters and reading time."
+      },
+      "category": "pakistan",
+      "group": "",
+      "icon": "i-letter-text",
+      "keywords": [
+        "urdu words",
+        "اردو الفاظ",
+        "urdu character count"
+      ],
+      "libs": [],
+      "engine": "tool-urducount",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "pk"
+      ],
+      "lastReviewed": "2026-11-17",
+      "steps": [
+        "Paste your Urdu text in the box.",
+        "Press Count Words.",
+        "Read the word count, character counts and reading time."
+      ],
+      "content": {
+        "use": "An Urdu word counter is for students, writers and teachers who work in Urdu and need to know how long a piece of writing is: an essay, a speech, a social media post, or a homework answer with a word limit.",
+        "tip": "Paste the Urdu text in the box. The counter works with Urdu script and counts words separated by spaces, just like an English counter.",
+        "limit": "The tool counts words, characters and reading time. It does not check spelling, grammar or the meaning of the text.",
+        "example": "A 300-word Urdu essay takes about 2 minutes to read at 200 words per minute.",
+        "faq": [
+          [
+            "Does it count Urdu words correctly?",
+            "Yes. It splits the text on spaces, which works for Urdu script, and it counts characters with and without spaces separately."
+          ],
+          [
+            "What reading speed does it use?",
+            "200 words per minute, which is a normal adult reading speed. Your own speed may be faster or slower."
+          ]
+        ]
+      },
+      "ur_sub": "اردو الفاظ شمار کنندہ",
+      "ur": {
+        "name": "اردو الفاظ گننے والا",
+        "desc": "اردو متن کے الفاظ اور حروف گنیں۔",
+        "steps": [
+          "اپنا اردو متن باکس میں لکھیں یا چسپاں کریں۔",
+          "Count Words دبائیں۔",
+          "الفاظ، حروف اور پڑھنے کا وقت دیکھیں۔"
+        ],
+        "tip": "یہ مضامین اور تحریروں کی لمبائی جانچنے کے لیے کارآمد ہے۔",
+        "limit": "گنتی آپ کے متن پر مبنی ہے، ہجے یا گرامر نہیں جانچی جاتی۔",
+        "faq": [
+          [
+            "کیا میرا متن محفوظ رہتا ہے؟",
+            "جی ہاں، متن آپ کے براؤزر میں ہی رہتا ہے، کہیں اپ لوڈ نہیں ہوتا۔"
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "percentage-marks-calculator",
+      "workspace": "tool-merit",
+      "title": {
+        "en": "Percentage & Merit Calculator"
+      },
+      "short": {
+        "en": "Weighted marks and merit aggregate with your own weights."
+      },
+      "category": "pakistan",
+      "group": "",
+      "icon": "i-award",
+      "keywords": [
+        "merit",
+        "aggregate",
+        "میرٹ",
+        "marks percentage",
+        "merit calculator"
+      ],
+      "libs": [],
+      "engine": "tool-merit",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "pk"
+      ],
+      "lastReviewed": "2026-11-17",
+      "steps": [
+        "Enter obtained marks, total marks and the weight for each part (up to 3 parts).",
+        "Make sure the weights add up to 100%.",
+        "Press Calculate Aggregate. Each part's contribution and the final aggregate are shown."
+      ],
+      "content": {
+        "use": "A marks and merit calculator is for students applying to college or university in Pakistan, where admission depends on a weighted aggregate: Matric marks, FSc marks and an entry test, each with its own weight. It is also used for any percentage or weighted score.",
+        "tip": "Enter the obtained and total marks for each part, and the weight for that part. The weights must add up to 100%. The tool shows each part's contribution and the final aggregate.",
+        "limit": "The tool uses a generic weighted formula: sum of (obtained / total x 100 x weight / 100). It does not know any university's own formula, so check the official merit formula for the place you are applying to.",
+        "example": "Matric 900/1100 at 10% weight, FSc 950/1100 at 40% weight, and an entry test 150/200 at 50% weight gives an aggregate of about 80.2%.",
+        "faq": [
+          [
+            "What is a merit aggregate?",
+            "A merit aggregate combines several scores into one percentage, giving each part a weight. A part with 50% weight matters five times as much as a part with 10% weight."
+          ],
+          [
+            "What if my weights do not add up to 100%?",
+            "The tool stops and tells you the total, because an aggregate only makes sense when the weights add up to 100%. Fix the weights and try again."
+          ]
+        ]
+      },
+      "ur_sub": "فیصد اور میرٹ کیلکولیٹر",
+      "ur": {
+        "name": "نمبر اور میرٹ کیلکولیٹر",
+        "desc": "اپنے نمبروں اور میرٹ کا مجموعہ معلوم کریں۔",
+        "steps": [
+          "ہر حصے کے حاصل کردہ نمبر، کل نمبر اور وزن درج کریں۔",
+          "یقینی بنائیں کہ وزن کا مجموعہ 100 فیصد ہے۔",
+          "Calculate Aggregate دبائیں، ہر حصے کا حصہ اور کل مجموعہ نظر آئے گا۔"
+        ],
+        "tip": "میرٹ کا وزن عام طور پر تعلیمی ادارے بتاتے ہیں۔",
+        "limit": "زیادہ سے زیادہ تین حصے شامل کیے جا سکتے ہیں۔",
+        "faq": [
+          [
+            "وزن کا کیا مطلب ہے؟",
+            "وزن یہ بتاتا ہے کہ ہر حصے کی کل میرٹ میں کتنی اہمیت ہے، مثلاً 50 فیصد۔"
+          ]
+        ]
+      }
+    }
+  ]
+}
