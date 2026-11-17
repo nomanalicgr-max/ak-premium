@@ -1,5 +1,40 @@
 # AK Premium v4 — Testing Record
 
+## v10 (Foundation) — 17 November 2026
+- Harness: ~/workspace/tools/jsdom-test/run-v10.js — ALL CHECKS PASSED
+  (151 checks, 0 failed; 85 pages + registry/search-index/generator
+  checks). The v9 harness now fails 4 checks on the new tree, all
+  expected: 3 are its page scan tripping over build/v3-index.html (the
+  old v3 index, correctly excluded in run-v10.js) and 1 is its old
+  "lastmod is today" check, replaced by the git-date check.
+- Registry migration verified three ways: (1) 11 automated equivalence
+  checks — every old build.py data structure (CONTENT, STEPS, RELATED,
+  BADGES, FORMAT, UR_SUB, UR_CONTENT, KEYWORDS, LIB_MAP, OLD meta
+  descriptions, PAKISTAN_TOOLS) reproduces exactly from data/tools.json;
+  (2) the regenerated site is byte-identical to the pre-Foundation
+  tree except sitemap.xml (real lastmods), whats-new.html (v10 entry),
+  docs/CHANGELOG.md, .vercelignore, and the new data/ + build/ files;
+  (3) the harness registry checks (68 tools, unique slugs, required
+  fields, related slugs exist, search index in registry order).
+- Sitemap lastmods verified against the local clone
+  (~/workspace/ak-premium-git, HEAD 92dbb3d): 83 URLs carry their real
+  git date (2026-11-11), /tools carries the build date because the file
+  differs from HEAD (see the /tools note below).
+- Found while checking the sitemap: the live /tools page is still the
+  v8 page. It was missed in the v9 deploy, so it loads
+  /assets/css/styles.css?v=8 and /assets/js/app.js?v=8, both deleted in
+  v9 (live 404, verified by curl). The page renders unstyled and its
+  search does not work. The local tree already had the v9 page; this
+  deploy ships it. The v9 harness never caught it because it checks the
+  local output tree, not the repo — the new git-date sitemap check now
+  catches a file that differs from HEAD.
+- Known-answer checks still pass (tax 200,000/month TY2027 -> 156,000;
+  zakat 1,000,000 -> 25,000; EMI 1,000,000 @ 12% x 5y -> 22,244.45).
+- Not verified: real-browser render, Lighthouse, dark-mode visual pass,
+  keyboard walkthrough, service-worker offline behaviour, Report-Only
+  CSP enforcement, Urdu native-speaker proofread, /ur/ controls in
+  English. Same list as v9.
+
 ## v9 (Phase 4) — 11 November 2026
 - Harness: ~/workspace/tools/jsdom-test/run-v9.js — ALL CHECKS PASSED
   (127 checks; 85 pages, sitemap 84 URLs, all v8 checks still passing).
