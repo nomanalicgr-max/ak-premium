@@ -11,7 +11,10 @@
     "write pdf",
     "new pdf"
    ],
-   "icon": "i-file-plus"
+   "icon": "i-file-plus",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "images-to-pdf",
@@ -23,7 +26,10 @@
     "png to pdf",
     "photos to pdf"
    ],
-   "icon": "i-images"
+   "icon": "i-images",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "merge-pdf",
@@ -36,7 +42,10 @@
     "pdf joiner",
     "merge pdf files"
    ],
-   "icon": "i-merge"
+   "icon": "i-merge",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "split-pdf",
@@ -48,7 +57,10 @@
     "cut pdf",
     "pdf splitter"
    ],
-   "icon": "i-split"
+   "icon": "i-split",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "organize-pdf",
@@ -60,7 +72,10 @@
     "rearrange pdf",
     "sort pages"
    ],
-   "icon": "i-layout-grid"
+   "icon": "i-layout-grid",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "remove-pages",
@@ -71,7 +86,10 @@
     "delete pages",
     "remove pdf pages"
    ],
-   "icon": "i-file-minus"
+   "icon": "i-file-minus",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "rotate-pdf",
@@ -82,7 +100,10 @@
     "turn pages",
     "flip pdf"
    ],
-   "icon": "i-rotate-cw"
+   "icon": "i-rotate-cw",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "add-page-numbers",
@@ -93,7 +114,10 @@
     "page numbers",
     "paginate pdf"
    ],
-   "icon": "i-list-ordered"
+   "icon": "i-list-ordered",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "add-watermark",
@@ -104,7 +128,10 @@
     "stamp pdf",
     "watermark pdf"
    ],
-   "icon": "i-droplet"
+   "icon": "i-droplet",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "edit-pdf",
@@ -116,7 +143,10 @@
     "annotate pdf",
     "add text to pdf"
    ],
-   "icon": "i-file-pen"
+   "icon": "i-file-pen",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "compress-pdf",
@@ -128,7 +158,10 @@
     "shrink pdf",
     "make pdf smaller"
    ],
-   "icon": "i-minimize-2"
+   "icon": "i-minimize-2",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "pdf-to-text",
@@ -139,7 +172,10 @@
     "extract text",
     "pdf to txt"
    ],
-   "icon": "i-file-text"
+   "icon": "i-file-text",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "pdf-to-images",
@@ -151,7 +187,10 @@
     "pdf to jpg",
     "extract images"
    ],
-   "icon": "i-file-image"
+   "icon": "i-file-image",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "e-sign",
@@ -163,7 +202,10 @@
     "signature",
     "electronic signature"
    ],
-   "icon": "i-pen-tool"
+   "icon": "i-pen-tool",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "unlock-pdf",
@@ -175,7 +217,10 @@
     "unlock pdf",
     "decrypt pdf"
    ],
-   "icon": "i-lock-open"
+   "icon": "i-lock-open",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "protect-pdf",
@@ -187,7 +232,10 @@
     "lock pdf",
     "encrypt pdf"
    ],
-   "icon": "i-lock"
+   "icon": "i-lock",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "crop-pdf",
@@ -198,7 +246,10 @@
     "trim pdf",
     "crop margins"
    ],
-   "icon": "i-crop"
+   "icon": "i-crop",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "redact-pdf",
@@ -210,7 +261,10 @@
     "hide text",
     "remove sensitive text"
    ],
-   "icon": "i-eye-off"
+   "icon": "i-eye-off",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "pdf-to-pdf-a",
@@ -221,7 +275,10 @@
     "pdf/a",
     "archive pdf"
    ],
-   "icon": "i-archive"
+   "icon": "i-archive",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "repair-pdf",
@@ -233,7 +290,10 @@
     "recover pdf",
     "corrupted pdf"
    ],
-   "icon": "i-wrench"
+   "icon": "i-wrench",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "compare-pdf",
@@ -244,7 +304,10 @@
     "diff pdf",
     "compare documents"
    ],
-   "icon": "i-columns-2"
+   "icon": "i-columns-2",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "pdf-to-markdown",
@@ -255,7 +318,10 @@
     "pdf to md",
     "markdown"
    ],
-   "icon": "i-file-code"
+   "icon": "i-file-code",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "scan-to-pdf",
@@ -266,7 +332,10 @@
     "photo to pdf",
     "camera scan"
    ],
-   "icon": "i-scan-line"
+   "icon": "i-scan-line",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "ocr-pdf",
@@ -278,7 +347,10 @@
     "scanned pdf to text",
     "read scanned pdf"
    ],
-   "icon": "i-scan-text"
+   "icon": "i-scan-text",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "pdf-forms",
@@ -290,7 +362,10 @@
     "pdf form",
     "form fields"
    ],
-   "icon": "i-square-pen"
+   "icon": "i-square-pen",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "local-summarizer",
@@ -302,7 +377,10 @@
     "summary",
     "tldr"
    ],
-   "icon": "i-text-quote"
+   "icon": "i-text-quote",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "translate-helper",
@@ -313,7 +391,10 @@
     "translate pdf",
     "translation"
    ],
-   "icon": "i-languages"
+   "icon": "i-languages",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "pdf-to-excel",
@@ -325,7 +406,15 @@
     "pdf to spreadsheet",
     "pdf table to excel"
    ],
-   "icon": "i-file-spreadsheet"
+   "icon": "i-file-spreadsheet",
+   "iconClass": "icon-warn",
+   "badges": [
+    {
+     "label": "Text only",
+     "class": "badge--warn"
+    }
+   ],
+   "format": "PDF→XLSX"
   },
   {
    "slug": "pdf-to-word",
@@ -336,7 +425,15 @@
     "pdf to docx",
     "convert pdf to word"
    ],
-   "icon": "i-file-text"
+   "icon": "i-file-text",
+   "iconClass": "icon-warn",
+   "badges": [
+    {
+     "label": "Text only",
+     "class": "badge--warn"
+    }
+   ],
+   "format": "PDF→DOCX"
   },
   {
    "slug": "pdf-to-ppt",
@@ -348,7 +445,15 @@
     "pdf to powerpoint",
     "pdf to slides"
    ],
-   "icon": "i-presentation"
+   "icon": "i-presentation",
+   "iconClass": "icon-warn",
+   "badges": [
+    {
+     "label": "Text only",
+     "class": "badge--warn"
+    }
+   ],
+   "format": "PDF→PPTX"
   },
   {
    "slug": "txt-html-to-pdf",
@@ -359,7 +464,10 @@
     "text to pdf",
     "html to pdf"
    ],
-   "icon": "i-file-code"
+   "icon": "i-file-code",
+   "iconClass": "",
+   "badges": [],
+   "format": "TXT→PDF"
   },
   {
    "slug": "excel-to-pdf",
@@ -370,7 +478,15 @@
     "xlsx to pdf",
     "spreadsheet to pdf"
    ],
-   "icon": "i-file-spreadsheet"
+   "icon": "i-file-spreadsheet",
+   "iconClass": "icon-warn",
+   "badges": [
+    {
+     "label": "Basic",
+     "class": "badge--warn"
+    }
+   ],
+   "format": "XLSX→PDF"
   },
   {
    "slug": "word-to-pdf",
@@ -381,7 +497,15 @@
     "docx to pdf",
     "word to pdf"
    ],
-   "icon": "i-file-text"
+   "icon": "i-file-text",
+   "iconClass": "icon-warn",
+   "badges": [
+    {
+     "label": "Basic",
+     "class": "badge--warn"
+    }
+   ],
+   "format": "DOCX→PDF"
   },
   {
    "slug": "ppt-to-pdf",
@@ -393,7 +517,15 @@
     "powerpoint to pdf",
     "slides to pdf"
    ],
-   "icon": "i-presentation"
+   "icon": "i-presentation",
+   "iconClass": "icon-warn",
+   "badges": [
+    {
+     "label": "Basic",
+     "class": "badge--warn"
+    }
+   ],
+   "format": "PPTX→PDF"
   },
   {
    "slug": "formula-generator",
@@ -406,7 +538,10 @@
     "vlookup",
     "xlookup"
    ],
-   "icon": "i-sigma"
+   "icon": "i-sigma",
+   "iconClass": "icon-excel",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "formula-explainer",
@@ -417,7 +552,10 @@
     "explain formula",
     "understand excel formula"
    ],
-   "icon": "i-lightbulb"
+   "icon": "i-lightbulb",
+   "iconClass": "icon-excel",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "vba-macro-writer",
@@ -429,7 +567,10 @@
     "vba code",
     "automate excel"
    ],
-   "icon": "i-terminal-square"
+   "icon": "i-terminal-square",
+   "iconClass": "icon-excel",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "regex-creator",
@@ -441,7 +582,10 @@
     "pattern",
     "extract emails"
    ],
-   "icon": "i-regex"
+   "icon": "i-regex",
+   "iconClass": "icon-excel",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "dax-query",
@@ -453,7 +597,10 @@
     "dax measure",
     "dax formula"
    ],
-   "icon": "i-chart-column"
+   "icon": "i-chart-column",
+   "iconClass": "icon-excel",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "excel-to-csv",
@@ -464,7 +611,10 @@
     "xlsx to csv",
     "spreadsheet to csv"
    ],
-   "icon": "i-table"
+   "icon": "i-table",
+   "iconClass": "icon-excel",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "csv-to-excel",
@@ -475,7 +625,10 @@
     "csv to xlsx",
     "csv to spreadsheet"
    ],
-   "icon": "i-table-properties"
+   "icon": "i-table-properties",
+   "iconClass": "icon-excel",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "image-compressor",
@@ -488,7 +641,10 @@
     "compress jpg",
     "compress png"
    ],
-   "icon": "i-image-down"
+   "icon": "i-image-down",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "image-resizer",
@@ -500,7 +656,10 @@
     "change image size",
     "resize photo"
    ],
-   "icon": "i-scaling"
+   "icon": "i-scaling",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "image-converter",
@@ -512,7 +671,10 @@
     "png to webp",
     "convert image"
    ],
-   "icon": "i-replace"
+   "icon": "i-replace",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "image-to-text",
@@ -524,7 +686,10 @@
     "read text from image",
     "picture to text"
    ],
-   "icon": "i-scan-text"
+   "icon": "i-scan-text",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "qr-code-generator",
@@ -536,7 +701,10 @@
     "barcode",
     "qr maker"
    ],
-   "icon": "i-qr-code"
+   "icon": "i-qr-code",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "password-generator",
@@ -547,7 +715,10 @@
     "random password",
     "strong password"
    ],
-   "icon": "i-key-round"
+   "icon": "i-key-round",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "word-counter",
@@ -559,7 +730,10 @@
     "word count",
     "character count"
    ],
-   "icon": "i-whole-word"
+   "icon": "i-whole-word",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "json-formatter",
@@ -572,7 +746,10 @@
     "validate json",
     "json lint"
    ],
-   "icon": "i-braces"
+   "icon": "i-braces",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "base64",
@@ -583,7 +760,10 @@
     "base64 encode",
     "base64 decode"
    ],
-   "icon": "i-binary"
+   "icon": "i-binary",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "case-converter",
@@ -596,7 +776,10 @@
     "title case",
     "text case"
    ],
-   "icon": "i-case-sensitive"
+   "icon": "i-case-sensitive",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "uuid-generator",
@@ -608,7 +791,10 @@
     "unique id",
     "random id"
    ],
-   "icon": "i-fingerprint"
+   "icon": "i-fingerprint",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "csv-to-json",
@@ -618,7 +804,10 @@
    "keywords": [
     "csv to json converter"
    ],
-   "icon": "i-arrow-right-left"
+   "icon": "i-arrow-right-left",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "text-diff-checker",
@@ -630,7 +819,10 @@
     "diff checker",
     "text difference"
    ],
-   "icon": "i-diff"
+   "icon": "i-diff",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "age-calculator",
@@ -642,7 +834,10 @@
     "date of birth",
     "dob age"
    ],
-   "icon": "i-cake"
+   "icon": "i-cake",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "percentage-calculator",
@@ -654,7 +849,10 @@
     "percentage increase",
     "percentage decrease"
    ],
-   "icon": "i-percent"
+   "icon": "i-percent",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "bmi-calculator",
@@ -665,7 +863,10 @@
     "body mass index",
     "bmi chart"
    ],
-   "icon": "i-scale"
+   "icon": "i-scale",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "loan-emi-calculator",
@@ -677,7 +878,10 @@
     "loan calculator",
     "monthly installment"
    ],
-   "icon": "i-landmark"
+   "icon": "i-landmark",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "cgpa-calculator",
@@ -688,7 +892,10 @@
     "gpa calculator",
     "grade point average"
    ],
-   "icon": "i-graduation-cap"
+   "icon": "i-graduation-cap",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "invoice-generator",
@@ -700,7 +907,10 @@
     "invoice pdf",
     "receipt maker"
    ],
-   "icon": "i-receipt"
+   "icon": "i-receipt",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "resume-builder",
@@ -712,7 +922,10 @@
     "resume maker",
     "cv builder"
    ],
-   "icon": "i-file-user"
+   "icon": "i-file-user",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "color-palette",
@@ -724,7 +937,10 @@
     "colour scheme",
     "palette generator"
    ],
-   "icon": "i-palette"
+   "icon": "i-palette",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "land-converter",
@@ -740,7 +956,10 @@
     "ایکڑ",
     "square feet"
    ],
-   "icon": "i-ruler"
+   "icon": "i-ruler",
+   "iconClass": "icon-pk",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "pakistan-salary-tax-calculator",
@@ -755,7 +974,15 @@
     "تنخواہ ٹیکس",
     "fbr"
    ],
-   "icon": "i-receipt-text"
+   "icon": "i-receipt-text",
+   "iconClass": "icon-pk",
+   "badges": [
+    {
+     "label": "Verified TY2027",
+     "class": "badge--pk"
+    }
+   ],
+   "format": ""
   },
   {
    "slug": "zakat-calculator",
@@ -768,7 +995,10 @@
     "زکوٰۃ",
     "نصاب"
    ],
-   "icon": "i-hand-coins"
+   "icon": "i-hand-coins",
+   "iconClass": "icon-pk",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "amount-to-words",
@@ -781,7 +1011,10 @@
     "رقم الفاظ میں",
     "rupees in words"
    ],
-   "icon": "i-type"
+   "icon": "i-type",
+   "iconClass": "icon-pk",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "urdu-word-counter",
@@ -793,7 +1026,10 @@
     "اردو الفاظ",
     "urdu character count"
    ],
-   "icon": "i-letter-text"
+   "icon": "i-letter-text",
+   "iconClass": "icon-pk",
+   "badges": [],
+   "format": ""
   },
   {
    "slug": "percentage-marks-calculator",
@@ -807,7 +1043,10 @@
     "marks percentage",
     "merit calculator"
    ],
-   "icon": "i-award"
+   "icon": "i-award",
+   "iconClass": "icon-pk",
+   "badges": [],
+   "format": ""
   }
  ]
 }
