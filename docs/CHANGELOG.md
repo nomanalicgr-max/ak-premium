@@ -1,5 +1,100 @@
 # AK Premium — Changelog
 
+## v11 — 17 November 2026 (Global shell: global homepage, mega-menu, hubs, country tools)
+
+### Homepage (expansion brief §14.2, design brief Phase 2)
+- The hero is now global: "68+ free online tools: PDF, image, video,
+  calculators and more. Private, fast, in your browser." The count is
+  the real published tool count, computed at build time; Pakistan no
+  longer appears in the hero. The Urdu hero line is gone (non-English
+  lines appear only when that language is selected). The trust row reads
+  "No upload · No sign-up · Free", with a "Country tools: PK · IN · AE ·
+  UK · US →" text link under it (two-letter codes, no emoji flags).
+- The Popular strip is now 8 tools: Merge PDF, Compress PDF, Images to
+  PDF, PDF to Word, Image Compressor, Percentage Calculator, PDF to
+  Excel, Image to Text. Two of the brief's named 8 do not exist yet
+  (Background Remover, Unit Converter); they land in Wave 1, and PDF to
+  Excel + Image to Text fill the strip until then.
+- Category sections show the top 8 PDF tools with a "See all 27 tools →"
+  link; the other categories show all their tools (each has 8 or fewer)
+  with the heading linked to its hub. The homepage never lists every
+  tool: 58 cards in total.
+- The old Pakistan category section is now a Country tools band with
+  tabs (PK / IN / AE / UK / US). Pakistan is the first and fullest tab;
+  the other tabs honestly say no tools exist for that country yet and
+  link to Contact. The stored region preference does not switch the
+  default tab, because only Pakistan has tools.
+- A small Islamic tools section (Zakat Calculator + a note that prayer
+  times and a Hijri converter are planned for a later wave). No fake
+  tools, no Islamic hub yet.
+- Recently used and Favourites sections (empty and hidden until there
+  is something to show). Every card now has a star button that saves
+  the tool to Favourites in localStorage; recent tools are recorded
+  when a tool page is visited. Nothing about files is ever stored.
+- Search results now announce "Found N tool(s) matching ..." from the
+  shared strings, and `/?q=` still prefills the homepage search.
+
+### Header, footer, navigation
+- The Tools menu is now a mega-menu: one column per category with the
+  top 3 tools and a "See all N tools →" link (design: "See all 1 tool").
+- A globe button opens a Language & region panel: Language (English
+  only today), Region, Units (metric/imperial), Default paper size
+  (A4/letter). Defaults come from the browser language and timezone;
+  no IP or location lookup is used. Preferences are stored in
+  localStorage and are used as defaults; deeper Intl formatting lands
+  with the tools that use it.
+- The header search icon now opens a dropdown that searches all 68
+  tools from `/data/search-index.json` (up to 8 results, Enter opens
+  the first, Escape closes).
+- The footer has four columns: Tools (hub links), Country tools,
+  Company, and a new Legal column (Privacy, Cookie Policy, Terms,
+  Disclaimer, DMCA, Licenses).
+
+### Hubs and country pages
+- Ten category hub pages, generated from `data/hubs.json`: /pdf-tools,
+  /image-tools, /convert-tools, /calculators, /developer-tools,
+  /excel-tools, /business-tools, /everyday-tools, /design-tools and
+  /country/pakistan. Each has an 80–150-word intro, 4 FAQs, tabs
+  linking to the other hubs, and a grid/list view toggle.
+- `/pakistan` is now `/country/pakistan` (301 redirect in vercel.json).
+  All internal links were updated; the old file is gone.
+- Three new legal pages: Cookie Policy, DMCA, Licenses (every library
+  used, with its licence, including the qpdf-wasm wrapper MIT / qpdf
+  Apache-2.0 split and the Lucide ISC + font OFL licences).
+
+### Under the hood
+- UI strings live in one file, `locales/en.json`, rendered into the
+  static shell and injected into every page as `window.AK_STRINGS` for
+  the JavaScript. A public copy ships at `/locales/en.json`, and the
+  generator copy ships under `build/locales/`.
+- `data/search-index.json` entries now also carry badges, format and
+  iconClass, so Favourites/Recent cards render exactly like the
+  homepage cards.
+- The card markup changed so the star can be a real button: the card
+  is a `<div>` with an inner link and a sibling star button (a button
+  inside a link would be invalid HTML). Keyboard navigation now follows
+  the inner links.
+- Asset version is now v11 (`config.js?v=11`, service-worker cache
+  `ak-premium-v11`). Sitemap: 96 URLs (10 hubs + 3 legal pages, minus
+  the old /pakistan URL).
+
+### Fixed with this deploy
+- Clicking a card's favourite star also opened the tool workspace
+  (scrolled to the top and set a #tool- hash), because the card's
+  click handler fired before the star's. The card handler now ignores
+  clicks that come from the star button.
+- "See all 1 tools" / "All 1 tools" on the Design hub and in the
+  mega-menu now read "See all 1 tool" / "All 1 tool".
+
+### Notes and honest limits (unchanged from the briefs)
+- The hero mentions video and audio tools, which do not exist yet;
+  they are the Wave 1 phase that follows this one. The Popular strip
+  names Background Remover and Unit Converter the same way.
+- Hubs follow the 10 registry categories for now; the brief's larger
+  hub taxonomy (video, audio, text, SEO, …) arrives as those tools do.
+- The per-tool JavaScript split stays as `core.js` + one bundle per
+  category (see build/README.md).
+
 ## v10 — 17 November 2026 (Foundation: tool registry + generator)
 
 ### Registry (expansion brief §3.1)
