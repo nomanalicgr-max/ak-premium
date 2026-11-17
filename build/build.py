@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""AK Premium build script (Foundation: registry-based).
-Reads data/tools.json (the single source of truth for every tool) and
-OUT/config.js (SITE_URL, SITE_NAME, CONTACT_EMAIL), extracts tool
-workspaces from the vendored v3 index (v3-index.html), applies workspace
-overrides, and generates:
+"""AK Premium build script (Global shell: registry-based).
+Reads data/tools.json (the single source of truth for every tool),
+data/hubs.json (category hub intros + FAQs) and locales/en.json (UI
+strings), and OUT/config.js (SITE_URL, SITE_NAME, CONTACT_EMAIL),
+extracts tool workspaces from the vendored v3 index (v3-index.html),
+applies workspace overrides, and generates:
   index.html, tools/<slug>.html, tools/index.html, ur/ pages,
-  about/privacy/terms/disclaimer/contact, whats-new, pakistan hub,
+  about/privacy/terms/disclaimer/contact/cookies/dmca/licenses, whats-new,
+  category hubs (/pdf-tools, /image-tools, ...), country/pakistan,
   sitemap.xml (real per-page lastmod from git), robots.txt, 404.html,
-  sw.js, data/search-index.json, data/tools.json, build/ (generator copy).
+  sw.js, data/search-index.json, data/tools.json, locales/en.json,
+  build/ (generator copy).
 Run: python3 build.py   (output: OUT, see BUILD/OUT below)
 To add a tool: edit data/tools.json (see README.md), add its workspace
 HTML + app.js handlers, then run this script.
@@ -35,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "9"  # Phase 4 (v9): content hashes replace ?v= for CSS/JS; config.js still uses ?v=.
+ASSET_V = "11"  # Global shell (v11): content hashes replace ?v= for CSS/JS; config.js still uses ?v=.
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -104,7 +107,20 @@ CAT_LABELS = {
     "calculators": "Calculators", "business": "Business Tools", "design": "Design Tools",
     "pakistan": "Pakistan Tools",
 }
-CAT_ORDER = ["pakistan", "pdf", "convert", "image", "excel", "calculators", "more"]  # homepage section order (Phase 2)
+# Category hubs (Global shell, expansion brief 4.2 / design brief 2.3):
+# data/hubs.json holds each hub's intro (80-150 words) and 3-5 FAQs.
+HUBS = json.loads((BUILD / "data" / "hubs.json").read_text())["hubs"]
+HUB_BY_CAT = {h["category"]: h for h in HUBS}
+HUB_URLS = {h["category"]: h["url"] for h in HUBS}
+# UI strings (Global shell, expansion brief 6A): locales/en.json is the
+# single source for the shell's UI copy. build.py renders static strings
+# from it and injects the JS strings as window.AK_STRINGS (see page_scripts).
+STRINGS = json.loads((BUILD / "locales" / "en.json").read_text())
+# Homepage section order (Global shell, design brief 2.3): hero, then
+# Recently used / Favourites (only when they exist), Popular, the category
+# sections, Country tools, Islamic tools, FAQ. Pakistan lives in the
+# Country tools band, not as a category section.
+CAT_ORDER = ["pdf", "convert", "image", "excel", "calculators", "more"]
 MORE_CATS = ["everyday", "developer", "business", "design"]  # grouped under one "More tools" section
 CAT_ORDER_ALL = ["pdf", "convert", "excel", "image", "everyday", "developer", "calculators", "business", "design", "pakistan"]  # /tools index order
 
@@ -203,6 +219,9 @@ SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="tru
   <path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2" />
   <path d="M8.65 22c.21-.66.45-1.32.57-2" />
   <path d="M9 6.8a6 6 0 0 1 9 5.2v2" /></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" />
+  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+  <path d="M2 12h20" /></symbol>
     <symbol id="i-graduation-cap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
   <path d="M22 10v6" />
   <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" /></symbol>
@@ -769,36 +788,73 @@ def related_tools(t):
     others = [x for x in ALL_TOOLS if x["category"] != t["category"]]
     return (same + others)[:4]
 
+# Mega-menu top tools per category (Global shell, design brief 2.4).
+MEGA_TOP = {
+    "pdf": ["merge-pdf", "compress-pdf", "split-pdf"],
+    "image": ["image-compressor", "image-resizer", "image-converter"],
+    "convert": ["pdf-to-word", "pdf-to-excel", "word-to-pdf"],
+    "calculators": ["percentage-calculator", "loan-emi-calculator", "age-calculator"],
+    "developer": ["json-formatter", "base64", "text-diff-checker"],
+    "excel": ["formula-generator", "vba-macro-writer", "regex-creator"],
+    "business": ["invoice-generator", "resume-builder"],
+    "everyday": ["qr-code-generator", "password-generator", "word-counter"],
+    "design": ["color-palette"],
+}
+MEGA_CATS = ["pdf", "image", "convert", "calculators", "developer", "excel", "business", "everyday", "design"]
+
 def site_header(active="", lang_href="/ur/", lang_label="اردو", lang_lang="ur"):
     def cur(page):
         return ' aria-current="page"' if active == page else ""
     brand_cur = ' aria-current="page"' if active == "home" else ""
+    # Mega-menu: one column per tool category (Pakistan lives under
+    # Country tools, not here). Top 3 tools + "See all N tools".
+    mega_cols = []
+    for cat in MEGA_CATS:
+        tools = [t for t in ALL_TOOLS if t["category"] == cat]
+        top = [next(t for t in tools if t["slug"] == s) for s in MEGA_TOP[cat]]
+        mega_cols.append('<div class="mega-col"><h3><a href="' + HUB_URLS[cat] + '">' + CAT_LABELS[cat] + '</a></h3><ul>'
+            + "".join('<li><a href="/tools/%s" role="menuitem">%s</a></li>' % (t["slug"], esc(t["name"])) for t in top)
+            + '<li><a href="' + HUB_URLS[cat] + '" role="menuitem" class="mega-seeall">' + see_all_label(len(tools)) + ' \u2192</a></li></ul></div>')
+    # Globe panel (design brief 2.4): Language / Region / Units / Paper size.
+    # Defaults come from navigator.language and the timezone (JS); choices
+    # are remembered in localStorage. No IP or geo lookup is ever used.
+    g = STRINGS["globe"]
+    def sel_options(opts):
+        return "".join('<option value="%s">%s</option>' % (v, esc(l)) for v, l in opts)
+    globe_panel = ('<div class="globe-panel" id="globePanel" hidden><h2>' + esc(g["title"]) + '</h2>'
+        '<label for="prefLanguage">' + esc(g["language"]) + '</label><select id="prefLanguage">' + sel_options(list(g["languageOptions"].items())) + '</select>'
+        '<label for="prefRegion">' + esc(g["region"]) + '</label><select id="prefRegion">' + sel_options([("global", g["regionOptions"]["global"]), ("pk", g["regionOptions"]["pk"]), ("in", g["regionOptions"]["in"]), ("ae", g["regionOptions"]["ae"]), ("uk", g["regionOptions"]["uk"]), ("us", g["regionOptions"]["us"])]) + '</select>'
+        '<label for="prefUnits">' + esc(g["units"]) + '</label><select id="prefUnits">' + sel_options([("metric", g["unitsOptions"]["metric"]), ("imperial", g["unitsOptions"]["imperial"])]) + '</select>'
+        '<label for="prefPaper">' + esc(g["paper"]) + '</label><select id="prefPaper">' + sel_options([("a4", g["paperOptions"]["a4"]), ("letter", g["paperOptions"]["letter"])]) + '</select>'
+        '<p class="globe-note">' + esc(g["note"]) + '</p></div>')
+    # Header search dropdown (Global shell): searches every tool from the
+    # search index, on any page. The homepage keeps its own big search box.
+    hs = STRINGS["headerSearch"]
+    header_search = ('<div class="header-search" id="headerSearch" hidden><label class="sr-only" for="headerSearchInput">' + esc(hs["placeholder"]) + '</label>'
+        '<input id="headerSearchInput" type="search" placeholder="' + esc(hs["placeholder"]) + '" autocomplete="off">'
+        '<div id="headerSearchResults" class="header-search-results" role="listbox" aria-label="Search results"><p class="header-search-hint">' + esc(hs["hint"]) + '</p></div></div>')
+    mobile_links = "".join('<a href="%s">%s</a>' % (HUB_URLS[c], CAT_LABELS[c]) for c in MEGA_CATS)
     return ('<header class="site-header"><div class="header-inner">'
     '<a class="brand" href="/"'+brand_cur+'><svg class="brand-mark" viewBox="0 0 40 40" width="34" height="34" aria-hidden="true" focusable="false"><rect width="40" height="40" rx="8"/><text x="20" y="27" text-anchor="middle">AK</text></svg><span>AK Premium</span><span class="brand-tag">Free tools. Private by design.</span></a>'
     '<nav class="main-nav" aria-label="Main navigation">'
-    '<div class="nav-drop"><button type="button" class="nav-btn" id="toolsMenuBtn" aria-expanded="false" aria-haspopup="true">Tools</button>'
-    '<div class="nav-menu" id="toolsMenu" role="menu" aria-label="Tool categories">'
-    '<a href="/tools" role="menuitem">All tools</a>'
-    '<div class="nav-menu-head">Categories</div>'
-    '<a href="/#section-pdf" role="menuitem">PDF Tools</a><a href="/#section-convert" role="menuitem">Convert</a>'
-    '<a href="/#section-image" role="menuitem">Image Tools</a><a href="/#section-excel" role="menuitem">Excel Tools</a>'
-    '<a href="/#section-calculators" role="menuitem">Calculators</a><a href="/pakistan" role="menuitem">Pakistan Tools</a>'
-    '<a href="/#section-more" role="menuitem">More tools</a></div></div>'
-    '<a class="nav-btn nav-desktop" href="/pakistan"'+cur("pakistan")+'>Pakistan</a>'
+    '<div class="nav-drop nav-drop--mega"><button type="button" class="nav-btn" id="toolsMenuBtn" aria-expanded="false" aria-haspopup="true">Tools</button>'
+    '<div class="nav-menu nav-menu--mega" id="toolsMenu" role="menu" aria-label="Tool categories">'
+    '<a href="/tools" role="menuitem" class="mega-all">All tools</a>'
+    '<div class="mega-grid">' + "".join(mega_cols) + '</div></div></div>'
+    '<a class="nav-btn nav-desktop" href="/#section-country"'+cur("country")+'>Country tools</a>'
     '<a class="nav-btn nav-desktop" href="/about"'+cur("about")+'>About</a>'
     '<a class="nav-btn nav-desktop" href="/contact"'+cur("contact")+'>Contact</a>'
     '<a class="nav-btn nav-desktop nav-lang" href="'+lang_href+'" lang="'+lang_lang+'">'+lang_label+'</a>'
-    '<a class="nav-icon" href="/#heroSearch" id="headerSearchBtn" aria-label="Search tools"><svg aria-hidden="true"><use href="#i-search"/></svg></a>'
+    '<button type="button" class="nav-icon" id="headerSearchBtn" aria-label="Search tools" aria-expanded="false" aria-haspopup="true"><svg aria-hidden="true"><use href="#i-search"/></svg></button>'
+    '<button type="button" class="nav-icon" id="globeBtn" aria-label="Language and region" aria-expanded="false" aria-haspopup="true"><svg aria-hidden="true"><use href="#i-globe"/></svg></button>'
     '<button type="button" class="theme-toggle" id="darkModeToggle" aria-label="Dark mode" aria-pressed="false"><svg class="theme-icon--moon" aria-hidden="true"><use href="#i-moon"/></svg><svg class="theme-icon--sun" aria-hidden="true"><use href="#i-sun"/></svg></button>'
     '<button type="button" class="nav-burger" id="navBurger" aria-expanded="false" aria-controls="mobileMenu" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>'
-    '</nav></div></header>'
+    '</nav>' + header_search + globe_panel + '</div></header>'
     '<div class="mobile-menu" id="mobileMenu" hidden><div class="mobile-menu-head"><span>AK Premium</span>'
     '<button type="button" class="nav-icon" id="mobileMenuClose" aria-label="Close menu"><svg aria-hidden="true"><use href="#i-x"/></svg></button></div>'
-    '<a href="/tools">All tools</a><a href="/#section-pdf">PDF Tools</a><a href="/#section-convert">Convert</a>'
-    '<a href="/#section-image">Image Tools</a><a href="/#section-excel">Excel Tools</a>'
-    '<a href="/#section-calculators">Calculators</a><a href="/pakistan">Pakistan Tools</a>'
-    '<a href="/#section-more">More tools</a><a href="/about">About</a><a href="/contact">Contact</a><a href="'+lang_href+'" lang="'+lang_lang+'">'+lang_label+'</a></div>')
-FOOTER = '''<footer class="site-footer"><div class="footer-inner"><div class="footer-col"><h3>Tools</h3><ul><li><a href="/#section-pdf">PDF Tools</a></li><li><a href="/#section-convert">Convert</a></li><li><a href="/#section-excel">Excel Tools</a></li><li><a href="/#section-image">Image Tools</a></li><li><a href="/#section-calculators">Calculators</a></li><li><a href="/tools">All tools</a></li></ul></div><div class="footer-col"><h3>Pakistan Tools</h3><ul><li><a href="/tools/pakistan-salary-tax-calculator">Salary Tax Calculator</a></li><li><a href="/tools/zakat-calculator">Zakat Calculator</a></li><li><a href="/tools/land-converter">Land Converter</a></li><li><a href="/tools/amount-to-words">Amount to Words</a></li><li><a href="/tools/urdu-word-counter">Urdu Word Counter</a></li><li><a href="/tools/percentage-marks-calculator">Percentage &amp; Merit Calculator</a></li><li><a href="/pakistan">All Pakistan tools</a></li></ul></div><div class="footer-col"><h3>Company</h3><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/whats-new">What&rsquo;s new</a></li><li><a href="/privacy">Privacy Policy</a></li><li><a href="/terms">Terms of Service</a></li><li><a href="/disclaimer">Disclaimer</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 AK Premium. Free tools, private by design. Files are processed in your browser and are not uploaded to an AK Premium server.</p></div></footer>'''
+    '<a href="/tools">All tools</a>' + mobile_links
+    + '<a href="/#section-country">Country tools</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy Policy</a><a href="'+lang_href+'" lang="'+lang_lang+'">'+lang_label+'</a></div>')
+FOOTER = '''<footer class="site-footer"><div class="footer-inner"><div class="footer-col"><h3>Tools</h3><ul><li><a href="/pdf-tools">PDF Tools</a></li><li><a href="/image-tools">Image Tools</a></li><li><a href="/convert-tools">Convert</a></li><li><a href="/calculators">Calculators</a></li><li><a href="/developer-tools">Developer Tools</a></li><li><a href="/excel-tools">Excel Tools</a></li><li><a href="/business-tools">Business Tools</a></li><li><a href="/tools">All tools</a></li></ul></div><div class="footer-col"><h3>Country tools</h3><ul><li><a href="/country/pakistan">Pakistan tools</a></li><li><a href="/#section-country">India tools</a></li><li><a href="/#section-country">UAE &amp; Saudi tools</a></li><li><a href="/#section-country">UK tools</a></li><li><a href="/#section-country">US tools</a></li></ul></div><div class="footer-col"><h3>Company</h3><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/whats-new">What&rsquo;s new</a></li></ul></div><div class="footer-col"><h3>Legal</h3><ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/cookies">Cookie Policy</a></li><li><a href="/terms">Terms of Service</a></li><li><a href="/disclaimer">Disclaimer</a></li><li><a href="/dmca">DMCA</a></li><li><a href="/licenses">Licenses</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 AK Premium. Free tools, private by design. Files are processed in your browser and are not uploaded to an AK Premium server.</p></div></footer>'''
 CONSENT = '''<div class="consent-banner" id="consentBanner" hidden><p>AK Premium uses cookies for ads and analytics only if you accept. Your files are processed in your browser and are never uploaded. <a href="/privacy">Read the Privacy Policy</a>.</p><button type="button" class="btn-primary" id="consentAccept">Accept</button><button type="button" class="btn-secondary" id="consentReject">Reject</button></div>'''
 AD_SLOT = '<div class="ad-slot ad-slot-%s" data-ad-slot="%s" role="complementary" aria-label="Advertisement"></div>'
 
@@ -806,7 +862,7 @@ AD_SLOT = '<div class="ad-slot ad-slot-%s" data-ad-slot="%s" role="complementary
 # never flashes the wrong theme. Saved choice ("ak-theme") wins, else the OS.
 THEME_SCRIPT = '<script>(function(){try{var t=localStorage.getItem(\'ak-theme\');if(!t){t=matchMedia(\'(prefers-color-scheme: dark)\').matches?\'dark\':\'light\'}document.documentElement.setAttribute(\'data-theme\',t)}catch(e){}})();</script>\n'
 
-def page_head(title, description, canonical, og_type="website", extra="", body_class="", lang="en", dir="ltr"):
+def page_head(title, description, canonical, og_type="website", extra="", body_class="", lang="en", dir="ltr", body_extra=""):
     return ('<!DOCTYPE html>\n<html lang="' + lang + '" dir="' + dir + '">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
     + THEME_SCRIPT
     + '<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">\n<meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">\n'
@@ -823,14 +879,18 @@ def page_head(title, description, canonical, og_type="website", extra="", body_c
     '<link rel="manifest" href="/site.webmanifest">\n'
     '<link rel="preload" href="/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>\n'
     '<link rel="preload" href="/assets/fonts/plus-jakarta-var.woff2" as="font" type="font/woff2" crossorigin>\n'
-    '<link rel="stylesheet" href="' + HASHED["styles"] + '">\n' + extra + '</head>\n<body' + (' class="' + body_class + '"' if body_class else '') + '>\n<a class="skip-link" href="#main">Skip to content</a>\n' + SPRITE + '\n')
+    '<link rel="stylesheet" href="' + HASHED["styles"] + '">\n' + extra + '</head>\n<body' + (' class="' + body_class + '"' if body_class else '') + body_extra + '>\n<a class="skip-link" href="#main">Skip to content</a>\n' + SPRITE + '\n')
 
 def page_scripts(libs, category=None):
     # All first-party scripts are deferred and content-hashed (Phase 4.3);
     # defer keeps document order, so config -> common -> core -> bundle.
     # Tool pages load core.js plus their category bundle; every other page
     # loads core.js only.
-    tags = "".join(LIB_SCRIPT[l] for l in libs)
+    # window.AK_STRINGS (Global shell, expansion brief 6A): the UI strings
+    # from locales/en.json, so core.js never hard-codes user-facing copy.
+    # It is an inline script, so it runs before the deferred scripts.
+    tags = '<script>window.AK_STRINGS=' + json.dumps(STRINGS, ensure_ascii=False) + ';</script>\n'
+    tags += "".join(LIB_SCRIPT[l] for l in libs)
     tags += '<script defer src="/config.js?v=' + ASSET_V + '"></script>\n'
     tags += '<script defer src="' + HASHED["common"] + '"></script>\n'
     tags += '<script defer src="' + HASHED["core"] + '"></script>\n'
@@ -875,9 +935,9 @@ def tool_page(t):
     extra = '<script type="application/ld+json">' + app_json + '</script>\n<script type="application/ld+json">' + faq_json + '</script>\n<script type="application/ld+json">' + crumb_json + '</script>\n'
     if t["slug"] in UR_CONTENT:
         extra += '<link rel="alternate" hreflang="ur" href="' + SITE_URL + '/ur/' + t["slug"] + '">\n<link rel="alternate" hreflang="en" href="' + url + '">\n<link rel="alternate" hreflang="x-default" href="' + url + '">\n' 
-    body = (page_head(title, desc, url, body_class="tool-page", extra=extra)
+    body = (page_head(title, desc, url, body_class="tool-page", extra=extra, body_extra=' data-tool="' + t["slug"] + '"')
     + site_header("")
-    + '<main class="page" id="main">\n<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">\u203a</span> <a href="/tools">' + esc(cat_label) + '</a> <span aria-hidden="true">\u203a</span> <span aria-current="page">' + esc(name) + '</span></nav>\n'
+    + '<main class="page" id="main">\n<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">\u203a</span> <a href="' + HUB_URLS[t["category"]] + '">' + esc(cat_label) + '</a> <span aria-hidden="true">\u203a</span> <span aria-current="page">' + esc(name) + '</span></nav>\n'
     + '<h1>' + esc(name) + '</h1>\n' + badge_html + ur_html
     + '<p><strong>' + esc(t["desc"]) + '</strong></p>\n'
     + '<section class="workspace" aria-label="' + esc(name) + ' tool">\n' + t["tool_ws"] + '\n</section>\n'
@@ -913,6 +973,18 @@ def build_tool_pages():
 # Icon-tile variants (styles.css: 4 only). "warn" = text-only / basic tools
 # whose output is limited; Pakistan and Excel get their own tile colour.
 WARN_SLUGS = {"pdf-to-word", "pdf-to-excel", "pdf-to-ppt", "word-to-pdf", "excel-to-pdf", "ppt-to-pdf"}
+def n_tools(n):
+    """'1 tool' / 'N tools' — the hub.seeAll template has no plural form."""
+    return "1 tool" if n == 1 else "%d tools" % n
+
+
+def see_all_label(n):
+    """'See all 1 tool' / 'See all N tools' (from locales)."""
+    if n == 1:
+        return STRINGS["hub"]["seeAllOne"]
+    return STRINGS["hub"]["seeAll"].replace("{n}", str(n))
+
+
 def card_icon_class(t):
     if t["slug"] in WARN_SLUGS: return " icon-warn"
     if t["category"] == "pakistan": return " icon-pk"
@@ -920,7 +992,15 @@ def card_icon_class(t):
     return ""
 
 # Most-used tools, in the "Popular tools" strip at the top of the homepage.
-POPULAR = ["merge-pdf", "compress-pdf", "image-to-text", "pakistan-salary-tax-calculator", "zakat-calculator", "land-converter"]
+# Global shell (design brief 2.2): the brief's 8 are Merge PDF, Compress PDF,
+# JPG to PDF, PDF to Word, Image Compressor, Background Remover, Unit
+# Converter, Percentage Calculator. Background Remover and Unit Converter
+# do not exist yet (Wave 1 tools), so the strip uses the 6 named tools that
+# exist plus PDF to Excel and Image to Text, the next most-used.
+POPULAR = ["merge-pdf", "compress-pdf", "images-to-pdf", "pdf-to-word", "image-compressor", "percentage-calculator", "pdf-to-excel", "image-to-text"]
+# The PDF section on the homepage shows these 8 (the most common PDF tasks)
+# plus a "See all 27 tools" link to the /pdf-tools hub, which lists all 27.
+TOP_PDF = ["merge-pdf", "compress-pdf", "split-pdf", "images-to-pdf", "pdf-to-word", "pdf-to-excel", "protect-pdf", "unlock-pdf"]
 # Small pill shown at the top-right of a card (and on the tool page).
 # Badges now live in data/tools.json ("badges").
 BADGES = {e["slug"]: (e["badges"][0]["label"], e["badges"][0]["class"]) for e in REGISTRY if "badges" in e}
@@ -943,6 +1023,11 @@ UR_CONTENT = {e["slug"]: {"name": e["ur"]["name"], "desc": e["ur"]["desc"], "ste
 KEYWORDS = {e["slug"]: ", ".join(e["keywords"]) for e in REGISTRY}
 
 def card_html(t, extra_class=""):
+    # Global shell: the card is a <div> so the favourite star can be a real
+    # <button> next to the link (a button inside an <a> is invalid HTML).
+    # The link keeps the row layout; the star sits at the top-right of the
+    # card. data-slug is on the card so the search and the favourite
+    # toggle can find it; data-target/data-group/data-keywords are unchanged.
     badge = BADGES.get(t["slug"])
     badge_html = '<span class="badge %s">%s</span>' % (badge[1], badge[0]) if badge else ""
     fmt = FORMAT.get(t["slug"])
@@ -950,70 +1035,96 @@ def card_html(t, extra_class=""):
     ur = UR_SUB.get(t["slug"])
     ur_html = '<span class="ur-sub" lang="ur" dir="rtl">%s</span>' % esc(ur) if ur else ""
     kw = (t["name"] + " " + t["category"] + " " + KEYWORDS.get(t["slug"], "")).strip()
-    return ('<a class="tool-card%s%s" href="/tools/%s" data-target="%s" data-group="%s" data-keywords="%s">'
-            '<span class="icon"><svg aria-hidden="true"><use href="#%s"/></svg></span>'
+    fav_label = STRINGS["favourites"]["add"].replace("{name}", t["name"])
+    return ('<div class="tool-card%s%s" data-target="%s" data-group="%s" data-keywords="%s" data-slug="%s">'
+            '<a class="tool-card-link" href="/tools/%s"><span class="icon"><svg aria-hidden="true"><use href="#%s"/></svg></span>'
             '<span class="tool-card-body"><span class="tool-card-head"><strong>%s</strong>%s%s</span>'
-            '<span class="tool-card-desc">%s</span>%s</span></a>' % (
-                card_icon_class(t), extra_class, t["slug"], t["workspace"], esc(t.get("group", "")),
-                esc(kw), esc(t["icon"]), esc(t["name"]), fmt_html, badge_html, esc(t["desc"]), ur_html))
+            '<span class="tool-card-desc">%s</span>%s</span></a>'
+            '<button type="button" class="fav-btn" data-slug="%s" aria-pressed="false" aria-label="%s" title="%s">\u2605</button></div>' % (
+                card_icon_class(t), extra_class, t["workspace"], esc(t.get("group", "")),
+                esc(kw), t["slug"], t["slug"], esc(t["icon"]), esc(t["name"]), fmt_html, badge_html, esc(t["desc"]), ur_html,
+                t["slug"], esc(fav_label), esc(fav_label)))
 
 def build_homepage():
-    cards = []
-    # Popular strip: the six most-used tools, larger cards.
+    n = len(ALL_TOOLS)
+    # Popular strip: the 8 most-used tools, larger cards (design brief 2.2).
     popular = [next(t for t in ALL_TOOLS if t["slug"] == s) for s in POPULAR]
+    cards = []
+    # Recently used / Favourites (design brief 2.2): rendered empty and
+    # hidden; core.js fills them from localStorage (only when they exist).
+    cards.append('<section class="tool-section" id="section-recent" aria-label="Recently used" hidden><h2>' + esc(STRINGS["recent"]["heading"]) + '</h2><div class="tool-grid" id="recentGrid"></div><p><button type="button" class="btn-ghost" id="recentClear">' + esc(STRINGS["recent"]["clear"]) + '</button></p></section>')
+    cards.append('<section class="tool-section" id="section-favourites" aria-label="Favourites" hidden><h2>' + esc(STRINGS["favourites"]["heading"]) + '</h2><div class="tool-grid" id="favGrid"></div><p class="section-sub">' + esc(STRINGS["favourites"]["empty"]) + '</p></section>')
     cards.append('<section class="tool-section" id="section-popular" aria-label="Popular tools"><h2>Popular tools</h2><div class="tool-grid">%s</div></section>' % "".join(card_html(t, " tool-card--popular") for t in popular))
-    for idx, cat in enumerate(CAT_ORDER):
+    for cat in CAT_ORDER:
         if cat == "more":
             # "More tools": Everyday + Developer + Business + Design under one heading.
             sub = []
             for subcat in MORE_CATS:
                 tools = [t for t in ALL_TOOLS if t["category"] == subcat]
                 if not tools: continue
-                sub.append('<h3>' + CAT_LABELS[subcat] + '</h3><div class="tool-grid">' + "".join(card_html(t) for t in tools) + '</div>')
+                sub.append('<h3><a href="' + HUB_URLS[subcat] + '">' + CAT_LABELS[subcat] + '</a></h3><div class="tool-grid">' + "".join(card_html(t) for t in tools) + '</div>')
             if sub:
                 cards.append('<section class="tool-section cv" id="section-more" aria-label="More tools"><h2>More tools</h2>' + "".join(sub) + '</section>')
             continue
+        if cat == "pdf":
+            # PDF has 27 tools: show the top 8, link the rest to the hub.
+            tools = [next(t for t in ALL_TOOLS if t["slug"] == s) for s in TOP_PDF]
+            all_pdf = [t for t in ALL_TOOLS if t["category"] == "pdf"]
+            cards.append('<section class="tool-section cv" id="section-pdf" aria-label="PDF Tools"><h2><a href="/pdf-tools">PDF Tools</a></h2><div class="tool-grid">%s</div><p class="see-all"><a href="/pdf-tools">%s \u2192</a></p></section>' % ("".join(card_html(t) for t in tools), see_all_label(len(all_pdf))))
+            continue
         tools = [t for t in ALL_TOOLS if t["category"] == cat]
         if not tools: continue
-        cv = " cv" if idx >= 1 else ""  # content-visibility on sections after Popular + Pakistan
-        if cat == "pakistan":
-            cards.append('<section class="tool-section pk-band%s" id="section-pakistan" aria-label="Pakistan Tools"><h2>Pakistan Tools</h2><p class="section-sub">Tools made for Pakistan \u2014 tax, Zakat, land and Urdu.</p><p class="section-sub" lang="ur" dir="rtl">\u067e\u0627\u06a9\u0633\u062a\u0627\u0646 \u06a9\u06d2 \u0644\u06cc\u06d2 \u0628\u0646\u0627\u0626\u06d2 \u06af\u0626\u06d2 \u0679\u0648\u0644\u0632</p><div class="tool-grid">%s</div></section>' % (cv, "".join(card_html(t) for t in tools)))
-        else:
-            cards.append('<section class="tool-section%s" id="section-%s" aria-label="%s"><h2>%s</h2><div class="tool-grid">%s</div></section>' % (cv, cat, CAT_LABELS[cat], CAT_LABELS[cat], "".join(card_html(t) for t in tools)))
-    title = "Free PDF Tools & Pakistan Calculators | " + SITE_NAME
-    desc = "Free PDF tools and Pakistan calculators, all in your browser. Merge, compress and convert PDFs, work with Excel, and calculate salary tax, Zakat and land area. No file is uploaded to a server, no sign-up."
+        cards.append('<section class="tool-section cv" id="section-%s" aria-label="%s"><h2><a href="%s">%s</a></h2><div class="tool-grid">%s</div></section>' % (cat, CAT_LABELS[cat], HUB_URLS[cat], CAT_LABELS[cat], "".join(card_html(t) for t in tools)))
+    # Country tools band (design brief 2.3): tabs per country. Only Pakistan
+    # has tools today; the other tabs say so honestly and link to Contact.
+    country_tabs = [("pk", "PK"), ("in", "IN"), ("ae", "AE"), ("uk", "UK"), ("us", "US")]
+    country_names = {"pk": "Pakistan", "in": "India", "ae": "UAE & Saudi Arabia", "uk": "United Kingdom", "us": "United States"}
+    pk_tools = [t for t in ALL_TOOLS if t["category"] == "pakistan"]
+    tab_btns = "".join('<button type="button" class="country-tab%s" role="tab" data-country="%s" aria-selected="%s" aria-controls="country-panel-%s" id="country-tab-%s">%s</button>' % (" active" if code == "pk" else "", code, "true" if code == "pk" else "false", code, code, label) for code, label in country_tabs)
+    panels = ['<div class="country-panel" role="tabpanel" data-panel="pk" id="country-panel-pk" aria-labelledby="country-tab-pk"><div class="tool-grid">' + "".join(card_html(t) for t in pk_tools) + '</div><p class="see-all"><a href="/country/pakistan">See all Pakistan tools \u2192</a></p></div>']
+    for code, label in country_tabs[1:]:
+        cname = country_names[code]
+        panels.append('<div class="country-panel" role="tabpanel" data-panel="%s" id="country-panel-%s" aria-labelledby="country-tab-%s" hidden><p>%s</p><p><a href="/contact">%s</a></p></div>' % (code, code, code, esc(STRINGS["country"]["empty"].replace("{country}", cname)), esc(STRINGS["country"]["request"].replace("{country}", cname))))
+    cards.append('<section class="tool-section cv country-band" id="section-country" aria-label="Country tools"><h2>Country tools</h2><p class="section-sub">Tools made for one country at a time. Pakistan is the first and fullest pack.</p><div class="country-tabs" role="tablist" aria-label="Countries">' + tab_btns + '</div>' + "".join(panels) + '</section>')
+    # Islamic tools (design brief 2.3): Zakat exists today; prayer times and
+    # a Hijri converter are planned for a later wave.
+    zakat = next(t for t in ALL_TOOLS if t["slug"] == "zakat-calculator")
+    cards.append('<section class="tool-section cv" id="section-islamic" aria-label="Islamic tools"><h2>Islamic tools</h2><div class="tool-grid">' + card_html(zakat) + '</div><p class="section-sub">' + esc(STRINGS["islamic"]["note"]) + '</p></section>')
+    home_faq = [
+        ("What is AK Premium?", "AK Premium is a free, browser-based toolkit with %d+ tools for PDF, image, Excel, everyday, developer, calculator, business, design and Pakistan tasks. Every tool runs in your browser, with no sign-up." % n),
+        ("Is AK Premium free?", "Yes. The built-in tools on AK Premium are free to use in your browser."),
+        ("Do files leave my browser?", "No. Built-in AK Premium tools process files locally in your browser using client-side JavaScript. Files are not uploaded to an AK Premium server."),
+        ("Can I preview a file before converting it?", "Yes. When you choose a PDF, the tool page shows its name, size and page count and renders page 1 as a preview under the file chooser before you convert, so you can confirm it is the right document. Images show a thumbnail. Previews are made in your browser and files are not uploaded."),
+        ("What are the limits of AK Premium?", "Each tool page states its own limits honestly. For example, Strong PDF compression turns pages into images so text is no longer selectable, and Word, Excel and PowerPoint to PDF are basic text conversions that do not preserve exact layout, fonts or images. Scanned PDFs without a text layer need OCR first."),
+        ("How do I find a tool?", "Use the search box at the top of the homepage, browse the category sections, or open a category hub such as PDF Tools or Calculators. Each tool has its own page, so you can bookmark it or share its link."),
+        ("What country tools are there?", "Pakistan has a full country pack: salary tax, Zakat, land, amounts in words, Urdu word counting and merit. Tools for India, UAE & Saudi Arabia, the UK and the US are planned for later waves."),
+    ]
+    title = "%d+ Free Online Tools: PDF, Image, Video, Calculators & More | " % n + SITE_NAME
+    desc = "%d+ free online tools in your browser: PDF, image, video, calculators and more. No sign-up, no upload." % n
     faq_json = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
-        {"@type": "Question", "name": "What is AK Premium?", "acceptedAnswer": {"@type": "Answer", "text": "AK Premium is a free, browser-based toolkit for PDF, image, Excel, everyday, developer, calculator, business, design and Pakistan tasks. Every tool runs in your browser, with no sign-up."}},
-        {"@type": "Question", "name": "Is AK Premium free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The built-in tools on AK Premium are free to use in your browser."}},
-        {"@type": "Question", "name": "Do files leave my browser?", "acceptedAnswer": {"@type": "Answer", "text": "No. Built-in AK Premium tools process files locally in your browser using client-side JavaScript. Files are not uploaded to an AK Premium server."}},
-        {"@type": "Question", "name": "Can I preview a file before converting it?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. When you choose a PDF, the tool page shows its name, size and page count and renders page 1 as a preview under the file chooser before you convert, so you can confirm it is the right document. Images show a thumbnail. Previews are made in your browser and files are not uploaded."}},
-        {"@type": "Question", "name": "What are the limits of AK Premium?", "acceptedAnswer": {"@type": "Answer", "text": "Each tool page states its own limits honestly. For example, Strong PDF compression turns pages into images so text is no longer selectable, and Word, Excel and PowerPoint to PDF are basic text conversions that do not preserve exact layout, fonts or images. Scanned PDFs without a text layer need OCR first."}},
-        {"@type": "Question", "name": "How do I find a tool?", "acceptedAnswer": {"@type": "Answer", "text": "Use the search box at the top of the homepage, or browse the category sections below it. Each tool has its own page, so you can bookmark it or share its link."}},
-    ]}, ensure_ascii=False)
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in home_faq]}, ensure_ascii=False)
     app_json = json.dumps({"@context": "https://schema.org", "@type": "WebApplication", "name": SITE_NAME, "url": SITE_URL + "/", "applicationCategory": "BusinessApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": desc, "featureList": [t["name"] for t in ALL_TOOLS]}, ensure_ascii=False)
     search_json = json.dumps({"@context": "https://schema.org", "@type": "WebSite", "name": SITE_NAME, "url": SITE_URL + "/", "potentialAction": {"@type": "SearchAction", "target": {"@type": "EntryPoint", "urlTemplate": SITE_URL + "/?q={search_term_string}"}, "query-input": "required name=search_term_string"}}, ensure_ascii=False)
+    nr_before, nr_after = STRINGS["search"]["noResultsTitle"].split("{q}")
     body = (page_head(title, desc, SITE_URL + "/", extra='<script type="application/ld+json">' + app_json + '</script>\n<script type="application/ld+json">' + faq_json + '</script>\n<script type="application/ld+json">' + search_json + '</script>\n')
     + site_header("home")
-    + '<main id="main" class="home-wrap">\n<section class="hero" aria-label="AK Premium tools">\n<h1>Free PDF tools and Pakistan calculators. Your files never leave your browser.</h1>\n'
-    + '<p class="hero-sub">Merge, compress and convert PDFs, work with Excel, and calculate salary tax, Zakat and land area. No sign-up, no upload.</p>\n'
-    + '<p class="hero-ur" lang="ur" dir="rtl">\u0645\u0641\u062a PDF \u0679\u0648\u0644\u0632 \u0627\u0648\u0631 \u067e\u0627\u06a9\u0633\u062a\u0627\u0646\u06cc \u06a9\u06cc\u0644\u06a9\u0648\u0644\u06cc\u0679\u0631\u0632 \u2014 \u0622\u067e \u06a9\u06cc \u0641\u0627\u0626\u0644\u06cc\u06ba \u0622\u067e \u06a9\u06d2 \u0628\u0631\u0627\u0624\u0632\u0631 \u0633\u06d2 \u0628\u0627\u06c1\u0631 \u0646\u06c1\u06cc\u06ba \u062c\u0627\u062a\u06cc\u06ba\u06d4</p>\n'
+    + '<main id="main" class="home-wrap">\n<section class="hero" aria-label="AK Premium tools">\n<h1>%d+ free online tools: PDF, image, video, calculators and more. Private, fast, in your browser.</h1>\n' % n
+    + '<p class="hero-sub">Merge and compress PDFs, convert and edit images, work with video and audio, and use calculators for tax, loans and units. No sign-up, no upload.</p>\n'
     + '<div class="search-box"><label class="sr-only" for="heroSearch">Search AK Premium tools</label>\n<input id="heroSearch" type="search" placeholder="Search tools\u2026" autocomplete="off">\n<kbd class="search-kbd" aria-hidden="true">/</kbd><button type="button" class="search-clear" id="heroSearchClear" aria-label="Clear search" hidden>\u00d7</button></div>\n'
     + '<p class="trust-row"><span><svg aria-hidden="true"><use href="#i-check"/></svg>No upload</span><span><svg aria-hidden="true"><use href="#i-check"/></svg>No sign-up</span><span><svg aria-hidden="true"><use href="#i-check"/></svg>Free</span></p>\n'
+    + '<p class="country-link">Country tools: <a href="#section-country">PK \u00b7 IN \u00b7 AE \u00b7 UK \u00b7 US \u2192</a></p>\n'
     + '<p id="searchStatus" class="search-status" role="status"></p>\n'
-    + '<div id="noResults" class="no-results" hidden><p><strong>No tools match \u201c<span id="noResultsQuery"></span>\u201d.</strong></p><p>Try one of these popular tools:</p><div class="no-results-links">'
-    + "".join('<a href="/tools/%s">%s</a>' % (s, esc(next(t["name"] for t in ALL_TOOLS if t["slug"] == s))) for s in ["merge-pdf", "compress-pdf", "pakistan-salary-tax-calculator", "image-to-text"])
-    + '</div><p>Or <a href="/contact">tell us which tool you need</a>.</p></div>\n'
+    + '<div id="noResults" class="no-results" hidden><p><strong>' + esc(nr_before) + '<span id="noResultsQuery"></span>' + esc(nr_after) + '</strong></p><p>' + esc(STRINGS["search"]["noResultsTry"]) + '</p><div class="no-results-links">'
+    + "".join('<a href="/tools/%s">%s</a>' % (s, esc(next(t["name"] for t in ALL_TOOLS if t["slug"] == s))) for s in POPULAR[:4])
+    + '</div><p>' + esc(STRINGS["search"]["noResultsRequest"]) + ' <a href="/contact">tell us which tool you need</a>.</p></div>\n'
     + '<div class="chips" aria-label="Trending searches">'
-    + "".join('<button type="button" class="chip" data-query="%s">%s</button>' % (esc(q), esc(q)) for q in ["Merge PDF", "Compress PDF", "PDF to Word", "Excel Formula Generator", "Pakistan Salary Tax Calculator", "Image to Text"])
+    + "".join('<button type="button" class="chip" data-query="%s">%s</button>' % (esc(q), esc(q)) for q in ["Merge PDF", "Compress PDF", "PDF to Word", "Image Compressor", "Percentage Calculator", "Zakat Calculator"])
     + '</div>\n</section>\n'
-    + '<nav class="jump-bar" aria-label="Tool categories"><a href="#section-popular">Popular</a><a href="#section-pakistan">Pakistan</a><a href="#section-pdf">PDF</a><a href="#section-convert">Convert</a><a href="#section-image">Image</a><a href="#section-excel">Excel</a><a href="#section-calculators">Calculators</a><a href="#section-more">More</a><a href="#section-faq">FAQ</a></nav>\n'
+    + '<nav class="jump-bar" aria-label="Tool categories"><a href="#section-popular">Popular</a><a href="#section-pdf">PDF</a><a href="#section-convert">Convert</a><a href="#section-image">Image</a><a href="#section-excel">Excel</a><a href="#section-calculators">Calculators</a><a href="#section-more">More</a><a href="#section-country">Country tools</a><a href="#section-islamic">Islamic</a><a href="#section-faq">FAQ</a></nav>\n'
     + AD_SLOT % ("leaderboard", "leaderboard")
     + "\n".join(cards)
     + '\n<section class="tool-section" id="section-faq" aria-label="Frequently asked questions"><h2>Frequently Asked Questions</h2>'
-    + '<h3>What is AK Premium?</h3><p>AK Premium is a free, browser-based toolkit for PDF, image, Excel, everyday, developer, calculator, business, design and Pakistan tasks. Every tool runs in your browser, with no sign-up.</p>'
-    + '<h3>Is AK Premium free?</h3><p>Yes. The built-in tools on AK Premium are free to use in your browser.</p>'
-    + '<h3>Do files leave my browser?</h3><p>No. Built-in AK Premium tools process files locally in your browser using client-side JavaScript. Files are not uploaded to an AK Premium server.</p>'
-    + '<h3>What are the limits of AK Premium?</h3><p>Each tool page states its own limits honestly. For example, Strong PDF compression turns pages into images so text is no longer selectable, and Word, Excel and PowerPoint to PDF are basic text conversions that do not preserve exact layout, fonts or images. Scanned PDFs without a text layer need OCR first.</p>'
+    + "".join('<h3>' + esc(q) + '</h3><p>' + esc(a) + '</p>' for q, a in home_faq)
     + '</section>\n</main>\n' + FOOTER + CONSENT + page_scripts([]) + '</body>\n</html>\n')
     (OUT / "index.html").write_text(body)
     return body
@@ -1023,7 +1134,7 @@ def build_tools_index():
     for cat in CAT_ORDER_ALL:
         tools = [t for t in ALL_TOOLS if t["category"] == cat]
         if not tools: continue
-        items.append('<h2>' + CAT_LABELS[cat] + '</h2><ul>' + "".join('<li><a href="/tools/%s">%s</a> — %s</li>' % (t["slug"], esc(t["name"]), esc(t["desc"])) for t in tools) + '</ul>')
+        items.append('<h2><a href="' + HUB_URLS[cat] + '">' + CAT_LABELS[cat] + '</a></h2><ul>' + "".join('<li><a href="/tools/%s">%s</a> — %s</li>' % (t["slug"], esc(t["name"]), esc(t["desc"])) for t in tools) + '</ul>')
     title = "All Tools | " + SITE_NAME
     desc = "Browse all " + str(len(ALL_TOOLS)) + " free AK Premium tools: PDF, image, Excel, business, calculator and Pakistan tools, all in your browser."
     body = (page_head(title, desc, SITE_URL + "/tools")
@@ -1084,6 +1195,48 @@ def build_info_pages():
         '<iframe class="google-form-embed" src="' + FORM_EMBED + '" title="Contact AK Premium form" loading="lazy" style="width:100%;height:1000px;border:0;border-radius:12px;background:#fff">Loading the contact form…</iframe>'
         '<p>If the form does not load, <a href="' + FORM_URL + '" target="_blank" rel="noopener">open the contact form in a new tab</a>.</p>'
         '</div></div>')
+    info_page("cookies", "Cookie Policy | AK Premium", "AK Premium Cookie Policy: which cookies the site uses, what the consent banner does, and how to change your choice.",
+        "Cookie Policy",
+        '<p><strong>Last updated: 17 November 2026.</strong></p>'
+        '<h2>What cookies are</h2><p>Cookies are small files a website asks your browser to store. AK Premium also uses local storage in your browser for the same kind of small settings. This page lists everything the site stores, and when.</p>'
+        '<h2>What this site stores</h2><p>AK Premium stores only small settings in your browser, and only on your device:</p>'
+        '<ul><li><strong>Theme</strong> (light or dark) and <strong>language, region, units and paper size</strong> choices, so the site looks and behaves the way you set it.</li>'
+        '<li><strong>Your cookie choice</strong> (accepted or rejected), so the banner does not ask again.</li>'
+        '<li><strong>Favourites and recently used tools</strong>, so the homepage can show them. These are tool names only, never file names or file contents.</li></ul>'
+        '<p>None of these are sent to a server. They stay in your browser and you can delete them by clearing your browser storage for this site.</p>'
+        '<h2>Advertising and analytics cookies</h2><p>Advertising (Google AdSense) and analytics (Google Analytics) scripts are loaded only after you press Accept on the consent banner, and only when their IDs are set. Both IDs are empty today, so no advertising or analytics cookies are set by this site at all. When an ID is set, Google may set cookies to serve ads or measure visits; see the Privacy Policy for how to opt out of personalized ads.</p>'
+        '<h2>Third-party cookies</h2><p>The contact form is a Google Form. If you open or submit it, Google may set its own cookies, as it does on any Google Form. The libraries the tools use load from public CDNs; those CDNs may log standard technical information when they serve a file, as any web server does.</p>'
+        '<h2>Changing your choice</h2><p>To change your consent, clear your browser storage for this site and reload the page; the banner will ask again. To delete the stored settings, clear your browser storage for this site.</p>'
+        '<h2>Contact</h2><p>For questions about cookies, contact <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a>.</p>')
+    info_page("dmca", "DMCA | AK Premium", "AK Premium DMCA: how to report copyright infringement and how takedown notices are handled.",
+        "DMCA",
+        '<p><strong>Last updated: 17 November 2026.</strong></p>'
+        '<h2>What this site hosts</h2><p>AK Premium is a set of browser tools built by Mirza Noman Ali. The site does not host user content: the tools process files in your own browser and do not upload, store or publish them, so there is no user-uploaded content on the site to take down.</p>'
+        '<h2>How to send a takedown notice</h2><p>If you believe content on AK Premium infringes your copyright, send a notice by email to <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a> with:</p>'
+        '<ul><li>A description of the copyrighted work you believe is infringed.</li><li>The exact URL of the page on AK Premium where the material appears.</li><li>Your name, address, email and phone number.</li><li>A statement that you have a good-faith belief the use is not authorised by the copyright owner, its agent or the law.</li><li>A statement that the information in your notice is accurate and, under penalty of perjury, that you are authorised to act for the copyright owner.</li><li>Your physical or electronic signature.</li></ul>'
+        '<h2>What happens next</h2><p>Each notice is reviewed. Material that infringes is removed or disabled promptly. If you believe material was removed by mistake, you can send a counter-notice with the same details to the same email address, and it will be reviewed the same way.</p>'
+        '<h2>Contact</h2><p>For DMCA notices, email <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a>.</p>')
+    info_page("licenses", "Licenses | AK Premium", "AK Premium Licenses: the open-source libraries, icons and fonts the site uses, with their licences.",
+        "Licenses",
+        '<p><strong>Last updated: 17 November 2026.</strong></p>'
+        '<p>AK Premium is built with open-source libraries, icons and fonts. Each one is listed below with its licence. The full licence text for each project is in that project\u2019s own repository.</p>'
+        '<h2>Libraries</h2><ul>'
+        '<li>pdf-lib \u2014 MIT License</li>'
+        '<li>pdf.js \u2014 Apache License 2.0</li>'
+        '<li>jsPDF \u2014 MIT License</li>'
+        '<li>SheetJS \u2014 Apache License 2.0</li>'
+        '<li>Tesseract.js \u2014 Apache License 2.0</li>'
+        '<li>mammoth \u2014 MIT License</li>'
+        '<li>docx \u2014 MIT License</li>'
+        '<li>PptxGenJS \u2014 MIT License</li>'
+        '<li>JSZip \u2014 MIT License</li>'
+        '<li>QRCode \u2014 MIT License</li>'
+        '<li>qpdf-wasm (used by Protect PDF and Unlock PDF) \u2014 wrapper under the MIT License; qpdf itself under the Apache License 2.0</li>'
+        '</ul><h2>Icons and fonts</h2><ul>'
+        '<li>Lucide icons \u2014 ISC License</li>'
+        '<li>Inter, Plus Jakarta Sans and Noto Nastaliq Urdu fonts \u2014 SIL Open Font License 1.1</li>'
+        '</ul><p>The libraries are loaded from public CDNs or self-hosted on this site so the tools can run in your browser. Their licences do not change how the tools work for you.</p>'
+        '<h2>Contact</h2><p>For licence questions, contact <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a>.</p>')
 
 # ---- What's new (generated from CHANGELOG.md) + Pakistan hub ----
 def md_to_html(text):
@@ -1124,14 +1277,53 @@ def build_whats_new():
     info_page("whats-new", "What's new | " + SITE_NAME, "The latest changes to AK Premium, newest first.",
               "What's new", body_html, active="whats-new")
 
-def build_pakistan_hub():
-    tools = [t for t in ALL_TOOLS if t["category"] == "pakistan"]
-    body_html = ('<p>Tools made for Pakistan: FBR salary tax, Zakat, land area, amounts in words, Urdu word counting and merit aggregates. Every tool runs in your browser, with no sign-up and no upload.</p>\n'
-                 '<p lang="ur" dir="rtl">\u067e\u0627\u06a9\u0633\u062a\u0627\u0646 \u06a9\u06d2 \u0644\u06cc\u06d2 \u0628\u0646\u0627\u0626\u06d2 \u06af\u0626\u06d2 \u0679\u0648\u0644\u0632: \u0679\u06cc\u06a9\u0633\u060c \u0632\u06a9\u0648\u0670\u06c3\u060c \u0631\u0642\u0628\u06c1 \u0627\u0648\u0631 \u0627\u0631\u062f\u0648 \u06a9\u06d2 \u0679\u0648\u0644\u0632\u06d4</p>\n'
-                 '<div class="tool-grid">' + "".join(card_html(t) for t in tools) + '</div>\n'
-                 '<p><a href="/tools">Browse all AK Premium tools &rarr;</a></p>')
-    info_page("pakistan", "Pakistan Tools | " + SITE_NAME, "Free Pakistan tools: salary tax, Zakat, land converter, amount to words, Urdu word counter and merit calculator. All in your browser.",
-              "Pakistan Tools", body_html, active="pakistan")
+# ---- Category hubs (Global shell, design brief 2.3 / expansion brief 4.2):
+# one page per category with an 80-150-word intro, all its tools, a
+# grid/list toggle, category tabs with counts, and 3-5 FAQs. The Pakistan
+# hub lives at /country/pakistan (the country pack); /pakistan 301s to it.
+def build_hub(hub):
+    cat = hub["category"]
+    tools = [t for t in ALL_TOOLS if t["category"] == cat]
+    intro = hub["intro"]
+    # Meta description: the intro's first sentence.
+    desc = intro.split(". ")[0] + "."
+    if len(desc) > 155:
+        desc = desc[:152].rsplit(" ", 1)[0] + "."
+    faq_json = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in hub["faqs"]]}, ensure_ascii=False)
+    crumb_json = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL + "/"},
+        {"@type": "ListItem", "position": 2, "name": hub["title"], "item": SITE_URL + hub["url"]}]}, ensure_ascii=False)
+    extra = '<script type="application/ld+json">' + faq_json + '</script>\n<script type="application/ld+json">' + crumb_json + '</script>\n'
+    # Category tabs: every hub, with its tool count; the current hub is marked.
+    tabs = []
+    for h in HUBS:
+        n_h = len([t for t in ALL_TOOLS if t["category"] == h["category"]])
+        cur = ' aria-current="page"' if h["category"] == cat else ""
+        tabs.append('<a class="hub-tab" href="' + h["url"] + '"' + cur + '>' + h["title"] + ' (' + str(n_h) + ')</a>')
+    ur_html = ('<p class="section-sub" lang="ur" dir="rtl">' + esc(hub["ur_intro"]) + '</p>\n') if "ur_intro" in hub else ""
+    grid_html = '<div class="tool-grid hub-grid" id="hubGrid">' + "".join(card_html(t) for t in tools) + '</div>'
+    if cat == "pakistan":
+        grid_html = '<div class="pk-band">' + grid_html + '</div>'
+    body_html = ('<p>' + esc(intro) + '</p>\n' + ur_html
+        + '<nav class="hub-tabs" aria-label="Tool categories">' + "".join(tabs) + '</nav>\n'
+        + '<div class="hub-tools-head"><h2>All ' + n_tools(len(tools)) + '</h2>'
+        + '<div class="view-toggle" role="group" aria-label="Change view"><button type="button" data-view="grid" class="active" aria-pressed="true">' + esc(STRINGS["hub"]["gridView"]) + '</button><button type="button" data-view="list" aria-pressed="false">' + esc(STRINGS["hub"]["listView"]) + '</button></div></div>\n'
+        + grid_html + '\n'
+        + '<h2>Frequently asked questions</h2>\n' + "".join('<details><summary>' + esc(q) + '</summary>\n<p>' + esc(a) + '</p></details>' for q, a in hub["faqs"])
+        + '<p><a href="/tools">Browse all AK Premium tools \u2192</a></p>')
+    url = SITE_URL + hub["url"]
+    body = (page_head(hub["title"] + " | " + SITE_NAME, desc, url, extra=extra)
+        + site_header("country" if cat == "pakistan" else "")
+        + '<main class="page" id="main">\n<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">\u203a</span> <span aria-current="page">' + esc(hub["title"]) + '</span></nav>\n'
+        + '<h1>' + esc(hub["title"]) + '</h1>\n' + body_html + '\n</main>\n' + FOOTER + CONSENT + page_scripts([]) + '</body>\n</html>\n')
+    out_path = OUT / (hub["url"].lstrip("/") + ".html")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(body)
+
+def build_hubs():
+    for hub in HUBS:
+        build_hub(hub)
 
 # ---- Urdu pages (Phase 3b): /ur/ index + one page per Pakistan tool ----
 def build_ur_tool_page(t):
@@ -1163,12 +1355,12 @@ def build_ur_index():
                   '<span class="tool-card-body"><span class="tool-card-head"><strong lang="ur" dir="rtl">' + esc(u["name"]) + '</strong></span>'
                   '<span class="tool-card-desc" lang="ur" dir="rtl">' + esc(u["desc"]) + '</span>'
                   '<span class="tool-card-desc">' + esc(t["name"]) + '</span></span></a>')
-    extra = '<link rel="alternate" hreflang="en" href="' + SITE_URL + '/pakistan">\n<link rel="alternate" hreflang="x-default" href="' + SITE_URL + '/pakistan">\n'
+    extra = '<link rel="alternate" hreflang="en" href="' + SITE_URL + '/country/pakistan">\n<link rel="alternate" hreflang="x-default" href="' + SITE_URL + '/country/pakistan">\n'
     body = (page_head("پاکستان ٹولز | " + SITE_NAME, "پاکستان کے لیے مفت ٹولز: ٹیکس، زکوٰۃ، زمین، رقم الفاظ میں، اردو الفاظ اور میرٹ کیلکولیٹر۔", SITE_URL + "/ur/", extra=extra, lang="ur", dir="rtl")
     + site_header("", lang_href="/", lang_label="English", lang_lang="en")
     + '<main class="page" id="main">\n<h1 lang="ur" dir="rtl">پاکستان ٹولز</h1>\n<p lang="ur" dir="rtl"><strong>ٹیکس، زکوٰۃ، زمین اور اردو کے مفت ٹولز۔ آپ کی فائلیں آپ کے براؤزر سے باہر نہیں جاتیں۔</strong></p>\n'
     + '<div class="tool-grid">' + cards + '</div>\n'
-    + '<p lang="ur" dir="rtl"><a href="/tools">تمام ٹولز دیکھیں</a> · <a href="/pakistan">Pakistan Tools (English)</a></p>\n'
+    + '<p lang="ur" dir="rtl"><a href="/tools">تمام ٹولز دیکھیں</a> · <a href="/country/pakistan">Pakistan Tools (English)</a></p>\n'
     + '</main>\n' + FOOTER + CONSENT + page_scripts([]) + '</body>\n</html>\n')
     (OUT / "ur" / "index.html").write_text(body)
 
@@ -1204,14 +1396,19 @@ def git_lastmod(rel_path):
 
 def build_seo_files():
     pages = [(SITE_URL + "/", "index.html"),
-             (SITE_URL + "/pakistan", "pakistan.html"),
              (SITE_URL + "/whats-new", "whats-new.html"),
              (SITE_URL + "/about", "about.html"),
              (SITE_URL + "/privacy", "privacy.html"),
              (SITE_URL + "/terms", "terms.html"),
              (SITE_URL + "/disclaimer", "disclaimer.html"),
+             (SITE_URL + "/cookies", "cookies.html"),
+             (SITE_URL + "/dmca", "dmca.html"),
+             (SITE_URL + "/licenses", "licenses.html"),
              (SITE_URL + "/contact", "contact.html"),
              (SITE_URL + "/tools", "tools/index.html")]
+    # Category hubs (incl. /country/pakistan); /pakistan is a 301 to it.
+    for h in HUBS:
+        pages.append((SITE_URL + h["url"], h["url"].lstrip("/") + ".html"))
     for t in ALL_TOOLS:
         pages.append((tool_url(t), "tools/" + t["slug"] + ".html"))
     pages.append((SITE_URL + "/ur/", "ur/index.html"))
@@ -1235,11 +1432,11 @@ def build_seo_files():
 # and immutable) and pages network-first with a cache fallback. No "Works
 # offline" badge is shown anywhere until this is tested in a real browser.
 def build_sw():
-    precache = ["/", "/pakistan", "/tools", HASHED["styles"], HASHED["common"], HASHED["core"],
+    precache = ["/", "/country/pakistan", "/tools", HASHED["styles"], HASHED["common"], HASHED["core"],
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
-    sw = '''/* AK Premium service worker (v9). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v9";
+    sw = '''/* AK Premium service worker (v11). Generated by build.py; do not hand-edit. */
+const CACHE = "ak-premium-v11";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
@@ -1273,7 +1470,9 @@ def build_search_index():
     the DOM. Only published tools are listed."""
     entries = [{"slug": e["slug"], "title": e["title"]["en"],
                 "short": e["short"]["en"], "category": e["category"],
-                "keywords": e["keywords"], "icon": e["icon"]}
+                "keywords": e["keywords"], "icon": e["icon"],
+                "iconClass": card_icon_class(e).strip(),
+                "badges": e.get("badges", []), "format": e.get("format", "")}
                for e in REGISTRY if e.get("status", "published") == "published"]
     (OUT / "data").mkdir(exist_ok=True)
     (OUT / "data" / "search-index.json").write_text(
@@ -1283,20 +1482,26 @@ def build_search_index():
 
 def build_generator_files():
     """Ship the generator in the repo (expansion brief 3.1): build.py, the
-    vendored v3 index, the README and the registry source are copied into
-    OUT/build/ (excluded from deployment by .vercelignore), and a public
-    copy of the registry is written to OUT/data/tools.json (re-created on
-    every build; edit the source in build/data/tools.json instead)."""
+    vendored v3 index, the README, the registry source, the hub content and
+    the UI strings are copied into OUT/build/ (excluded from deployment by
+    .vercelignore), and public copies of the registry and the UI strings are
+    written to OUT/data/tools.json and OUT/locales/en.json (re-created on
+    every build; edit the sources in build/data/ and build/locales/)."""
     gen = OUT / "build"
     (gen / "data").mkdir(parents=True, exist_ok=True)
+    (gen / "locales").mkdir(parents=True, exist_ok=True)
     for src_file, dst_file in [(BUILD / "build.py", gen / "build.py"),
                                (BUILD / "v3-index.html", gen / "v3-index.html"),
                                (BUILD / "README.md", gen / "README.md"),
-                               (BUILD / "data" / "tools.json", gen / "data" / "tools.json")]:
+                               (BUILD / "data" / "tools.json", gen / "data" / "tools.json"),
+                               (BUILD / "data" / "hubs.json", gen / "data" / "hubs.json"),
+                               (BUILD / "locales" / "en.json", gen / "locales" / "en.json")]:
         if src_file.exists():
             shutil.copyfile(src_file, dst_file)
     (OUT / "data").mkdir(exist_ok=True)
     shutil.copyfile(BUILD / "data" / "tools.json", OUT / "data" / "tools.json")
+    (OUT / "locales").mkdir(exist_ok=True)
+    shutil.copyfile(BUILD / "locales" / "en.json", OUT / "locales" / "en.json")
 
 
 def main():
@@ -1305,7 +1510,7 @@ def main():
     build_tools_index()
     build_info_pages()
     build_whats_new()
-    build_pakistan_hub()
+    build_hubs()
     build_ur_pages()
     build_sw()
     n_urls = build_seo_files()

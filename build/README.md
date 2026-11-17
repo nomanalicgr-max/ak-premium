@@ -25,8 +25,15 @@ file, never hand-edited.
 - `app.js` — the source of the site's JavaScript (tool handlers, helpers).
   It is **not** rebuilt by `build.py`. `split-app.py` splits it into
   `core.js` + one bundle per category (`assets/js/` in the output); the
-  split is verified lossless (3,012 lines, 0 missing/extra). Edit a handler
+  split is verified lossless (3,312 lines, 0 missing/extra). Edit a handler
   in `app.js`, re-run `split-app.py`, then `build.py`.
+- `data/hubs.json` — the 10 category hub pages (url, title, 80–150-word
+  intro, 4 FAQs each; the Pakistan hub also has `ur_intro`). `build.py`
+  builds every hub from this file; the homepage sections link to the hubs.
+- `locales/en.json` — the English UI strings for the Global shell
+  (globe panel, header search, favourites/recent, country empty state,
+  Islamic note, hub labels). `build.py` renders the static shell from it
+  and injects it into every page as `window.AK_STRINGS` for the JS.
 - `migrate-to-registry.py`, `switch-to-registry.py` — the one-off scripts
   that created the registry and switched the generator to it (Foundation).
   Kept for the record; do not re-run them.
@@ -46,17 +53,22 @@ file, never hand-edited.
    in `app.js` (then re-run `split-app.py`).
 3. Run `python3 build.py` and check the diff: only the new tool's page,
    the homepage, `/tools`, the sitemap and the search index should change.
-4. Run the smoke test (`~/workspace/tools/jsdom-test/run-v10.js`).
+4. Run the smoke test (`~/workspace/tools/jsdom-test/run-v11.js`).
    Do not deploy until it passes.
 
 ## What build.py generates
 
 `index.html`, `tools/<slug>.html`, `tools/index.html`, `/ur/` pages,
-info pages (about/privacy/terms/disclaimer/contact), `whats-new`,
-`pakistan` hub, `sitemap.xml`, `robots.txt`, `404.html`, `sw.js`,
+info pages (about/privacy/terms/disclaimer/contact/cookies/dmca/licenses),
+`whats-new`, the 10 category hub pages (`/pdf-tools`, `/image-tools`,
+`/convert-tools`, `/calculators`, `/developer-tools`, `/excel-tools`,
+`/business-tools`, `/everyday-tools`, `/design-tools`,
+`/country/pakistan`), `sitemap.xml`, `robots.txt`, `404.html`, `sw.js`,
 `data/search-index.json` (published tools only), `data/tools.json`
-(public copy of the registry) and `build/` (a copy of this generator:
-`build.py`, `v3-index.html`, `README.md`, `data/tools.json`).
+(public copy of the registry), `locales/en.json` (public copy of the
+strings) and `build/` (a copy of this generator: `build.py`,
+`v3-index.html`, `README.md`, `data/tools.json`, `data/hubs.json`,
+`locales/en.json`).
 
 `build/` is excluded from deployment by `.vercelignore` (it is in the
 repo for transparency, not served). `data/tools.json` at the site root
