@@ -24,16 +24,19 @@ file, never hand-edited.
   `EXCEL_WS`, `PAKISTAN_WS`) or in the registry's future `workspace_html`.
 - `app.js` — the source of the site's JavaScript (tool handlers, helpers).
   It is **not** rebuilt by `build.py`. `split-app.py` splits it into
-  `core.js` + one bundle per category (`assets/js/` in the output); the
-  split is verified lossless (3,312 lines, 0 missing/extra). Edit a handler
-  in `app.js`, re-run `split-app.py`, then `build.py`.
+  `core.js` + one `tools/<slug>.js` per tool (`assets/js/` in the output);
+  the split is verified lossless (3,356 code lines, 0 missing/extra).
+  Edit a handler in `app.js`, re-run `split-app.py`, then `build.py`.
+  `id2slug.json` (element id -> tool slug, from `dump-id2slug.py`) drives
+  the split: a chunk whose ids all belong to one tool goes to that tool's
+  file; shared ids or shared helpers go to `core.js`.
 - `data/hubs.json` — the 10 category hub pages (url, title, 80–150-word
   intro, 4 FAQs each; the Pakistan hub also has `ur_intro`). `build.py`
   builds every hub from this file; the homepage sections link to the hubs.
 - `locales/en.json` — the English UI strings for the Global shell
   (globe panel, header search, favourites/recent, country empty state,
   Islamic note, hub labels). `build.py` renders the static shell from it
-  and injects it into every page as `window.AK_STRINGS` for the JS.
+  and writes it as `assets/js/strings.js` (`window.AK_STRINGS`) for the JS.
 - `migrate-to-registry.py`, `switch-to-registry.py` — the one-off scripts
   that created the registry and switched the generator to it (Foundation).
   Kept for the record; do not re-run them.
@@ -53,7 +56,7 @@ file, never hand-edited.
    in `app.js` (then re-run `split-app.py`).
 3. Run `python3 build.py` and check the diff: only the new tool's page,
    the homepage, `/tools`, the sitemap and the search index should change.
-4. Run the smoke test (`~/workspace/tools/jsdom-test/run-v11.js`).
+4. Run the smoke test (`~/workspace/tools/jsdom-test/run-v12.js`).
    Do not deploy until it passes.
 
 ## What build.py generates
@@ -90,7 +93,9 @@ the next commit) or git is unavailable, the build date is used instead.
 - Never change tax slabs, Zakat figures, or any numbers in
   `assets/data/tax-slabs.json` (they are verified FBR figures).
 - Never invent data: no fake ratings, reviews, counts or testimonials.
-- The per-tool JS split is `core.js` + one bundle per category, not one
-  file per tool (deliberate: 68 files would duplicate shared helpers;
-  verified lossless). See `split-app.py`.
+- The per-tool JS split is `core.js` + one `tools/<slug>.js` per tool
+  (v12, design brief §4.3). Shared helpers and pure-logic functions stay
+  in `core.js`; the three Excel wizard task tables live in their own tool
+  files. The split is verified lossless (3,356 code lines, 0 missing/extra).
+  See `split-app.py` and `id2slug.json`.
 - `maxFileMB` mirrors the `MAX_FILE_BYTES` guard in `app.js` (50 MB).
