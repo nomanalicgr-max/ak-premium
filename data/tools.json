@@ -26,8 +26,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Create a PDF from your own text, free in your browser. Type or paste, then download a clean PDF with no sign-up."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Create a PDF from your own text, free in your browser. Type or paste, then download a clean PDF with no sign-up.",
+      "steps": [
+        "Type or paste your text in the 'Text for your PDF' box.",
+        "Press Create & Download PDF.",
+        "Save the downloaded PDF, named ak-premium-created.pdf, to your device."
+      ],
+      "content": {
+        "use": "Create PDF turns plain typed text into a PDF file without any word processor or sign-up. A teacher types a short notice and downloads it as a PDF to share in a class group. A shop owner types a price list and sends it to customers. A student types an assignment cover note and attaches the PDF to an email. The text is set in a simple 12-point font and flows across pages, so long text becomes a multi-page PDF automatically. Everything happens in your browser, so the text you type never leaves your device. It is the fastest way to make a basic PDF when you only have words and no document software.",
+        "tip": "Keep paragraphs short and press Enter twice between them so the PDF stays easy to read. If the text is very long, check the downloaded PDF once before you share it, because the tool wraps text automatically and does not show a preview first.",
+        "limit": "The PDF contains plain text only, in one font and one size. It does not keep bold, italics, headings, images or tables, and it does not accept pasted HTML formatting. The text is set at 12 points and flows across pages automatically.",
+        "example": "Typing a 3-paragraph shop notice of about 400 words and pressing Create & Download PDF gives a one-page PDF with the full notice in plain 12-point text.",
+        "faq": [
+          [
+            "Can I paste text with bold or headings into Create PDF?",
+            "No. The tool takes plain text only and sets it in one 12-point font. Bold, headings, images and tables are dropped, so use it for simple notices and letters."
+          ],
+          [
+            "What happens if my text is longer than one page?",
+            "The text flows onto extra pages automatically. The tool adds pages as needed and downloads one PDF with all of your text."
+          ],
+          [
+            "Does Create PDF keep my text private?",
+            "Yes. The PDF is built in your browser with jsPDF. Nothing you type is uploaded to a server."
+          ],
+          [
+            "What file name does the PDF download with?",
+            "The file downloads as ak-premium-created.pdf. You can rename it after it downloads."
+          ]
+        ]
+      }
     },
     {
       "slug": "images-to-pdf",
@@ -54,8 +83,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Turn JPG, PNG and WebP images into one PDF for free, in your browser. No upload and no sign-up needed."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Turn JPG, PNG and WebP images into one PDF for free, in your browser. No upload and no sign-up needed.",
+      "steps": [
+        "Choose one or more JPG, PNG or WebP images with the file button.",
+        "Press Convert Images to PDF.",
+        "Save the downloaded PDF, which has one image per page."
+      ],
+      "content": {
+        "use": "Images to PDF turns photos and scans into a single PDF file, one image per page. A student photographs handwritten notes and sends them as one PDF to a teacher. A shop owner photographs receipts and keeps them as one monthly PDF. A job applicant photographs certificates and attaches one PDF to an application. Each image is fitted to an A4 page with a small margin, so nothing is cropped. The images stay in the order you selected them. The PDF is built in your browser, so your photos are never uploaded anywhere.",
+        "tip": "Choose the images in the order you want them to appear, because each image becomes one page in that order. For the sharpest result, use clear photos; a blurry photo stays blurry in the PDF.",
+        "limit": "Only JPG, PNG and WebP images are accepted, and each file must be under 50 MB. Each image is placed on its own page, so you cannot put two images side by side on one page. Very large images are fitted to the page, not kept at full size.",
+        "example": "Choosing 4 photos of handwritten notes and pressing Convert Images to PDF gives one 4-page PDF, with each photo on its own A4 page.",
+        "faq": [
+          [
+            "Which image formats can I use?",
+            "JPG, PNG and WebP. Other formats, such as GIF or BMP, are not accepted by the file picker."
+          ],
+          [
+            "Can I change the order of the images?",
+            "No. The images are placed in the order you selected them, one per page. Choose them in the order you want the pages to appear."
+          ],
+          [
+            "Does the PDF keep my photos at full quality?",
+            "No. Each image is fitted to an A4 page, so a very large photo is scaled down. The result is a clean, readable PDF, not a full-resolution archive."
+          ],
+          [
+            "How many images can I convert at once?",
+            "There is no fixed count. Each image must be under 50 MB, and very large batches may run slowly because the work happens in your browser."
+          ]
+        ]
+      }
     },
     {
       "slug": "merge-pdf",
@@ -84,7 +142,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "split-pdf",
         "organize-pdf",
@@ -109,6 +167,14 @@
           [
             "Is there a limit on how many PDFs I can merge?",
             "You can merge as many as your browser can hold in memory. Very large files over 50 MB per file are refused with a friendly message, because the browser would run out of memory."
+          ],
+          [
+            "What file do I get after merging?",
+            "You download one PDF named ak-premium-merged.pdf. It keeps every page from your files in the order shown in the thumbnail list, and the original files on your device are not changed."
+          ],
+          [
+            "Can I merge just two PDFs?",
+            "Yes. Two files is the minimum. Choose at least two PDFs and press Merge PDFs, and the tool downloads the combined file."
           ]
         ]
       },
@@ -140,7 +206,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "merge-pdf",
         "organize-pdf",
@@ -165,6 +231,14 @@
           [
             "What happens if I enter a page that does not exist?",
             "The tool checks your ranges against the real page count first and tells you which range is outside it, so nothing is downloaded by mistake."
+          ],
+          [
+            "Can I take out just one page?",
+            "Yes. Enter a single page number, such as 5, in the Page ranges box. The tool downloads a one-page PDF with only that page."
+          ],
+          [
+            "What if my ranges overlap?",
+            "Nothing goes wrong. Pages listed twice are kept once, and the result is always in page order, even if you typed the ranges out of order."
           ]
         ]
       },
@@ -196,7 +270,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "merge-pdf",
         "split-pdf",
@@ -221,6 +295,14 @@
           [
             "Do I have to type the page order as numbers?",
             "No. Drag the thumbnails to reorder visually. Typing a number order like 3,1,2 still works if you prefer it."
+          ],
+          [
+            "Can I delete a page?",
+            "Yes. Each page thumbnail has a Delete button. The page is left out of the downloaded file, but you must keep at least one page."
+          ],
+          [
+            "Are my rotations saved in the downloaded file?",
+            "Yes. A page you rotated stays rotated in the new PDF. The rotation is written into the file, so it looks the same in any PDF reader."
           ]
         ]
       },
@@ -250,8 +332,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Delete selected pages from a PDF and keep the rest, free in your browser. Your file never leaves your device."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Delete selected pages from a PDF and keep the rest, free in your browser. Your file never leaves your device.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "In 'Pages to remove', type the page numbers, for example 2, 4-5.",
+        "Press Remove Pages and save the downloaded copy."
+      ],
+      "content": {
+        "use": "Remove Pages deletes pages you do not need from a PDF and downloads the rest as a new file. A student removes blank pages from scanned notes before uploading them. An office worker removes a draft page from a report before sending it to a client. A shop owner removes an old price page from a catalogue. You list the pages by number, using commas and ranges such as 2, 4-5, and the tool checks every number against the real page count before it removes anything. Your original file is never changed; the result is a separate download.",
+        "tip": "Type ranges with a hyphen, such as 4-5, and separate pages with commas, such as 2, 4-5. Count the pages first if you are unsure, because the tool refuses numbers above the real page count.",
+        "limit": "You must keep at least one page; the tool refuses to remove every page. Page numbers that do not exist in the file are rejected with a message. The tool only removes whole pages. It does not delete text inside a page or fix a damaged PDF.",
+        "example": "In a 10-page report, typing 2, 4-5 and pressing Remove Pages downloads a 7-page PDF with pages 2, 4 and 5 gone.",
+        "faq": [
+          [
+            "How do I write a page range?",
+            "Type it with a hyphen, such as 4-5, and separate entries with commas, such as 2, 4-5. The tool removes pages 2, 4 and 5 in that example."
+          ],
+          [
+            "What happens if I type a page number that does not exist?",
+            "The tool checks your list against the real page count and shows an error, such as page 12 being outside 1 to 10. Nothing is removed until the list is valid."
+          ],
+          [
+            "Can I remove all the pages?",
+            "No. The tool refuses to remove every page and asks you to keep at least one page."
+          ],
+          [
+            "Is my original PDF changed?",
+            "No. The tool reads your file and downloads a new copy with the pages removed. Your original file stays untouched."
+          ]
+        ]
+      }
     },
     {
       "slug": "rotate-pdf",
@@ -277,8 +388,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Rotate all PDF pages by 90, 180 or 270 degrees, free in your browser. No upload and no account needed."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Rotate all PDF pages by 90, 180 or 270 degrees, free in your browser. No upload and no account needed.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Pick an angle in the Angle list: 90, 180 or 270 degrees.",
+        "Press Rotate PDF and save the downloaded copy."
+      ],
+      "content": {
+        "use": "Rotate PDF turns every page of a PDF by 90, 180 or 270 degrees, which fixes files that open sideways or upside down. A student rotates scanned notes that were photographed at an angle. An office worker rotates a sideways report so it reads normally on screen. A shop owner rotates a scanned invoice before sending it to a customer. The rotation is added to each page's existing rotation, so a page that was already turned 90 degrees becomes 180 degrees if you rotate it again. The result downloads as a new PDF and your original file stays unchanged.",
+        "tip": "If a page is already rotated, remember the angle adds to it. A page turned 90 degrees once becomes 180 degrees if you rotate it by 90 again. Rotate once, download, and check the result before rotating again.",
+        "limit": "The angle applies to every page at once. You cannot rotate a single page on its own. The tool does not straighten skewed scans; it only turns pages by 90, 180 or 270 degrees.",
+        "example": "A 5-page scan that opens sideways is fixed by choosing 90 degrees and pressing Rotate PDF, which downloads all 5 pages turned the right way up.",
+        "faq": [
+          [
+            "Can I rotate just one page?",
+            "No. The angle you pick is applied to every page in the file. To fix one page, split the PDF first, rotate that part, then merge it back."
+          ],
+          [
+            "Why did my page turn 180 degrees when I chose 90?",
+            "The rotation adds to the page's existing rotation. A page already turned 90 degrees becomes 180 degrees when you rotate it by 90 again."
+          ],
+          [
+            "Does Rotate PDF change my original file?",
+            "No. It reads your file and downloads a new copy with the pages turned. Your original file is not changed."
+          ],
+          [
+            "Can Rotate PDF straighten a crooked scan?",
+            "No. It only turns whole pages by 90, 180 or 270 degrees. A scan that is tilted by a few degrees stays tilted."
+          ]
+        ]
+      }
     },
     {
       "slug": "add-page-numbers",
@@ -304,8 +444,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Add page numbers to every page of a PDF, free in your browser. Numbers appear at the bottom centre of each page."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Add page numbers to every page of a PDF, free in your browser. Numbers appear at the bottom centre of each page.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Press Add Page Numbers.",
+        "Save the downloaded PDF, which has a number at the bottom centre of every page."
+      ],
+      "content": {
+        "use": "Add Page Numbers stamps a small number at the bottom centre of every page in a PDF, so long documents are easy to follow and refer to. A teacher numbers a 40-page handout so students can find the right page in class. A student numbers an assignment before uploading it to a portal. An office worker numbers a report so page references in a meeting make sense. The numbers start at 1 on the first page and count up in order. The tool adds numbers to the pages as they are and downloads a new copy, leaving your original file untouched.",
+        "tip": "Number the final version of your document. If you edit the PDF afterwards and add or remove pages, the numbers will no longer match, so run the tool again on the edited file.",
+        "limit": "The number is plain text at the bottom centre of each page, in a fixed 11-point font. You cannot change the position, size, colour or starting number, and the tool does not skip a cover page. Numbers are stamped on top of the page, so they may sit over a footer that is already there.",
+        "example": "Adding numbers to a 12-page report downloads a copy with 1 on the first page, 2 on the second, and so on up to 12 on the last page.",
+        "faq": [
+          [
+            "Where on the page does the number appear?",
+            "At the bottom centre of every page, in a small 11-point font. The position and size are fixed and cannot be changed."
+          ],
+          [
+            "Can I start numbering from page 5?",
+            "No. Numbering always starts at 1 on the first page and counts up in order."
+          ],
+          [
+            "Can I skip the cover page?",
+            "No. Every page gets a number, including the cover. If you need a blank first page, remove the number from that page with another editor, or split the PDF first."
+          ],
+          [
+            "Does the tool change my original PDF?",
+            "No. It downloads a new copy with the numbers added. Your original file stays as it was."
+          ]
+        ]
+      }
     },
     {
       "slug": "add-watermark",
@@ -331,8 +500,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Stamp a diagonal text watermark on PDF pages, free in your browser. Your file stays on your device."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Stamp a diagonal text watermark on PDF pages, free in your browser. Your file stays on your device.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Type the watermark text, for example DRAFT, in the 'Watermark text' box. Keep it under 60 characters.",
+        "Choose an Opacity and a Size, then press Add Watermark and save the downloaded copy."
+      ],
+      "content": {
+        "use": "Add Watermark stamps your text diagonally across every page of a PDF, so readers can see at a glance that a document is a draft, a sample or confidential. A teacher stamps DRAFT on exam papers before sharing them. An office worker stamps CONFIDENTIAL on a report before sending it outside the company. A designer stamps SAMPLE on a portfolio file. You type the text, pick how faint or strong it looks, and choose a size. The watermark is a visible grey mark at a 45-degree angle, and it is stamped on all pages in one step.",
+        "tip": "Use Light opacity for a faint mark that stays out of the way of the text, and Strong when the mark must be obvious. Keep the text short, such as DRAFT or SAMPLE, because long text is harder to read at an angle.",
+        "limit": "The watermark text must be under 60 characters. It is stamped at a fixed 45-degree angle in grey, in the middle of each page, and you cannot move it or change its colour. A watermark is a visible mark only. It does not password-protect the file or stop someone from copying the text.",
+        "example": "Typing CONFIDENTIAL, choosing Medium opacity and pressing Add Watermark stamps CONFIDENTIAL diagonally on every page of a 6-page report.",
+        "faq": [
+          [
+            "Can I move the watermark to a corner?",
+            "No. The watermark is always stamped diagonally across the middle of each page at a 45-degree angle. Only the text, opacity and size can be changed."
+          ],
+          [
+            "How long can the watermark text be?",
+            "Under 60 characters. Longer text is refused with a message, so keep it short, such as DRAFT, SAMPLE or CONFIDENTIAL."
+          ],
+          [
+            "Does a watermark protect my PDF from copying?",
+            "No. It is only a visible mark on the page. Anyone can still copy the text or take a screenshot. For real protection, use Protect PDF with a password."
+          ],
+          [
+            "Will the watermark cover my text?",
+            "It may sit over text because it runs across the middle of the page. Light opacity keeps the page readable, while Strong opacity is more visible but harder to read through."
+          ]
+        ]
+      }
     },
     {
       "slug": "edit-pdf",
@@ -359,8 +557,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Add text to a page of your PDF, free in your browser. A simple way to stamp a note without installing software."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Add text to a page of your PDF, free in your browser. A simple way to stamp a note without installing software.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Type the text in 'Text to add', then set the Page number, choose a Position and a Font size.",
+        "Press Add Text to PDF and save the downloaded copy."
+      ],
+      "content": {
+        "use": "Edit PDF adds a line of text to one page of a PDF, which is handy for small fixes such as a missing heading, a note or a date. A teacher adds a class name to the first page of a handout. An office worker adds 'Approved' to the top of a memo. A student adds a title to the first page of an assignment. You pick the page number and choose where the text goes: top left, top centre, bottom centre or centre of the page. The text is added in a plain dark font, and the rest of the page is left exactly as it was.",
+        "tip": "Check the page count before you type a page number, because the tool refuses a page that does not exist. Keep the added text short, so it fits on one line at the size you choose.",
+        "limit": "The tool adds new text only. It cannot edit or delete text that is already in the PDF, and it cannot move existing content. The added text goes on one page at a time, in a plain font at 12, 18, 24 or 36 points. If the text is too long for the page width, it may run off the edge.",
+        "example": "Adding the text 'Class 10-A' to page 1 at the top centre in size 24 puts a clear heading on the first page of a handout.",
+        "faq": [
+          [
+            "Can I edit text that is already in the PDF?",
+            "No. Edit PDF only adds new text on top of a page. It cannot change or delete existing text, so fix typos in the original document and export a fresh PDF."
+          ],
+          [
+            "Which positions can I choose?",
+            "Top left, top centre, bottom centre or centre of the page. Pick the position from the Position list before pressing Add Text to PDF."
+          ],
+          [
+            "What if the page I type is not in the PDF?",
+            "The tool shows a message telling you how many pages the PDF has and asks you to choose a page inside that range."
+          ],
+          [
+            "Can I add text to several pages at once?",
+            "No. Each run adds text to one page only. Repeat the steps for each page you need to mark."
+          ]
+        ]
+      }
     },
     {
       "slug": "compress-pdf",
@@ -388,7 +615,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "merge-pdf",
         "pdf-to-images",
@@ -413,6 +640,14 @@
           [
             "Does Strong compression change my text?",
             "Yes. Strong renders each page as an image, so the text becomes part of the picture. You can still read it, but you cannot select, copy or search it. Use Light or Medium if you need selectable text."
+          ],
+          [
+            "What does the Quality slider change?",
+            "It sets the image quality for Medium and Strong, which turn pages into pictures. Light ignores the slider, because it only re-saves the file."
+          ],
+          [
+            "How do I know how much was saved?",
+            "The result line shows the old size and the new size, with the percentage saved. If the file grew instead, it says how much larger it is."
           ]
         ]
       },
@@ -442,13 +677,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "steps": [
         "Choose a PDF file with the file button.",
-        "If the PDF is a scan, tick the OCR option first.",
-        "Press Convert and download the .txt file."
+        "Press Extract Text.",
+        "Save the downloaded .txt file, which lists the text page by page."
       ],
-      "meta_description": "Extract text from a PDF into a .txt file, free in your browser. Works on PDFs that already have a text layer."
+      "meta_description": "Extract text from a PDF into a .txt file, free in your browser. Works on PDFs that already have a text layer.",
+      "content": {
+        "use": "PDF to Text pulls the words out of a PDF and saves them as a plain .txt file, so you can reuse the text in a document, an email or a search. A student extracts a chapter to quote in an essay. An office worker extracts a report to paste figures into a spreadsheet. A researcher extracts several papers to search them together. The text is grouped by page, with a '--- Page N ---' marker before each page, so you can always tell where a line came from. The work happens in your browser and the original PDF is never changed.",
+        "tip": "If the result is empty or garbled, the PDF is probably a scan with no text layer. Use OCR PDF first to read the pages, then extract text from the new PDF. Copy the text into your document and check the line breaks before you use it.",
+        "limit": "The tool only reads PDFs that already have a text layer. A scanned-image PDF with no text layer gives no text, and the tool says so. Tables, columns and layout are not preserved; the text comes out as plain lines in reading order.",
+        "example": "Extracting text from a 4-page report downloads ak-premium-text.txt with the words from all 4 pages, each page starting with a '--- Page N ---' marker.",
+        "faq": [
+          [
+            "Why did I get an empty text file?",
+            "The PDF is probably a scan made of images, with no text layer to read. Use OCR PDF first to read the pages into a text PDF, then run PDF to Text on that file."
+          ],
+          [
+            "Does the .txt file keep the page layout?",
+            "No. The text comes out as plain lines grouped by page, with a '--- Page N ---' marker. Tables, columns, fonts and images are not kept."
+          ],
+          [
+            "Can I extract text from only one page?",
+            "No. The tool extracts the whole PDF at once. Open the .txt file afterwards and copy the page you need, using the page markers to find it."
+          ],
+          [
+            "What is the file called when it downloads?",
+            "It downloads as ak-premium-text.txt. Rename it after downloading if you want a different name."
+          ]
+        ]
+      }
     },
     {
       "slug": "pdf-to-images",
@@ -476,8 +735,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Render PDF pages as PNG images and download them, free in your browser. No upload, no sign-up."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Render PDF pages as PNG images and download them, free in your browser. No upload, no sign-up.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Press Convert Pages to Images.",
+        "Download each page PNG from the links shown, or download the whole set as one ZIP file."
+      ],
+      "content": {
+        "use": "PDF to Images turns every page of a PDF into a PNG picture, so you can share a single page in a chat, add it to a slide or post it online. A teacher turns one page of a worksheet into a PNG to share in a class group. A student turns a diagram page into a PNG to paste into an assignment. A shop owner turns a price page into a PNG for a social media post. Each page is rendered at one and a half times its normal size for a sharp picture. After the conversion, you get a download link for each page and one ZIP file with all the pages together.",
+        "tip": "If you only need one page, download just that page's PNG link instead of the whole ZIP. Large PDFs take a while because every page is rendered in your browser, so wait for the status message to say it is done.",
+        "limit": "Each page becomes a separate PNG, so a 50-page PDF gives 50 pictures and one ZIP. The PNGs are pictures of the pages, not editable text. A scanned PDF renders as a picture of the scan, which is fine, but a very large PDF may be slow or run out of browser memory.",
+        "example": "Converting a 3-page worksheet gives three PNG links, page 1, page 2 and page 3, plus a ZIP file with all three PNGs inside.",
+        "faq": [
+          [
+            "How do I download only one page?",
+            "After the conversion, each page has its own link, such as 'Download page 2 PNG'. Press the link for the page you need. The ZIP is only for downloading all pages at once."
+          ],
+          [
+            "What size are the PNG images?",
+            "Each page is rendered at one and a half times its normal size, so the pictures are sharp enough to share or print. They are not full-resolution scans."
+          ],
+          [
+            "Can I get JPG images instead of PNG?",
+            "No. This tool only makes PNG images. Use Image Converter afterwards if you need a JPG version of a PNG."
+          ],
+          [
+            "Why does a large PDF take so long?",
+            "Every page is drawn in your browser one by one. A long PDF with many pages takes longer, and a very large file may run out of memory. Try a smaller file if it stops."
+          ]
+        ]
+      }
     },
     {
       "slug": "e-sign",
@@ -502,8 +790,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Draw your signature and download it as a PNG, free in your browser. A visual signature for documents and forms."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Draw your signature and download it as a PNG, free in your browser. A visual signature for documents and forms.",
+      "steps": [
+        "Draw your signature on the canvas with your mouse or finger.",
+        "Press Clear Signature to start again if the drawing looks wrong.",
+        "Press Download Signature PNG to save the signature."
+      ],
+      "content": {
+        "use": "e-Sign lets you draw a signature on a blank canvas and download it as a PNG image, so you can paste it onto a form, a letter or a document. A shop owner signs a delivery note by drawing on a phone screen. A student signs a permission slip and pastes the image into a Word file. An office worker signs a cover letter without printing it. The canvas is 520 by 180 pixels, which is wide enough for a normal signature. Your drawing never leaves your browser, and the downloaded PNG has a plain background you can place over a document.",
+        "tip": "Draw slowly and in one smooth motion for the cleanest line. If the signature looks wrong, press Clear Signature and draw it again. On a phone, use your finger and turn the phone sideways for more room.",
+        "limit": "The signature is a picture only. It is not a legal digital signature and it does not add your signature to a PDF; it downloads a PNG you place yourself. A blank canvas will not download, and the tool shows a message asking you to draw first.",
+        "example": "Drawing a signature on the canvas and pressing Download Signature PNG saves ak-premium-signature.png, ready to paste into a letter.",
+        "faq": [
+          [
+            "Can I sign a PDF directly with e-Sign?",
+            "No. e-Sign downloads a PNG image of your signature. Open your document, paste the image where the signature goes, and save the document yourself."
+          ],
+          [
+            "Is this a legal digital signature?",
+            "No. It is a picture of your handwriting, not a certificate-based digital signature. It works for informal notes and forms, not for documents that need a certified signature."
+          ],
+          [
+            "Can I use e-Sign on my phone?",
+            "Yes. Draw on the canvas with your finger. Turn the phone sideways if the canvas feels narrow."
+          ],
+          [
+            "Why does nothing download when I press the button?",
+            "The canvas is probably blank. Draw a signature first; the tool refuses to download an empty canvas and asks you to draw."
+          ]
+        ]
+      }
     },
     {
       "slug": "unlock-pdf",
@@ -528,7 +845,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "protect-pdf",
         "merge-pdf",
@@ -553,6 +870,14 @@
           [
             "What if the PDF is not protected?",
             "The tool checks first and tells you the PDF is not password-protected, so you do not waste time on a file that does not need unlocking."
+          ],
+          [
+            "Can I unlock a PDF if I forgot the password?",
+            "No. The tool needs the exact password you set. It does not guess or crack passwords, so a file with a forgotten password cannot be opened here."
+          ],
+          [
+            "Does unlocking change the file?",
+            "No. The pages, text and layout stay exactly as they were. Only the password is removed, so the file opens without asking for it."
           ]
         ]
       },
@@ -581,7 +906,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "unlock-pdf",
         "redact-pdf",
@@ -606,6 +931,14 @@
           [
             "What happens if I forget the password?",
             "The file cannot be opened without it. This site does not store your password and cannot reset it, so keep it somewhere safe before you share the file."
+          ],
+          [
+            "How short can the password be?",
+            "At least 4 characters. A longer password with letters and numbers is much harder to guess, so use 8 or more characters if you can."
+          ],
+          [
+            "Can I change the password later?",
+            "Yes, in two steps. Unlock the file with the old password first, then protect it again with the new password. This tool has no direct change-password button."
           ]
         ]
       },
@@ -635,8 +968,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Crop the margins of every page in a PDF, free in your browser. Tidy page edges without uploading your file."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Crop the margins of every page in a PDF, free in your browser. Tidy page edges without uploading your file.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Type the crop margin in points in the 'Crop margin, points' box. The default is 36.",
+        "Press Crop PDF and save the downloaded copy."
+      ],
+      "content": {
+        "use": "Crop PDF trims the same margin off every side of every page, which removes wide white borders from scanned pages. A student crops the empty borders off scanned notes so they read better on a phone. An office worker crops the margins off a scanned form before printing it. A teacher crops a worksheet so the questions fill more of the page. You type the margin in points, and the default of 36 points trims about half an inch from each side. The text in the middle of the page is never touched, and your original file stays unchanged.",
+        "tip": "Start with the default 36 points and check the result before you crop more. A bigger number trims more from every side, so a large margin can cut into the text near the edge of the page.",
+        "limit": "The same margin is cut from all four sides of every page. You cannot crop one page only, or crop the top more than the bottom. The margin must be between 0 and 200 points, and each page keeps at least 10 points of width and height.",
+        "example": "Cropping a scanned worksheet with a 36-point margin trims about half an inch of white border from every side of every page.",
+        "faq": [
+          [
+            "What is a point?",
+            "A point is a printing unit. 72 points make one inch, so the default 36 points is about half an inch of margin on each side."
+          ],
+          [
+            "Can I crop only the top of the page?",
+            "No. The same margin is cut from all four sides of every page. To crop one edge only, use a PDF editor that supports free cropping."
+          ],
+          [
+            "Will cropping cut into my text?",
+            "It can, if the margin is larger than the white space around your text. Start with 36 points and check the result; raise it slowly if the borders are still wide."
+          ],
+          [
+            "Can I crop a single page?",
+            "No. The margin applies to every page in the file. Split the PDF first if only one page needs cropping."
+          ]
+        ]
+      }
     },
     {
       "slug": "redact-pdf",
@@ -664,7 +1026,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "protect-pdf",
         "ocr-pdf",
@@ -689,6 +1051,14 @@
           [
             "Can I redact a scanned PDF?",
             "Not directly. A scanned PDF has no text layer to search. Run OCR PDF first to make a text PDF, then redact that copy."
+          ],
+          [
+            "Does the search care about capital letters?",
+            "No. The match ignores capitals, so typing cnic finds CNIC and Cnic. It matches part of a word too, so check the result before sharing."
+          ],
+          [
+            "What if the text appears on many pages?",
+            "Every page with a match is rebuilt with the black box burned in. Pages without a match are copied unchanged, so the rest of the document stays sharp."
           ]
         ]
       },
@@ -718,8 +1088,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Make an archive-style PDF/A copy of your PDF, free in your browser. Adds archive metadata to your file."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Make an archive-style PDF/A copy of your PDF, free in your browser. Adds archive metadata to your file.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Type a title in the 'Title' box, or leave it blank to use 'Archive document'.",
+        "Press Make Archive Copy and save the downloaded file."
+      ],
+      "content": {
+        "use": "PDF to PDF/A makes an archive-style copy of a PDF with a title, author and creation information set, so the file is tidier for long-term storage. An office worker archives old reports with a clear title and author. A student archives assignments so they are easy to find years later. A shop owner archives invoices with a proper title instead of a scanner's file name. The tool sets the title you type, marks the author as AK Premium, and re-saves the file in your browser. It does not change the pages themselves, and your original file stays untouched.",
+        "tip": "Type a clear title that says what the file is, such as 'Sales report March 2026', because the title is what shows up in search and in PDF readers. Keep a copy of the original too, in case you need the untouched file later.",
+        "limit": "This is an archive-style copy, not a certified PDF/A validation. The tool only sets the title, author, subject and keywords and re-saves the file. It does not check fonts, colours or embedding rules, and it does not convert scanned images into text.",
+        "example": "Typing 'Invoice March 2026' as the title and pressing Make Archive Copy downloads a copy of the invoice with that title stored in its information.",
+        "faq": [
+          [
+            "Is the result a real certified PDF/A file?",
+            "No. The tool sets title, author, subject and keywords and re-saves the file, but it does not validate the file against the PDF/A standard. The page itself says so."
+          ],
+          [
+            "What happens if I leave the title blank?",
+            "The tool uses 'Archive document' as the title. Type a real title if you want the file to be easy to find later."
+          ],
+          [
+            "Does the tool change my pages?",
+            "No. The pages stay exactly as they are. Only the file information, such as the title and author, is set."
+          ],
+          [
+            "Who is listed as the author?",
+            "The author is set to AK Premium, because the copy is made by this tool. The title is yours to choose."
+          ]
+        ]
+      }
     },
     {
       "slug": "repair-pdf",
@@ -748,8 +1147,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Try to repair a damaged PDF by re-saving it, free in your browser. Best-effort recovery for files that will not open."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Try to repair a damaged PDF by re-saving it, free in your browser. Best-effort recovery for files that will not open.",
+      "steps": [
+        "Choose the damaged PDF file with the file button.",
+        "Press Repair PDF.",
+        "Save the downloaded file, either a re-saved copy or a rebuilt text PDF."
+      ],
+      "content": {
+        "use": "Repair PDF tries to rescue a PDF that will not open, which happens when a download stops halfway or a file is copied badly. A student repairs an assignment PDF that a portal refuses to open. An office worker repairs a report that shows an error in the reader. A shop owner repairs an invoice that a customer cannot open. The tool first tries to re-save the file as it is. If that fails, it pulls out any readable text and rebuilds a simple text PDF from it. It is a best-effort rescue, so some files cannot be saved, and the tool says so honestly.",
+        "tip": "Keep the damaged original file and work on a copy. If the repair gives you a rebuilt text PDF, check that the important pages and numbers are there before you send it on.",
+        "limit": "Repair is best effort only. A file with no readable content cannot be fixed, and the tool will say it could not repair the file. When it falls back to rebuilding from text, the layout, images, tables and fonts are lost; only the words survive.",
+        "example": "A half-downloaded 8-page report that will not open is repaired by re-saving it, and the download gives back all 8 pages in a working PDF.",
+        "faq": [
+          [
+            "What does Repair PDF do first?",
+            "It tries to open the file and re-save it unchanged. That fixes files whose structure is slightly broken but whose pages are still there."
+          ],
+          [
+            "What is the rebuilt text PDF?",
+            "If re-saving fails, the tool pulls out any readable text and builds a plain new PDF from the words alone. The layout, images and tables are lost, but the text is saved."
+          ],
+          [
+            "Can Repair PDF fix a password-protected file?",
+            "No. A protected file must be unlocked first. Repair cannot read a file it cannot open."
+          ],
+          [
+            "Will the repaired file look the same as the original?",
+            "Not always. A re-saved copy looks the same, but a rebuilt text PDF is plain text on plain pages. Check the result before you send it."
+          ]
+        ]
+      }
     },
     {
       "slug": "compare-pdf",
@@ -775,8 +1203,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Compare the text in two PDFs and spot the differences, free in your browser. No upload, no sign-up."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Compare the text in two PDFs and spot the differences, free in your browser. No upload, no sign-up.",
+      "steps": [
+        "Choose the first PDF with the first file button.",
+        "Choose the second PDF with the second file button.",
+        "Press Compare PDFs and read the two lists shown on the page: lines only in the first PDF, and lines only in the second."
+      ],
+      "content": {
+        "use": "Compare PDF checks the text in two PDF files and shows you the lines that appear in only one of them, so you can spot what changed between two versions. A teacher compares a draft and a final handout to see which questions changed. An office worker compares last month's report with this month's to find new figures. A student compares two copies of an assignment to find missing paragraphs. The tool reads the text layer of both files, matches the lines, and lists the lines that are only in the first file and the lines that are only in the second file, with a count for each.",
+        "tip": "Compare the same kind of file with the same kind of file, such as two versions of one report. If the PDFs are scans with no text layer, the tool finds no text to compare, so use OCR PDF on them first.",
+        "limit": "The tool compares whole lines of text, not single words, and it only reads PDFs with a text layer. Scanned-image PDFs give no text to compare. The result is shown on the page; it is not downloaded as a file. Lines that moved to a different place but stayed the same are not listed as changed.",
+        "example": "Comparing a 10-page draft with the final version shows 3 lines only in the first PDF and 5 lines only in the second, which are the paragraphs that were added and removed.",
+        "faq": [
+          [
+            "Does Compare PDF show me the changed words inside a line?",
+            "No. It compares whole lines. If a line changed by one word, the whole old line appears in the first list and the whole new line appears in the second list."
+          ],
+          [
+            "Why does it say no text was found?",
+            "One or both PDFs are probably scans with no text layer. Run OCR PDF on the scanned file first, then compare the new text PDF."
+          ],
+          [
+            "Can I download the comparison?",
+            "No. The result is shown on the page as two lists. Copy the lists into a document if you need to keep them."
+          ],
+          [
+            "Does the order of the lines matter?",
+            "No. The tool matches lines by their text, so a line that moved to another page but stayed the same is not listed as a change."
+          ]
+        ]
+      }
     },
     {
       "slug": "pdf-to-markdown",
@@ -802,8 +1259,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Convert PDF text into Markdown notes, free in your browser. Handy for notes and for working with AI tools."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Convert PDF text into Markdown notes, free in your browser. Handy for notes and for working with AI tools.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Press Convert to Markdown.",
+        "Save the downloaded .md file, which you can open in any notes app or editor."
+      ],
+      "content": {
+        "use": "PDF to Markdown turns the text of a PDF into a Markdown file, so you can paste it into notes apps, wikis and editors that use Markdown. A student turns a chapter into Markdown to keep in a notes app. A developer turns a manual into Markdown to put in a project wiki. A writer turns a report into Markdown to edit it in a plain-text editor. The text is kept page by page, and each page marker becomes a heading in the Markdown file. The result is a plain .md file with no images, tables or fonts, ready to edit anywhere.",
+        "tip": "Open the .md file in your notes app and tidy the headings before you publish it. The page markers become level-two headings, so a long PDF gives you one heading per page to navigate by.",
+        "limit": "Only the text layer is converted. Scanned-image PDFs give no text. Tables, images, fonts and colours are not kept, and the page markers become '## --- Page N ---' headings, which you may want to rename.",
+        "example": "Converting a 6-page manual downloads ak-premium-document.md with the text of all 6 pages, each page under its own '## --- Page N ---' heading.",
+        "faq": [
+          [
+            "What is Markdown?",
+            "Markdown is plain text with simple marks for headings, lists and links. Notes apps, wikis and code editors read it and turn it into formatted text."
+          ],
+          [
+            "Will my tables come through?",
+            "No. Tables become plain lines of text, because the tool only reads the text layer. You will need to rebuild tables by hand in your notes app."
+          ],
+          [
+            "Why does each page start with a heading?",
+            "The tool turns the page marker into a level-two heading, such as '## --- Page 2 ---', so you can tell where each page starts. Rename or delete the headings if you do not need them."
+          ],
+          [
+            "Can I convert a scanned PDF to Markdown?",
+            "No. A scanned PDF has no text layer to read. Use OCR PDF first to make a text PDF, then convert that file to Markdown."
+          ]
+        ]
+      }
     },
     {
       "slug": "scan-to-pdf",
@@ -829,8 +1315,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Turn a camera photo or image into a PDF, free in your browser. Scan a page with your camera and save it as PDF."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Turn a camera photo or image into a PDF, free in your browser. Scan a page with your camera and save it as PDF.",
+      "steps": [
+        "Choose a photo with the file button, or take one with your device camera.",
+        "Press Make PDF From Photo.",
+        "Save the downloaded PDF with your photo on one page."
+      ],
+      "content": {
+        "use": "Scan to PDF turns a photo of a page into a PDF file, which is the quick way to share a paper document from your phone. A student photographs a handwritten assignment and sends it as a PDF. A shop owner photographs a receipt and keeps it as a PDF record. An office worker photographs a signed form and emails it as a PDF. The photo is centred on an A4 page and saved as a PDF in your browser, so nothing is uploaded. It works with any photo your camera or gallery gives you, and the result is a single-page PDF.",
+        "tip": "Photograph the page straight on, in good light, with the whole page in the frame. A straight, well-lit photo gives a much clearer PDF than a tilted or shadowed one.",
+        "limit": "One photo becomes one PDF page, so several pages need several runs and a merge afterwards. The photo is saved as a picture inside the PDF; the text in it is not readable or searchable. Use OCR PDF afterwards if you need the text.",
+        "example": "Photographing a signed form and pressing Make PDF From Photo downloads ak-premium-scan.pdf with the photo centred on one A4 page.",
+        "faq": [
+          [
+            "Can I scan several pages at once?",
+            "No. One photo makes one PDF page. Photograph each page, make a PDF for each, then use Merge PDF to join them into one file."
+          ],
+          [
+            "Is the text in my photo searchable?",
+            "No. The photo is stored as a picture inside the PDF. To get searchable text, run OCR PDF on the finished PDF."
+          ],
+          [
+            "Does the photo need to be a certain size?",
+            "No. Any photo your camera or gallery gives you works. It is fitted to an A4 page automatically, so a very large photo is scaled down."
+          ],
+          [
+            "Can I use the camera directly?",
+            "Yes. The file button lets you take a photo with your device camera or pick one from your gallery, depending on your phone or browser."
+          ]
+        ]
+      }
     },
     {
       "slug": "ocr-pdf",
@@ -859,8 +1374,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Read scanned PDF pages as text and save a text PDF, free in your browser. Needs a first-run language download."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Read scanned PDF pages as text and save a text PDF, free in your browser. Needs a first-run language download.",
+      "steps": [
+        "Choose a scanned PDF file with the file button.",
+        "Press OCR PDF and wait. The first run downloads English language data, and large files take time.",
+        "Save the downloaded text PDF when the status says it is done."
+      ],
+      "content": {
+        "use": "OCR PDF reads the words printed on scanned pages and builds a new PDF from that text, so a scan you could only look at becomes a file you can search and copy from. A student turns scanned textbook pages into searchable text. An office worker turns a scanned contract into text that can be copied. A researcher turns old scanned papers into text for searching. The tool draws each page as a picture, reads the English print with Tesseract in your browser, and writes the recognised words into a fresh PDF. The first run downloads the English language data, so it takes longer the first time.",
+        "tip": "Use clear, straight scans for the best result. OCR works well on clean printed English and badly on handwriting, faint print or tilted pages. Run it once and check a page before you OCR a very long file.",
+        "limit": "OCR reads English printed text only, and it needs to download language data on the first run. Handwriting, low-quality photos and tilted pages give poor results. Large PDFs take a long time because each page is read one by one, and the new PDF holds text, not the original page pictures.",
+        "example": "Running OCR PDF on a 3-page scanned letter downloads a new PDF with the letter's words as selectable text you can copy.",
+        "faq": [
+          [
+            "Why does the first run take so long?",
+            "The tool downloads the English OCR language data the first time you use it. Later runs are faster because the data is already there."
+          ],
+          [
+            "Can OCR read handwriting?",
+            "Not reliably. OCR is built for clear printed text. Handwriting, faint print and tilted pages give poor or wrong results."
+          ],
+          [
+            "Does OCR keep the layout of my scanned page?",
+            "No. The result is a fresh text PDF with the recognised words. The original page pictures, layout and fonts are not kept."
+          ],
+          [
+            "Can OCR read Urdu or other languages?",
+            "No. This tool reads English text only. A scan in another language will give wrong or empty text."
+          ]
+        ]
+      }
     },
     {
       "slug": "pdf-forms",
@@ -888,8 +1432,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Make a fillable form PDF with text fields and checkboxes, free in your browser. No sign-up needed."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Make a fillable form PDF with text fields and checkboxes, free in your browser. No sign-up needed.",
+      "steps": [
+        "Type a title for your form in the 'Form title' box, or leave it blank.",
+        "Press Create Fillable PDF.",
+        "Save the downloaded PDF, then open it in a PDF reader and fill in the fields."
+      ],
+      "content": {
+        "use": "PDF Forms creates a one-page fillable PDF with fields people can type into, so you can collect the same information from everyone in the same format. A teacher makes a simple application form for students. A shop owner makes a feedback form for customers. An office worker makes a request form for staff. The form has a name field, an email field, a checkbox and a dropdown, all on one A4 page with your title at the top. Anyone can open the PDF in a reader, type into the fields, tick the box and pick from the dropdown, then save or print it.",
+        "tip": "Keep the form title short and clear, such as 'Job Application Form', because it is printed large at the top of the page. Test the downloaded PDF in your own PDF reader before you share it, to make sure the fields work there.",
+        "limit": "The form is always the same one-page layout: a name field, an email field, one checkbox and one dropdown. You cannot add, remove or rename fields, and the dropdown choices are fixed. The PDF must be opened in a reader that supports fillable forms.",
+        "example": "Typing 'Customer Feedback Form' and pressing Create Fillable PDF downloads a one-page PDF with that title and four fillable fields ready to use.",
+        "faq": [
+          [
+            "What fields does the form have?",
+            "A name field, an email field, a checkbox labelled Agree, and a dropdown labelled Category. The layout is fixed and always on one A4 page."
+          ],
+          [
+            "Can I add more fields to the form?",
+            "No. The form always has the same four fields. If you need a custom form, build it in a full PDF editor and use this tool for simple forms only."
+          ],
+          [
+            "What title is used if I leave the box blank?",
+            "The tool uses 'Application Form' as the title. Type your own title if you want the form to say what it is for."
+          ],
+          [
+            "Will the form work in any PDF reader?",
+            "It works in readers that support fillable forms, such as Adobe Reader and most modern browsers. Very old readers may show the fields but not let you type in them."
+          ]
+        ]
+      }
     },
     {
       "slug": "local-summarizer",
@@ -916,8 +1489,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Summarize a PDF in your browser with key sentences picked locally. No file is sent to an external AI service."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Summarize a PDF in your browser with key sentences picked locally. No file is sent to an external AI service.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Set the number of sentences you want in the 'Sentences' box. The default is 5.",
+        "Press Summarize PDF and read the key sentences shown on the page."
+      ],
+      "content": {
+        "use": "Local Summarizer picks the most important sentences from a PDF and shows them as a short list, so you can grasp a long document in a minute. A student reads the key sentences of a chapter before an exam. An office worker skims a long report to find what matters. A researcher checks whether a paper is worth reading in full. The tool counts which words appear most often in the document and ranks the sentences by those words, then shows the top sentences in order of importance. No AI server is used, and the text never leaves your browser.",
+        "tip": "Start with 5 sentences for a quick overview, and raise the number to 10 for a longer document. The summary is a list of the document's own sentences, so read it as a guide and open the full PDF for the details.",
+        "limit": "The summary is picked by word frequency, not by understanding. It only uses sentences longer than 30 characters, and it works on PDFs with a text layer only; scanned PDFs give no text to summarise. The summary is shown on the page and is not downloaded as a file.",
+        "example": "Summarising a 20-page report with 5 sentences shows the 5 most important sentences from the whole document, ranked by the words that appear most often.",
+        "faq": [
+          [
+            "Is this an AI summary?",
+            "No. No AI server is used. The tool counts the most frequent words in the document and picks the sentences that contain them most, all in your browser."
+          ],
+          [
+            "Why does it only show 5 sentences?",
+            "The Sentences box defaults to 5. You can set any number from 1 to 10 before you press Summarize PDF."
+          ],
+          [
+            "Can I summarise a scanned PDF?",
+            "No. A scanned PDF has no text layer, so the tool finds nothing to summarise. Run OCR PDF on it first, then summarise the new text PDF."
+          ],
+          [
+            "Is the summary downloaded as a file?",
+            "No. The key sentences are shown on the page as a list. Copy them into your notes if you want to keep them."
+          ]
+        ]
+      }
     },
     {
       "slug": "translate-helper",
@@ -943,8 +1545,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Extract PDF text ready to translate, free in your browser. It prepares the text; translation itself happens elsewhere."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Extract PDF text ready to translate, free in your browser. It prepares the text; translation itself happens elsewhere.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Press Extract Text for Translation.",
+        "Save the downloaded .txt file and translate it in a service of your choice."
+      ],
+      "content": {
+        "use": "Translate Helper pulls the text out of a PDF into a plain .txt file, ready for you to translate in a service you choose. A student extracts a chapter to translate it into Urdu. An office worker extracts a notice to translate it for staff. A shop owner extracts a price list to translate it for customers. The tool does not translate anything itself, because automatic translation would need to send your text to an outside service. Instead it gives you clean text, grouped by page, that you can paste into any translation app you trust.",
+        "tip": "Translate the .txt file in small parts, because translation apps handle short passages better than a whole book at once. Keep the page markers in the text so you can match the translation back to the original pages.",
+        "limit": "The tool extracts text only; it does not translate. It only reads PDFs with a text layer, so scanned PDFs give no text. The text comes out as plain lines, so tables and layout are not kept.",
+        "example": "Extracting a 2-page notice downloads ak-premium-for-translation.txt with the notice text, grouped by page, ready to paste into a translation app.",
+        "faq": [
+          [
+            "Does this tool translate my PDF?",
+            "No. It extracts the text into a .txt file. You translate that text in a service you choose, such as Google Translate or DeepL."
+          ],
+          [
+            "Why does the tool not translate directly?",
+            "Automatic translation needs an outside service, which would send your text off your browser. To keep your files local, this tool only extracts the text."
+          ],
+          [
+            "Can I extract text from a scanned PDF?",
+            "No. A scanned PDF has no text layer. Use OCR PDF first to make a text PDF, then run Translate Helper on the new file."
+          ],
+          [
+            "What does the .txt file look like?",
+            "Plain text grouped by page, with a '--- Page N ---' marker before each page. The layout, images and tables are not kept."
+          ]
+        ]
+      }
     },
     {
       "slug": "pdf-to-excel",
@@ -972,7 +1603,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "badges": [
         {
           "label": "Text only",
@@ -1004,6 +1635,14 @@
           [
             "Are the numbers in my Excel file real numbers?",
             "They are text in most cases, because a PDF does not say whether a word is a number. In Excel, select the column and use Paste Special, Values, or multiply by 1 to turn text numbers into real numbers."
+          ],
+          [
+            "What file do I download?",
+            "A spreadsheet named ak-premium-pdf-to-excel.xlsx. The extracted text goes on a sheet called Extracted Text, with a title row at the top."
+          ],
+          [
+            "Can I convert two PDFs at once?",
+            "No. Choose one PDF at a time. Convert the first file, download the spreadsheet, then choose the next PDF and convert it the same way."
           ]
         ]
       },
@@ -1035,7 +1674,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "badges": [
         {
           "label": "Text only",
@@ -1067,6 +1706,14 @@
           [
             "What if my PDF is a scanned image?",
             "Tick the OCR option. The tool reads the scanned pages with text recognition first, then builds the Word file from that text. Handwriting and blurry scans give poor results."
+          ],
+          [
+            "Does the Word file keep page breaks from the PDF?",
+            "No. The text flows as one continuous document. The paragraphs stay in order, but the page breaks from the PDF are not carried over."
+          ],
+          [
+            "What Word file do I get?",
+            "A Word document named ak-premium-pdf-to-word.docx. It opens in Microsoft Word, Google Docs and other word processors, and you can edit it like any normal Word file."
           ]
         ]
       },
@@ -1098,7 +1745,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "badges": [
         {
           "label": "Text only",
@@ -1106,7 +1753,36 @@
         }
       ],
       "format": "PDF→PPTX",
-      "meta_description": "Turn extracted PDF text into a .pptx presentation, free in your browser. Text-based conversion, layout is not preserved."
+      "meta_description": "Turn extracted PDF text into a .pptx presentation, free in your browser. Text-based conversion, layout is not preserved.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Press Convert PDF to PPT.",
+        "Save the downloaded .pptx file, which has one slide per PDF page."
+      ],
+      "content": {
+        "use": "PDF to PPT turns each page of a PDF into a slide in a PowerPoint file, so you can present or edit the words from a document. A teacher turns a handout into slides for a lesson. A student turns a report into slides for a class presentation. An office worker turns a briefing into slides for a meeting. The first line of each page becomes the slide title in large bold text, and the rest of the page becomes the slide body. The file downloads as a .pptx that opens in PowerPoint and other slide apps. The layout, images and charts from the PDF are not kept, only the words.",
+        "tip": "Check the slides after the conversion and tidy the titles, because the first line of a page is not always a real heading. Add your own pictures and charts in PowerPoint afterwards, since the tool only brings the words across.",
+        "limit": "The conversion is text-only. Layout, fonts, tables, images, charts and animations are not preserved. Each PDF page becomes one slide, with the first line as the title and the rest as body text. A scanned PDF with no text layer cannot be converted and the tool says so.",
+        "example": "Converting a 5-page briefing downloads ak-premium-pdf-to-ppt.pptx with 5 slides, one per page, each with a title and body text.",
+        "faq": [
+          [
+            "How does the tool choose the slide title?",
+            "It takes the first line of text on each page and makes it the slide title in large bold text. The rest of the page becomes the body text."
+          ],
+          [
+            "Will my images and charts come across?",
+            "No. The conversion is text-only. Images, charts, tables and animations are left behind. Add them to the slides in PowerPoint afterwards."
+          ],
+          [
+            "What if my PDF is a scan?",
+            "The tool will say no readable text was found. Run OCR PDF first to make a text PDF, then convert that file to PPT."
+          ],
+          [
+            "Can I open the file in Google Slides?",
+            "Yes. The .pptx file opens in PowerPoint, Google Slides, LibreOffice Impress and other apps that read PowerPoint files."
+          ]
+        ]
+      }
     },
     {
       "slug": "txt-html-to-pdf",
@@ -1132,9 +1808,38 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "format": "TXT→PDF",
-      "meta_description": "Paste text or HTML and download it as a PDF, free in your browser. No upload, no sign-up."
+      "meta_description": "Paste text or HTML and download it as a PDF, free in your browser. No upload, no sign-up.",
+      "steps": [
+        "Paste your text or simple HTML into the box.",
+        "Press Convert Text to PDF.",
+        "Save the downloaded PDF."
+      ],
+      "content": {
+        "use": "TXT / HTML to PDF turns pasted text into a PDF file, which is handy when you have words in a message, a note or a web page and need them as a document. A student pastes an essay draft and downloads it as a PDF to submit. An office worker pastes a notice from an email and saves it as a PDF. A shop owner pastes a price list from a chat and sends it as a PDF. Any HTML tags in the pasted text are stripped out, so the result is plain text in a simple 12-point font, flowing across pages as needed. Nothing is uploaded; the PDF is built in your browser.",
+        "tip": "Paste the text, then check it in the box before you convert, because the tool strips HTML tags and extra spaces. For a clean result, paste plain text rather than copied web page formatting.",
+        "limit": "HTML tags are stripped and formatting is not kept. The PDF is plain 12-point text only, with no bold, headings, images or tables. Very long text flows across pages automatically, but you cannot choose the font, size or page layout.",
+        "example": "Pasting a 300-word notice and pressing Convert Text to PDF downloads ak-premium-text-to-pdf.pdf with the notice as plain text on one page.",
+        "faq": [
+          [
+            "Does the tool keep my HTML formatting?",
+            "No. All HTML tags are stripped out and the text becomes plain 12-point text. Use it for simple text, not for formatted web pages."
+          ],
+          [
+            "What happens to very long text?",
+            "It flows across pages automatically. The tool adds pages as needed, so a long paste becomes a multi-page PDF."
+          ],
+          [
+            "Can I paste from a Word document?",
+            "Yes, but only the words come through. Bold, headings, tables and images from Word are dropped, and the text becomes plain 12-point text."
+          ],
+          [
+            "Is my pasted text uploaded anywhere?",
+            "No. The PDF is built in your browser with jsPDF. The text never leaves your device."
+          ]
+        ]
+      }
     },
     {
       "slug": "excel-to-pdf",
@@ -1161,7 +1866,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "badges": [
         {
           "label": "Basic",
@@ -1182,10 +1887,23 @@
           [
             "Are the formulas in my Excel file kept?",
             "No. The PDF shows the values, not the formulas. The numbers are what you see in the sheet."
+          ],
+          [
+            "What Excel files can I upload?",
+            "Both .xlsx and .xls files. Choose the file, press Convert Excel to PDF, and the tool reads the first sheet."
+          ],
+          [
+            "Does the PDF keep the column layout?",
+            "No. Each row becomes a line of plain text, so columns are not lined up like a spreadsheet. Keep the sheet simple for the cleanest result."
           ]
         ]
       },
-      "meta_description": "Render the first sheet of an Excel file as a PDF, free in your browser. Your spreadsheet never leaves your device."
+      "meta_description": "Render the first sheet of an Excel file as a PDF, free in your browser. Your spreadsheet never leaves your device.",
+      "steps": [
+        "Choose an Excel file (.xlsx or .xls) with the file button.",
+        "Press Convert Excel to PDF.",
+        "Save the downloaded PDF, which holds the first sheet as plain text rows."
+      ]
     },
     {
       "slug": "word-to-pdf",
@@ -1212,7 +1930,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "badges": [
         {
           "label": "Basic",
@@ -1233,10 +1951,23 @@
           [
             "What if my Word file has images?",
             "Images are not carried into the PDF by this basic conversion. For a document with images, use Word itself to save as PDF."
+          ],
+          [
+            "Can I convert an old .doc file?",
+            "No. The tool only accepts .docx files. If your file is a .doc, open it in Word and save it as .docx first."
+          ],
+          [
+            "Does it keep tracked changes?",
+            "No. Tracked changes and comments are not carried into the PDF. Accept the changes in Word first if you want the final text."
           ]
         ]
       },
-      "meta_description": "Render Word document text as a PDF, free in your browser. Text-based rendering, layout is not preserved."
+      "meta_description": "Render Word document text as a PDF, free in your browser. Text-based rendering, layout is not preserved.",
+      "steps": [
+        "Choose a Word (.docx) file with the file button.",
+        "Press Convert Word to PDF.",
+        "Save the downloaded PDF, which holds the document text in plain 12-point text."
+      ]
     },
     {
       "slug": "ppt-to-pdf",
@@ -1264,7 +1995,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "badges": [
         {
           "label": "Basic",
@@ -1285,10 +2016,23 @@
           [
             "What if a slide has no text?",
             "That slide becomes a page that says there is no text on the slide, so the page count still matches the deck."
+          ],
+          [
+            "Can I convert an old .ppt file?",
+            "No. The tool only accepts .pptx files. Open the deck in PowerPoint and save it as .pptx first, then convert the new file."
+          ],
+          [
+            "Does each slide become one PDF page?",
+            "Yes. The tool reads the text on each slide and puts it on its own page, so a 5-slide deck becomes a 5-page PDF."
           ]
         ]
       },
-      "meta_description": "Turn PowerPoint slide text into a PDF, free in your browser. Basic slide text as PDF, layout is not preserved."
+      "meta_description": "Turn PowerPoint slide text into a PDF, free in your browser. Basic slide text as PDF, layout is not preserved.",
+      "steps": [
+        "Choose a PowerPoint (.pptx) file with the file button.",
+        "Press Convert PPT to PDF.",
+        "Save the downloaded PDF, which holds the text from each slide."
+      ]
     },
     {
       "slug": "formula-generator",
@@ -1314,7 +2058,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "formula-explainer",
         "vba-macro-writer",
@@ -1339,6 +2083,14 @@
           [
             "Why does my formula show an error in Excel?",
             "The most common reason is a range that does not exist in your sheet, or a sheet name that needs quotes. Check the ranges, and test on a copy of your data."
+          ],
+          [
+            "Which formulas can it build?",
+            "Eleven. SUMIF, SUMIFS, COUNTIFS, VLOOKUP, XLOOKUP, INDEX plus MATCH, IF, Nested IF, TEXT, DATEDIF and UNIQUE. Pick one from the Task list."
+          ],
+          [
+            "Does it explain the formula too?",
+            "Yes. The result shows the formula, a plain-language explanation of what each part does, and an example you can follow."
           ]
         ]
       },
@@ -1366,8 +2118,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Paste an Excel formula and understand what it does, free in your browser. A plain-words explanation, step by step."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Paste an Excel formula and understand what it does, free in your browser. A plain-words explanation, step by step.",
+      "steps": [
+        "Paste a formula that starts with = in the 'Formula' box, for example =VLOOKUP(A2, Sheet2!A:B, 2, FALSE).",
+        "Press Explain Formula.",
+        "Read the explanation in the box below, which lists each function found and what it does."
+      ],
+      "content": {
+        "use": "Formula Explainer reads an Excel formula and explains it in plain words, so you can understand a formula someone else wrote or check your own work. A student pastes a VLOOKUP from a class example to learn what each part does. An office worker pastes a SUMIF from a shared report to see why the total looks wrong. A shop owner pastes an IF formula from a price sheet to understand the condition. The tool lists the functions it finds and explains each one from its dictionary, then gives a plain-language reading of the whole formula. It does not run the formula or check your numbers; it explains what the formula says.",
+        "tip": "Paste the full formula including the = sign, or the tool will ask you to. If a function is not in the dictionary, the tool says so; check Excel help for that function's exact arguments.",
+        "limit": "The tool explains 8 functions only: SUM, IF, VLOOKUP, XLOOKUP, INDEX, MATCH, COUNTIF and SUMIF. Any other function gets a note that it is not in the dictionary yet. The tool does not run the formula, check your cell references or test it against your data.",
+        "example": "Pasting =VLOOKUP(A2, Sheet2!A:B, 2, FALSE) explains that VLOOKUP searches the first column of a table and returns a value from a column to its right.",
+        "faq": [
+          [
+            "Which functions can the tool explain?",
+            "Eight: SUM, IF, VLOOKUP, XLOOKUP, INDEX, MATCH, COUNTIF and SUMIF. Other functions get a note that they are not in the dictionary yet."
+          ],
+          [
+            "Does the tool run my formula?",
+            "No. It reads the formula and explains what each part does. It does not open your workbook or check whether the result is correct."
+          ],
+          [
+            "Why does it say my formula must start with =?",
+            "Excel formulas start with an equals sign. Paste the whole formula, including the =, or the tool cannot read it."
+          ],
+          [
+            "Can I use the explanation in my work?",
+            "Yes. The explanation is plain text you can read and learn from. Always test the formula on a copy of your data before you use it in a real sheet."
+          ]
+        ]
+      }
     },
     {
       "slug": "vba-macro-writer",
@@ -1392,7 +2173,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "content": {
         "use": "A VBA macro writer is for repeating a job in Excel without doing it by hand every time: marking rows that meet a condition, copying data to a report sheet, filtering a table, or hiding a settings sheet. The macro does the clicks for you.",
         "tip": "Start with a small task, such as looping through rows, and test the macro on a copy of your workbook. Press Alt + F11 in Excel, insert a module, paste the code, and run it from there.",
@@ -1406,10 +2187,23 @@
           [
             "Is the macro safe to run?",
             "Read it first. It only does what the template says: it works on the sheet and range you entered. Test it on a copy of your workbook before you run it on real data."
+          ],
+          [
+            "Which macros can it write?",
+            "Five. Loop through rows, copy data to another sheet, AutoFilter a table, sort a table, and hide a sheet so it is very hidden. Pick one from the Task list."
+          ],
+          [
+            "Does it work in Google Sheets?",
+            "No. VBA only runs in Excel on Windows or Mac. Google Sheets uses a different language, so paste the code in Excel instead."
           ]
         ]
       },
-      "meta_description": "Write Excel VBA macros from a plain-words description, free in your browser. Describe the automation, get VBA code."
+      "meta_description": "Write Excel VBA macros from a plain-words description, free in your browser. Describe the automation, get VBA code.",
+      "steps": [
+        "Pick a task in the 'Task' list: Loop through rows, Copy data to another sheet, AutoFilter a table, Sort a table, or Hide a sheet (very hidden).",
+        "Fill in the labelled fields that appear for that task.",
+        "Press Generate and copy the VBA code from the box below."
+      ]
     },
     {
       "slug": "regex-creator",
@@ -1434,7 +2228,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "content": {
         "use": "A regex creator is for finding or checking a pattern in text: an email address, a Pakistan mobile number, a CNIC, a date, or a web link. It is used in spreadsheets, text editors and data cleaning, where a pattern is faster than reading every line.",
         "tip": "Paste some of your own text in the test box and press Generate. The tool shows you exactly which parts matched, so you can see if the pattern is right before you use it anywhere else.",
@@ -1448,10 +2242,23 @@
           [
             "Can I use this pattern in Excel?",
             "Yes, with VBA, or in Google Sheets with REGEXEXTRACT. Paste the pattern exactly as shown, including the backslashes."
+          ],
+          [
+            "Which patterns can it create?",
+            "Six. Email address, Pakistan mobile number, date in DD/MM/YYYY form, web link, numbers in text, and Pakistan CNIC. Pick one from the Pattern list."
+          ],
+          [
+            "Can I test the pattern on my own text?",
+            "Yes. Paste text in the test box and press Generate. The tool shows which parts matched, so you can check the pattern before you use it."
           ]
         ]
       },
-      "meta_description": "Build regex patterns and extract emails and dates, free in your browser. Describe the pattern, get working regex."
+      "meta_description": "Build regex patterns and extract emails and dates, free in your browser. Describe the pattern, get working regex.",
+      "steps": [
+        "Pick a pattern in the 'Pattern for' list: Email address, Pakistan mobile number, Date (DD/MM/YYYY), Web link, Numbers in text, or Pakistan CNIC.",
+        "Paste some text in the 'Test text' box if you want to test the pattern.",
+        "Press Generate Pattern and copy the pattern from the box below."
+      ]
     },
     {
       "slug": "dax-query",
@@ -1476,7 +2283,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "content": {
         "use": "A DAX measure is for Power BI and Excel Power Pivot: a total, an average, a year-to-date figure, or a share of the total that updates when a user filters the report. It is the calculation behind most Power BI cards and charts.",
         "tip": "Use your real table and column names in the fields. The measure name is the name that will appear in your report, so make it clear, such as Total Sales.",
@@ -1490,10 +2297,23 @@
           [
             "Why does my measure show an error in Power BI?",
             "The table or column name is usually the reason. Check the spelling and the square brackets, and make sure the table exists in your model."
+          ],
+          [
+            "Which measures can it build?",
+            "Five. Total Sales, Average, Year to Date, Percent of Total, and Count Rows. Pick one from the Task list and fill in your table and column names."
+          ],
+          [
+            "Do I need Power BI to use it?",
+            "No. The same measures also work in Excel Power Pivot. Paste the measure into either one, with your own table and column names."
           ]
         ]
       },
-      "meta_description": "Write DAX measures for Power BI from a plain-words description, free in your browser. Describe the measure, get DAX."
+      "meta_description": "Write DAX measures for Power BI from a plain-words description, free in your browser. Describe the measure, get DAX.",
+      "steps": [
+        "Pick a measure in the 'Task' list: Total Sales, Average, Year to Date, Percent of Total, or Count Rows.",
+        "Fill in the labelled fields with your table and column names.",
+        "Press Generate, then copy the DAX measure and paste it into Power BI or Excel Power Pivot."
+      ]
     },
     {
       "slug": "excel-to-csv",
@@ -1519,8 +2339,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Export the first sheet of an Excel file as CSV, free in your browser. Your file never leaves your device."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Export the first sheet of an Excel file as CSV, free in your browser. Your file never leaves your device.",
+      "steps": [
+        "Choose an Excel file (.xlsx or .xls) with the file button.",
+        "Press Convert Excel to CSV.",
+        "Save the downloaded .csv file, which holds the first sheet of your workbook."
+      ],
+      "content": {
+        "use": "Excel to CSV exports the first sheet of an Excel workbook as a plain .csv file, so the data can be opened in other apps or uploaded to a system that only takes CSV. A shop owner exports a stock list to upload to an online store. An office worker exports a customer list to import into another program. A student exports a class list to use in a different app. The tool reads the workbook with SheetJS in your browser and writes the first sheet as comma-separated values. Only the first sheet is exported; other sheets are left out.",
+        "tip": "Move the sheet you need to the first position in your workbook before you convert, because only the first sheet is exported. Open the .csv afterwards to check that dates and numbers look right.",
+        "limit": "Only the first sheet is exported. Formulas are saved as their calculated values, and formatting, colours, charts and other sheets are not kept. An empty first sheet gives an error and nothing is downloaded.",
+        "example": "Converting a workbook whose first sheet has 50 rows of stock data downloads ak-premium-sheet.csv with all 50 rows as comma-separated values.",
+        "faq": [
+          [
+            "Which sheet is exported?",
+            "Only the first sheet of the workbook. If the sheet you need is second or third, move it to the first position in Excel and save, then convert again."
+          ],
+          [
+            "Does the CSV keep my formulas?",
+            "No. Formulas are saved as their calculated values. The .csv file holds plain values separated by commas, with no formatting."
+          ],
+          [
+            "What happens if the first sheet is empty?",
+            "The tool shows a message that the first sheet is empty and downloads nothing. Choose a workbook with data on the first sheet."
+          ],
+          [
+            "Can I convert a .xls file too?",
+            "Yes. Both .xlsx and .xls files are accepted by the file picker."
+          ]
+        ]
+      }
     },
     {
       "slug": "csv-to-excel",
@@ -1546,8 +2395,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Save CSV text as an .xlsx spreadsheet, free in your browser. Paste CSV rows and download Excel instantly."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Save CSV text as an .xlsx spreadsheet, free in your browser. Paste CSV rows and download Excel instantly.",
+      "steps": [
+        "Choose a .csv file with the file button, or paste CSV text in the 'Paste CSV text' box.",
+        "Press Convert CSV to Excel.",
+        "Save the downloaded .xlsx file."
+      ],
+      "content": {
+        "use": "CSV to Excel turns a .csv file or pasted CSV text into a proper Excel workbook, so the data opens in Excel with rows and columns. A shop owner turns a downloaded sales CSV into an Excel file to sort and filter it. An office worker turns a system export into Excel to add totals. A student turns survey results into Excel to make a chart. You can upload a file or paste the text; either way the tool reads the rows with SheetJS and writes one sheet in an .xlsx file. The first row becomes the header row of the sheet.",
+        "tip": "Check that the first row holds your column names, because it becomes the header row. If your CSV uses semicolons instead of commas, replace them first, or the columns will not split correctly.",
+        "limit": "The result is one plain sheet with no formatting, formulas or charts. The tool expects commas between values; quoted commas inside a value are handled, but very unusual CSV files may not split correctly. An empty file or empty paste gives an error.",
+        "example": "Pasting 'name,age' on the first line and 'Ali,25' on the second, then pressing Convert CSV to Excel, downloads an .xlsx file with a Name column and an Age column.",
+        "faq": [
+          [
+            "Do I need to upload a file, or can I paste text?",
+            "Either works. Choose a .csv file, or paste the CSV text into the box. If you do both, the uploaded file is used."
+          ],
+          [
+            "What becomes the header row?",
+            "The first row of your CSV becomes the header row of the Excel sheet, so put your column names there."
+          ],
+          [
+            "Does the Excel file keep my formatting?",
+            "No. The result is a plain sheet with values only. Add colours, filters and formulas in Excel afterwards."
+          ],
+          [
+            "What if my CSV uses semicolons?",
+            "The tool expects commas. Replace the semicolons with commas first, or the whole row will land in one column."
+          ]
+        ]
+      }
     },
     {
       "slug": "image-compressor",
@@ -1575,7 +2453,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "steps": [
         "Choose one or more images with the file button.",
         "Pick JPEG, PNG or WebP and set the quality, or enter a target size in KB.",
@@ -1594,6 +2472,14 @@
           [
             "Can I compress many images at once?",
             "Yes. Choose several images and they are all compressed. If there is more than one, you also get a ZIP file with all of them in it."
+          ],
+          [
+            "Does it change the size of the picture?",
+            "No. The width and height in pixels stay the same. Only the file gets smaller, because the picture is saved again at a lower quality."
+          ],
+          [
+            "What does the target size box do?",
+            "It tells the tool the largest file you want, in KB. For JPEG and WebP it lowers the quality step by step until the file fits, or until quality reaches 10 percent."
           ]
         ]
       },
@@ -1622,8 +2508,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Resize images by width and height in pixels, free in your browser. No upload, no sign-up."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Resize images by width and height in pixels, free in your browser. No upload, no sign-up.",
+      "steps": [
+        "Choose a JPG, PNG or WebP image with the file button. The original size is filled in for you.",
+        "Type the Width and Height in pixels. Tick 'Keep aspect ratio' to change the other side automatically.",
+        "Choose PNG or JPEG as the output format, then press Resize Image and save the result."
+      ],
+      "content": {
+        "use": "Image Resizer changes the width and height of a picture in pixels, so it fits a form, a profile photo box or a slide. A student resizes a photo to the size a portal asks for. A shop owner resizes product photos so they all match on a website. An office worker resizes a picture to fit a slide. When you pick a file, the tool fills in its real size for you. Tick 'Keep aspect ratio' and the other side changes automatically, so the picture does not stretch. You can save the result as PNG or JPEG.",
+        "tip": "Keep 'Keep aspect ratio' ticked unless you want to stretch the picture on purpose. Resizing a small picture much larger will make it blurry, so start from the biggest original you have.",
+        "limit": "Width and height must each be between 1 and 8000 pixels. The picture is stretched to exactly the size you type when aspect ratio is off, which can distort it. Saving as JPEG flattens transparency onto a white background, because JPEG has no transparency.",
+        "example": "Resizing a 2000 by 1500 photo to 800 by 600 with 'Keep aspect ratio' ticked downloads a sharp 800 by 600 picture.",
+        "faq": [
+          [
+            "What does 'Keep aspect ratio' do?",
+            "When it is ticked, changing the width updates the height automatically, and changing the height updates the width, so the picture keeps its shape and does not stretch."
+          ],
+          [
+            "What is the biggest size I can use?",
+            "Width and height must each be between 1 and 8000 pixels. Bigger values are refused with a message."
+          ],
+          [
+            "Why did my PNG lose its transparent background?",
+            "You saved it as JPEG. JPEG has no transparency, so the background becomes white. Choose PNG as the output format to keep transparency."
+          ],
+          [
+            "Does resizing make a small photo sharper?",
+            "No. Making a small photo bigger only stretches the pixels it already has, so it looks blurry. Start from the largest original you have."
+          ]
+        ]
+      }
     },
     {
       "slug": "image-converter",
@@ -1648,8 +2563,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Change image format between JPG, PNG and WebP, free in your browser. Convert images without uploading them."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Change image format between JPG, PNG and WebP, free in your browser. Convert images without uploading them.",
+      "steps": [
+        "Choose a JPG, PNG or WebP image with the file button.",
+        "Pick the output format: JPG, PNG or WebP.",
+        "Press Convert Image and save the downloaded file."
+      ],
+      "content": {
+        "use": "Image Converter changes a picture from one format to another, JPG, PNG or WebP, without changing its size. A student turns a PNG screenshot into a JPG to upload to a portal that only takes JPG. A shop owner turns product photos into WebP so the website loads faster. An office worker turns a JPG photo into PNG to edit it in a program that needs PNG. The picture keeps its original width and height; only the file format changes. The conversion runs in your browser, so your photo is never uploaded.",
+        "tip": "Use JPG for photos you want to share or upload, because it makes smaller files. Use PNG when you need transparency or sharp text, and WebP when you want a modern format with small files.",
+        "limit": "Only JPG, PNG and WebP are accepted, and the output is one of the same three formats. The picture keeps its original size; this tool does not resize it. Saving as JPG flattens transparency onto a white background, because JPG has no transparency.",
+        "example": "Converting a 1200 by 800 PNG screenshot to JPG downloads the same 1200 by 800 picture as a smaller JPG file.",
+        "faq": [
+          [
+            "Which formats can I convert between?",
+            "JPG, PNG and WebP, in any direction. Pick the image, choose the output format, and press Convert Image."
+          ],
+          [
+            "Does the picture change size?",
+            "No. The width and height stay exactly the same. Only the file format changes. Use Image Resizer if you also need a different size."
+          ],
+          [
+            "Why did my transparent PNG get a white background?",
+            "You converted it to JPG. JPG has no transparency, so the see-through parts become white. Convert to PNG or WebP instead to keep transparency."
+          ],
+          [
+            "Can I convert several images at once?",
+            "No. The tool converts one image at a time. Repeat the steps for each picture you need."
+          ]
+        ]
+      }
     },
     {
       "slug": "image-to-text",
@@ -1676,7 +2620,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "ocr-pdf",
         "pdf-to-text",
@@ -1701,6 +2645,14 @@
           [
             "Why is some text wrong or missing?",
             "The photo may be tilted, blurry or low contrast. Try a straighter, brighter photo, and crop out anything that is not text before you upload it."
+          ],
+          [
+            "Can it read English and Urdu in one image?",
+            "Yes. Choose English + Urdu in the language list. The tool reads both scripts from the same image in one run."
+          ],
+          [
+            "How do I copy the result?",
+            "Press the Copy Text button under the result box. It copies all the recognized text, so you can paste it into a document or message."
           ]
         ]
       },
@@ -1731,7 +2683,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "password-generator",
         "word-counter",
@@ -1739,11 +2691,35 @@
         "uuid-generator"
       ],
       "steps": [
-        "Type the text or web address in the box.",
-        "Press Generate QR Code.",
-        "Download the QR image, or copy it into your document."
+        "Type the text or web address in the 'Text or URL' box.",
+        "Press Generate QR Code. The code appears on the page.",
+        "Press Download QR PNG to save the code as a picture."
       ],
-      "meta_description": "Generate QR codes from text or a URL, free in your browser. Download your QR code as a PNG instantly."
+      "meta_description": "Generate QR codes from text or a URL, free in your browser. Download your QR code as a PNG instantly.",
+      "content": {
+        "use": "QR Code Generator turns any text or web address into a QR code picture, so people can scan it with a phone instead of typing. A shop owner prints a QR code for a payment link on the counter. A teacher prints a QR code for a class form on a handout. A student puts a QR code for a portfolio link on a resume. You type the text or link, press Generate QR Code, and the code appears on the page at 220 pixels wide. Press Download QR PNG to save it as a picture you can print or paste into a document.",
+        "tip": "Test the code with your own phone camera before you print it. Short links make simpler codes that scan more easily, so use a short URL when you can.",
+        "limit": "The code is a picture of the text you typed; it does not check that a link works or that a phone can open it. Very long text can fail to generate, and the tool will ask you to try shorter text. The code is fixed at 220 pixels wide.",
+        "example": "Typing https://example.com and pressing Generate QR Code shows a QR code that opens that page when scanned, ready to download as a PNG.",
+        "faq": [
+          [
+            "What can I put in a QR code?",
+            "Any text or web address, such as a link, a phone number or a short message. Scanning it shows the text or opens the link on the phone."
+          ],
+          [
+            "Why did my QR code fail to generate?",
+            "The text is probably too long. QR codes hold only so much data, so shorten the text or use a shorter link and try again."
+          ],
+          [
+            "Can I change the size of the QR code?",
+            "No. The code is drawn at 220 pixels wide. Resize the downloaded PNG in an image editor if you need it bigger for printing."
+          ],
+          [
+            "Does the QR code expire?",
+            "No. The code is just a picture of the text you typed. It keeps working as long as the link or text it holds still works."
+          ]
+        ]
+      }
     },
     {
       "slug": "password-generator",
@@ -1767,8 +2743,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Generate strong random passwords instantly, free in your browser. Passwords are created locally, never sent anywhere."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Generate strong random passwords instantly, free in your browser. Passwords are created locally, never sent anywhere.",
+      "steps": [
+        "Set the Length with the slider. The default is 16, and the range is 8 to 64.",
+        "Tick the character sets you want: Uppercase, Lowercase, Numbers and Symbols.",
+        "Press Generate Password, then press Copy Password to copy it."
+      ],
+      "content": {
+        "use": "Password Generator makes a strong random password in your browser, so you do not have to invent one yourself. A student makes a new password for a college portal. An office worker makes a different password for each work account. A shop owner makes a strong password for an online store. You choose the length and which character sets to include, and the tool builds the password with secure random numbers from your browser. Every selected set is guaranteed at least one character in the result, and a strength note tells you whether the password is weak, good or strong.",
+        "tip": "Use 16 or more characters with all four character sets for a strong password. Copy the password with the Copy Password button and save it in a password manager, because you will not remember a random password.",
+        "limit": "The length must be between 8 and 64 characters, and at least one character set must be ticked. The length must also be at least the number of sets you ticked. The tool makes the password; it does not save it anywhere, so copy it before you leave the page.",
+        "example": "Setting the length to 16 with all four character sets ticked and pressing Generate Password gives a random 16-character password with upper and lower case letters, numbers and symbols.",
+        "faq": [
+          [
+            "How is the password made?",
+            "With secure random numbers from your browser. No password is sent anywhere, and no two generated passwords are the same."
+          ],
+          [
+            "What does the strength note mean?",
+            "Strong means 16 or more characters with all four character sets. Good means 12 or more with three sets. Anything shorter or simpler is called weak."
+          ],
+          [
+            "Can I make a password with only numbers?",
+            "Yes, if you tick Numbers only. But a numbers-only password is weak, so use letters and symbols too for accounts that matter."
+          ],
+          [
+            "Where is my password saved?",
+            "Nowhere. The tool shows the password on the page and does not store it. Copy it with the Copy Password button and save it in a password manager."
+          ]
+        ]
+      }
     },
     {
       "slug": "word-counter",
@@ -1793,8 +2798,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Count words, characters and reading time, free in your browser. Paste text and see the counts instantly."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Count words, characters and reading time, free in your browser. Paste text and see the counts instantly.",
+      "steps": [
+        "Type or paste your text in the box.",
+        "Read the live counts below the box: Words, Characters, Characters (no spaces), Sentences, Paragraphs and Reading time.",
+        "Edit the text in the box and the counts update with every keystroke."
+      ],
+      "content": {
+        "use": "Word Counter counts the words, characters, sentences and paragraphs in your text as you type, so you can check a limit before you submit. A student checks that an essay is under 500 words. A job applicant checks that a cover letter fits the limit. A writer checks the reading time of an article before publishing it. The counts update live with every keystroke, so there is nothing to press. Reading time is worked out at 200 words per minute, which is a normal reading speed. The text never leaves your browser.",
+        "tip": "Paste the final text, not a draft with notes, because everything in the box is counted. If the word count looks high, check for extra spaces or repeated paragraphs at the end.",
+        "limit": "The tool counts what you type; it does not check spelling, grammar or meaning. Reading time is a rough guide at 200 words per minute and is rounded up to whole minutes. Paragraphs are counted by blank lines between blocks of text.",
+        "example": "Pasting a 400-word essay shows Words: 400, Reading time: 2 min, because 400 words at 200 words per minute takes 2 minutes.",
+        "faq": [
+          [
+            "How is reading time worked out?",
+            "At 200 words per minute, rounded up to whole minutes. A 400-word text shows 2 minutes, and a 250-word text shows 2 minutes as well."
+          ],
+          [
+            "What counts as a paragraph?",
+            "A block of text separated by a blank line. Pressing Enter once inside a paragraph does not start a new one; you need an empty line between blocks."
+          ],
+          [
+            "Do spaces count as characters?",
+            "Both counts are shown. Characters counts everything including spaces, and Characters (no spaces) counts letters and punctuation only."
+          ],
+          [
+            "Is there a limit on how much text I can paste?",
+            "No fixed limit. Very long text still counts, because the counting happens in your browser as you type."
+          ]
+        ]
+      }
     },
     {
       "slug": "json-formatter",
@@ -1820,8 +2854,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Format, minify and validate JSON, free in your browser. Paste JSON and clean it up instantly."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Format, minify and validate JSON, free in your browser. Paste JSON and clean it up instantly.",
+      "steps": [
+        "Paste your JSON text in the box.",
+        "Press Format to tidy it, Minify to shrink it, or Validate to check it.",
+        "Press Copy Result to copy the output."
+      ],
+      "content": {
+        "use": "JSON Formatter tidies, shrinks or checks JSON text, which is the data format used by most websites and apps. A student formats a messy API response so it is easy to read. A developer minifies a settings file before putting it in a project. An office worker validates a data file before sending it to a colleague. Format adds line breaks and a 2-space indent so the structure is clear. Minify removes all extra spaces so the file is as small as possible. Validate tells you whether the JSON is correct and shows the exact error if it is not.",
+        "tip": "Press Validate first when you get an error from another app. The error message names the problem, such as a missing comma or an extra bracket, so you can fix that exact spot.",
+        "limit": "The tool only works on valid JSON structure. It does not fix broken JSON for you; it shows the error and you correct it yourself. Very large files may be slow, because the whole text is parsed in your browser.",
+        "example": "Pasting {\"name\":\"Ali\",\"age\":25} and pressing Format shows the same data on separate lines with a 2-space indent, easy to read.",
+        "faq": [
+          [
+            "What is the difference between Format and Minify?",
+            "Format adds line breaks and a 2-space indent so the JSON is easy to read. Minify removes all extra spaces and line breaks so the file is as small as possible."
+          ],
+          [
+            "What does Validate do?",
+            "It checks whether the text is valid JSON. If it is, the output says Valid JSON. If not, it shows the exact error, such as a missing comma."
+          ],
+          [
+            "Can the tool fix my broken JSON?",
+            "No. It only reports the error. You fix the text yourself, for example by adding a missing comma or closing bracket, then press Validate again."
+          ],
+          [
+            "Is my JSON data uploaded anywhere?",
+            "No. The text is parsed in your browser. Nothing you paste leaves your device."
+          ]
+        ]
+      }
     },
     {
       "slug": "base64",
@@ -1845,8 +2908,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Encode or decode Base64 text, free in your browser. Convert text both ways instantly, with no sign-up."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Encode or decode Base64 text, free in your browser. Convert text both ways instantly, with no sign-up.",
+      "steps": [
+        "Type or paste your text in the box.",
+        "Press Encode to turn it into Base64, or Decode to turn Base64 back into text.",
+        "Press Copy Result to copy the output."
+      ],
+      "content": {
+        "use": "Base64 turns text into a safe code made of letters, numbers and a few symbols, and turns that code back into text. A developer encodes a token to paste into a settings file. A student decodes a Base64 string from a class example to see the original message. An office worker encodes a short note to send through a system that only accepts plain letters. The tool handles any language, including Urdu, because it encodes the text as UTF-8 first. Encode and Decode both run in your browser, so your text is never uploaded.",
+        "tip": "Base64 is a code, not encryption. Anyone can decode it, so do not use it to hide a password or a secret. Use it only to move text safely through systems that cannot handle special characters.",
+        "limit": "Base64 is not encryption and not a password. Anyone who sees the code can decode it. Decoding only works on valid Base64 text; anything else shows an error with the reason.",
+        "example": "Typing 'hello' and pressing Encode gives 'aGVsbG8='. Pressing Decode on 'aGVsbG8=' gives back 'hello'.",
+        "faq": [
+          [
+            "Is Base64 a way to hide a password?",
+            "No. Base64 is a code anyone can reverse. It only changes how the text looks, so never use it to protect a secret. Use a real password manager for passwords."
+          ],
+          [
+            "Can I encode Urdu text?",
+            "Yes. The tool encodes text as UTF-8 first, so Urdu and other languages encode and decode correctly."
+          ],
+          [
+            "Why does Decode show an error?",
+            "The text is not valid Base64. Check for missing characters, extra spaces or a cut-off string, then try again."
+          ],
+          [
+            "What is Base64 used for?",
+            "Moving text safely through systems that only accept plain letters and numbers, such as settings files, tokens and email attachments."
+          ]
+        ]
+      }
     },
     {
       "slug": "case-converter",
@@ -1872,8 +2964,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Change text case four ways — upper, lower, title and sentence case — free in your browser."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Change text case four ways — upper, lower, title and sentence case — free in your browser.",
+      "steps": [
+        "Type or paste your text in the box.",
+        "Press UPPERCASE, lowercase, Title Case or Sentence case.",
+        "Press Copy Result to copy the changed text."
+      ],
+      "content": {
+        "use": "Case Converter changes the capital letters in your text, so you can fix a heading, a title or a whole paragraph in one click. A student turns a shouty heading into normal title case for an assignment. An office worker turns a lowercase notice into uppercase for a poster. A shop owner turns a product name into sentence case for a price list. The four buttons cover the common cases: all capitals, all lower case, capitals on every word, and a capital only at the start of each sentence. The changed text appears below, ready to copy.",
+        "tip": "Use Title Case for headings and names, and Sentence case for normal paragraphs. If the result looks wrong, check the original text for extra spaces, because they can split words the tool treats separately.",
+        "limit": "The tool changes letter case only. It does not fix spelling, punctuation or spacing. Title Case capitalises every word, including small words like 'and' and 'of', so you may need to fix those by hand.",
+        "example": "Pasting 'hello world' and pressing Title Case gives 'Hello World'. Pressing UPPERCASE on the same text gives 'HELLO WORLD'.",
+        "faq": [
+          [
+            "What does Title Case do?",
+            "It puts a capital letter at the start of every word, so 'hello world' becomes 'Hello World'. Small words like 'and' are also capitalised, so fix those by hand if needed."
+          ],
+          [
+            "What does Sentence case do?",
+            "It puts a capital at the start of each sentence and lower case elsewhere, so 'HELLO. HOW ARE YOU?' becomes 'Hello. How are you?'"
+          ],
+          [
+            "Can I convert only part of my text?",
+            "No. The whole text in the box is converted at once. Paste only the part you want to change, then copy the result back."
+          ],
+          [
+            "Does the tool change my original text?",
+            "No. Your pasted text stays in the top box. The changed text appears below it, so you can copy it without losing the original."
+          ]
+        ]
+      }
     },
     {
       "slug": "uuid-generator",
@@ -1898,8 +3019,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Generate secure random UUIDs instantly, free in your browser. Unique IDs created locally on your device."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Generate secure random UUIDs instantly, free in your browser. Unique IDs created locally on your device.",
+      "steps": [
+        "Press Generate UUID for one ID, or Generate 5 for five at once.",
+        "Read the IDs shown in the box below.",
+        "Press Copy Result to copy the ID or IDs."
+      ],
+      "content": {
+        "use": "UUID Generator makes secure random IDs, called UUIDs, that you can use as unique keys in a database, a file name or a test. A developer makes an ID for each new record in an app. A student makes unique file names for assignment uploads. An office worker makes reference numbers for a set of documents. Each UUID is a 36-character code in the standard 8-4-4-4-12 pattern, made with secure random numbers from your browser. Press Generate UUID for one, or Generate 5 to get five at once. The IDs never leave your browser.",
+        "tip": "Use Generate 5 when you need a batch of IDs, then copy them all at once. If two systems must never share an ID, generate fresh ones for each system instead of reusing the same ID.",
+        "limit": "The tool makes version 4 random UUIDs only. It does not make IDs based on a name, a date or a counter, and it does not check whether an ID already exists in your database. The IDs are random, so two of them will not match by chance.",
+        "example": "Pressing Generate UUID gives one 36-character ID in the standard 8-4-4-4-12 pattern, and pressing Generate 5 gives five IDs at once, one per line.",
+        "faq": [
+          [
+            "What is a UUID?",
+            "A universally unique identifier: a 36-character random code in the pattern 8-4-4-4-12. It is used as a unique key when two records must never share an ID."
+          ],
+          [
+            "Are the UUIDs really unique?",
+            "They are random version 4 UUIDs, so the chance of two matching is so small it can be ignored. The tool does not check your database, so keep your own list if you must be certain."
+          ],
+          [
+            "Can I generate more than 5 at once?",
+            "No. The tool makes one UUID or five at a time. Press Generate 5 again for another batch."
+          ],
+          [
+            "Is my UUID private?",
+            "Yes. The IDs are made in your browser with secure random numbers. Nothing is sent to a server or stored anywhere."
+          ]
+        ]
+      }
     },
     {
       "slug": "csv-to-json",
@@ -1922,8 +3072,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Convert CSV rows into JSON objects, free in your browser. Paste CSV and get clean JSON instantly."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Convert CSV rows into JSON objects, free in your browser. Paste CSV and get clean JSON instantly.",
+      "steps": [
+        "Choose a .csv file with the file button, or paste CSV text in the box. The first row must be the header.",
+        "Press Convert CSV to JSON.",
+        "Press Copy JSON to copy the result, or Download .json to save it as a file."
+      ],
+      "content": {
+        "use": "CSV to JSON turns rows of comma-separated data into a JSON list of objects, which is the format most apps and websites read. A developer turns a spreadsheet export into JSON for an app. A student turns survey results into JSON for a class project. An office worker turns a contact list into JSON to send to a developer. The first row of the CSV becomes the field names, and each row after it becomes one object with those names. The result is shown as tidy JSON with a 2-space indent, ready to copy or download.",
+        "tip": "Make sure the first row holds your column names, because they become the JSON field names. If a row has a different number of values than the header, the tool stops and tells you which row is wrong.",
+        "limit": "The CSV needs a header row and at least one data row. Every data row must have the same number of fields as the header, or the tool shows an error naming the row. All values stay as text; numbers are not converted to JSON numbers.",
+        "example": "Pasting 'name,age' then 'Ali,25' and pressing Convert CSV to JSON gives a JSON list with one object, name Ali and age 25, shown with a 2-space indent.",
+        "faq": [
+          [
+            "What does the first row become?",
+            "The field names of each object. 'name,age' as the first row makes objects with 'name' and 'age' fields."
+          ],
+          [
+            "Why did the tool say a row has the wrong number of fields?",
+            "That row has more or fewer values than the header row. Count the commas in that row and fix it, then convert again."
+          ],
+          [
+            "Are numbers kept as numbers?",
+            "No. All values stay as text in the JSON, so age 25 becomes \"25\" in quotes. Change the types in your app if you need real numbers."
+          ],
+          [
+            "Can I download the JSON as a file?",
+            "Yes. Press Download .json to save it, or press Copy JSON to copy the text into your own editor."
+          ]
+        ]
+      }
     },
     {
       "slug": "text-diff-checker",
@@ -1948,8 +3127,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Compare two texts line by line and see what changed, free in your browser. Added and removed lines shown clearly."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Compare two texts line by line and see what changed, free in your browser. Added and removed lines shown clearly.",
+      "steps": [
+        "Paste the original text in the 'Original text' box.",
+        "Paste the changed text in the 'Changed text' box.",
+        "Press Compare Texts and read the Removed, Added and Unchanged lines shown below."
+      ],
+      "content": {
+        "use": "Text Diff Checker compares two versions of a text and lists the lines that were added, removed or kept, so you can see exactly what changed. A student compares a draft essay with the final version to check the edits. A teacher compares two versions of a worksheet to find new questions. An office worker compares an old price list with a new one to spot changed prices. The tool splits both texts into lines, matches them, and shows the lines that appear in only one version, plus a count of the lines that stayed the same.",
+        "tip": "Paste the two versions in the right boxes: the older text first, the newer text second. If the result says 'No differences found', the two texts are identical line for line.",
+        "limit": "The tool compares whole lines, not single words, and it matches lines by their text. A line that moved to another place but stayed the same is not listed as changed. The result is shown on the page and is not downloaded as a file.",
+        "example": "Comparing a price list with 10 lines against a new list with 11 lines shows 1 line Added, 0 lines Removed, and 10 Unchanged lines.",
+        "faq": [
+          [
+            "Does the tool show changed words inside a line?",
+            "No. It compares whole lines. If one word in a line changed, the whole old line is listed as Removed and the whole new line as Added."
+          ],
+          [
+            "What does 'Unchanged lines' mean?",
+            "The number of lines from the original text that also appear in the changed text. A line that moved to another place still counts as unchanged."
+          ],
+          [
+            "Can I compare two files instead of pasted text?",
+            "No. Paste the text into the two boxes. Copy the text from each file into the boxes first."
+          ],
+          [
+            "What happens if the two texts are identical?",
+            "The result says 'No differences found.' Nothing is listed as added or removed."
+          ]
+        ]
+      }
     },
     {
       "slug": "age-calculator",
@@ -1974,8 +3182,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Calculate exact age in years, months and days, free in your browser. Enter a birth date and get the exact age."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Calculate exact age in years, months and days, free in your browser. Enter a birth date and get the exact age.",
+      "steps": [
+        "Pick your date of birth in the 'Date of birth' box.",
+        "Press Calculate Age, or just wait, because the result updates as you type.",
+        "Read your exact age in years, months and days."
+      ],
+      "content": {
+        "use": "Age Calculator works out your exact age in years, months and days from your date of birth, so you do not have to count it yourself. A student checks their age for a form that asks for years and months. A parent checks a child's exact age for a school admission form. An office worker checks an employee's age for a retirement record. You pick the date of birth, and the tool counts the full years, the extra months and the remaining days up to today. The result updates live as soon as you change the date.",
+        "tip": "Use the calendar picker in the date box instead of typing the date, so the format is always right. If the date is in the future, the tool shows an error instead of a negative age.",
+        "limit": "The age is counted up to today, using your device's date. A future date of birth is not accepted. The tool gives years, months and days only; it does not give the age in weeks or total days.",
+        "example": "Picking 1 January 2000 as the date of birth on 18 November 2026 gives an age of 26 years, 10 months and 17 days.",
+        "faq": [
+          [
+            "How is the age worked out?",
+            "The tool counts full years from your date of birth to today, then the extra months and the remaining days. The result is exact to the day."
+          ],
+          [
+            "Can I enter a future date?",
+            "No. A date in the future is not accepted, because an age cannot be negative. Pick a date in the past."
+          ],
+          [
+            "Does the result update on its own?",
+            "Yes. The calculator recalculates live as soon as you change the date, so you do not need to press the button again."
+          ],
+          [
+            "Why does it show months and days too?",
+            "Because many forms ask for an exact age, such as 17 years and 6 months. Years alone would not be enough for those forms."
+          ]
+        ]
+      }
     },
     {
       "slug": "percentage-calculator",
@@ -2000,8 +3237,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Calculate percentages, shares and percent change, free in your browser. Quick percent maths with no sign-up."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Calculate percentages, shares and percent change, free in your browser. Quick percent maths with no sign-up.",
+      "steps": [
+        "Choose a calculation in the 'Calculation' list: X% of Y, X is what % of Y, or Percentage change from X to Y.",
+        "Type the two numbers in the X and Y boxes.",
+        "Press Calculate, or just wait, because the result updates as you type."
+      ],
+      "content": {
+        "use": "Percentage Calculator answers the three percentage questions people ask most often: what is a percent of a number, what percent one number is of another, and how much a number changed in percent. A shop owner works out a 10 percent discount on a price. A student works out what percent 45 marks is of 60. An office worker works out the percent rise in sales from last month to this month. You pick the calculation, type X and Y, and the tool shows the answer in a full sentence, such as '20% of 500 = 100'. The result updates live as you type.",
+        "tip": "For a discount, use 'X% of Y' to find the amount to take off, then subtract it from the price yourself. For a rise or fall, use 'Percentage change from X to Y', where X is the old number and Y is the new one.",
+        "limit": "The tool needs two numbers for every calculation. For 'X is what % of Y', Y cannot be zero. For percentage change, X cannot be zero. The answer is shown as plain text; it is not saved or rounded to a fixed number of decimals.",
+        "example": "Choosing 'X% of Y' with X as 20 and Y as 500 shows '20% of 500 = 100'.",
+        "faq": [
+          [
+            "How do I work out a 10 percent discount?",
+            "Choose 'X% of Y', set X to 10 and Y to the price. The answer is the discount amount. Subtract it from the price to get the price after discount."
+          ],
+          [
+            "What does 'X is what % of Y' mean?",
+            "It tells you what share X is of Y. With X as 45 and Y as 60, the answer is 75%, because 45 is three quarters of 60."
+          ],
+          [
+            "How do I work out a price rise in percent?",
+            "Choose 'Percentage change from X to Y'. Put the old price in X and the new price in Y. A rise shows as a positive percent and a fall as a negative one."
+          ],
+          [
+            "Why does it say Y cannot be zero?",
+            "Dividing by zero is not possible. For 'X is what % of Y', Y is the whole you compare against, so it must not be zero."
+          ]
+        ]
+      }
     },
     {
       "slug": "bmi-calculator",
@@ -2025,8 +3291,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Calculate BMI and its category from height and weight, free in your browser. Instant, private, no sign-up."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Calculate BMI and its category from height and weight, free in your browser. Instant, private, no sign-up.",
+      "steps": [
+        "Type your height in centimetres in the 'Height (cm)' box.",
+        "Type your weight in kilograms in the 'Weight (kg)' box.",
+        "Press Calculate BMI, or just wait, because the result updates as you type."
+      ],
+      "content": {
+        "use": "BMI Calculator works out your Body Mass Index from your height and weight, and tells you which category it falls in. A student checks their BMI for a health assignment. A parent checks a teenager's BMI before a doctor's visit. An office worker checks their own BMI as part of a fitness plan. You type your height in centimetres and your weight in kilograms, and the tool divides the weight by the height in metres squared, then rounds the answer to one decimal. The categories are Underweight below 18.5, Normal below 25, Overweight below 30, and Obese at 30 and above.",
+        "tip": "Measure your height and weight on the same day for a fair result. BMI is a rough guide, not a diagnosis; it does not account for muscle, age or body shape, so ask a doctor if you are worried about the result.",
+        "limit": "BMI needs a positive height and weight; anything else shows an error. The result is a general guide only. It does not measure body fat, muscle or health, and it is not medical advice. The calculator uses centimetres and kilograms only.",
+        "example": "A height of 170 cm and a weight of 65 kg gives a BMI of 22.5, which falls in the Normal category.",
+        "faq": [
+          [
+            "How is BMI worked out?",
+            "Weight in kilograms divided by height in metres squared. The tool takes centimetres and converts them to metres for you, then rounds the answer to one decimal."
+          ],
+          [
+            "What do the categories mean?",
+            "Underweight is below 18.5, Normal is 18.5 to under 25, Overweight is 25 to under 30, and Obese is 30 and above. These are general ranges, not a diagnosis."
+          ],
+          [
+            "Is BMI the same as body fat?",
+            "No. BMI only uses height and weight. It does not measure fat, muscle or fitness, so a muscular person can have a high BMI and still be healthy."
+          ],
+          [
+            "Can I use feet and pounds?",
+            "No. This calculator takes height in centimetres and weight in kilograms only. Convert your measurements first if you use feet and pounds."
+          ]
+        ]
+      }
     },
     {
       "slug": "loan-emi-calculator",
@@ -2051,8 +3346,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Calculate monthly EMI, total interest and total payment, free in your browser. Plan a loan in seconds."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Calculate monthly EMI, total interest and total payment, free in your browser. Plan a loan in seconds.",
+      "steps": [
+        "Type the loan amount in the 'Loan amount' box.",
+        "Type the annual interest rate in percent and the loan period in years.",
+        "Press Calculate EMI, or just wait, because the result updates as you type. The result shows the monthly EMI, total payment, total interest and number of months, plus a breakdown table."
+      ],
+      "content": {
+        "use": "Loan / EMI Calculator works out the monthly payment on a loan, using the standard EMI formula, so you can plan before you borrow. A family checks the monthly payment on a home loan before talking to a bank. A shop owner checks the EMI on a business loan for new stock. A student checks the EMI on a small loan for a laptop. You type the loan amount, the annual interest rate and the number of years. The tool shows the monthly EMI, the total amount you will pay, the total interest and the number of months, with a breakdown table below.",
+        "tip": "Try a longer loan period to see the EMI fall, and notice that the total interest rises. Compare the total interest, not just the monthly EMI, when you choose between two loans.",
+        "limit": "The result is a guide based on a fixed interest rate and equal monthly payments. It does not include bank fees, taxes or changing rates, and it is not financial advice. The rate must be 0 or more, and the loan amount and years must be positive.",
+        "example": "A loan of Rs 1,000,000 at 12 percent for 5 years gives a monthly EMI of Rs 22,244.45, a total payment of Rs 1,334,667 and total interest of Rs 334,667.",
+        "faq": [
+          [
+            "What is an EMI?",
+            "An Equated Monthly Instalment: the same amount you pay every month until the loan is finished. Each payment covers part of the interest and part of the loan amount."
+          ],
+          [
+            "What happens if the interest rate is 0?",
+            "The tool divides the loan amount by the number of months. A Rs 600,000 loan over 5 years at 0 percent gives an EMI of Rs 10,000 a month."
+          ],
+          [
+            "Does a longer loan always cost more?",
+            "The monthly EMI falls, but the total interest rises, because you pay interest for more months. Check the total interest in the breakdown table before you choose."
+          ],
+          [
+            "Is this financial advice?",
+            "No. It is a calculation based on a fixed rate and equal payments. Banks add fees and may change rates, so ask the bank for the final figures before you borrow."
+          ]
+        ]
+      }
     },
     {
       "slug": "cgpa-calculator",
@@ -2076,8 +3400,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Calculate weighted CGPA from course grades and credits, free in your browser. Enter courses, get your CGPA."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Calculate weighted CGPA from course grades and credits, free in your browser. Enter courses, get your CGPA.",
+      "steps": [
+        "Type one course per line in the box, as: Course, credit hours, grade point. For example: Math, 3, 3.7",
+        "Press Calculate CGPA, or just wait, because the result updates as you type.",
+        "Read your CGPA to 2 decimals and your total credit hours."
+      ],
+      "content": {
+        "use": "CGPA Calculator works out your weighted CGPA from your courses, so you can check your result without a spreadsheet. A student checks their CGPA at the end of a semester. A job applicant checks their CGPA before writing it on a resume. A parent checks a child's CGPA for a scholarship form. You type one course per line, with the course name, the credit hours and the grade point, separated by commas. The tool multiplies each grade point by its credit hours, adds them up and divides by the total credit hours, then shows the CGPA to 2 decimals.",
+        "tip": "Type the grade point exactly as your university gives it, such as 3.7 for an A-. If a line is wrong, the tool names it in the error, so fix that line and press Calculate CGPA again.",
+        "limit": "The tool uses the grade points you type; it does not convert letter grades for you. Each line must have exactly three parts: course name, credit hours and grade point. Credit hours must be above zero and grade points cannot be negative.",
+        "example": "Typing 'Math, 3, 3.7' and 'English, 3, 3.3' gives a CGPA of 3.50 across 6 credit hours.",
+        "faq": [
+          [
+            "How do I write a course line?",
+            "One course per line as: Course, credit hours, grade point. For example: Math, 3, 3.7. The course name can be anything; the numbers must be in the right order."
+          ],
+          [
+            "Does the tool convert A, B and C grades?",
+            "No. It uses the grade points you type. Convert your letter grades to grade points first, using your university's scale, then enter the numbers."
+          ],
+          [
+            "What if one of my lines is wrong?",
+            "The tool shows an error naming the exact line, such as 'Invalid course line: Math, 3'. Fix that line and press Calculate CGPA again."
+          ],
+          [
+            "Why is the CGPA weighted?",
+            "Because a 3-credit course counts more than a 1-credit course. Each grade point is multiplied by its credit hours before the average is worked out."
+          ]
+        ]
+      }
     },
     {
       "slug": "invoice-generator",
@@ -2104,7 +3457,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "content": {
         "use": "An invoice generator is for freelancers, shops and small businesses that need a clean bill for a client: the work done, the quantity, the price, the tax and the total, as a PDF that can be sent on WhatsApp or email.",
         "tip": "Enter one item per line as item, quantity, price. Choose a template before you download. Template 2 has a coloured header and a notes line, Template 1 is plain and simple.",
@@ -2118,10 +3471,24 @@
           [
             "Are there different invoice templates?",
             "Yes, two. Template 1 is a plain, simple invoice. Template 2 has a coloured header and a notes line for payment details."
+          ],
+          [
+            "Can I see the total before downloading?",
+            "Yes. Press Calculate Summary first. The summary box shows each item, the subtotal, the tax and the total, so you can check the numbers."
+          ],
+          [
+            "Does it work out GST for me?",
+            "No. You enter the tax percentage yourself, and the tool adds it to the subtotal. It does not know the GST rules for your business."
           ]
         ]
       },
-      "meta_description": "Generate a bill with items, tax and total as a PDF, free in your browser. A clean invoice for your business."
+      "meta_description": "Generate a bill with items, tax and total as a PDF, free in your browser. A clean invoice for your business.",
+      "steps": [
+        "Type the Business name, Client name and Invoice date.",
+        "Choose Template 1 (plain and simple) or Template 2 (coloured header, with a Notes field) in the Template list.",
+        "List the items, one per line, as: Item name, quantity, price.",
+        "Type the Tax percent, press Calculate Summary to check the totals, then press Download Invoice PDF."
+      ]
     },
     {
       "slug": "resume-builder",
@@ -2148,7 +3515,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "content": {
         "use": "A resume builder is for a job seeker who needs a clean, one-page resume quickly: name, job title, contact details, skills and experience, as a PDF that can be attached to an application.",
         "tip": "Keep the experience short and specific, with numbers where you can: how many records, how many reports, how much time saved. Choose a template before you download.",
@@ -2162,10 +3529,24 @@
           [
             "Can I edit the resume after downloading it?",
             "The PDF is not editable. If you need changes, edit the fields on this page and download it again."
+          ],
+          [
+            "What do I put in the skills box?",
+            "Your skills separated by commas, such as Excel, Power BI, Reporting. The template lays them out for you in the downloaded PDF."
+          ],
+          [
+            "Can I add a photo to my resume?",
+            "No. There is no photo field. The resume has your name, job title, contact details, skills and experience only, with nothing else on the page."
           ]
         ]
       },
-      "meta_description": "Build a clean PDF resume quickly, free in your browser. Add your name, skills and experience, then download."
+      "meta_description": "Build a clean PDF resume quickly, free in your browser. Add your name, skills and experience, then download.",
+      "steps": [
+        "Type your Full name, Job title, Email, Phone and Skills (comma-separated).",
+        "Choose Template 1 (classic single column) or Template 2 (coloured header, skills as bullets) in the Template list.",
+        "Write your experience in the Experience box.",
+        "Press Download Resume PDF and save the file."
+      ]
     },
     {
       "slug": "color-palette",
@@ -2190,8 +3571,37 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-17",
-      "meta_description": "Create a colour palette from one base colour, free in your browser. Complementary, analogous and triadic palettes."
+      "lastReviewed": "2026-11-18",
+      "meta_description": "Create a colour palette from one base colour, free in your browser. Complementary, analogous and triadic palettes.",
+      "steps": [
+        "Pick a base colour with the colour picker, or type a hex code.",
+        "Press Generate Palette.",
+        "Click any swatch to copy its hex code."
+      ],
+      "content": {
+        "use": "Color Palette builds a matching set of six colours from one base colour, so you can pick colours for a poster, a slide or a website without guessing. A student picks colours for a class presentation. A shop owner picks colours for a price poster. An office worker picks colours for a report cover. You choose a base colour, and the tool works out a complementary colour opposite it, two analogous colours beside it, and two triadic colours spaced around the colour wheel. Each colour is shown as a swatch with its hex code, and clicking a swatch copies the code.",
+        "tip": "Start with your brand or favourite colour as the base. Use the complementary colour for highlights and the analogous colours for backgrounds, so the design stays calm and matching.",
+        "limit": "The palette is worked out from colour-wheel maths only. It does not check contrast or readability, so test the colours together before you use them in a design. The base colour must be a valid 6-digit hex code.",
+        "example": "Picking a teal base colour such as #0F766E and pressing Generate Palette gives six swatches: the base, its complementary colour, two analogous colours and two triadic colours, each with a hex code to copy.",
+        "faq": [
+          [
+            "What colours does the palette include?",
+            "Six swatches: the Base colour, its Complementary colour opposite it on the wheel, Analogous -30 and Analogous +30 beside it, and Triadic +120 and Triadic +240 spaced around the wheel."
+          ],
+          [
+            "How do I copy a hex code?",
+            "Click the swatch. The hex code is copied to your clipboard, ready to paste into your design tool."
+          ],
+          [
+            "Does the tool check if the colours are readable together?",
+            "No. The palette is worked out from colour-wheel positions only. Test light text on dark backgrounds, and dark text on light ones, before you publish."
+          ],
+          [
+            "What hex code should I type?",
+            "A 6-digit code starting with #, such as #0F766E. The colour picker fills this in for you if you pick a colour with it."
+          ]
+        ]
+      }
     },
     {
       "slug": "land-converter",
@@ -2222,7 +3632,7 @@
       "regions": [
         "pk"
       ],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "pakistan-salary-tax-calculator",
         "zakat-calculator",
@@ -2247,6 +3657,14 @@
           [
             "How many Kanal are in 1 Acre?",
             "8 Kanal. 1 Acre is 43,560 square feet."
+          ],
+          [
+            "How many square yards are in 1 Kanal?",
+            "605 square yards. 1 Kanal is 5,445 square feet, and 1 square yard is 9 square feet, so 5,445 divided by 9 is 605."
+          ],
+          [
+            "Can I convert from square feet?",
+            "Yes. Choose Square feet in the From list and enter the area. The tool shows the same area in Marla, Kanal, Acre, square yards and square metres."
           ]
         ]
       },
@@ -2297,7 +3715,7 @@
       "regions": [
         "pk"
       ],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "badges": [
         {
           "label": "Verified TY2027",
@@ -2328,6 +3746,14 @@
           [
             "Is this the exact tax I will pay?",
             "No. It is an estimate from the FBR slabs only. Your employer may apply rebates and allowances, so check your payslip or ask a tax adviser for the exact figure."
+          ],
+          [
+            "Does it show the tax for each slab?",
+            "Yes. Below the result there is a breakdown table. It lists each income slab, the rate on that slab, and the tax charged on it."
+          ],
+          [
+            "Do I enter my gross salary or take-home pay?",
+            "Your gross monthly salary, before any tax is taken off. The calculator works out the tax and the take-home pay from that figure."
           ]
         ]
       },
@@ -2376,7 +3802,7 @@
       "regions": [
         "pk"
       ],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "related": [
         "pakistan-salary-tax-calculator",
         "amount-to-words",
@@ -2401,6 +3827,14 @@
           [
             "How much Zakat do I pay?",
             "2.5% of your net zakatable wealth, after subtracting debts, once it has been held for one lunar year."
+          ],
+          [
+            "Can I set my own nisab?",
+            "Yes. Enter it in the Custom nisab box. If you leave it empty, the calculator uses the silver nisab from the silver rate you entered."
+          ],
+          [
+            "Does my house or car count?",
+            "No. The calculator only counts cash, gold and silver. Your house, car and other personal items are not entered and are not counted."
           ]
         ]
       },
@@ -2449,7 +3883,7 @@
       "regions": [
         "pk"
       ],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "steps": [
         "Type the amount in rupees, with or without commas.",
         "Press Write in Words.",
@@ -2468,6 +3902,14 @@
           [
             "Does it work for paisa too?",
             "Yes. An amount such as 1,250.50 becomes one thousand two hundred fifty rupees and fifty paisa only."
+          ],
+          [
+            "Does it write the amount in Urdu too?",
+            "Yes. Every result shows two lines, the amount in English and the same amount in Urdu, written right to left with lakh and crore."
+          ],
+          [
+            "What is the largest amount it can write?",
+            "999,999,999 rupees. Amounts from 0 up to that limit work. A larger amount gives an error asking for a smaller one."
           ]
         ]
       },
@@ -2515,7 +3957,7 @@
       "regions": [
         "pk"
       ],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "steps": [
         "Paste your Urdu text in the box.",
         "Press Count Words.",
@@ -2534,6 +3976,14 @@
           [
             "What reading speed does it use?",
             "200 words per minute, which is a normal adult reading speed. Your own speed may be faster or slower."
+          ],
+          [
+            "Can I paste English text too?",
+            "Yes. The counter splits text on spaces, so English words are counted the same way. The reading time is still worked out at 200 words per minute."
+          ],
+          [
+            "How long will my text take to read?",
+            "The result shows the reading time in minutes, worked out at 200 words per minute. A 300-word essay takes about 2 minutes."
           ]
         ]
       },
@@ -2583,7 +4033,7 @@
       "regions": [
         "pk"
       ],
-      "lastReviewed": "2026-11-17",
+      "lastReviewed": "2026-11-18",
       "steps": [
         "Enter obtained marks, total marks and the weight for each part (up to 3 parts).",
         "Make sure the weights add up to 100%.",
@@ -2602,6 +4052,14 @@
           [
             "What if my weights do not add up to 100%?",
             "The tool stops and tells you the total, because an aggregate only makes sense when the weights add up to 100%. Fix the weights and try again."
+          ],
+          [
+            "How many parts can I enter?",
+            "Up to 3 parts. Fill in the obtained marks, total marks and weight for each part you use, and leave the rest blank."
+          ],
+          [
+            "Does it show each part's share?",
+            "Yes. The result lists every part with its percentage and its contribution. Part 1 at 81.82 percent with 10 percent weight gives 8.18."
           ]
         ]
       },

@@ -273,7 +273,7 @@
         <div id="workspaceEmpty" class="workspace-empty">Select a tool above to open its workspace.</div>
 
         <div class="workspace-tool" id="tool-create">
-          <h3>Create PDF</h3>
+          <h2>Create PDF</h2>
           <label class="sr-only" for="createText">Text for your PDF</label>
           <textarea id="createText" rows="5" placeholder="Type the text for your PDF here…"></textarea>
           <button id="createPdfBtn" type="button" class="btn-primary">Create &amp; Download PDF</button>
@@ -281,21 +281,21 @@
         </div>
 
         <div class="workspace-tool" id="tool-images">
-          <h3>Images to PDF</h3>
+          <h2>Images to PDF</h2>
           <input id="imagesInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
           <button id="imagesPdfBtn" type="button" class="btn-primary">Convert Images to PDF</button>
           <p class="status" id="imagesPdfStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-merge">
-          <h3>Merge PDF</h3>
+          <h2>Merge PDF</h2>
           <input id="mergeInput" type="file" accept="application/pdf" multiple>
           <button id="mergePdfBtn" type="button" class="btn-primary">Merge PDFs</button>
           <p class="status" id="mergePdfStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-split">
-          <h3>Split PDF</h3>
+          <h2>Split PDF</h2>
           <input id="splitInput" type="file" accept="application/pdf">
           <div class="field-row">
             <label>Start page <input id="splitStart" type="number" min="1" value="1"></label>
@@ -306,7 +306,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-rotate">
-          <h3>Rotate PDF</h3>
+          <h2>Rotate PDF</h2>
           <input id="rotateInput" type="file" accept="application/pdf">
           <label>Angle
             <select id="rotateAngle"><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select>
@@ -316,14 +316,14 @@
         </div>
 
         <div class="workspace-tool" id="tool-numbers">
-          <h3>Add Page Numbers</h3>
+          <h2>Add Page Numbers</h2>
           <input id="numbersInput" type="file" accept="application/pdf">
           <button id="pageNumbersBtn" type="button" class="btn-primary">Add Page Numbers</button>
           <p class="status" id="pageNumbersStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-compress">
-          <h3>Compress PDF</h3>
+          <h2>Compress PDF</h2>
           <input id="compressInput" type="file" accept="application/pdf">
           <label>Quality <input id="compressQuality" type="range" min="10" max="100" value="70"> <span id="compressQualityLabel">70%</span></label>
           <button id="compressPdfBtn" type="button" class="btn-primary">Compress PDF</button>
@@ -331,7 +331,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-remove">
-          <h3>Remove Pages</h3>
+          <h2>Remove Pages</h2>
           <input id="removePagesInput" type="file" accept="application/pdf">
           <label>Pages to remove <input id="removePagesList" type="text" placeholder="Example: 2, 4-5"></label>
           <button id="removePagesBtn" type="button" class="btn-primary">Remove Pages</button>
@@ -339,7 +339,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-watermark">
-          <h3>Add Watermark</h3>
+          <h2>Add Watermark</h2>
           <input id="watermarkInput" type="file" accept="application/pdf">
           <label>Watermark text <input id="watermarkText" type="text" placeholder="Example: DRAFT" maxlength="60"></label>
           <div class="field-row">
@@ -355,14 +355,14 @@
         </div>
 
         <div class="workspace-tool" id="tool-pdftext">
-          <h3>PDF to Text</h3>
+          <h2>PDF to Text</h2>
           <input id="pdfTextInput" type="file" accept="application/pdf">
           <button id="pdfTextBtn" type="button" class="btn-primary">Extract Text</button>
           <p class="status" id="pdfTextStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-pdfimages">
-          <h3>PDF to Images</h3>
+          <h2>PDF to Images</h2>
           <input id="pdfImagesInput" type="file" accept="application/pdf">
           <button id="pdfImagesBtn" type="button" class="btn-primary">Convert Pages to Images</button>
           <div id="pdfImagesOutput" class="image-output"></div>
@@ -370,7 +370,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-esign">
-          <h3>e-Sign</h3>
+          <h2>e-Sign</h2>
           <canvas id="esignCanvas" width="520" height="180" aria-label="Electronic signature drawing canvas"></canvas>
           <div class="field-row">
             <button id="esignClearBtn" type="button" class="btn-secondary">Clear Signature</button>
@@ -380,63 +380,63 @@
         </div>
 
         <div class="workspace-tool" id="tool-pdfexcel">
-          <h3>PDF to Excel</h3>
+          <h2>PDF to Excel</h2>
           <input id="pdfExcelInput" type="file" accept="application/pdf">
           <button id="pdfExcelBtn" type="button" class="btn-primary">Convert PDF to Excel</button>
           <p class="status" id="pdfExcelStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-pdfword">
-          <h3>PDF to Word</h3>
+          <h2>PDF to Word</h2>
           <input id="pdfWordInput" type="file" accept="application/pdf">
           <button id="pdfWordBtn" type="button" class="btn-primary">Convert PDF to Word</button>
           <p class="status" id="pdfWordStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-pdfppt">
-          <h3>PDF to PPT</h3>
+          <h2>PDF to PPT</h2>
           <input id="pdfPptInput" type="file" accept="application/pdf">
           <button id="pdfPptBtn" type="button" class="btn-primary">Convert PDF to PPT</button>
           <p class="status" id="pdfPptStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-txthtml">
-          <h3>TXT / HTML to PDF</h3>
+          <h2>TXT / HTML to PDF</h2>
           <textarea id="txtHtmlInput" rows="4" placeholder="Paste text or simple HTML here…"></textarea>
           <button id="txtHtmlPdfBtn" type="button" class="btn-primary">Convert Text to PDF</button>
           <p class="status" id="txtHtmlPdfStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-excelpdf">
-          <h3>Excel to PDF</h3>
+          <h2>Excel to PDF</h2>
           <input id="excelPdfInput" type="file" accept=".xlsx,.xls">
           <button id="excelPdfBtn" type="button" class="btn-primary">Convert Excel to PDF</button>
           <p class="status" id="excelPdfStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-wordpdf">
-          <h3>Word to PDF</h3>
+          <h2>Word to PDF</h2>
           <input id="wordPdfInput" type="file" accept=".docx">
           <button id="wordPdfBtn" type="button" class="btn-primary">Convert Word to PDF</button>
           <p class="status" id="wordPdfStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-pptpdf">
-          <h3>PPT to PDF</h3>
+          <h2>PPT to PDF</h2>
           <input id="pptPdfInput" type="file" accept=".pptx">
           <button id="pptPdfBtn" type="button" class="btn-primary">Convert PPT to PDF</button>
           <p class="status" id="pptPdfStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-excelcsv">
-          <h3>Excel to CSV</h3>
+          <h2>Excel to CSV</h2>
           <input id="excelCsvInput" type="file" accept=".xlsx,.xls">
           <button id="excelCsvBtn" type="button" class="btn-primary">Convert Excel to CSV</button>
           <p class="status" id="excelCsvStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-csvxcel">
-          <h3>CSV to Excel</h3>
+          <h2>CSV to Excel</h2>
           <input id="csvExcelInput" type="file" accept=".csv,text/csv">
           <label class="sr-only" for="csvExcelText">Paste CSV text</label>
           <textarea id="csvExcelText" rows="4" placeholder="Or paste CSV text here…"></textarea>
@@ -445,7 +445,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-excel">
-          <h3>Excel Tools</h3>
+          <h2>Excel Tools</h2>
           <div class="excel-layout">
             <div class="excel-left">
               <div class="excel-tabs" role="tablist" aria-label="Excel modules">
@@ -474,7 +474,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-organize">
-          <h3>Organize PDF</h3>
+          <h2>Organize PDF</h2>
           <input id="organizeInput" type="file" accept="application/pdf">
           <label>New page order <input id="organizeOrder" type="text" placeholder="Example: 3,1,2"></label>
           <button id="organizeBtn" type="button" class="btn-primary">Reorder PDF</button>
@@ -482,7 +482,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-editpdf">
-          <h3>Edit PDF</h3>
+          <h2>Edit PDF</h2>
           <input id="editPdfInput" type="file" accept="application/pdf">
           <label>Text to add <input id="editPdfText" type="text" placeholder="Type text to add" maxlength="200"></label>
           <div class="field-row">
@@ -499,7 +499,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-imgcompress">
-          <h3>Image Compressor</h3>
+          <h2>Image Compressor</h2>
           <input id="imgCompressInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
           <label>Quality <input id="imgCompressQuality" type="range" min="10" max="100" value="80"> <span id="imgCompressQualityLabel">80%</span></label>
           <button id="imgCompressBtn" type="button" class="btn-primary">Compress Images</button>
@@ -508,7 +508,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-imgresize">
-          <h3>Image Resizer</h3>
+          <h2>Image Resizer</h2>
           <input id="imgResizeInput" type="file" accept="image/jpeg,image/png,image/webp">
           <div class="field-row">
             <label>Width (px) <input id="imgResizeWidth" type="number" min="1" max="8000" placeholder="Width"></label>
@@ -523,7 +523,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-imgconvert">
-          <h3>Image Converter</h3>
+          <h2>Image Converter</h2>
           <input id="imgConvertInput" type="file" accept="image/jpeg,image/png,image/webp">
           <label>Output format
             <select id="imgConvertFormat"><option value="jpg">JPG</option><option value="png">PNG</option><option value="webp">WebP</option></select>
@@ -533,7 +533,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-ocr">
-          <h3>Image to Text</h3>
+          <h2>Image to Text</h2>
           <input id="ocrInput" type="file" accept="image/jpeg,image/png,image/webp">
           <button id="ocrBtn" type="button" class="btn-primary">Read Text from Image</button>
           <pre id="ocrOutput" class="terminal">Recognized text will appear here.</pre>
@@ -542,7 +542,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-qr">
-          <h3>QR Code Generator</h3>
+          <h2>QR Code Generator</h2>
           <label>Text or URL <input id="qrText" type="text" placeholder="https://example.com"></label>
           <button id="qrBtn" type="button" class="btn-primary">Generate QR Code</button>
           <div id="qrContainer" aria-label="Generated QR code"></div>
@@ -551,7 +551,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-password">
-          <h3>Password Generator</h3>
+          <h2>Password Generator</h2>
           <label>Length <input id="pwdLength" type="range" min="8" max="64" value="16"> <span id="pwdLengthLabel">16</span></label>
           <div class="field-row">
             <label><input id="pwdUpper" type="checkbox" checked> Uppercase</label>
@@ -566,14 +566,14 @@
         </div>
 
         <div class="workspace-tool" id="tool-wordcount">
-          <h3>Word Counter</h3>
+          <h2>Word Counter</h2>
           <textarea id="wordCountInput" rows="6" placeholder="Type or paste text here…"></textarea>
           <pre id="wordCountOutput" class="terminal">Words: 0 | Characters: 0 | Characters (no spaces): 0 | Sentences: 0 | Paragraphs: 0 | Reading time: 0 min</pre>
           <p class="status" id="wordCountStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-json">
-          <h3>JSON Formatter</h3>
+          <h2>JSON Formatter</h2>
           <textarea id="jsonInput" rows="6" placeholder='Paste JSON here, for example: {"name": "AK Premium"}'></textarea>
           <div class="field-row">
             <button id="jsonFormatBtn" type="button" class="btn-primary">Format</button>
@@ -586,7 +586,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-base64">
-          <h3>Base64</h3>
+          <h2>Base64</h2>
           <textarea id="base64Input" rows="5" placeholder="Type text to encode, or Base64 to decode…"></textarea>
           <div class="field-row">
             <button id="base64EncodeBtn" type="button" class="btn-primary">Encode</button>
@@ -598,7 +598,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-age">
-          <h3>Age Calculator</h3>
+          <h2>Age Calculator</h2>
           <label>Date of birth <input id="ageDob" type="date"></label>
           <button id="ageBtn" type="button" class="btn-primary">Calculate Age</button>
           <pre id="ageOutput" class="terminal">Your exact age will appear here.</pre>
@@ -606,7 +606,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-percent">
-          <h3>Percentage Calculator</h3>
+          <h2>Percentage Calculator</h2>
           <label>Calculation
             <select id="percentMode"><option value="of">X% of Y</option><option value="share">X is what % of Y</option><option value="change">Percentage change from X to Y</option></select>
           </label>
@@ -620,7 +620,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-bmi">
-          <h3>BMI Calculator</h3>
+          <h2>BMI Calculator</h2>
           <div class="field-row">
             <label>Height (cm) <input id="bmiHeight" type="number" min="1" placeholder="Height in cm"></label>
             <label>Weight (kg) <input id="bmiWeight" type="number" min="1" placeholder="Weight in kg"></label>
@@ -631,7 +631,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-invoice">
-          <h3>Invoice Generator</h3>
+          <h2>Invoice Generator</h2>
           <div class="field-row">
             <label>Business name <input id="invoiceBusiness" type="text" placeholder="Your business name"></label>
             <label>Client name <input id="invoiceClient" type="text" placeholder="Client name"></label>
@@ -649,7 +649,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-resume">
-          <h3>Resume Builder</h3>
+          <h2>Resume Builder</h2>
           <div class="field-row">
             <label>Full name <input id="resumeName" type="text" placeholder="Full name"></label>
             <label>Job title <input id="resumeTitle" type="text" placeholder="Job title"></label>
@@ -666,7 +666,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-case">
-          <h3>Case Converter</h3>
+          <h2>Case Converter</h2>
           <textarea id="caseInput" rows="5" placeholder="Type or paste text here…"></textarea>
           <div class="field-row">
             <button type="button" class="btn-primary" data-case-mode="upper">UPPERCASE</button>
@@ -680,7 +680,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-uuid">
-          <h3>UUID Generator</h3>
+          <h2>UUID Generator</h2>
           <div class="field-row">
             <button id="uuidBtn" type="button" class="btn-primary">Generate UUID</button>
             <button id="uuidBtn5" type="button" class="btn-secondary">Generate 5</button>
@@ -691,7 +691,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-palette">
-          <h3>Color Palette</h3>
+          <h2>Color Palette</h2>
           <label>Base color <input id="paletteBase" type="color" value="#4f46e5"></label>
           <button id="paletteBtn" type="button" class="btn-primary">Generate Palette</button>
           <div id="paletteOutput" class="palette-output"></div>
@@ -699,7 +699,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-emi">
-          <h3>Loan / EMI Calculator</h3>
+          <h2>Loan / EMI Calculator</h2>
           <div class="field-row">
             <label>Loan amount <input id="emiPrincipal" type="number" min="1" placeholder="Loan amount"></label>
             <label>Annual interest rate (%) <input id="emiRate" type="number" min="0" step="0.01" placeholder="Rate %"></label>
@@ -711,7 +711,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-cgpa">
-          <h3>CGPA Calculator</h3>
+          <h2>CGPA Calculator</h2>
           <label>Courses (one per line: Course, credit hours, grade point)</label>
           <textarea id="cgpaInput" rows="4" placeholder="Math, 3, 3.7"></textarea>
           <button id="cgpaBtn" type="button" class="btn-primary">Calculate CGPA</button>
@@ -720,7 +720,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-csvjson">
-          <h3>CSV to JSON</h3>
+          <h2>CSV to JSON</h2>
           <input id="csvJsonFile" type="file" accept=".csv,text/csv">
           <label>Or paste CSV text (first row is the header)</label>
           <textarea id="csvJsonText" rows="4" placeholder="name,age&#10;Ali,25"></textarea>
@@ -734,7 +734,7 @@
         </div>
 
         <div class="workspace-tool" id="tool-diff">
-          <h3>Text Diff Checker</h3>
+          <h2>Text Diff Checker</h2>
           <label>Original text</label>
           <textarea id="diffOriginal" rows="5" placeholder="Original text…"></textarea>
           <label>Changed text</label>
@@ -751,7 +751,7 @@
       <!-- FAQ: all explanations live here, not on tool cards -->
 
         <div class="workspace-tool" id="tool-unlock">
-          <h3>Unlock PDF</h3>
+          <h2>Unlock PDF</h2>
           <p>For a password-protected PDF, enter the password. This rebuilds a text PDF from the extracted text in your browser. Layout may change. It does not crack or guess a password.</p>
           <input id="unlockInput" type="file" accept="application/pdf">
           <label>PDF password <input id="unlockPassword" type="password" autocomplete="off"></label>
@@ -759,7 +759,7 @@
           <p class="status" id="unlockPdfStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-protect">
-          <h3>Protect PDF</h3>
+          <h2>Protect PDF</h2>
           <p>Standard PDF password encryption needs a native engine and is not faked here. This tool encrypts the whole file in your browser with AES-GCM and downloads a .akenc file. Only this Unlock tool, with the same password, can open that .akenc file again. It is not a standard password-protected PDF.</p>
           <input id="protectInput" type="file" accept="application/pdf">
           <label>Password <input id="protectPassword" type="password" autocomplete="off"></label>
@@ -767,14 +767,14 @@
           <p class="status" id="protectPdfStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-crop">
-          <h3>Crop PDF</h3>
+          <h2>Crop PDF</h2>
           <input id="cropInput" type="file" accept="application/pdf">
           <label>Crop margin, points <input id="cropMargin" type="number" min="0" max="200" value="36"></label>
           <button id="cropPdfBtn" type="button" class="btn-primary">Crop PDF</button>
           <p class="status" id="cropPdfStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-redact">
-          <h3>Redact PDF</h3>
+          <h2>Redact PDF</h2>
           <p>Enter exact text to cover. Matching text is covered with a black box on a copy. The original text layer under the box is not guaranteed to be removed by every reader, so check the result before sharing sensitive files.</p>
           <input id="redactInput" type="file" accept="application/pdf">
           <label>Text to redact <input id="redactText" type="text"></label>
@@ -782,7 +782,7 @@
           <p class="status" id="redactPdfStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-pdfa">
-          <h3>PDF to PDF/A</h3>
+          <h2>PDF to PDF/A</h2>
           <p>Archive-style copy with title, author and creation metadata set, re-saved in your browser. This is not a certified PDF/A validation.</p>
           <input id="pdfaInput" type="file" accept="application/pdf">
           <label>Title <input id="pdfaTitle" type="text"></label>
@@ -790,14 +790,14 @@
           <p class="status" id="pdfaPdfStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-repair">
-          <h3>Repair PDF</h3>
+          <h2>Repair PDF</h2>
           <p>Best effort only. Tries to re-save the file, then falls back to rebuilding a text PDF from any readable text.</p>
           <input id="repairInput" type="file" accept="application/pdf">
           <button id="repairPdfBtn" type="button" class="btn-primary">Repair PDF</button>
           <p class="status" id="repairPdfStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-compare">
-          <h3>Compare PDF</h3>
+          <h2>Compare PDF</h2>
           <input id="compareInputA" type="file" accept="application/pdf">
           <input id="compareInputB" type="file" accept="application/pdf">
           <button id="comparePdfBtn" type="button" class="btn-primary">Compare PDFs</button>
@@ -805,34 +805,34 @@
           <pre id="comparePdfOutput" class="output-box"></pre>
         </div>
         <div class="workspace-tool" id="tool-pdfmd">
-          <h3>PDF to Markdown</h3>
+          <h2>PDF to Markdown</h2>
           <input id="pdfmdInput" type="file" accept="application/pdf">
           <button id="pdfmdPdfBtn" type="button" class="btn-primary">Convert to Markdown</button>
           <p class="status" id="pdfmdPdfStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-scan">
-          <h3>Scan to PDF</h3>
+          <h2>Scan to PDF</h2>
           <p>Use your device camera, or upload a photo. The photo is turned into a PDF in your browser.</p>
           <input id="scanInput" type="file" accept="image/*" capture="environment">
           <button id="scanPdfBtn" type="button" class="btn-primary">Make PDF From Photo</button>
           <p class="status" id="scanPdfStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-ocrpdf">
-          <h3>OCR PDF</h3>
+          <h2>OCR PDF</h2>
           <p>Renders pages to images and reads them with OCR in your browser, then downloads a text PDF. Large PDFs take time. First run downloads OCR language data.</p>
           <input id="ocrpdfInput" type="file" accept="application/pdf">
           <button id="ocrpdfPdfBtn" type="button" class="btn-primary">OCR PDF</button>
           <p class="status" id="ocrpdfPdfStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-forms">
-          <h3>PDF Forms</h3>
+          <h2>PDF Forms</h2>
           <p>Creates a one-page fillable PDF with a name field, an email field, a checkbox and a dropdown, in your browser.</p>
           <label>Form title <input id="formsTitle" type="text" value="Application Form"></label>
           <button id="formsPdfBtn" type="button" class="btn-primary">Create Fillable PDF</button>
           <p class="status" id="formsPdfStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-summary">
-          <h3>Local Summarizer</h3>
+          <h2>Local Summarizer</h2>
           <p>No AI server is used. This picks the most frequent-topic sentences from the extracted text, in your browser.</p>
           <input id="summaryInput" type="file" accept="application/pdf">
           <label>Sentences <input id="summaryCount" type="number" min="1" max="10" value="5"></label>
@@ -841,7 +841,7 @@
           <pre id="summaryPdfOutput" class="output-box"></pre>
         </div>
         <div class="workspace-tool" id="tool-translate">
-          <h3>Translate Helper</h3>
+          <h2>Translate Helper</h2>
           <p>Automatic AI translation would need an external translation service, which would send your text off your browser. To keep files local, this tool extracts the PDF text as a .txt file, ready for you to translate in a service you choose.</p>
           <input id="translateInput" type="file" accept="application/pdf">
           <button id="translatePdfBtn" type="button" class="btn-primary">Extract Text for Translation</button>

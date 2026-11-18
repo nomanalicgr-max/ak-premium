@@ -1,0 +1,31 @@
+AK Premium — Third-party licences
+Last updated: 18 November 2026
+
+AK Premium is built with the open-source libraries, icons and fonts listed
+below. Each entry gives the project, its licence and where to find it.
+The full licence text for each project is in that project's own repository.
+The qpdf licence is kept on this site at /vendor/qpdf/LICENSE.
+
+Libraries (loaded from public CDNs, except qpdf-wasm which is self-hosted):
+- pdf-lib — MIT License — https://github.com/Hopding/pdf-lib
+- pdf.js — Apache License 2.0 — https://github.com/mozilla/pdf.js
+- jsPDF — MIT License — https://github.com/parallax/jsPDF
+- SheetJS (xlsx) — Apache License 2.0 — https://github.com/SheetJS/sheetjs
+- Tesseract.js — Apache License 2.0 — https://github.com/naptha/tesseract.js
+- mammoth — MIT License — https://github.com/mwilliamson/mammoth.js
+- docx — MIT License — https://github.com/dolanmiu/docx
+- PptxGenJS — MIT License — https://github.com/gitbrent/pptxgenjs
+- JSZip — MIT License — https://github.com/Stuk/jszip
+- QRCode (qrcodejs) — MIT License — https://github.com/davidshimjs/qrcodejs
+- qpdf-wasm — wrapper under the MIT License; qpdf itself under the Apache
+  License 2.0 — https://github.com/qpdf/qpdf
+
+Icons and fonts:
+- Lucide icons — ISC License — https://lucide.dev
+- Inter font — SIL Open Font License 1.1 — https://github.com/rsms/inter
+- Plus Jakarta Sans font — SIL Open Font License 1.1 —
+  https://github.com/tokotype/PlusJakartaSans
+- Noto Nastaliq Urdu font — SIL Open Font License 1.1 —
+  https://github.com/google/fonts
+
+Questions about licences: nomanalicgr@gmail.com

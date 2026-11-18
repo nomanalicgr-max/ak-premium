@@ -38,32 +38,45 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "11"  # Global shell (v11): content hashes replace ?v= for CSS/JS; config.js still uses ?v=.
+ASSET_V = "12"  # v12 (2026-11-18): Phase 2/3/4 completion — content for all 68 tools, More-section split, per-tool JS split, enforced CSP. Content hashes replace ?v= for CSS/JS; config.js still uses ?v=.
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
 # vercel.json. The unhashed file is the build source; the hashed copy is
 # what pages reference. Stale hashed copies from an earlier build are
 # removed, so the output dir never ships two versions of one asset.
-def hashed_asset(rel):
+def hashed_asset(rel, transform=None):
     src = OUT / rel
-    h = hashlib.sha256(src.read_bytes()).hexdigest()[:10]
+    data = src.read_bytes()
+    if transform:
+        data = transform(data.decode("utf-8")).encode("utf-8")
+    h = hashlib.sha256(data).hexdigest()[:10]
     dst = src.with_name(src.stem + "." + h + src.suffix)
     for old in src.parent.glob(src.stem + ".*" + src.suffix):
         if old != dst:
             old.unlink()
-    if not dst.exists() or dst.read_bytes() != src.read_bytes():
-        dst.write_bytes(src.read_bytes())
+    if not dst.exists() or dst.read_bytes() != data:
+        dst.write_bytes(data)
     return "/" + str(dst.relative_to(OUT))
 
-BUNDLE_CATS = ["pdf", "convert", "image", "excel", "calculators", "business", "developer", "design", "everyday", "pakistan"]
+# Fonts (Phase 4.3, v12): content-hashed like CSS/JS, so they can be cached
+# immutable (see vercel.json). The @font-face URLs in styles.css and the
+# preload links use these hashed names.
+FONT_NAMES = ["inter-var", "plus-jakarta-var", "noto-nastaliq-urdu"]
+FONT_HASHED = {n: hashed_asset("assets/fonts/" + n + ".woff2") for n in FONT_NAMES}
+def _css_font_urls(css):
+    for n in FONT_NAMES:
+        css = css.replace("/assets/fonts/" + n + ".woff2", FONT_HASHED[n])
+    return css
+
 HASHED = {
-    "styles": hashed_asset("assets/css/styles.css"),
+    "styles": hashed_asset("assets/css/styles.css", transform=_css_font_urls),
     "common": hashed_asset("assets/js/common.js"),
     "core": hashed_asset("assets/js/core.js"),
 }
-for _c in BUNDLE_CATS:
-    HASHED["bundle-" + _c] = hashed_asset("assets/js/bundle-" + _c + ".js")
+# Per-tool JS hashes are added after ALL_TOOLS is built (below): one
+# tools/<slug>.js per tool, written by split-app.py. The 10 category
+# bundles from v9-v11 are gone.
 
 # SRI hashes (Phase 4.2) for the 10 pinned CDN libraries, computed 2026-11-11
 # by downloading each file and hashing it with SHA-384. The docx URL was
@@ -120,8 +133,10 @@ STRINGS = json.loads((BUILD / "locales" / "en.json").read_text())
 # Recently used / Favourites (only when they exist), Popular, the category
 # sections, Country tools, Islamic tools, FAQ. Pakistan lives in the
 # Country tools band, not as a category section.
-CAT_ORDER = ["pdf", "convert", "image", "excel", "calculators", "more"]
-MORE_CATS = ["everyday", "developer", "business", "design"]  # grouped under one "More tools" section
+# Homepage section order (design brief 2.3, max 8 cards per section): every
+# category gets its own section. The old "More tools" group (12 cards) was
+# split into Everyday, Developer, Business and Design (v12).
+CAT_ORDER = ["pdf", "convert", "image", "excel", "calculators", "everyday", "developer", "business", "design"]
 CAT_ORDER_ALL = ["pdf", "convert", "excel", "image", "everyday", "developer", "calculators", "business", "design", "pakistan"]  # /tools index order
 
 # SVG sprite: Lucide icons (ISC license, https://lucide.dev) + sun/moon for
@@ -444,7 +459,7 @@ def ws_replace(wid, new_html):
     WORKSPACES[wid] = new_html
 
 ws_replace("tool-compress", '''<div class="workspace-tool" id="tool-compress">
-<h3>Compress PDF</h3>
+<h2>Compress PDF</h2><h2>Compress PDF</h2><h2>Compress PDF</h2>
 <input id="compressInput" type="file" accept="application/pdf">
 <label>Level <select id="compressLevel"><option value="light">Light — re-save, text stays selectable</option><option value="medium" selected>Medium — re-encode pages as images, good size saving</option><option value="strong">Strong — smallest file, text not selectable</option></select></label>
 <label>Quality <input id="compressQuality" type="range" min="10" max="100" value="70"> <span id="compressQualityLabel">70%</span></label>
@@ -454,7 +469,7 @@ ws_replace("tool-compress", '''<div class="workspace-tool" id="tool-compress">
 </div>''')
 
 ws_replace("tool-split", '''<div class="workspace-tool" id="tool-split">
-<h3>Split PDF</h3>
+<h2>Split PDF</h2>
 <input id="splitInput" type="file" accept="application/pdf">
 <label>Mode <select id="splitMode"><option value="range">Page ranges</option><option value="every">Extract every page (ZIP)</option></select></label>
 <label>Page ranges <input id="splitRanges" type="text" placeholder="Example: 1-3, 5, 8-10"></label>
@@ -464,7 +479,7 @@ ws_replace("tool-split", '''<div class="workspace-tool" id="tool-split">
 </div>''')
 
 ws_replace("tool-merge", '''<div class="workspace-tool" id="tool-merge">
-<h3>Merge PDF</h3>
+<h2>Merge PDF</h2>
 <input id="mergeInput" type="file" accept="application/pdf" multiple>
 <div id="mergeList" class="thumb-list" aria-label="Files to merge, drag to reorder"></div>
 <p class="file-limit-note">Files up to 50 MB each. Drag the thumbnails to change the order.</p>
@@ -473,7 +488,7 @@ ws_replace("tool-merge", '''<div class="workspace-tool" id="tool-merge">
 </div>''')
 
 ws_replace("tool-organize", '''<div class="workspace-tool" id="tool-organize">
-<h3>Organize PDF</h3>
+<h2>Organize PDF</h2>
 <input id="organizeInput" type="file" accept="application/pdf">
 <div id="organizeList" class="thumb-list" aria-label="Pages, drag to reorder"></div>
 <label>Or type a page order <input id="organizeOrder" type="text" placeholder="Example: 3,1,2"></label>
@@ -482,7 +497,7 @@ ws_replace("tool-organize", '''<div class="workspace-tool" id="tool-organize">
 </div>''')
 
 ws_replace("tool-protect", '''<div class="workspace-tool" id="tool-protect">
-<h3>Protect PDF</h3>
+<h2>Protect PDF</h2>
 <p>Real standard PDF password encryption (AES-256, qpdf). The file stays a normal .pdf and opens in Acrobat and Chrome with the password you set. Keep the password safe, it cannot be recovered.</p>
 <input id="protectInput" type="file" accept="application/pdf">
 <label>Password <input id="protectPassword" type="password" autocomplete="off" minlength="4"></label>
@@ -492,7 +507,7 @@ ws_replace("tool-protect", '''<div class="workspace-tool" id="tool-protect">
 </div>''')
 
 ws_replace("tool-unlock", '''<div class="workspace-tool" id="tool-unlock">
-<h3>Unlock PDF</h3>
+<h2>Unlock PDF</h2>
 <p>Removes the password from a standard password-protected PDF you own, keeping the original pages and layout. You must know the password. This tool does not guess or crack passwords.</p>
 <input id="unlockInput" type="file" accept="application/pdf">
 <label>PDF password <input id="unlockPassword" type="password" autocomplete="off"></label>
@@ -501,7 +516,7 @@ ws_replace("tool-unlock", '''<div class="workspace-tool" id="tool-unlock">
 </div>''')
 
 ws_replace("tool-redact", '''<div class="workspace-tool" id="tool-redact">
-<h3>Redact PDF</h3>
+<h2>Redact PDF</h2>
 <p>True redaction. Pages that contain the text are rebuilt as images with a black box burned in, so the covered text is gone and cannot be selected or copied. Pages without a match are copied unchanged.</p>
 <input id="redactInput" type="file" accept="application/pdf">
 <label>Text to redact <input id="redactText" type="text"></label>
@@ -510,7 +525,7 @@ ws_replace("tool-redact", '''<div class="workspace-tool" id="tool-redact">
 </div>''')
 
 ws_replace("tool-pdfword", '''<div class="workspace-tool" id="tool-pdfword">
-<h3>PDF to Word</h3>
+<h2>PDF to Word</h2>
 <p>Paragraphs are rebuilt from the text positions in the PDF. Original fonts, exact spacing, images and complex tables are not preserved.</p>
 <input id="pdfWordInput" type="file" accept="application/pdf">
 <label><input id="pdfWordOcr" type="checkbox"> Use OCR if no text is found (for scanned PDFs)</label>
@@ -519,7 +534,7 @@ ws_replace("tool-pdfword", '''<div class="workspace-tool" id="tool-pdfword">
 </div>''')
 
 ws_replace("tool-imgcompress", '''<div class="workspace-tool" id="tool-imgcompress">
-<h3>Image Compressor</h3>
+<h2>Image Compressor</h2>
 <input id="imgCompressInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
 <label>Quality <input id="imgCompressQuality" type="range" min="10" max="100" value="80"> <span id="imgCompressQualityLabel">80%</span></label>
 <label>Format <select id="imgCompressFormat"><option value="jpeg">JPEG (smallest for photos)</option><option value="png">PNG (keeps transparency)</option><option value="webp">WebP (small, good quality)</option></select></label>
@@ -530,7 +545,7 @@ ws_replace("tool-imgcompress", '''<div class="workspace-tool" id="tool-imgcompre
 </div>''')
 
 ws_replace("tool-ocr", '''<div class="workspace-tool" id="tool-ocr">
-<h3>Image to Text</h3>
+<h2>Image to Text</h2>
 <input id="ocrInput" type="file" accept="image/jpeg,image/png,image/webp">
 <label>Language <select id="ocrLang"><option value="eng">English</option><option value="urd">Urdu (اردو)</option><option value="ara">Arabic (العربية)</option><option value="hin">Hindi (हिन्दी)</option><option value="eng+urd">English + Urdu</option></select></label>
 <button id="ocrBtn" type="button" class="btn-primary">Read Text from Image</button>
@@ -541,7 +556,7 @@ ws_replace("tool-ocr", '''<div class="workspace-tool" id="tool-ocr">
 </div>''')
 
 ws_replace("tool-wordpdf", '''<div class="workspace-tool" id="tool-wordpdf">
-<h3>Word to PDF — Basic text conversion</h3>
+<h2>Word to PDF — Basic text conversion</h2>
 <p>Basic text conversion. Headings, lists and tables are kept where the structure allows, but fonts, images, headers, footers and exact page layout are not preserved.</p>
 <input id="wordPdfInput" type="file" accept=".docx">
 <button id="wordPdfBtn" type="button" class="btn-primary">Convert Word to PDF</button>
@@ -549,7 +564,7 @@ ws_replace("tool-wordpdf", '''<div class="workspace-tool" id="tool-wordpdf">
 </div>''')
 
 ws_replace("tool-pptpdf", '''<div class="workspace-tool" id="tool-pptpdf">
-<h3>PPT to PDF — Basic text conversion</h3>
+<h2>PPT to PDF — Basic text conversion</h2>
 <p>Basic text conversion. Only the slide text is carried over. Slide designs, images, charts, animations and transitions are not preserved.</p>
 <input id="pptPdfInput" type="file" accept=".pptx">
 <button id="pptPdfBtn" type="button" class="btn-primary">Convert PPT to PDF</button>
@@ -557,7 +572,7 @@ ws_replace("tool-pptpdf", '''<div class="workspace-tool" id="tool-pptpdf">
 </div>''')
 
 ws_replace("tool-excelpdf", '''<div class="workspace-tool" id="tool-excelpdf">
-<h3>Excel to PDF — Basic text conversion</h3>
+<h2>Excel to PDF — Basic text conversion</h2>
 <p>Basic text conversion. Only the first sheet is rendered, as plain text rows. Cell colours, formulas, charts and multiple sheets are not preserved.</p>
 <input id="excelPdfInput" type="file" accept=".xlsx,.xls">
 <button id="excelPdfBtn" type="button" class="btn-primary">Convert Excel to PDF</button>
@@ -565,7 +580,7 @@ ws_replace("tool-excelpdf", '''<div class="workspace-tool" id="tool-excelpdf">
 </div>''')
 
 ws_replace("tool-invoice", '''<div class="workspace-tool" id="tool-invoice">
-<h3>Invoice Generator</h3>
+<h2>Invoice Generator</h2>
 <label>Template <select id="invoiceTemplate"><option value="1">Template 1 — plain and simple</option><option value="2">Template 2 — coloured header with notes</option></select></label>
 <div class="field-row">
 <label>Business name <input id="invoiceBusiness" type="text" placeholder="Your business name"></label>
@@ -585,7 +600,7 @@ ws_replace("tool-invoice", '''<div class="workspace-tool" id="tool-invoice">
 </div>''')
 
 ws_replace("tool-resume", '''<div class="workspace-tool" id="tool-resume">
-<h3>Resume Builder</h3>
+<h2>Resume Builder</h2>
 <label>Template <select id="resumeTemplate"><option value="1">Template 1 — classic single column</option><option value="2">Template 2 — coloured header, skills as bullets</option></select></label>
 <div class="field-row">
 <label>Full name <input id="resumeName" type="text" placeholder="Full name"></label>
@@ -605,7 +620,7 @@ ws_replace("tool-resume", '''<div class="workspace-tool" id="tool-resume">
 # Excel wizards: replace the shared tool-excel workspace with 5 standalone workspaces
 def wizard_ws(wid, title, task_id, task_options, btn_id, out_id, status_id, fields_hint):
     opts = "".join('<option value="%s">%s</option>' % (v, n) for v, n in task_options)
-    return ('<div class="workspace-tool" id="%s">\n<h3>%s</h3>\n'
+    return ('<div class="workspace-tool" id="%s">\n<h2>%s</h2>\n'
             '<label>Task <select id="%s">%s</select></label>\n'
             '<div id="%s"></div>\n'
             '<p class="file-limit-note">%s</p>\n'
@@ -620,7 +635,7 @@ EXCEL_WS = {
     "formulaBtn", "formulaOutput", "formulaStatus",
     "Pick a task, fill in the labelled fields, and get the exact formula with a plain-language explanation and an example. This is a template builder, not AI."),
 "tool-excel-explainer": '''<div class="workspace-tool" id="tool-excel-explainer">
-<h3>Formula Explainer</h3>
+<h2>Formula Explainer</h2>
 <label>Formula <textarea id="explainerInput" rows="4" placeholder="Paste a formula here, for example: =VLOOKUP(A2, Sheet2!A:B, 2, FALSE)"></textarea></label>
 <button id="explainerBtn" type="button" class="btn-primary">Explain Formula</button>
 <pre id="explainerOutput" class="terminal" aria-live="polite">The explanation will appear here.</pre>
@@ -631,7 +646,7 @@ EXCEL_WS = {
     "vbaBtn", "vbaOutput", "vbaStatus",
     "Pick a task, fill in the labelled fields, and get VBA code built from a fixed template. Test it on a copy of your workbook first."),
 "tool-excel-regex": '''<div class="workspace-tool" id="tool-excel-regex">
-<h3>Regex Creator</h3>
+<h2>Regex Creator</h2>
 <label>Pattern for <select id="regexTask"><option value="email">Email address</option><option value="phonepk">Pakistan mobile number</option><option value="date">Date (DD/MM/YYYY)</option><option value="url">Web link</option><option value="numbers">Numbers in text</option><option value="cnic">Pakistan CNIC</option></select></label>
 <label>Test text (optional) <textarea id="regexTest" rows="4" placeholder="Paste some text to test the pattern on..."></textarea></label>
 <button id="regexBtn" type="button" class="btn-primary">Generate Pattern</button>
@@ -649,7 +664,7 @@ EXCEL_WS = {
 # Their workspace HTML stays in PAKISTAN_WS below.
 PAKISTAN_WS = {
 "tool-land": '''<div class="workspace-tool" id="tool-land">
-<h3>Land Converter</h3>
+<h2>Land Converter</h2>
 <label>Area <input id="landValue" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 1"></label>
 <label>From <select id="landFrom"><option value="marla">Marla</option><option value="kanal" selected>Kanal</option><option value="acre">Acre</option><option value="sqft">Square feet</option><option value="sqyd">Square yards</option><option value="sqm">Square metres</option></select></label>
 <button id="landBtn" type="button" class="btn-primary">Convert Land Area</button>
@@ -657,7 +672,7 @@ PAKISTAN_WS = {
 <p class="status" id="landStatus" aria-live="polite"></p>
 </div>''',
 "tool-tax": '''<div class="workspace-tool" id="tool-tax">
-<h3>Pakistan Salary Tax Calculator</h3>
+<h2>Pakistan Salary Tax Calculator</h2>
 <label>Tax year <select id="taxYear"><option>Loading tax slabs...</option></select></label>
 <label>Monthly salary (Rs) <input id="taxMonthly" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 200000"></label>
 <button id="taxBtn" type="button" class="btn-primary">Calculate Tax</button>
@@ -668,7 +683,7 @@ PAKISTAN_WS = {
 <p class="file-limit-note">Estimate only, using FBR slabs for salaried individuals. Not tax advice.</p>
 </div>''',
 "tool-zakat": '''<div class="workspace-tool" id="tool-zakat">
-<h3>Zakat Calculator</h3>
+<h2>Zakat Calculator</h2>
 <div class="field-row"><label>Cash and bank (Rs) <input id="zakatCash" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Debts to subtract (Rs) <input id="zakatDebts" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
 <div class="field-row"><label>Gold (tola) <input id="zakatGold" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Gold rate per tola (Rs) <input id="zakatGoldRate" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
 <div class="field-row"><label>Silver (tola) <input id="zakatSilver" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Silver rate per tola (Rs) <input id="zakatSilverRate" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
@@ -679,21 +694,21 @@ PAKISTAN_WS = {
 <p class="file-limit-note">Estimate only, not religious advice. Nisab is 7.5 tola gold or 52.5 tola silver.</p>
 </div>''',
 "tool-amountwords": '''<div class="workspace-tool" id="tool-amountwords">
-<h3>Amount to Words</h3>
+<h2>Amount to Words</h2>
 <label>Amount (Rs) <input id="amountWordsInput" type="text" placeholder="Example: 125000"></label>
 <button id="amountWordsBtn" type="button" class="btn-primary">Write in Words</button>
 <div id="amountWordsOutput" class="terminal" aria-live="polite">The amount in words will appear here.</div>
 <p class="status" id="amountWordsStatus" aria-live="polite"></p>
 </div>''',
 "tool-urducount": '''<div class="workspace-tool" id="tool-urducount">
-<h3>Urdu Word Counter</h3>
+<h2>Urdu Word Counter</h2>
 <label>Urdu text <textarea id="urduCounterInput" rows="6" dir="rtl" lang="ur" placeholder="یہاں اردو متن لکھیں..."></textarea></label>
 <button id="urduCounterBtn" type="button" class="btn-primary">Count Words</button>
 <pre id="urduCounterOutput" class="terminal" aria-live="polite" dir="rtl">The count will appear here.</pre>
 <p class="status" id="urduCounterStatus" aria-live="polite"></p>
 </div>''',
 "tool-merit": '''<div class="workspace-tool" id="tool-merit">
-<h3>Percentage &amp; Merit Calculator</h3>
+<h2>Percentage &amp; Merit Calculator</h2>
 <p class="file-limit-note">Enter up to 3 parts. Weights must add up to 100%.</p>
 <div class="field-row"><label>Part 1 obtained <input id="meritObtained1" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 1 total <input id="meritTotal1" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 1 weight % <input id="meritWeight1" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label></div>
 <div class="field-row"><label>Part 2 obtained <input id="meritObtained2" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 2 total <input id="meritTotal2" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 2 weight % <input id="meritWeight2" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label></div>
@@ -732,6 +747,10 @@ for e in REGISTRY:
     })
 assert len({t["slug"] for t in ALL_TOOLS}) == len(ALL_TOOLS), "duplicate slugs"
 
+# Per-tool JS hashes are added in main() (below), after split-app.py has
+# written tools/<slug>.js: one tools/<slug>.js per tool. The 10 category
+# bundles from v9-v11 are gone.
+
 # Library needs per workspace (pinned versions in app.js LIB_URLS)
 # Library needs per workspace now live in data/tools.json ("libs").
 LIB_MAP = {e["workspace"]: list(e["libs"]) for e in REGISTRY}
@@ -748,6 +767,16 @@ LIB_SCRIPT = {
  "jspdf": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="' + SRI["jspdf"] + '" crossorigin="anonymous"></script>',
 }
 
+# Preconnect hosts (Phase 4.3): one <link rel="preconnect"> per CDN host a
+# tool page actually loads libraries from (see tool_page).
+LIB_HOST = {
+ "pdf-lib": "https://cdn.jsdelivr.net", "xlsx": "https://cdn.jsdelivr.net",
+ "docx": "https://cdn.jsdelivr.net", "pptxgenjs": "https://cdn.jsdelivr.net",
+ "tesseract": "https://cdn.jsdelivr.net", "pdfjs": "https://cdnjs.cloudflare.com",
+ "jszip": "https://cdnjs.cloudflare.com", "mammoth": "https://cdnjs.cloudflare.com",
+ "qrcode": "https://cdnjs.cloudflare.com", "jspdf": "https://cdnjs.cloudflare.com",
+}
+
 def esc(x): return html.escape(str(x), quote=True)
 def tool_url(t): return SITE_URL + "/tools/" + t["slug"]
 def content_for(t):
@@ -762,14 +791,16 @@ def content_for(t):
 
 def faq_list(t, use, tip, limit):
     name = t["name"]
-    faqs = [
+    # Specific FAQs first (from the registry content), then the generic ones
+    # only as filler up to 6 total — so a tool with 4 specific FAQs shows
+    # all 4, instead of the generic questions pushing them off the page.
+    faqs = list(content_for(t)[4])
+    faqs += [
         ("Is " + name + " free?", "Yes. " + name + " on AK Premium is free to use in your browser, with no sign-up and no account."),
         ("Do my files leave my browser when I use " + name + "?", "No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device."),
         ("How do I use " + name + "?", "Open the tool on this page and follow the steps under How to use, then download or copy your result."),
         ("What are the limits of " + name + "?", limit),
     ]
-    for q, a in content_for(t)[4]:
-        faqs.append((q, a))
     return faqs[:6]
 
 # Specific steps per tool (Phase 3.5): they name the real buttons and fields
@@ -812,7 +843,7 @@ def site_header(active="", lang_href="/ur/", lang_label="اردو", lang_lang="u
     for cat in MEGA_CATS:
         tools = [t for t in ALL_TOOLS if t["category"] == cat]
         top = [next(t for t in tools if t["slug"] == s) for s in MEGA_TOP[cat]]
-        mega_cols.append('<div class="mega-col"><h3><a href="' + HUB_URLS[cat] + '">' + CAT_LABELS[cat] + '</a></h3><ul>'
+        mega_cols.append('<div class="mega-col"><p class="mega-col-title"><a href="' + HUB_URLS[cat] + '">' + CAT_LABELS[cat] + '</a></p><ul>'
             + "".join('<li><a href="/tools/%s" role="menuitem">%s</a></li>' % (t["slug"], esc(t["name"])) for t in top)
             + '<li><a href="' + HUB_URLS[cat] + '" role="menuitem" class="mega-seeall">' + see_all_label(len(tools)) + ' \u2192</a></li></ul></div>')
     # Globe panel (design brief 2.4): Language / Region / Units / Paper size.
@@ -821,7 +852,7 @@ def site_header(active="", lang_href="/ur/", lang_label="اردو", lang_lang="u
     g = STRINGS["globe"]
     def sel_options(opts):
         return "".join('<option value="%s">%s</option>' % (v, esc(l)) for v, l in opts)
-    globe_panel = ('<div class="globe-panel" id="globePanel" hidden><h2>' + esc(g["title"]) + '</h2>'
+    globe_panel = ('<div class="globe-panel" id="globePanel" hidden><p class="globe-title">' + esc(g["title"]) + '</p>'
         '<label for="prefLanguage">' + esc(g["language"]) + '</label><select id="prefLanguage">' + sel_options(list(g["languageOptions"].items())) + '</select>'
         '<label for="prefRegion">' + esc(g["region"]) + '</label><select id="prefRegion">' + sel_options([("global", g["regionOptions"]["global"]), ("pk", g["regionOptions"]["pk"]), ("in", g["regionOptions"]["in"]), ("ae", g["regionOptions"]["ae"]), ("uk", g["regionOptions"]["uk"]), ("us", g["regionOptions"]["us"])]) + '</select>'
         '<label for="prefUnits">' + esc(g["units"]) + '</label><select id="prefUnits">' + sel_options([("metric", g["unitsOptions"]["metric"]), ("imperial", g["unitsOptions"]["imperial"])]) + '</select>'
@@ -858,13 +889,13 @@ FOOTER = '''<footer class="site-footer"><div class="footer-inner"><div class="fo
 CONSENT = '''<div class="consent-banner" id="consentBanner" hidden><p>AK Premium uses cookies for ads and analytics only if you accept. Your files are processed in your browser and are never uploaded. <a href="/privacy">Read the Privacy Policy</a>.</p><button type="button" class="btn-primary" id="consentAccept">Accept</button><button type="button" class="btn-secondary" id="consentReject">Reject</button></div>'''
 AD_SLOT = '<div class="ad-slot ad-slot-%s" data-ad-slot="%s" role="complementary" aria-label="Advertisement"></div>'
 
-# Theme flash-prevention: runs in <head> before the stylesheet, so the page
-# never flashes the wrong theme. Saved choice ("ak-theme") wins, else the OS.
-THEME_SCRIPT = '<script>(function(){try{var t=localStorage.getItem(\'ak-theme\');if(!t){t=matchMedia(\'(prefers-color-scheme: dark)\').matches?\'dark\':\'light\'}document.documentElement.setAttribute(\'data-theme\',t)}catch(e){}})();</script>\n'
-
 def page_head(title, description, canonical, og_type="website", extra="", body_class="", lang="en", dir="ltr", body_extra=""):
+    # Theme init (Phase 4.2, CSP): an external script, not an inline one, so
+    # the enforced policy needs no 'unsafe-inline'. It loads synchronously
+    # in <head> before the stylesheet, so the page never flashes the wrong
+    # theme. Saved choice ("ak-theme") wins, else the OS setting.
     return ('<!DOCTYPE html>\n<html lang="' + lang + '" dir="' + dir + '">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
-    + THEME_SCRIPT
+    + '<script src="' + HASHED["theme-init"] + '"></script>\n'
     + '<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">\n<meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">\n'
     '<title>' + esc(title) + '</title>\n<meta name="description" content="' + esc(description) + '">\n'
     '<link rel="canonical" href="' + esc(canonical) + '">\n'
@@ -877,25 +908,26 @@ def page_head(title, description, canonical, og_type="website", extra="", body_c
     '<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">\n'
     '<link rel="apple-touch-icon" href="/apple-touch-icon.png">\n'
     '<link rel="manifest" href="/site.webmanifest">\n'
-    '<link rel="preload" href="/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>\n'
-    '<link rel="preload" href="/assets/fonts/plus-jakarta-var.woff2" as="font" type="font/woff2" crossorigin>\n'
+    '<link rel="preload" href="' + FONT_HASHED["inter-var"] + '" as="font" type="font/woff2" crossorigin>\n'
+    '<link rel="preload" href="' + FONT_HASHED["plus-jakarta-var"] + '" as="font" type="font/woff2" crossorigin>\n'
     '<link rel="stylesheet" href="' + HASHED["styles"] + '">\n' + extra + '</head>\n<body' + (' class="' + body_class + '"' if body_class else '') + body_extra + '>\n<a class="skip-link" href="#main">Skip to content</a>\n' + SPRITE + '\n')
 
-def page_scripts(libs, category=None):
+def page_scripts(libs, slug=None):
     # All first-party scripts are deferred and content-hashed (Phase 4.3);
-    # defer keeps document order, so config -> common -> core -> bundle.
-    # Tool pages load core.js plus their category bundle; every other page
-    # loads core.js only.
+    # defer keeps document order, so config -> common -> core -> tool file.
+    # Tool pages load core.js plus their own tools/<slug>.js; every other
+    # page loads core.js only.
     # window.AK_STRINGS (Global shell, expansion brief 6A): the UI strings
     # from locales/en.json, so core.js never hard-codes user-facing copy.
-    # It is an inline script, so it runs before the deferred scripts.
-    tags = '<script>window.AK_STRINGS=' + json.dumps(STRINGS, ensure_ascii=False) + ';</script>\n'
+    # It is an external deferred file (assets/js/strings.js, generated in
+    # main()), so no page needs an inline script under the enforced CSP.
+    tags = '<script defer src="' + HASHED["strings"] + '"></script>\n'
     tags += "".join(LIB_SCRIPT[l] for l in libs)
     tags += '<script defer src="/config.js?v=' + ASSET_V + '"></script>\n'
     tags += '<script defer src="' + HASHED["common"] + '"></script>\n'
     tags += '<script defer src="' + HASHED["core"] + '"></script>\n'
-    if category and ("bundle-" + category) in HASHED:
-        tags += '<script defer src="' + HASHED["bundle-" + category] + '"></script>\n'
+    if slug and ("tool-" + slug) in HASHED:
+        tags += '<script defer src="' + HASHED["tool-" + slug] + '"></script>\n'
     return tags
 
 def tool_page(t):
@@ -911,12 +943,13 @@ def tool_page(t):
     url = tool_url(t)
     cat_label = CAT_LABELS[t["category"]]
     libs = LIB_MAP.get(t["workspace"], [])
+    preconnect = "".join('<link rel="preconnect" href="%s">\n' % h for h in sorted({LIB_HOST[l] for l in libs if l in LIB_HOST}))
     faq_json = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]}, ensure_ascii=False)
-    app_json = json.dumps({"@context": "https://schema.org", "@type": "SoftwareApplication", "name": name, "applicationCategory": CAT_APP[t["category"]], "operatingSystem": "Web browser", "description": desc, "url": url, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": SITE_NAME, "url": SITE_URL + "/"}}, ensure_ascii=False)
+    app_json = json.dumps({"@context": "https://schema.org", "@type": "SoftwareApplication", "name": name, "applicationCategory": CAT_APP[t["category"]], "operatingSystem": "Web browser", "inLanguage": "en", "description": desc, "url": url, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": SITE_NAME, "url": SITE_URL + "/"}}, ensure_ascii=False)
     crumb_json = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL + "/"}, {"@type": "ListItem", "position": 2, "name": cat_label, "item": SITE_URL + "/tools"}, {"@type": "ListItem", "position": 3, "name": name, "item": url}]}, ensure_ascii=False)
     steps = STEPS.get(t["slug"]) or {
-        "pdf": ["Choose your PDF file using the file button above.", "Set any options the tool shows, such as a page range, a password or a quality level.", "Press the main button and download or copy your result. Your file stays in your browser."],
-        "convert": ["Choose the file to convert using the file button above.", "Check the options the tool shows, such as OCR for a scanned PDF.", "Press Convert and download your new file."],
+        "pdf": ["Choose your PDF file using the file button above.", "Choose the settings the tool offers for this file.", "Press the main button and download or copy your result. Your file stays in your browser."],
+        "convert": ["Choose the file to convert using the file button above.", "Check the options the tool offers for this file.", "Press the main button and download your new file."],
         "excel": ["Pick the task from the list, then fill in the labelled fields with your own ranges and values.", "Press Generate.", "Copy the result and paste it into Excel, then test it on a copy of your data."],
         "image": ["Choose one or more images.", "Set the quality, format or size you want.", "Press the main button and download the result, or the ZIP file if there is more than one."],
         "everyday": ["Enter or paste your text in the box above.", "Press the main button.", "Copy or download your result."],
@@ -932,7 +965,7 @@ def tool_page(t):
     badge = BADGES.get(t["slug"])
     badge_html = ('<p class="tool-badges"><span class="badge %s">%s</span></p>\n' % (badge[1], badge[0])) if badge else ""
     ur_html = ('<p class="ur-sub" lang="ur" dir="rtl">' + esc(UR_SUB[t["slug"]]) + '</p>\n') if t["slug"] in UR_SUB else ""
-    extra = '<script type="application/ld+json">' + app_json + '</script>\n<script type="application/ld+json">' + faq_json + '</script>\n<script type="application/ld+json">' + crumb_json + '</script>\n'
+    extra = preconnect + '<script type="application/ld+json">' + app_json + '</script>\n<script type="application/ld+json">' + faq_json + '</script>\n<script type="application/ld+json">' + crumb_json + '</script>\n'
     if t["slug"] in UR_CONTENT:
         extra += '<link rel="alternate" hreflang="ur" href="' + SITE_URL + '/ur/' + t["slug"] + '">\n<link rel="alternate" hreflang="en" href="' + url + '">\n<link rel="alternate" hreflang="x-default" href="' + url + '">\n' 
     body = (page_head(title, desc, url, body_class="tool-page", extra=extra, body_extra=' data-tool="' + t["slug"] + '"')
@@ -951,7 +984,7 @@ def tool_page(t):
     + '<div class="related">\n<h2>Related tools</h2>\n<div class="tool-grid">' + related_html + '</div>\n<p><a href="/tools">Browse all AK Premium tools \u2192</a></p>\n</div>\n'
     + '<div class="callout callout--privacy"><p>Your files are processed in your browser by ' + esc(name) + '. They are not uploaded to an AK Premium server, and you do not need an account. <a href="/privacy">Privacy Policy</a>.</p></div>\n'
     + AD_SLOT % ("bottom", "bottom")
-    + '</main>\n' + FOOTER + CONSENT + page_scripts(libs, t["category"]) + '</body>\n</html>\n')
+    + '</main>\n' + FOOTER + CONSENT + page_scripts(libs, t["slug"]) + '</body>\n</html>\n')
     return body
 
 def word_count(text):
@@ -1056,16 +1089,6 @@ def build_homepage():
     cards.append('<section class="tool-section" id="section-favourites" aria-label="Favourites" hidden><h2>' + esc(STRINGS["favourites"]["heading"]) + '</h2><div class="tool-grid" id="favGrid"></div><p class="section-sub">' + esc(STRINGS["favourites"]["empty"]) + '</p></section>')
     cards.append('<section class="tool-section" id="section-popular" aria-label="Popular tools"><h2>Popular tools</h2><div class="tool-grid">%s</div></section>' % "".join(card_html(t, " tool-card--popular") for t in popular))
     for cat in CAT_ORDER:
-        if cat == "more":
-            # "More tools": Everyday + Developer + Business + Design under one heading.
-            sub = []
-            for subcat in MORE_CATS:
-                tools = [t for t in ALL_TOOLS if t["category"] == subcat]
-                if not tools: continue
-                sub.append('<h3><a href="' + HUB_URLS[subcat] + '">' + CAT_LABELS[subcat] + '</a></h3><div class="tool-grid">' + "".join(card_html(t) for t in tools) + '</div>')
-            if sub:
-                cards.append('<section class="tool-section cv" id="section-more" aria-label="More tools"><h2>More tools</h2>' + "".join(sub) + '</section>')
-            continue
         if cat == "pdf":
             # PDF has 27 tools: show the top 8, link the rest to the hub.
             tools = [next(t for t in ALL_TOOLS if t["slug"] == s) for s in TOP_PDF]
@@ -1074,7 +1097,7 @@ def build_homepage():
             continue
         tools = [t for t in ALL_TOOLS if t["category"] == cat]
         if not tools: continue
-        cards.append('<section class="tool-section cv" id="section-%s" aria-label="%s"><h2><a href="%s">%s</a></h2><div class="tool-grid">%s</div></section>' % (cat, CAT_LABELS[cat], HUB_URLS[cat], CAT_LABELS[cat], "".join(card_html(t) for t in tools)))
+        cards.append('<section class="tool-section cv" id="section-%s" aria-label="%s"><h2><a href="%s">%s</a></h2><div class="tool-grid">%s</div><p class="see-all"><a href="%s">%s \u2192</a></p></section>' % (cat, CAT_LABELS[cat], HUB_URLS[cat], CAT_LABELS[cat], "".join(card_html(t) for t in tools), HUB_URLS[cat], see_all_label(len(tools))))
     # Country tools band (design brief 2.3): tabs per country. Only Pakistan
     # has tools today; the other tabs say so honestly and link to Contact.
     country_tabs = [("pk", "PK"), ("in", "IN"), ("ae", "AE"), ("uk", "UK"), ("us", "US")]
@@ -1099,11 +1122,11 @@ def build_homepage():
         ("How do I find a tool?", "Use the search box at the top of the homepage, browse the category sections, or open a category hub such as PDF Tools or Calculators. Each tool has its own page, so you can bookmark it or share its link."),
         ("What country tools are there?", "Pakistan has a full country pack: salary tax, Zakat, land, amounts in words, Urdu word counting and merit. Tools for India, UAE & Saudi Arabia, the UK and the US are planned for later waves."),
     ]
-    title = "%d+ Free Online Tools: PDF, Image, Video, Calculators & More | " % n + SITE_NAME
+    title = "Free Online Tools: PDF, Image, Calculators | " + SITE_NAME  # Phase 4.1: home title <= 60 chars (54); the H1 keeps the 68+ count.
     desc = "%d+ free online tools in your browser: PDF, image, video, calculators and more. No sign-up, no upload." % n
     faq_json = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in home_faq]}, ensure_ascii=False)
-    app_json = json.dumps({"@context": "https://schema.org", "@type": "WebApplication", "name": SITE_NAME, "url": SITE_URL + "/", "applicationCategory": "BusinessApplication", "operatingSystem": "Web browser", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": desc, "featureList": [t["name"] for t in ALL_TOOLS]}, ensure_ascii=False)
+    app_json = json.dumps({"@context": "https://schema.org", "@type": "WebApplication", "name": SITE_NAME, "url": SITE_URL + "/", "applicationCategory": "BusinessApplication", "operatingSystem": "Web browser", "inLanguage": "en", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": desc, "featureList": [t["name"] for t in ALL_TOOLS]}, ensure_ascii=False)
     search_json = json.dumps({"@context": "https://schema.org", "@type": "WebSite", "name": SITE_NAME, "url": SITE_URL + "/", "potentialAction": {"@type": "SearchAction", "target": {"@type": "EntryPoint", "urlTemplate": SITE_URL + "/?q={search_term_string}"}, "query-input": "required name=search_term_string"}}, ensure_ascii=False)
     nr_before, nr_after = STRINGS["search"]["noResultsTitle"].split("{q}")
     body = (page_head(title, desc, SITE_URL + "/", extra='<script type="application/ld+json">' + app_json + '</script>\n<script type="application/ld+json">' + faq_json + '</script>\n<script type="application/ld+json">' + search_json + '</script>\n')
@@ -1120,7 +1143,7 @@ def build_homepage():
     + '<div class="chips" aria-label="Trending searches">'
     + "".join('<button type="button" class="chip" data-query="%s">%s</button>' % (esc(q), esc(q)) for q in ["Merge PDF", "Compress PDF", "PDF to Word", "Image Compressor", "Percentage Calculator", "Zakat Calculator"])
     + '</div>\n</section>\n'
-    + '<nav class="jump-bar" aria-label="Tool categories"><a href="#section-popular">Popular</a><a href="#section-pdf">PDF</a><a href="#section-convert">Convert</a><a href="#section-image">Image</a><a href="#section-excel">Excel</a><a href="#section-calculators">Calculators</a><a href="#section-more">More</a><a href="#section-country">Country tools</a><a href="#section-islamic">Islamic</a><a href="#section-faq">FAQ</a></nav>\n'
+    + '<nav class="jump-bar" aria-label="Tool categories"><a href="#section-popular">Popular</a><a href="#section-pdf">PDF</a><a href="#section-convert">Convert</a><a href="#section-image">Image</a><a href="#section-excel">Excel</a><a href="#section-calculators">Calculators</a><a href="#section-everyday">Everyday</a><a href="#section-developer">Developer</a><a href="#section-business">Business</a><a href="#section-design">Design</a><a href="#section-country">Country tools</a><a href="#section-islamic">Islamic</a><a href="#section-faq">FAQ</a></nav>\n'
     + AD_SLOT % ("leaderboard", "leaderboard")
     + "\n".join(cards)
     + '\n<section class="tool-section" id="section-faq" aria-label="Frequently asked questions"><h2>Frequently Asked Questions</h2>'
@@ -1192,7 +1215,7 @@ def build_info_pages():
         '</div><div class="contact-form-col">'
         '<h2>Send a message</h2>'
         '<p>Fill in the form and press Submit. Your message goes straight to Mirza Noman Ali through Google Forms. No email app is needed.</p>'
-        '<iframe class="google-form-embed" src="' + FORM_EMBED + '" title="Contact AK Premium form" loading="lazy" style="width:100%;height:1000px;border:0;border-radius:12px;background:#fff">Loading the contact form…</iframe>'
+        '<iframe class="google-form-embed" src="' + FORM_EMBED + '" title="Contact AK Premium form" loading="lazy" style="width:100%;height:max(1000px, calc(100vh - 180px));border:0;border-radius:12px;background:#fff">Loading the contact form…</iframe>'
         '<p>If the form does not load, <a href="' + FORM_URL + '" target="_blank" rel="noopener">open the contact form in a new tab</a>.</p>'
         '</div></div>')
     info_page("cookies", "Cookie Policy | AK Premium", "AK Premium Cookie Policy: which cookies the site uses, what the consent banner does, and how to change your choice.",
@@ -1236,6 +1259,7 @@ def build_info_pages():
         '<li>Lucide icons \u2014 ISC License</li>'
         '<li>Inter, Plus Jakarta Sans and Noto Nastaliq Urdu fonts \u2014 SIL Open Font License 1.1</li>'
         '</ul><p>The libraries are loaded from public CDNs or self-hosted on this site so the tools can run in your browser. Their licences do not change how the tools work for you.</p>'
+        '<h2>Full licence texts</h2><p>The qpdf licence is kept on this site at <a href="/vendor/qpdf/LICENSE">vendor/qpdf/LICENSE</a>. The full third-party licence list is at <a href="/THIRD_PARTY_LICENSES">THIRD_PARTY_LICENSES</a>.</p>'
         '<h2>Contact</h2><p>For licence questions, contact <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a>.</p>')
 
 # ---- What's new (generated from CHANGELOG.md) + Pakistan hub ----
@@ -1330,7 +1354,7 @@ def build_ur_tool_page(t):
     u = UR_CONTENT[t["slug"]]
     faq_ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in u["faq"]]}
     extra = '<script type="application/ld+json">' + json.dumps(faq_ld, ensure_ascii=False) + '</script>\n'
-    extra += '<link rel="alternate" hreflang="en" href="' + SITE_URL + '/tools/' + t["slug"] + '">\n<link rel="alternate" hreflang="x-default" href="' + SITE_URL + '/tools/' + t["slug"] + '">\n'
+    extra += '<link rel="alternate" hreflang="ur" href="' + SITE_URL + '/ur/' + t["slug"] + '">\n<link rel="alternate" hreflang="en" href="' + SITE_URL + '/tools/' + t["slug"] + '">\n<link rel="alternate" hreflang="x-default" href="' + SITE_URL + '/tools/' + t["slug"] + '">\n'
     body = (page_head(u["name"] + " | " + SITE_NAME, u["desc"], SITE_URL + "/ur/" + t["slug"], extra=extra, lang="ur", dir="rtl")
     + site_header("", lang_href="/", lang_label="English", lang_lang="en")
     + '<main class="page" id="main">\n<nav class="crumbs" aria-label="Breadcrumb"><a href="/ur/">پاکستان ٹولز</a> <span aria-hidden="true">›</span> <span aria-current="page">' + esc(u["name"]) + '</span></nav>\n'
@@ -1342,7 +1366,7 @@ def build_ur_tool_page(t):
     + '<h2 lang="ur" dir="rtl">عمومی سوالات</h2>\n' + "".join('<details><summary lang="ur" dir="rtl">' + esc(q) + '</summary>\n<p lang="ur" dir="rtl">' + esc(a) + '</p></details>' for q, a in u["faq"])
     + '<div class="related">\n<h2 lang="ur" dir="rtl">متعلقہ ٹولز</h2>\n<div class="tool-grid">' + "".join(card_html(r) for r in related_tools(t)) + '</div>\n<p><a href="/tools">Browse all AK Premium tools →</a></p>\n</div>\n'
     + '<div class="callout callout--privacy"><p lang="ur" dir="rtl">آپ کی فائلیں آپ کے براؤزر میں ہی پروسیس ہوتی ہیں، کہیں اپ لوڈ نہیں ہوتیں۔ <a href="/privacy">Privacy Policy</a>.</p></div>\n'
-    + '</main>\n' + FOOTER + CONSENT + page_scripts(LIB_MAP.get(t["workspace"], []), "pakistan") + '</body>\n</html>\n')
+    + '</main>\n' + FOOTER + CONSENT + page_scripts(LIB_MAP.get(t["workspace"], []), t["slug"]) + '</body>\n</html>\n')
     (OUT / "ur" / (t["slug"] + ".html")).write_text(body)
 
 def build_ur_index():
@@ -1355,7 +1379,7 @@ def build_ur_index():
                   '<span class="tool-card-body"><span class="tool-card-head"><strong lang="ur" dir="rtl">' + esc(u["name"]) + '</strong></span>'
                   '<span class="tool-card-desc" lang="ur" dir="rtl">' + esc(u["desc"]) + '</span>'
                   '<span class="tool-card-desc">' + esc(t["name"]) + '</span></span></a>')
-    extra = '<link rel="alternate" hreflang="en" href="' + SITE_URL + '/country/pakistan">\n<link rel="alternate" hreflang="x-default" href="' + SITE_URL + '/country/pakistan">\n'
+    extra = '<link rel="alternate" hreflang="ur" href="' + SITE_URL + '/ur/">\n<link rel="alternate" hreflang="en" href="' + SITE_URL + '/country/pakistan">\n<link rel="alternate" hreflang="x-default" href="' + SITE_URL + '/country/pakistan">\n'
     body = (page_head("پاکستان ٹولز | " + SITE_NAME, "پاکستان کے لیے مفت ٹولز: ٹیکس، زکوٰۃ، زمین، رقم الفاظ میں، اردو الفاظ اور میرٹ کیلکولیٹر۔", SITE_URL + "/ur/", extra=extra, lang="ur", dir="rtl")
     + site_header("", lang_href="/", lang_label="English", lang_lang="en")
     + '<main class="page" id="main">\n<h1 lang="ur" dir="rtl">پاکستان ٹولز</h1>\n<p lang="ur" dir="rtl"><strong>ٹیکس، زکوٰۃ، زمین اور اردو کے مفت ٹولز۔ آپ کی فائلیں آپ کے براؤزر سے باہر نہیں جاتیں۔</strong></p>\n'
@@ -1436,7 +1460,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v11). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v11";
+const CACHE = "ak-premium-v12";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
@@ -1480,6 +1504,26 @@ def build_search_index():
     return len(entries)
 
 
+def write_id2slug():
+    """Element id -> tool slug map for the per-tool JS split (Phase 4.3).
+    split-app.py reads BUILD/id2slug.json and routes each app.js chunk to
+    tools/<slug>.js. An id used by more than one tool's workspace is shared
+    (listed separately); a chunk touching a shared id goes to core.js."""
+    id2slug, shared = {}, set()
+    for t in ALL_TOOLS:
+        for m in re.finditer(r'id="([^"]+)"', t["tool_ws"]):
+            i = m.group(1)
+            if i in shared:
+                continue
+            if i in id2slug and id2slug[i] != t["slug"]:
+                shared.add(i)
+                id2slug.pop(i, None)
+            elif i not in id2slug:
+                id2slug[i] = t["slug"]
+    (BUILD / "id2slug.json").write_text(json.dumps({"map": id2slug, "shared": sorted(shared)}, indent=1, sort_keys=True) + "\n")
+    return len(id2slug), len(shared)
+
+
 def build_generator_files():
     """Ship the generator in the repo (expansion brief 3.1): build.py, the
     vendored v3 index, the README, the registry source, the hub content and
@@ -1493,6 +1537,10 @@ def build_generator_files():
     for src_file, dst_file in [(BUILD / "build.py", gen / "build.py"),
                                (BUILD / "v3-index.html", gen / "v3-index.html"),
                                (BUILD / "README.md", gen / "README.md"),
+                               (BUILD / "split-app.py", gen / "split-app.py"),
+                               (BUILD / "dump-id2slug.py", gen / "dump-id2slug.py"),
+                               (BUILD / "id2slug.json", gen / "id2slug.json"),
+                               (BUILD / "id2cat.json", gen / "id2cat.json"),
                                (BUILD / "data" / "tools.json", gen / "data" / "tools.json"),
                                (BUILD / "data" / "hubs.json", gen / "data" / "hubs.json"),
                                (BUILD / "locales" / "en.json", gen / "locales" / "en.json")]:
@@ -1505,6 +1553,18 @@ def build_generator_files():
 
 
 def main():
+    n_ids, n_shared = write_id2slug()
+    print("id2slug: %d unique ids, %d shared" % (n_ids, n_shared))
+    # Per-tool JS hashes (Phase 4.3, v12): split-app.py must run before the
+    # build, so tools/<slug>.js exist by now. Each tool page loads core.js
+    # plus its own file, both deferred and content-hashed.
+    for _t in ALL_TOOLS:
+        HASHED["tool-" + _t["slug"]] = hashed_asset("assets/js/tools/" + _t["slug"] + ".js")
+    # window.AK_STRINGS as an external file (Phase 4.2, CSP): the UI strings
+    # from locales/en.json, so no page needs an inline script.
+    (OUT / "assets" / "js" / "strings.js").write_text("window.AK_STRINGS=" + json.dumps(STRINGS, ensure_ascii=False) + ";\n")
+    HASHED["theme-init"] = hashed_asset("assets/js/theme-init.js")
+    HASHED["strings"] = hashed_asset("assets/js/strings.js")
     counts = build_tool_pages()
     build_homepage()
     build_tools_index()

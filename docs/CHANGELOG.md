@@ -1,5 +1,44 @@
 # AK Premium — Changelog
 
+## v12 — 18 November 2026 (Design Phases 2–4 completion: unique content for all 68 tools, More-section split, per-tool JS, enforced CSP)
+
+### Content (design brief §3.5)
+- All 68 tools now have unique content: a specific 80–120-word intro, 3–6 steps naming the real controls on that tool's page, 2–3 tips, honest limits, a concrete example, and 4 tool-specific FAQs. The 42 tools that used the generic fallback (including the 19 pages that still showed "Set any options the tool shows") are rewritten; the 8 tools that had FAQs but no steps now have steps. Two old steps were wrong and are corrected: PDF to Text said "tick the OCR option first" (no such option exists) and "Press Convert" (the button is "Extract Text"); QR Code Generator said "copy it into your document" (the real flow is "Download QR PNG"). Invoice Generator and Resume Builder now name their Template 1 / Template 2 choice.
+- No tool claims a feature it does not have; limits stay honest (text-only converters, Basic layout, 50 MB per file, scanned PDFs need OCR first).
+
+### Homepage (design brief §2.3)
+- The "More tools" section (12 cards) is split into four sections — Everyday, Developer, Business, Design — each with at most 8 cards, a hub-linked heading and a "See all N tools →" link. The jump bar lists all four. Every category section now has an explicit "See all N tools →" link.
+
+### Tool pages and accessibility (design brief §3.2, §4.4)
+- Workspace titles are now <h2> (they were <h3> directly after the <h1>); the mega-menu column titles and the globe panel title are <p> with the same styling, so the heading order is sequential on every page.
+- The favourite star is a 44px touch target (was 28px).
+- Errors are announced: every error status now uses role="alert" and links the workspace's first input with aria-describedby (setError in app.js; the PDF friendly-error helper does the same).
+- The primary button is sticky at the bottom of the screen on phones (with safe-area-inset-bottom); the consent banner no longer covers the footer — the page gets bottom padding equal to the banner's height while it is visible.
+- The contact form iframe height is now max(1000px, calc(100vh - 180px)): it grows on tall screens and never shows an inner scroll (a cross-origin Google Form iframe cannot auto-size).
+- The Licenses page now links to the on-site licence files (/vendor/qpdf/LICENSE and /THIRD_PARTY_LICENSES, a new file at the repo root).
+- /ur/ pages now carry their hreflang="ur" self-link (they had only en + x-default).
+
+### SEO and performance (design brief §4.1, §4.3)
+- Home title is now "Free Online Tools: PDF, Image, Calculators | AK Premium" (54 characters, was 73). The H1 keeps the "68+ …" count.
+- Tool pages and the homepage now carry inLanguage "en" in their JSON-LD.
+- Tool pages now preconnect to the CDN host(s) their libraries actually load from (jsDelivr and/or cdnjs).
+- Fonts are content-hashed and served immutable (inter-var, plus-jakarta-var, noto-nastaliq-urdu); the @font-face URLs and preload links use the hashed names.
+
+### JavaScript split and security (design brief §4.2, §4.3)
+- Per-tool JS split: core.js + one tools/<slug>.js per tool (68 files). The 10 category bundles are deleted. The split is verified lossless (3,356 code lines, 0 missing/extra). Shared helpers, pure-logic functions and the three Excel wizard task tables live in their own tool files; shared code stays in core.js.
+- Content-Security-Policy is now ENFORCED (was Report-Only). The two inline scripts are externalised: the theme flash-prevention script is now assets/js/theme-init.js, and window.AK_STRINGS is now assets/js/strings.js (generated from locales/en.json). script-src no longer contains 'unsafe-inline'. connect-src adds tessdata.projectnaptha.com (Tesseract language data) and worker-src adds cdn.jsdelivr.net (the Tesseract worker loads from jsDelivr) — both verified against the Tesseract.js v5 files.
+- Analytics: a next_step_click event (destination tool slug only) and an anonymous window.onerror counter (count only, no message or file data) are added; both are consent-gated like the other events.
+
+### Fixes from the 18 November visual check
+- Opening the globe panel now closes the mega-menu and vice versa (the two panels overlapped when both were left open).
+- The Favourites helper text ("Tap the star on any tool to save it here.") no longer sits tight against the card's bottom edge.
+
+### Not done in this release (still gated or standing decisions)
+- Wave 1 tools (Background Remover, Unit Converter, video/audio, and the Video & Audio / Finance & Tax / Text & Writing categories) are NOT in this release; they start only on the explicit "v11 OK, Wave 1 shuru karo" approval.
+- No WhatsApp contact link (it would publish the owner's phone number).
+- JavaScript is not minified (homepage JS gzip is ~35 KB — core 32,682 + common 2,766 — inside the 60 KB budget; minification was skipped to keep the lossless split verification exact).
+- The /vendor/* files stay at max-age=3600, not immutable: they are referenced by fixed names with no content hash, so immutable caching would serve stale files after an update.
+
 ## v11 — 17 November 2026 (Global shell: global homepage, mega-menu, hubs, country tools)
 
 ### Homepage (expansion brief §14.2, design brief Phase 2)
