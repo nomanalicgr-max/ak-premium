@@ -1,5 +1,42 @@
 # AK Premium v4 — Testing Record
 
+## v12 (Design Phases 2–4 completion) — 18 November 2026
+- Harness: ~/workspace/tools/jsdom-test/run-v12.js — ALL CHECKS PASSED
+  (219 checks, 0 failed). The v11 harness fails on the new tree, all
+  expected: its homepage section order, jump-bar count, bundle files,
+  inline AK_STRINGS, Report-Only CSP and v11 cache name are the old
+  v11 shell.
+- Per-tool split verified lossless: app.js 3,356 code lines ==
+  core.js + 68 tools/<slug>.js files, 0 missing, 0 extra. Homepage JS
+  gzip (core + common) is 35,638 bytes, inside the 60 KB budget.
+- Known-answer checks still pass (tax 200,000/month TY2027 -> 156,000;
+  zakat 1,000,000 -> 25,000; EMI 1,000,000 @ 12% x 5y -> 22,244.45).
+- Found while testing: the 26 tools that already had registry content
+  carried only 2 specific FAQs each, and the page padded them with 4
+  generic template questions; the 42 newly-written tools lost 2 of
+  their 4 specific FAQs the same way, because faq_list() put the
+  generic questions first and cut the list at 6. Fixed both ways:
+  52 new FAQs were written for the 26 tools (each claim checked
+  against its workspace HTML and app.js handler; one subagent draft
+  was verified line by line before merging) and faq_list() now puts
+  specific FAQs first. Every tool page now shows its 4 specific FAQs
+  first, then 2 generic ones. All 272 specific FAQ questions across
+  the 68 tools are unique.
+- Also fixed while testing the harness itself (not the site): the
+  first run-v12.js run died with a JavaScript heap out of memory —
+  it parsed every tool page three times. Now each tool page is parsed
+  once and the run uses a 4 GB heap. Seven checks were wrong, not the
+  site: theme-init.js is an external file (the harness now evals it),
+  the globe-title and Favourites rules use descendant selectors, the
+  error counter is an addEventListener("error") listener, id2slug.json
+  is shaped {map, shared}, and strings.js ends with a newline.
+- Not verified: real-browser render, Lighthouse, dark-mode visual
+  pass of every component, keyboard walkthrough, service-worker
+  offline behaviour, enforced-CSP live behaviour (Protect/Unlock and
+  OCR under the enforced header need a real browser), console errors
+  (the browser tooling exposes no DevTools console), Urdu
+  native-speaker proofread, mobile (~390px) rendering.
+
 ## v11 (Global shell) — 17 November 2026
 - Harness: ~/workspace/tools/jsdom-test/run-v11.js — ALL CHECKS PASSED
   (187 checks, 0 failed; 96 pages + hubs/locales/redirect checks). The
