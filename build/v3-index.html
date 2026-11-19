@@ -847,6 +847,87 @@
           <button id="translatePdfBtn" type="button" class="btn-primary">Extract Text for Translation</button>
           <p class="status" id="translatePdfStatus"></p>
         </div>
+        <div class="workspace-tool" id="tool-jpgtopdf">
+          <h2>JPG to PDF</h2>
+          <p>Turns JPG images into one PDF, one photo per page.</p>
+          <input id="jpgToPdfInput" type="file" accept=".jpg,.jpeg" multiple>
+          <button id="jpgToPdfBtn" type="button" class="btn-primary">Convert JPG to PDF</button>
+          <p class="status" id="jpgToPdfStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-pngtopdf">
+          <h2>PNG to PDF</h2>
+          <p>Turns PNG images into one PDF, one image per page.</p>
+          <input id="pngToPdfInput" type="file" accept=".png" multiple>
+          <button id="pngToPdfBtn" type="button" class="btn-primary">Convert PNG to PDF</button>
+          <p class="status" id="pngToPdfStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-pdftojpg">
+          <h2>PDF to JPG</h2>
+          <p>Renders every page of a PDF as a JPG image.</p>
+          <input id="pdfToJpgInput" type="file" accept="application/pdf">
+          <button id="pdfToJpgBtn" type="button" class="btn-primary">Convert PDF to JPG</button>
+          <div id="pdfToJpgOutput" class="image-output"></div>
+          <p class="status" id="pdfToJpgStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-pdftopng">
+          <h2>PDF to PNG</h2>
+          <p>Renders every page of a PDF as a PNG image.</p>
+          <input id="pdfToPngInput" type="file" accept="application/pdf">
+          <button id="pdfToPngBtn" type="button" class="btn-primary">Convert PDF to PNG</button>
+          <div id="pdfToPngOutput" class="image-output"></div>
+          <p class="status" id="pdfToPngStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-htmltopdf">
+          <h2>HTML to PDF</h2>
+          <p>Turns a saved HTML file into a PDF as plain text.</p>
+          <input id="htmlToPdfInput" type="file" accept=".html,.htm">
+          <button id="htmlToPdfBtn" type="button" class="btn-primary">Convert HTML to PDF</button>
+          <p class="status" id="htmlToPdfStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-extractimages">
+          <h2>Extract Images from PDF</h2>
+          <p>Saves the images embedded inside a PDF as PNG files.</p>
+          <input id="extractImagesInput" type="file" accept="application/pdf">
+          <button id="extractImagesBtn" type="button" class="btn-primary">Extract Images</button>
+          <div id="extractImagesResults" class="image-output"></div>
+          <p class="status" id="extractImagesStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-headerfooter">
+          <h2>Add Header and Footer to PDF</h2>
+          <p>Stamps header and footer text on every page of a PDF.</p>
+          <input id="headerFooterInput" type="file" accept="application/pdf">
+          <label>Header text <input id="headerText" type="text" placeholder="Header text"></label>
+          <label>Footer text <input id="footerText" type="text" placeholder="Footer text"></label>
+          <button id="headerFooterBtn" type="button" class="btn-primary">Add Header &amp; Footer</button>
+          <p class="status" id="headerFooterStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-flatten">
+          <h2>Flatten PDF</h2>
+          <p>Flattens form fields and removes annotations in a PDF.</p>
+          <input id="flattenInput" type="file" accept="application/pdf">
+          <button id="flattenBtn" type="button" class="btn-primary">Flatten PDF</button>
+          <p class="status" id="flattenStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-metadata">
+          <h2>PDF Metadata Editor</h2>
+          <p>Shows and changes a PDF's title, author, subject and keywords.</p>
+          <input id="metadataInput" type="file" accept="application/pdf">
+          <pre id="metadataCurrent" class="output-box"></pre>
+          <label>Title <input id="metaTitle" type="text" placeholder="Title"></label>
+          <label>Author <input id="metaAuthor" type="text" placeholder="Author"></label>
+          <label>Subject <input id="metaSubject" type="text" placeholder="Subject"></label>
+          <label>Keywords <input id="metaKeywords" type="text" placeholder="Keywords, separated by commas"></label>
+          <button id="metadataBtn" type="button" class="btn-primary">Update Metadata</button>
+          <p class="status" id="metadataStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-resizepage">
+          <h2>Resize PDF Page Size</h2>
+          <p>Scales every page of a PDF to A4, Letter or Legal.</p>
+          <input id="resizePageInput" type="file" accept="application/pdf">
+          <label>Page size <select id="pageSizeSelect"><option value="A4">A4</option><option value="Letter">Letter</option><option value="Legal">Legal</option></select></label>
+          <button id="resizePageBtn" type="button" class="btn-primary">Resize Pages</button>
+          <p class="status" id="resizePageStatus"></p>
+        </div>
 
       <section id="section-faq" class="faq-section" aria-label="Frequently asked questions">
         <h2>Frequently Asked Questions</h2>
