@@ -24,6 +24,12 @@ self.onmessage = async (e) => {
       self.postMessage({ ok: false, error: "UNKNOWN_OP" });
     }
   } catch (err) {
-    self.postMessage({ ok: false, error: err && err.code ? err.code : String(err && err.message || err) });
+    const code = err && err.code ? err.code : String(err && err.message || err);
+    if (code === "WRONG_PASSWORD" || code === "NOT_ENCRYPTED") {
+      self.postMessage({ ok: false, error: code });
+      return;
+    }
+    const detail = String(err && err.cause ? (err.cause.message || err.cause) : (err && err.message || err)).slice(0, 300);
+    self.postMessage({ ok: false, error: code + " :: " + detail });
   }
 };
