@@ -6660,6 +6660,663 @@
         "character-counter",
         "case-converter"
       ]
+    },
+    {
+      "slug": "speech-to-text",
+      "workspace": "tool-stt",
+      "title": {
+        "en": "Speech to Text"
+      },
+      "short": {
+        "en": "Turn your spoken words into written text."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-mic",
+      "keywords": [
+        "speech to text",
+        "voice to text",
+        "dictate text online",
+        "speech recognition"
+      ],
+      "libs": [],
+      "engine": "tool-stt",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Dictate and turn your speech into text in your browser, free with no sign-up.",
+      "steps": [
+        "Choose your language in the 'Language' list.",
+        "Press Start Listening and allow the microphone when your browser asks.",
+        "Speak clearly into the microphone and watch the words appear in the transcript box.",
+        "Press Stop when you finish speaking.",
+        "Press Copy Transcript to copy the text for use anywhere."
+      ],
+      "content": {
+        "use": "Speech to Text turns your spoken words into written text, so you can write without typing. A student dictates notes while walking. A writer speaks a first draft and edits it later. A shop owner dictates a product note while packing an order. A person with a sore wrist writes messages by voice. You choose your language, press Start Listening, allow the microphone when your browser asks, and speak clearly. The words appear in the transcript box as you speak, and you can copy the text when you stop. The transcript is built in your browser from the speech service of your browser, and the text stays with you.",
+        "tip": "Speak in a quiet room and hold the microphone near your mouth, because background noise and a far microphone cause wrong words. Short sentences work better than long ones, and a pause between sentences helps the tool tell where one sentence ends.",
+        "limit": "The tool needs a browser that supports speech recognition, such as Chrome on desktop or Android, and it needs a microphone. Your browser may send the audio to its own speech service to turn it into text, so do not dictate private or secret words. Recognition is not perfect, so check the transcript and fix wrong words before you use it.",
+        "example": "Speaking 'Hello, this is a test' with English (US) chosen shows the same words in the transcript box.",
+        "faq": [
+          [
+            "Which browsers can listen?",
+            "Chrome on desktop and Android supports speech recognition. Other browsers may not offer it, and the tool then shows a message that your browser does not support listening. If you see that message, try Chrome or Edge on desktop or Android."
+          ],
+          [
+            "Does my voice leave my browser?",
+            "It may. Your browser can send the audio to its own speech service to turn it into words, and that service is run by the browser maker, not by this site. Do not dictate passwords, private names or secret words."
+          ],
+          [
+            "Why are some words wrong?",
+            "Speech recognition guesses words from sound, so similar sounding words can be mixed up, and background noise makes it worse. Speak slowly in a quiet room, and read the transcript at the end to fix any wrong words."
+          ],
+          [
+            "Can I dictate in Urdu?",
+            "Yes, if your browser offers Urdu in the Language list. Choose Urdu before you press Start Listening, then speak in Urdu. If Urdu is missing from the list, your browser does not offer it on this device."
+          ]
+        ]
+      },
+      "related": [
+        "text-to-speech",
+        "translate-helper",
+        "word-counter",
+        "readability-checker"
+      ]
+    },
+    {
+      "slug": "slug-generator",
+      "workspace": "tool-slug",
+      "title": {
+        "en": "Slug Generator"
+      },
+      "short": {
+        "en": "Turn a title into a clean URL slug."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-link",
+      "keywords": [
+        "slug generator",
+        "url slug generator",
+        "make url slug",
+        "title to slug"
+      ],
+      "libs": [],
+      "engine": "tool-slug",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Turn any title into a clean URL slug with lowercase letters and hyphens, free in your browser.",
+      "steps": [
+        "Type or paste your title in the box.",
+        "Read the slug below the box: it updates live with every keystroke.",
+        "Press Copy Slug to copy it.",
+        "Paste the slug at the end of your page address."
+      ],
+      "content": {
+        "use": "Slug Generator turns a page title into a clean slug for the address of the page, so links stay short and easy to read. A blogger turns a post title into a link that readers can remember. A shop owner turns a product name into a neat address for the product page. A teacher turns a lesson title into a link for students. You type the title once, and the tool makes it lowercase, changes spaces to hyphens, removes accents and special signs, and trims hyphens from the ends. The slug updates live as you type, and the text never leaves your browser.",
+        "tip": "Keep titles short before you make a slug, because a long title makes a long link that is hard to share. Remove words such as 'the' and 'and' from the title if the slug still looks long.",
+        "limit": "The slug uses English letters, numbers and hyphens only, so words in other scripts are removed. Very long titles are not cut short, so check the length before you use the slug. A slug is only the last part of an address, not a full link.",
+        "example": "Typing 'Hello World! My First Post' gives the slug 'hello-world-my-first-post'.",
+        "faq": [
+          [
+            "What is a slug?",
+            "The last part of a page address, made of lowercase letters, numbers and hyphens. A post titled 'Hello World' can live at an address that ends with hello-world, which is easy to read and share."
+          ],
+          [
+            "Why are spaces changed to hyphens?",
+            "Spaces are not allowed in an address, so they are changed to hyphens. A hyphen is read as a word break by search engines, while an underscore is not, so hyphens are the safer choice."
+          ],
+          [
+            "What happens to accents?",
+            "Accents are removed and the plain letter is kept, so 'café' becomes 'cafe'. This keeps the slug to plain English letters, which every browser and server can handle."
+          ],
+          [
+            "Can I use a slug with numbers?",
+            "Yes. Numbers are kept as they are, so 'Top 10 Tips' becomes 'top-10-tips'. Only letters, numbers and hyphens appear in the slug."
+          ]
+        ]
+      },
+      "related": [
+        "case-converter",
+        "word-counter",
+        "fancy-text-generator",
+        "url-encode-decode"
+      ]
+    },
+    {
+      "slug": "json-to-yaml",
+      "workspace": "tool-jsonyaml",
+      "title": {
+        "en": "JSON to YAML"
+      },
+      "short": {
+        "en": "Convert JSON data into YAML format."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-braces",
+      "keywords": [
+        "json to yaml",
+        "convert json to yaml",
+        "json yaml converter",
+        "yaml converter"
+      ],
+      "libs": [
+        "js-yaml"
+      ],
+      "engine": "tool-jsonyaml",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Convert JSON into clean YAML in your browser, free with no sign-up.",
+      "steps": [
+        "Paste your JSON in the box.",
+        "Press Convert to YAML.",
+        "Read the YAML below the button.",
+        "Press Copy Result to copy the YAML."
+      ],
+      "content": {
+        "use": "JSON to YAML changes data from JSON form into YAML form, so you can use it where YAML is needed. A developer moves settings from a JSON file into a YAML config file. A student turns a JSON sample from class into YAML for a project. A writer prepares data for a site that reads YAML files. You paste the JSON, press Convert to YAML, and the tool shows the same data with YAML indents instead of braces and commas. Lists and nested data are kept in order, and the data never leaves your browser.",
+        "tip": "Check that your JSON is valid before you convert, because one missing comma or bracket stops the tool. JSON Formatter on this site can format and check the JSON first.",
+        "limit": "The tool reads standard JSON only, so comments and trailing commas are not allowed. Very large files may be slow, and the YAML output uses the js-yaml library in your browser. Dates and other special values are treated as plain text or numbers.",
+        "example": "Pasting {\"name\": \"Ali\", \"age\": 30} gives YAML with 'name: Ali' on the first line and 'age: 30' on the second.",
+        "faq": [
+          [
+            "Is my JSON kept private?",
+            "Yes. The conversion runs in your browser, and the JSON is not sent to a server. The YAML library loads from a public CDN, but your data stays on your device."
+          ],
+          [
+            "Why does the tool reject my JSON?",
+            "The most common cause is a missing comma, an extra comma at the end, or quotes that do not match. Paste the JSON into JSON Formatter first, which points out the mistake."
+          ],
+          [
+            "Does it keep the order of my data?",
+            "Yes. Keys stay in the order they appear in the JSON, and lists stay in order too. Nested objects are shown with deeper indents."
+          ],
+          [
+            "What is YAML used for?",
+            "YAML is a plain text format for settings and config files, used by many tools and services. It uses indents instead of braces, so it is easy to read and edit by hand."
+          ]
+        ]
+      },
+      "related": [
+        "yaml-to-json",
+        "json-formatter",
+        "json-to-xml",
+        "json-to-csv"
+      ]
+    },
+    {
+      "slug": "yaml-to-json",
+      "workspace": "tool-yamljson",
+      "title": {
+        "en": "YAML to JSON"
+      },
+      "short": {
+        "en": "Convert YAML data into JSON format."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-file-code",
+      "keywords": [
+        "yaml to json",
+        "convert yaml to json",
+        "yaml json converter",
+        "yaml parser"
+      ],
+      "libs": [
+        "js-yaml"
+      ],
+      "engine": "tool-yamljson",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Convert YAML into JSON in your browser, free with no sign-up.",
+      "steps": [
+        "Paste your YAML in the box.",
+        "Press Convert to JSON.",
+        "Read the JSON below the button, shown with two-space indents.",
+        "Press Copy Result to copy the JSON."
+      ],
+      "content": {
+        "use": "YAML to JSON changes data from YAML form into JSON form, so you can use it where JSON is needed. A developer reads a YAML config file and turns it into JSON for an app. A student turns a YAML sample from a tutorial into JSON for a class task. A tester prepares JSON data from a YAML file. You paste the YAML, press Convert to JSON, and the tool shows the same data with braces and commas, using two-space indents. Lists and nested data are kept in order, and the data never leaves your browser.",
+        "tip": "YAML cares about indents, so check that each level uses the same number of spaces. Mixed tabs and spaces are the most common cause of a YAML error.",
+        "limit": "The tool reads standard YAML only, and it does not run YAML tags or custom types. Very large files may be slow, and the YAML output uses the js-yaml library in your browser. A YAML file with tabs for indents may fail, so use spaces.",
+        "example": "Pasting 'name: Ali' on one line and 'age: 30' on the next gives JSON with \"name\": \"Ali\" and \"age\": 30.",
+        "faq": [
+          [
+            "Is my YAML kept private?",
+            "Yes. The conversion runs in your browser, and the YAML is not sent to a server. The YAML library loads from a public CDN, but your data stays on your device."
+          ],
+          [
+            "Why does the tool reject my YAML?",
+            "The most common cause is mixed tabs and spaces, or a wrong indent. YAML needs the same spaces at each level, so check the indents and try again."
+          ],
+          [
+            "Does it keep my lists in order?",
+            "Yes. Keys stay in the order they appear in the YAML, and lists stay in order too. Nested data is shown with deeper indents in the JSON."
+          ],
+          [
+            "Can it read more than one document?",
+            "No. The tool reads a single YAML document. If your file has more than one document split by three dashes, convert each one on its own."
+          ]
+        ]
+      },
+      "related": [
+        "json-to-yaml",
+        "json-formatter",
+        "json-to-xml",
+        "csv-to-json"
+      ]
+    },
+    {
+      "slug": "json-to-xml",
+      "workspace": "tool-jsonxml",
+      "title": {
+        "en": "JSON to XML"
+      },
+      "short": {
+        "en": "Convert JSON data into XML format."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-braces",
+      "keywords": [
+        "json to xml",
+        "convert json to xml",
+        "json xml converter",
+        "xml converter"
+      ],
+      "libs": [],
+      "engine": "tool-jsonxml",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Convert JSON into XML in your browser, free with no sign-up.",
+      "steps": [
+        "Paste your JSON in the box.",
+        "Press Convert to XML.",
+        "Read the XML below the button, inside a root tag.",
+        "Press Copy Result to copy the XML."
+      ],
+      "content": {
+        "use": "JSON to XML changes data from JSON form into XML form, so you can use it where XML is needed. A developer sends JSON data to an old system that only reads XML. A student turns a JSON sample into XML for a class task. A tester prepares XML data from a JSON file. You paste the JSON, press Convert to XML, and the tool shows the same data with tags, inside one root tag. Lists become repeated tags, and the data never leaves your browser.",
+        "tip": "Give lists a clear name in the JSON, because each item becomes a tag with that name. A list called 'items' becomes repeated 'item' tags, which is easy to read.",
+        "limit": "Keys must be valid tag names, so keys with spaces or strange signs are changed to safe names. Numbers and true or false values are shown as text, and the root tag is always called 'root'. Very large files may be slow.",
+        "example": "Pasting {\"name\": \"Ali\"} gives the XML <root><name>Ali</name></root>.",
+        "faq": [
+          [
+            "Does my JSON stay private?",
+            "Yes. The conversion runs in your browser, and the JSON is not sent to a server. Your data stays on your device."
+          ],
+          [
+            "What is the root tag?",
+            "Every XML file needs one top tag, so the tool wraps all the data in a tag called 'root'. If you need a different top name, change the word 'root' in the copied XML."
+          ],
+          [
+            "How are lists shown?",
+            "Each item in a list becomes its own tag. A list of two names becomes two 'item' tags inside the list tag, in the same order as the JSON."
+          ],
+          [
+            "What happens to numbers?",
+            "Numbers are shown as text inside tags, because XML has no number type. When you read the XML back, turn the text into numbers again."
+          ]
+        ]
+      },
+      "related": [
+        "xml-to-json",
+        "json-formatter",
+        "json-to-yaml",
+        "json-to-csv"
+      ]
+    },
+    {
+      "slug": "xml-to-json",
+      "workspace": "tool-xmljson",
+      "title": {
+        "en": "XML to JSON"
+      },
+      "short": {
+        "en": "Convert XML data into JSON format."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-file-code",
+      "keywords": [
+        "xml to json",
+        "convert xml to json",
+        "xml json converter",
+        "xml parser"
+      ],
+      "libs": [],
+      "engine": "tool-xmljson",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Convert XML into JSON in your browser, free with no sign-up.",
+      "steps": [
+        "Paste your XML in the box.",
+        "Press Convert to JSON.",
+        "Read the JSON below the button, shown with two-space indents.",
+        "Press Copy Result to copy the JSON."
+      ],
+      "content": {
+        "use": "XML to JSON changes data from XML form into JSON form, so you can use it where JSON is needed. A developer reads an XML reply from an old system and turns it into JSON for an app. A student turns an XML sample into JSON for a class task. A tester prepares JSON data from an XML file. You paste the XML, press Convert to JSON, and the tool shows the same data with braces and commas. Tags become keys, repeated tags become lists, and the data never leaves your browser.",
+        "tip": "Check that every opening tag has a matching closing tag, because one missing tag stops the tool. A single top tag must wrap all the data, which is how XML works.",
+        "limit": "The tool reads the tags and text of the XML, but it does not keep comments or processing notes. Tag details such as attributes are shown with an @ sign before the name. Very large files may be slow.",
+        "example": "Pasting <root><name>Ali</name></root> gives JSON with \"root\" holding \"name\": \"Ali\".",
+        "faq": [
+          [
+            "Is my XML kept private?",
+            "Yes. The conversion runs in your browser, and the XML is not sent to a server. Your data stays on your device."
+          ],
+          [
+            "Why does the tool reject my XML?",
+            "The most common cause is a tag that is not closed, or more than one top tag. XML needs one top tag and every tag closed in order, so check the tags and try again."
+          ],
+          [
+            "How are repeated tags shown?",
+            "Repeated tags with the same name become a list in the JSON. Two 'item' tags become one list with two values, in the same order as the XML."
+          ],
+          [
+            "What happens to tag attributes?",
+            "An attribute is shown as a key with an @ sign before its name, next to the text of the tag. The text itself is shown under the key '#text' when a tag has both."
+          ]
+        ]
+      },
+      "related": [
+        "json-to-xml",
+        "json-formatter",
+        "json-to-yaml",
+        "csv-to-json"
+      ]
+    },
+    {
+      "slug": "json-to-csv",
+      "workspace": "tool-jsoncsv",
+      "title": {
+        "en": "JSON to CSV"
+      },
+      "short": {
+        "en": "Convert a JSON list into a CSV table."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-table",
+      "keywords": [
+        "json to csv",
+        "convert json to csv",
+        "json csv converter",
+        "json table"
+      ],
+      "libs": [],
+      "engine": "tool-jsoncsv",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Convert a JSON list into a CSV table in your browser, free with no sign-up.",
+      "steps": [
+        "Paste your JSON list in the box.",
+        "Press Convert to CSV.",
+        "Read the table below the button, with one row per item.",
+        "Press Copy Result to copy the CSV, or Download CSV to save it."
+      ],
+      "content": {
+        "use": "JSON to CSV changes a JSON list into a table, so you can open it in a spreadsheet. A developer turns app data into a CSV file for a report. A shop owner turns an order list into a table for Excel. A student turns a JSON sample into a table for class. You paste the JSON list, press Convert to CSV, and the tool shows the first row as column names and one row per item. Nested data is flattened with dots between the names, and the data never leaves your browser.",
+        "tip": "Make sure every item in the list has the same fields, because a missing field leaves an empty cell in that row. If a value holds a comma, the tool wraps it in quotes so the table stays correct.",
+        "limit": "The tool needs a JSON list of items, so a single object on its own will not work. Nested objects are flattened with dots, and lists inside an item are kept as JSON text. Very large lists may be slow.",
+        "example": "Pasting [{\"name\": \"Ali\", \"age\": 30}, {\"name\": \"Sara\", \"age\": 25}] gives a table with 'name,age' on the first row, then 'Ali,30' and 'Sara,25'.",
+        "faq": [
+          [
+            "Does the tool send my JSON anywhere?",
+            "No. The conversion runs in your browser, and the JSON is not sent to a server. Your data stays on your device."
+          ],
+          [
+            "Why does the tool ask for a list?",
+            "A CSV table needs rows, and each item in the JSON list becomes one row. A single object has no rows, so wrap it in square brackets to make a list of one item."
+          ],
+          [
+            "How are nested values shown?",
+            "A value inside another object is flattened with a dot, so an address with a city becomes a column called 'address.city'. A list inside an item is kept as JSON text in one cell."
+          ],
+          [
+            "Can I open the result in Excel?",
+            "Yes. Copy the table or download it as a .csv file, then open it in Excel or Google Sheets. Values with commas are wrapped in quotes, so the columns stay in place."
+          ]
+        ]
+      },
+      "related": [
+        "csv-to-json",
+        "json-formatter",
+        "csv-to-excel",
+        "json-to-yaml"
+      ]
+    },
+    {
+      "slug": "jwt-decoder",
+      "workspace": "tool-jwt",
+      "title": {
+        "en": "JWT Decoder"
+      },
+      "short": {
+        "en": "Read the header and payload of a JWT."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-key",
+      "keywords": [
+        "jwt decoder",
+        "decode jwt",
+        "jwt token decoder",
+        "read jwt token"
+      ],
+      "libs": [],
+      "engine": "tool-jwt",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Decode a JWT token to read its header and payload in your browser, free with no sign-up.",
+      "steps": [
+        "Paste your JWT token in the box.",
+        "Press Decode Token.",
+        "Read the header and payload below the button, shown as formatted JSON.",
+        "Check the expiry line if the token has an expiry time."
+      ],
+      "content": {
+        "use": "JWT Decoder reads a JSON Web Token and shows the header and payload inside it, so you can check what a token holds. A developer checks the user id and roles in a login token. A student learns how a JWT is built by reading a sample token. A tester checks the expiry time of a token before using it. You paste the token, press Decode Token, and the tool shows the header and payload as formatted JSON. The token is decoded in your browser and never sent to a server.",
+        "tip": "Paste the full token with its two dots, because a short or cut token cannot be decoded. The sample token from jwt.io is a good test if you want to see how the tool works.",
+        "limit": "The tool only reads the token, it does not check the signature, so a decoded token is not proof that it is real. Never paste a live token from a real account into a shared screen, and never trust a token that you did not check against its secret.",
+        "example": "Decoding the sample token from jwt.io shows the header {\"alg\": \"HS256\", \"typ\": \"JWT\"} and the payload with the name John Doe.",
+        "faq": [
+          [
+            "Is my token kept private?",
+            "Yes. The token is decoded in your browser and is not sent to a server. Even so, a live token is like a password, so do not paste a real one on a shared screen."
+          ],
+          [
+            "Does it check the signature?",
+            "No. Reading a token does not check its signature, and the signature needs the secret key. A token that decodes cleanly may still be fake, so check it against the secret on your own server."
+          ],
+          [
+            "Why does the tool reject my token?",
+            "A JWT has three parts joined by two dots. If a part is missing or the text is not valid base64, the tool cannot decode it. Check that you pasted the whole token."
+          ],
+          [
+            "What does the expiry time mean?",
+            "The 'exp' value is a time in seconds since 1970. If it is in the past, the token has expired and the app should not accept it. The tool shows the date in plain words."
+          ]
+        ]
+      },
+      "related": [
+        "base64",
+        "json-formatter",
+        "hash-generator",
+        "url-encode-decode"
+      ]
+    },
+    {
+      "slug": "hash-generator",
+      "workspace": "tool-hash",
+      "title": {
+        "en": "Hash Generator"
+      },
+      "short": {
+        "en": "Make MD5 and SHA hashes of text or a file."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-hash",
+      "keywords": [
+        "hash generator",
+        "md5 generator",
+        "sha256 generator",
+        "online hash"
+      ],
+      "libs": [
+        "md5"
+      ],
+      "engine": "tool-hash",
+      "maxFileMB": 10,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Generate MD5, SHA-1, SHA-256, SHA-384 and SHA-512 hashes of text or a file, free in your browser.",
+      "steps": [
+        "Type or paste your text in the box, or choose a file with the file button.",
+        "Choose MD5, SHA-1, SHA-256, SHA-384 or SHA-512 in the 'Algorithm' list.",
+        "Press Generate Hash.",
+        "Press Copy Hash to copy the result."
+      ],
+      "content": {
+        "use": "Hash Generator makes a fingerprint of text or a file, so you can check that it has not changed. A developer checks that a downloaded file matches the hash on the download page. A student makes a SHA-256 hash of a password for a class task. A tester checks that a file sent by email arrived whole. You type text or choose a file, pick MD5, SHA-1, SHA-256, SHA-384 or SHA-512, and press Generate Hash. The hash is made in your browser, and the text or file never leaves your device.",
+        "tip": "Use SHA-256 when you check a download, because MD5 and SHA-1 are old and can be faked. Compare the whole hash, not just the first few signs, because two different files can share the start.",
+        "limit": "SHA hashes need a secure page, and they run in the browser with the built-in crypto tools. MD5 and SHA-1 are shown for old checks only and should not be used for new security. A hash cannot be turned back into the text, so keep the original.",
+        "example": "Hashing the word 'hello' with SHA-256 gives 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824, and with MD5 it gives 5d41402abc4b2a76b9719d911017c592.",
+        "faq": [
+          [
+            "Is my text or file kept private?",
+            "Yes. The hash is made in your browser, and the text or file is not sent to a server. The MD5 library loads from a public CDN, but your data stays on your device."
+          ],
+          [
+            "Which hash should I use?",
+            "Use SHA-256 for most checks, because it is fast and safe. MD5 and SHA-1 are old and can be faked, so use them only when an old system asks for them."
+          ],
+          [
+            "Can I get the text back from a hash?",
+            "No. A hash is one way, so the text cannot be rebuilt from it. If you lose the text, the hash alone will not bring it back."
+          ],
+          [
+            "Why does the same text give the same hash?",
+            "A hash is made only from the input, so the same text always gives the same hash. One changed letter gives a very different hash, which is how a hash shows a change."
+          ]
+        ]
+      },
+      "related": [
+        "password-generator",
+        "uuid-generator",
+        "base64",
+        "jwt-decoder"
+      ]
+    },
+    {
+      "slug": "url-encode-decode",
+      "workspace": "tool-urlenc",
+      "title": {
+        "en": "URL Encode Decode"
+      },
+      "short": {
+        "en": "Encode and decode URLs and text safely."
+      },
+      "category": "developer",
+      "group": "",
+      "icon": "i-link-2",
+      "keywords": [
+        "url encode decode",
+        "url encoder",
+        "url decoder",
+        "percent encoding"
+      ],
+      "libs": [],
+      "engine": "tool-urlenc",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Encode and decode URLs and text with percent encoding in your browser, free with no sign-up.",
+      "steps": [
+        "Type or paste your URL or text in the box.",
+        "Choose 'Encode a value' for a word or name, or 'Encode a full URL' to keep the address working.",
+        "Press Encode to encode it, or Decode to decode it.",
+        "Press Copy Result to copy the result."
+      ],
+      "content": {
+        "use": "URL Encode Decode changes text so it is safe to put in a web address, and changes it back again. A developer encodes a search word with a space before adding it to a link. A student encodes a file name with brackets for a shared link. A tester decodes a long address to read what it holds. You paste the text, press Encode to change spaces and signs into percent codes, or press Decode to change the codes back. The text never leaves your browser.",
+        "tip": "Encode only the part that needs it, such as a search word, and leave the rest of the address alone. If the whole address is encoded, the slashes and colons are encoded too, and the link will not work.",
+        "limit": "The tool encodes text with the standard percent rules, so a few signs such as letters, numbers, hyphens and dots are left as they are. Decoding text that was never encoded may fail, and the tool then shows a message.",
+        "example": "Encoding 'hello world' gives 'hello%20world', and decoding 'hello%20world' gives 'hello world' back.",
+        "faq": [
+          [
+            "Why encode a URL?",
+            "An address cannot hold spaces or many signs, so they are changed into percent codes. A space becomes %20, and the link then works in every browser."
+          ],
+          [
+            "What does 'Encode a full URL' do?",
+            "It encodes spaces and odd signs but keeps the slashes, colons and question marks that make the address work. Use it when a link has a space in it. To put an address inside another address, choose 'Encode a value' instead, which encodes every sign."
+          ],
+          [
+            "Can I decode any address?",
+            "Yes, if it was encoded with the same rules. If the text has a lone percent sign or a bad code, the tool shows a message instead of a wrong result."
+          ],
+          [
+            "Is my text kept private?",
+            "Yes. The encoding runs in your browser, and the text is not sent to a server. Your text stays on your device."
+          ]
+        ]
+      },
+      "related": [
+        "base64",
+        "slug-generator",
+        "jwt-decoder",
+        "json-formatter"
+      ]
     }
   ]
 }
