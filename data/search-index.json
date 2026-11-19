@@ -1673,6 +1673,166 @@
    "iconClass": "",
    "badges": [],
    "format": ""
+  },
+  {
+   "slug": "speech-to-text",
+   "title": "Speech to Text",
+   "short": "Turn your spoken words into written text.",
+   "category": "text",
+   "keywords": [
+    "speech to text",
+    "voice to text",
+    "dictate text online",
+    "speech recognition"
+   ],
+   "icon": "i-mic",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "slug-generator",
+   "title": "Slug Generator",
+   "short": "Turn a title into a clean URL slug.",
+   "category": "text",
+   "keywords": [
+    "slug generator",
+    "url slug generator",
+    "make url slug",
+    "title to slug"
+   ],
+   "icon": "i-link",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "json-to-yaml",
+   "title": "JSON to YAML",
+   "short": "Convert JSON data into YAML format.",
+   "category": "developer",
+   "keywords": [
+    "json to yaml",
+    "convert json to yaml",
+    "json yaml converter",
+    "yaml converter"
+   ],
+   "icon": "i-braces",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "yaml-to-json",
+   "title": "YAML to JSON",
+   "short": "Convert YAML data into JSON format.",
+   "category": "developer",
+   "keywords": [
+    "yaml to json",
+    "convert yaml to json",
+    "yaml json converter",
+    "yaml parser"
+   ],
+   "icon": "i-file-code",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "json-to-xml",
+   "title": "JSON to XML",
+   "short": "Convert JSON data into XML format.",
+   "category": "developer",
+   "keywords": [
+    "json to xml",
+    "convert json to xml",
+    "json xml converter",
+    "xml converter"
+   ],
+   "icon": "i-braces",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "xml-to-json",
+   "title": "XML to JSON",
+   "short": "Convert XML data into JSON format.",
+   "category": "developer",
+   "keywords": [
+    "xml to json",
+    "convert xml to json",
+    "xml json converter",
+    "xml parser"
+   ],
+   "icon": "i-file-code",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "json-to-csv",
+   "title": "JSON to CSV",
+   "short": "Convert a JSON list into a CSV table.",
+   "category": "developer",
+   "keywords": [
+    "json to csv",
+    "convert json to csv",
+    "json csv converter",
+    "json table"
+   ],
+   "icon": "i-table",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "jwt-decoder",
+   "title": "JWT Decoder",
+   "short": "Read the header and payload of a JWT.",
+   "category": "developer",
+   "keywords": [
+    "jwt decoder",
+    "decode jwt",
+    "jwt token decoder",
+    "read jwt token"
+   ],
+   "icon": "i-key",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "hash-generator",
+   "title": "Hash Generator",
+   "short": "Make MD5 and SHA hashes of text or a file.",
+   "category": "developer",
+   "keywords": [
+    "hash generator",
+    "md5 generator",
+    "sha256 generator",
+    "online hash"
+   ],
+   "icon": "i-hash",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "url-encode-decode",
+   "title": "URL Encode Decode",
+   "short": "Encode and decode URLs and text safely.",
+   "category": "developer",
+   "keywords": [
+    "url encode decode",
+    "url encoder",
+    "url decoder",
+    "percent encoding"
+   ],
+   "icon": "i-link-2",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   }
  ]
 }
