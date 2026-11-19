@@ -1047,6 +1047,167 @@
    "iconClass": "icon-pk",
    "badges": [],
    "format": ""
+  },
+  {
+   "slug": "jpg-to-pdf",
+   "title": "JPG to PDF",
+   "short": "Turn JPG images into one PDF.",
+   "category": "pdf",
+   "keywords": [
+    "jpg to pdf",
+    "jpeg to pdf",
+    "images to pdf",
+    "photo to pdf",
+    "jpg se pdf"
+   ],
+   "icon": "i-images",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "png-to-pdf",
+   "title": "PNG to PDF",
+   "short": "Turn PNG images into one PDF.",
+   "category": "pdf",
+   "keywords": [
+    "png to pdf",
+    "screenshot to pdf",
+    "images to pdf",
+    "png se pdf"
+   ],
+   "icon": "i-file-image",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "pdf-to-jpg",
+   "title": "PDF to JPG",
+   "short": "Render PDF pages as JPG images.",
+   "category": "pdf",
+   "keywords": [
+    "pdf to jpg",
+    "pdf pages to jpg",
+    "pdf to image",
+    "pdf se jpg"
+   ],
+   "icon": "i-image-down",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "pdf-to-png",
+   "title": "PDF to PNG",
+   "short": "Render PDF pages as PNG images.",
+   "category": "pdf",
+   "keywords": [
+    "pdf to png",
+    "pdf pages to png",
+    "pdf to image",
+    "pdf se png"
+   ],
+   "icon": "i-file-image",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "html-to-pdf",
+   "title": "HTML to PDF",
+   "short": "Turn an HTML file into a PDF.",
+   "category": "pdf",
+   "keywords": [
+    "html to pdf",
+    "web page to pdf",
+    "html file to pdf",
+    "html se pdf"
+   ],
+   "icon": "i-file-code",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "extract-images-from-pdf",
+   "title": "Extract Images from PDF",
+   "short": "Save the images inside a PDF as PNG files.",
+   "category": "pdf",
+   "keywords": [
+    "extract images from pdf",
+    "pdf image extractor",
+    "save images from pdf",
+    "pdf se images"
+   ],
+   "icon": "i-image-down",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "add-header-footer-pdf",
+   "title": "Add Header and Footer to PDF",
+   "short": "Stamp header and footer text on every page.",
+   "category": "pdf",
+   "keywords": [
+    "add header to pdf",
+    "add footer to pdf",
+    "header footer pdf",
+    "pdf header footer"
+   ],
+   "icon": "i-letter-text",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "flatten-pdf",
+   "title": "Flatten PDF",
+   "short": "Flatten form fields and annotations in a PDF.",
+   "category": "pdf",
+   "keywords": [
+    "flatten pdf",
+    "flatten pdf form",
+    "make pdf uneditable",
+    "pdf flatten"
+   ],
+   "icon": "i-archive",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "pdf-metadata-editor",
+   "title": "PDF Metadata Editor",
+   "short": "View and edit a PDF's title, author and more.",
+   "category": "pdf",
+   "keywords": [
+    "pdf metadata editor",
+    "edit pdf title",
+    "pdf author",
+    "pdf properties"
+   ],
+   "icon": "i-square-pen",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "resize-pdf-page-size",
+   "title": "Resize PDF Page Size",
+   "short": "Scale every page to A4, Letter or Legal.",
+   "category": "pdf",
+   "keywords": [
+    "resize pdf page size",
+    "pdf a4 letter",
+    "change pdf page size",
+    "pdf page size"
+   ],
+   "icon": "i-scaling",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   }
  ]
 }
