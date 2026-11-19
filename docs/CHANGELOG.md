@@ -1,5 +1,18 @@
 # AK Premium — Changelog
 
+## v15 — 19 November 2026 (Wave 1 batch 3: 10 calculators & converters, 87 → 97 tools)
+
+### New tools (expansion brief §8.1, §14.3)
+- Ten calculators and converters, all pure client-side with no network calls: Unit Converter (9 unit types — length, weight, temperature, area, volume, speed, data, time, energy — one shared engine, live result), Discount Calculator (discount amount + final price), Compound Interest (maturity amount + interest earned), Mortgage Calculator (monthly payment; reuses the existing EMI formula), Tip Calculator (tip, total, per-person split), Time Zone Converter (date/time + two IANA zones via Intl.DateTimeFormat, 17 curated zones, DST handled), Date Difference (days, weeks + days, months), Calorie & TDEE Calculator (BMR + TDEE via Mifflin-St Jeor), Scientific Calculator (display + keypad, sin/cos/tan in degrees, log, ln, sqrt, power, factorial, pi, e — safe shunting-yard evaluator, no eval on user input), Fraction Calculator (add/subtract/multiply/divide, simplified fraction + decimal).
+- Every new tool has unique content per the Quality Gate: a specific 80–120-word intro, 4–6 steps naming the real controls, 2–3 tips, honest limits, a concrete example with real numbers verified against the tool (for example 1 kg = 2.2046 lb), and 4 tool-specific FAQs (388 FAQ questions across the site now, all unique).
+- Honest limits are stated on each new tool, and the Calorie & TDEE Calculator's limit callout carries a clear health disclaimer (estimates only, not medical advice, consult a clinician for personal guidance).
+- Currency Converter is NOT built in this batch: it needs a live exchange-rate API, which will need verification in a later batch. No fake rates were shipped and no registry entry or page exists for it.
+
+### JavaScript split and testing
+- Per-tool JS split extended: core.js + one tools/<slug>.js per tool (97 files). The split is verified lossless (4,386 code lines, 0 missing/extra). The shared unit-conversion engine and the scientific evaluator live in core.js.
+- A real bug was found and fixed during verification: the unit-converter handler read core const tables directly from its per-tool file, which works in a real browser but fails under jsdom's separate eval calls. All const-table access now stays inside core functions (convertUnit returns the formatted display text, unitOptions serves the dropdowns).
+- Harness run-v15.js: 293 checks, all passing, including live known-answer checks for all 10 new calculators (for example 1 km = 1000 m, 1000 at 20% off = 800, 1/2 + 1/3 = 5/6, sin(30) = 0.5, Lahore 12:00 → London 07:00 in winter / 08:00 in summer) and the existing known-answer tax (200,000/month TY2027 → 156,000), Zakat (→ 25,000) and EMI (→ 22,244.45) checks. Sitemap is 125 URLs (was 115). ASSET_V is now "15" (config.js?v=15) and the service-worker cache is "ak-premium-v15".
+
 ## v14 — 19 November 2026 (Wave 1 batch 2: 9 image tools, 78 → 87 tools)
 
 ### New tools (expansion brief §8.1, §14.3)
