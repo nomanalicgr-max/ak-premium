@@ -5342,6 +5342,668 @@
         "rotate-flip-image",
         "image-converter"
       ]
+    },
+    {
+      "slug": "unit-converter",
+      "workspace": "tool-unit",
+      "title": {
+        "en": "Unit Converter"
+      },
+      "short": {
+        "en": "Convert length, weight, temperature and more."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-ruler",
+      "keywords": [
+        "unit converter",
+        "convert units",
+        "length converter",
+        "weight converter",
+        "temperature converter",
+        "km to miles",
+        "kg to pounds"
+      ],
+      "libs": [],
+      "engine": "tool-unit",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Convert length, weight, temperature, area, volume, speed, data, time and energy in your browser.",
+      "steps": [
+        "Choose the kind of unit in the 'Unit type' list, such as Length or Weight.",
+        "Type the number in the 'Value' box.",
+        "Choose the unit you have in the 'From' list and the unit you want in the 'To' list.",
+        "Press Convert Units, or just wait, because the result updates as you type.",
+        "Read the answer under the button, shown with both units."
+      ],
+      "content": {
+        "use": "Unit Converter changes a measurement from one unit to another in your browser. A student changes 5 kilometres into metres for a homework answer. A cook changes 250 grams into ounces for a recipe from another country. A traveller changes miles into kilometres to read a road sign. A shop owner changes square feet into square metres for a floor plan. You pick the kind of unit, type the number, choose the unit you have and the unit you want, and the answer appears at once. Length, weight, temperature, area, volume, speed, data, time and energy are all covered, so most everyday conversions are one page away.",
+        "tip": "For recipes, check whether the book uses US cups or metric cups before you convert volume. For temperature, remember that 0 degrees Celsius is 32 degrees Fahrenheit, so the two scales do not start at the same place. Data units here use 1024, so 1 MB is 1024 KB, which is how computers count storage.",
+        "limit": "Only one number is converted at a time, and the result is rounded to 4 decimal places. Temperature uses Celsius, Fahrenheit and Kelvin only. Data units use 1024 per step, not 1000, and volume uses US cups and gallons.",
+        "example": "Choosing Length, typing 5, and converting kilometres to metres gives 5 km = 5000 m.",
+        "faq": [
+          [
+            "How do I convert kilometres to miles?",
+            "Choose Length, type the kilometres, set From to kilometres and To to miles, then press Convert Units. The answer shows the miles at once."
+          ],
+          [
+            "Why is 0 Celsius not 0 Fahrenheit?",
+            "The two scales start at different places. Water freezes at 0 degrees Celsius and 32 degrees Fahrenheit, so 0 Celsius is 32 Fahrenheit, not zero."
+          ],
+          [
+            "Does it convert kilograms to pounds?",
+            "Yes. Choose Weight, type the kilograms, set From to kilograms and To to pounds. One kilogram is about 2.20 pounds."
+          ],
+          [
+            "Can I convert square feet to square metres?",
+            "Yes. Choose Area, type the square feet, set From to square feet and To to square metres. The answer is rounded to 4 decimal places."
+          ]
+        ]
+      },
+      "related": [
+        "discount-calculator",
+        "percentage-calculator",
+        "date-difference",
+        "time-zone-converter"
+      ]
+    },
+    {
+      "slug": "discount-calculator",
+      "workspace": "tool-discount",
+      "title": {
+        "en": "Discount Calculator"
+      },
+      "short": {
+        "en": "Work out sale prices and savings."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-percent",
+      "keywords": [
+        "discount calculator",
+        "sale price calculator",
+        "percent off",
+        "discount kaise nikale"
+      ],
+      "libs": [],
+      "engine": "tool-discount",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Work out the discount amount and the final sale price from any price and percent.",
+      "steps": [
+        "Type the original price in the 'Original price' box.",
+        "Type the discount percent in the 'Discount (%)' box.",
+        "Press Calculate Discount, or just wait, because the result updates as you type.",
+        "Read the discount amount and the final price under the button."
+      ],
+      "content": {
+        "use": "Discount Calculator works out how much you save in a sale and what you actually pay. A shopper sees a shirt marked 20 percent off and wants the real price before buying. A shop owner sets a sale price that still leaves a profit. A student checks whether a 50 percent off deal is really half price. You type the original price and the discount percent, and the tool shows the discount amount and the price you pay. It works for any currency, because it only uses the numbers you type.",
+        "tip": "A 20 percent discount means you pay 80 percent of the price, so you can check the answer by working out 80 percent of the price. For two discounts in a row, apply the first discount, then apply the second discount to the new price, not to the original price. Round the final price to your local currency before you pay.",
+        "limit": "The discount percent must be between 0 and 100. The tool does not add tax or delivery charges, so the price it shows is before tax. It only uses the numbers you type, so check that the original price is right.",
+        "example": "A price of 1000 with a 20 percent discount gives a discount of 200 and a final price of 800.",
+        "faq": [
+          [
+            "How do I find the price after discount?",
+            "Type the original price and the discount percent, then press Calculate Discount. The final price is shown next to the discount amount."
+          ],
+          [
+            "What is 25 percent off 400?",
+            "The discount is 100 and the final price is 300. Type 400 as the price and 25 as the discount percent to see it."
+          ],
+          [
+            "Can the discount be more than 100 percent?",
+            "No. A discount above 100 percent would make the price negative, so the tool only accepts 0 to 100 percent."
+          ],
+          [
+            "Does it add tax to the price?",
+            "No. The tool shows the price before tax. Add your local tax to the final price yourself if you need the total you will pay."
+          ]
+        ]
+      },
+      "related": [
+        "percentage-calculator",
+        "tip-calculator",
+        "compound-interest",
+        "unit-converter"
+      ]
+    },
+    {
+      "slug": "compound-interest",
+      "workspace": "tool-compound",
+      "title": {
+        "en": "Compound Interest Calculator"
+      },
+      "short": {
+        "en": "See how savings grow over time."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-chart-column",
+      "keywords": [
+        "compound interest calculator",
+        "savings growth",
+        "interest calculator",
+        "compound interest kaise calculate kare"
+      ],
+      "libs": [],
+      "engine": "tool-compound",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "See how savings grow with compound interest over years, with any compounding frequency.",
+      "steps": [
+        "Type the starting amount in the 'Principal amount' box.",
+        "Type the yearly interest rate in the 'Annual interest rate (%)' box.",
+        "Type the number of years and choose how often interest is added in the 'Compounding' list.",
+        "Press Calculate Compound Interest, or just wait, because the result updates as you type.",
+        "Read the maturity amount and the interest earned under the button."
+      ],
+      "content": {
+        "use": "Compound Interest Calculator shows how savings grow when the interest itself earns interest. A saver puts money in a bank account and wants to know what it becomes in 5 years. A parent plans a fund for a child and compares yearly and monthly compounding. A student learns why starting early matters more than saving more later. You type the starting amount, the yearly rate, the years, and how often interest is added, and the tool shows the final amount and the interest earned.",
+        "tip": "Monthly compounding grows slightly faster than yearly compounding at the same rate, because interest starts earning interest sooner. The rate you type should be the yearly rate the bank quotes. This tool assumes you add no more money and take nothing out during the years.",
+        "limit": "The tool assumes a fixed rate and no deposits or withdrawals after the start. Real bank rates change, and tax or fees are not included, so the result is an estimate. The rate must be 0 or more and the years must be more than 0.",
+        "example": "100,000 at 10 percent a year for 5 years, compounded yearly, grows to 161,051, with 61,051 interest earned.",
+        "faq": [
+          [
+            "What is compound interest?",
+            "It is interest earned on both the starting amount and the interest already added. Each time interest is added, the next interest is worked out on the bigger amount."
+          ],
+          [
+            "Is monthly compounding better than yearly?",
+            "Yes, slightly. With monthly compounding the interest starts earning interest sooner, so the same rate gives a slightly bigger final amount."
+          ],
+          [
+            "Does it include tax on the interest?",
+            "No. The tool shows the amount before tax. Your bank or tax office may take tax from the interest, so the money you keep can be less."
+          ],
+          [
+            "Can I add monthly deposits with this tool?",
+            "No. This tool works out growth on one starting amount only. It does not add regular deposits or withdrawals, so use a savings plan calculator if you add money every month."
+          ]
+        ]
+      },
+      "related": [
+        "mortgage-calculator",
+        "loan-emi-calculator",
+        "tip-calculator",
+        "discount-calculator"
+      ]
+    },
+    {
+      "slug": "mortgage-calculator",
+      "workspace": "tool-mortgage",
+      "title": {
+        "en": "Mortgage Calculator"
+      },
+      "short": {
+        "en": "Work out your monthly home loan payment."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-landmark",
+      "keywords": [
+        "mortgage calculator",
+        "home loan calculator",
+        "monthly mortgage payment",
+        "home loan emi"
+      ],
+      "libs": [],
+      "engine": "tool-mortgage",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Work out the monthly payment, total paid and total interest on a home loan.",
+      "steps": [
+        "Type the loan amount in the 'Loan amount' box.",
+        "Type the yearly interest rate in the 'Annual interest rate (%)' box.",
+        "Type the loan length in years in the 'Loan term (years)' box.",
+        "Press Calculate Monthly Payment, or just wait, because the result updates as you type.",
+        "Read the monthly payment, the total paid and the total interest under the button."
+      ],
+      "content": {
+        "use": "Mortgage Calculator works out the monthly payment on a home loan. A buyer checks whether the monthly payment fits the family budget before choosing a house. A family compares a 20 year loan with a 30 year loan to see the difference in payment and total interest. An owner checks how much of each payment goes to interest in the early years. You type the loan amount, the yearly interest rate and the years, and the tool shows the monthly payment, the total paid and the total interest.",
+        "tip": "A longer loan means a smaller monthly payment but much more total interest, so compare both numbers before you choose. A small rise in the rate can add a lot to the monthly payment on a big loan. The payment here is principal plus interest only; taxes and insurance are not included.",
+        "limit": "The payment shown is principal and interest only. It does not include property tax, insurance or other charges your lender may add. The rate is assumed fixed for the whole loan, so a variable rate loan will differ.",
+        "example": "A loan of 5,000,000 at 12 percent a year for 20 years gives a monthly payment of 55,054.31.",
+        "faq": [
+          [
+            "How is the monthly payment worked out?",
+            "It uses the standard loan formula with the yearly rate divided by 12 and the number of monthly payments. The payment stays the same every month for a fixed rate loan."
+          ],
+          [
+            "Why is the total interest so high?",
+            "Interest is charged on the amount you still owe, which is large in the early years. Over 20 years the interest adds up to a large share of the total paid."
+          ],
+          [
+            "Does it include property tax?",
+            "No. The payment shown is principal and interest only. Add your property tax and insurance yourself to get the full monthly cost."
+          ],
+          [
+            "What happens if the rate changes?",
+            "This tool assumes a fixed rate. If your loan has a variable rate, the monthly payment will change when the rate changes, so work it out again with the new rate."
+          ]
+        ]
+      },
+      "related": [
+        "loan-emi-calculator",
+        "compound-interest",
+        "discount-calculator",
+        "percentage-calculator"
+      ]
+    },
+    {
+      "slug": "tip-calculator",
+      "workspace": "tool-tip",
+      "title": {
+        "en": "Tip Calculator"
+      },
+      "short": {
+        "en": "Split the bill and work out the tip."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-hand-coins",
+      "keywords": [
+        "tip calculator",
+        "split bill calculator",
+        "restaurant tip",
+        "tip kaise calculate kare"
+      ],
+      "libs": [],
+      "engine": "tool-tip",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Work out the tip, the total bill and the amount each person pays when you split it.",
+      "steps": [
+        "Type the bill amount in the 'Bill amount' box.",
+        "Type the tip percent in the 'Tip (%)' box.",
+        "Type the number of people in the 'Split between (people)' box.",
+        "Press Calculate Tip, or just wait, because the result updates as you type.",
+        "Read the tip, the total and the amount per person under the button."
+      ],
+      "content": {
+        "use": "Tip Calculator works out the tip on a restaurant bill and splits the total fairly. Friends share a dinner bill and want to know what each person pays with the tip included. A traveller in another country wants to leave the right tip without doing the maths by hand. A family checks the total before paying by card. You type the bill, the tip percent and the number of people, and the tool shows the tip, the total and the amount per person.",
+        "tip": "A 10 percent tip is easy to check: move the decimal point one place left on the bill. If the service was poor, you can set the tip to 0 and just split the bill. In some countries a service charge is already added to the bill, so check before you tip on top of it.",
+        "limit": "The tip percent must be 0 or more and the number of people must be at least 1. The tool does not add tax, so use the bill amount before or after tax as you prefer. Amounts are rounded to 2 decimal places, so a few cents may differ when you split.",
+        "example": "A bill of 2000 with a 15 percent tip and 4 people gives a tip of 300, a total of 2300, and 575 per person.",
+        "faq": [
+          [
+            "How much should I tip at a restaurant?",
+            "It depends on the country. In many places 10 to 15 percent is common, and 15 to 20 percent is common in the United States. Check local custom before you tip."
+          ],
+          [
+            "How do I split a bill between friends?",
+            "Type the bill, the tip percent and the number of people. The tool shows the amount each person pays, including the tip."
+          ],
+          [
+            "Does the tip include tax?",
+            "No. The tool works out the tip on the bill amount you type. If you want the tip on the amount before tax, type the bill before tax."
+          ],
+          [
+            "Can I tip 0 percent?",
+            "Yes. Set the tip to 0 and the tool splits just the bill. The tip amount shows as 0 and the total is the same as the bill."
+          ]
+        ]
+      },
+      "related": [
+        "discount-calculator",
+        "percentage-calculator",
+        "unit-converter",
+        "compound-interest"
+      ]
+    },
+    {
+      "slug": "time-zone-converter",
+      "workspace": "tool-timezone",
+      "title": {
+        "en": "Time Zone Converter"
+      },
+      "short": {
+        "en": "Convert times between world time zones."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-arrow-right-left",
+      "keywords": [
+        "time zone converter",
+        "world clock converter",
+        "convert time zones",
+        "time zone converter pakistan"
+      ],
+      "libs": [],
+      "engine": "tool-timezone",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Convert a date and time between world time zones, with daylight saving handled.",
+      "steps": [
+        "Pick the date in the 'Date' box and the time in the 'Time' box.",
+        "Choose the zone the time is in, in the 'From time zone' list.",
+        "Choose the zone you want in the 'To time zone' list.",
+        "Press Convert Time Zone, or just wait, because the result updates as you type.",
+        "Read the converted date and time under the button."
+      ],
+      "content": {
+        "use": "Time Zone Converter changes a time from one part of the world to another. A worker in Lahore joins a call with a team in London and needs the right time. A student applies to a university abroad and must not miss a deadline in another time zone. A family calls relatives overseas and wants to avoid waking them up. You pick the date and time, choose the zone you have and the zone you want, and the tool shows the converted time, with daylight saving handled for you.",
+        "tip": "Daylight saving changes the gap between zones in summer and winter, so always include the date, not just the time. London is 5 hours behind Lahore in winter but 4 hours behind in summer. If the converted time falls on another day, the tool shows the new date too.",
+        "limit": "The tool uses the time zone rules built into your browser, which are kept up to date by your system. Very old or future dates may use rules that have changed. It converts clock times only; it does not book meetings or send invites.",
+        "example": "12:00 on 15 January 2026 in Lahore is 07:00 on 15 January 2026 in London.",
+        "faq": [
+          [
+            "What is the time difference between Lahore and London?",
+            "It is 5 hours in winter and 4 hours in summer, because London uses daylight saving and Lahore does not. Pick a date to get the right gap."
+          ],
+          [
+            "Does it handle daylight saving time?",
+            "Yes. The tool uses your browser's time zone rules, so daylight saving is applied for the date you pick, and the gap between two zones can change with the season."
+          ],
+          [
+            "Can I convert to New York time?",
+            "Yes. Choose America/New_York in the To list. New York is 10 hours behind Lahore in winter and 9 hours behind in summer."
+          ],
+          [
+            "Why does the date change sometimes?",
+            "When the converted time crosses midnight, the date moves to the next day or the day before. The tool always shows the full date with the time."
+          ]
+        ]
+      },
+      "related": [
+        "date-difference",
+        "unit-converter",
+        "percentage-calculator",
+        "age-calculator"
+      ]
+    },
+    {
+      "slug": "date-difference",
+      "workspace": "tool-datediff",
+      "title": {
+        "en": "Date Difference Calculator"
+      },
+      "short": {
+        "en": "Count days, weeks and months between dates."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-diff",
+      "keywords": [
+        "date difference calculator",
+        "days between dates",
+        "count days",
+        "do dates ke darmiyan din"
+      ],
+      "libs": [],
+      "engine": "tool-datediff",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Count the days, weeks and months between any two dates in your browser.",
+      "steps": [
+        "Pick the first date in the 'From date' box.",
+        "Pick the second date in the 'To date' box.",
+        "Press Calculate Difference, or just wait, because the result updates as you type.",
+        "Read the days, weeks and months under the button."
+      ],
+      "content": {
+        "use": "Date Difference Calculator counts the time between two dates. A worker counts the days left before a project deadline. A parent counts the days until a child's birthday. A student counts the weeks between the start and the end of a term. A traveller counts the days of a trip. You pick the two dates and the tool shows the days between them, the weeks and days, and the full months, so you can plan without counting on a calendar.",
+        "tip": "The count is the number of days from the first date to the second date, not including the first date. If you need to include both end days, add 1 to the day count. The order of the two dates does not matter; the tool always counts the gap between them.",
+        "limit": "The tool counts whole days between the dates you pick. It does not count working days or skip weekends and holidays. Very old dates may use calendar rules that differ from today's calendar.",
+        "example": "From 1 January 2025 to 1 January 2026 is 365 days, which is 52 weeks and 1 day.",
+        "faq": [
+          [
+            "How many days are between two dates?",
+            "Pick the two dates and press Calculate Difference. The tool shows the exact number of days, plus the weeks and days and the full months."
+          ],
+          [
+            "Does it count the first date?",
+            "No. The count is the days from the first date to the second date. If you want to include both end days, add 1 to the day count."
+          ],
+          [
+            "Can I count weeks instead of days?",
+            "Yes. The result shows the weeks and the extra days as well, so 365 days shows as 52 weeks and 1 day."
+          ],
+          [
+            "Does the order of the dates matter?",
+            "No. The tool always counts the gap between the two dates, whichever one you pick first, so you can enter them in any order you like."
+          ]
+        ]
+      },
+      "related": [
+        "time-zone-converter",
+        "age-calculator",
+        "percentage-calculator",
+        "unit-converter"
+      ]
+    },
+    {
+      "slug": "calorie-tdee-calculator",
+      "workspace": "tool-tdee",
+      "title": {
+        "en": "Calorie & TDEE Calculator"
+      },
+      "short": {
+        "en": "Work out your daily calorie needs."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-scale",
+      "keywords": [
+        "calorie calculator",
+        "tdee calculator",
+        "bmr calculator",
+        "daily calories",
+        "calorie calculator"
+      ],
+      "libs": [],
+      "engine": "tool-tdee",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Estimate your BMR and daily calorie needs (TDEE) from age, height, weight and activity.",
+      "steps": [
+        "Type your age in the 'Age (years)' box.",
+        "Choose your sex in the 'Sex' list and type your height and weight.",
+        "Choose your activity level in the 'Activity level' list.",
+        "Press Calculate Calories, or just wait, because the result updates as you type.",
+        "Read your BMR and TDEE in calories a day under the button."
+      ],
+      "content": {
+        "use": "Calorie and TDEE Calculator estimates how many calories your body uses in a day. A person starting a diet wants a daily target that fits their body and activity. A gym member checks whether they eat enough to build muscle. A student learns the difference between BMR, the calories the body uses at rest, and TDEE, the total with daily activity. You type your age, sex, height and weight, choose your activity level, and the tool shows your BMR and TDEE.",
+        "tip": "TDEE is the number to use for a daily calorie target, not BMR, because BMR leaves out all movement. Choose the activity level that matches a normal week, not your busiest day. A small change in weight or activity changes the result, so update the numbers as they change.",
+        "limit": "These numbers are estimates from the Mifflin-St Jeor formula, not medical advice. They do not fit everyone, including children, pregnant people, and people with some health conditions. For a personal diet or health plan, talk to a doctor or a qualified dietitian.",
+        "example": "A 30-year-old man, 180 cm tall and 80 kg, moderately active, has a BMR of 1780 calories a day and a TDEE of 2759 calories a day.",
+        "faq": [
+          [
+            "What is the difference between BMR and TDEE?",
+            "BMR is the calories your body uses at rest to stay alive. TDEE adds your daily activity and movement, so it is the total calories you use in a day."
+          ],
+          [
+            "How many calories do I need to lose weight?",
+            "Most people aim for a TDEE minus about 300 to 500 calories a day. This tool only gives the estimate; a doctor or dietitian can set a safe target for you."
+          ],
+          [
+            "Which activity level should I choose?",
+            "Pick the level that matches a normal week. Desk work with little exercise is sedentary, while a physical job or daily training is very active."
+          ],
+          [
+            "Is this medical advice?",
+            "No. The numbers are estimates from a standard formula. They are not a diagnosis or a diet plan, so talk to a doctor for personal advice."
+          ]
+        ]
+      },
+      "related": [
+        "bmi-calculator",
+        "age-calculator",
+        "percentage-calculator",
+        "unit-converter"
+      ]
+    },
+    {
+      "slug": "scientific-calculator",
+      "workspace": "tool-scientific",
+      "title": {
+        "en": "Scientific Calculator"
+      },
+      "short": {
+        "en": "Sin, cos, log, powers and more."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-sigma",
+      "keywords": [
+        "scientific calculator",
+        "sin cos tan calculator",
+        "log calculator",
+        "scientific calculator online"
+      ],
+      "libs": [],
+      "engine": "tool-scientific",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "A free scientific calculator with sin, cos, tan, log, square root and powers.",
+      "steps": [
+        "Tap the number and operator keys to build your sum in the display.",
+        "Tap a function key such as sin, cos, log or sqrt to add it to the sum.",
+        "Tap the pi or e key when you need those numbers.",
+        "Press = to work out the answer, or C to clear the display.",
+        "Read the result under the display."
+      ],
+      "content": {
+        "use": "Scientific Calculator does the maths a basic calculator cannot. A student works out sin of 30 degrees for a trigonometry problem. An engineer takes the log of a number for a decibel calculation. A shop owner works out a power for a compound growth check. You tap the keys to build the sum, use the function keys for sin, cos, tan, log, square root and powers, and press equals to see the answer. Everything runs in your browser, so there is nothing to install.",
+        "tip": "Trigonometry here uses degrees, so sin(30) is 0.5, the same as a school calculator in degree mode. Use brackets to control the order, such as (2+3) x 4, instead of relying on memory. Tap Back to remove one character instead of clearing the whole sum.",
+        "limit": "Trigonometry uses degrees, not radians. Factorial only works for whole numbers from 0 to 170. Very long sums may be hard to read on a small screen, and the tool does not save your history.",
+        "example": "Typing sin(30) and pressing = gives 0.5.",
+        "faq": [
+          [
+            "Does sin use degrees or radians?",
+            "Degrees. Sin(30) gives 0.5, the same as a school calculator set to degrees. There is no radian mode on this page."
+          ],
+          [
+            "How do I work out a square root?",
+            "Tap sqrt, type the number, close the bracket if one opened, then press =. For example, sqrt(16) gives 4, and sqrt(2) gives about 1.4142."
+          ],
+          [
+            "What does the x squared key do?",
+            "It raises the number before it to the power of 2. Typing 5 then the squared key gives 25, and typing 10 then the squared key gives 100."
+          ],
+          [
+            "Can I use brackets in a sum?",
+            "Yes. Tap the bracket keys to group parts of the sum. For example, (2+3) x 4 gives 20, while 2+3 x 4 gives 14."
+          ]
+        ]
+      },
+      "related": [
+        "fraction-calculator",
+        "percentage-calculator",
+        "unit-converter",
+        "age-calculator"
+      ]
+    },
+    {
+      "slug": "fraction-calculator",
+      "workspace": "tool-fraction",
+      "title": {
+        "en": "Fraction Calculator"
+      },
+      "short": {
+        "en": "Add, subtract, multiply and divide fractions."
+      },
+      "category": "calculators",
+      "group": "",
+      "icon": "i-braces",
+      "keywords": [
+        "fraction calculator",
+        "add fractions",
+        "simplify fractions",
+        "fraction calculator"
+      ],
+      "libs": [],
+      "engine": "tool-fraction",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Add, subtract, multiply and divide fractions, simplified, with the decimal value.",
+      "steps": [
+        "Type the first fraction as a top number and a bottom number.",
+        "Choose add, subtract, multiply or divide in the 'Operation' list.",
+        "Type the second fraction the same way.",
+        "Press Calculate Fraction, or just wait, because the result updates as you type.",
+        "Read the simplified fraction and its decimal value under the button."
+      ],
+      "content": {
+        "use": "Fraction Calculator adds, subtracts, multiplies and divides fractions and simplifies the answer. A student checks homework on adding halves and thirds. A cook halves a recipe that uses fractions of a cup. A worker splits a length into equal parts for a job. A teacher makes quick fraction questions for a class test without working them out by hand. You type the two fractions, choose the operation, and the tool shows the simplified fraction and its decimal value, so you can check your own working in seconds.",
+        "tip": "The answer is always simplified, so 2/4 shows as 1/2. A whole number answer shows as a whole number, such as 2, not 2/1. For a mixed number, divide the top by the bottom yourself; for example 5/2 is 2 and 1/2.",
+        "limit": "Only whole numbers are accepted in the top and bottom boxes. The bottom number cannot be zero, and dividing by a fraction of zero is not allowed. The decimal is rounded to 4 places.",
+        "example": "1/2 plus 1/3 equals 5/6, which is about 0.8333.",
+        "faq": [
+          [
+            "How do I add 1/2 and 1/3?",
+            "Type 1 over 2, choose add, type 1 over 3, then press Calculate Fraction. The answer is 5/6, about 0.8333."
+          ],
+          [
+            "Why is the answer simplified?",
+            "The tool divides the top and bottom by their largest shared factor. That gives the simplest form, such as 1/2 instead of 2/4."
+          ],
+          [
+            "Can the bottom number be zero?",
+            "No. A fraction with zero on the bottom has no value, so the tool asks for a different number before it can work out the answer."
+          ],
+          [
+            "What does the decimal value mean?",
+            "It is the fraction as a decimal number. For 5/6 it is about 0.8333, rounded to 4 decimal places, which is easier to use on a calculator or a measuring tape."
+          ]
+        ]
+      },
+      "related": [
+        "scientific-calculator",
+        "percentage-calculator",
+        "unit-converter",
+        "age-calculator"
+      ]
     }
   ]
 }

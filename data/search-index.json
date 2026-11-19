@@ -1349,6 +1349,170 @@
    "iconClass": "",
    "badges": [],
    "format": ""
+  },
+  {
+   "slug": "unit-converter",
+   "title": "Unit Converter",
+   "short": "Convert length, weight, temperature and more.",
+   "category": "calculators",
+   "keywords": [
+    "unit converter",
+    "convert units",
+    "length converter",
+    "weight converter",
+    "temperature converter",
+    "km to miles",
+    "kg to pounds"
+   ],
+   "icon": "i-ruler",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "discount-calculator",
+   "title": "Discount Calculator",
+   "short": "Work out sale prices and savings.",
+   "category": "calculators",
+   "keywords": [
+    "discount calculator",
+    "sale price calculator",
+    "percent off",
+    "discount kaise nikale"
+   ],
+   "icon": "i-percent",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "compound-interest",
+   "title": "Compound Interest Calculator",
+   "short": "See how savings grow over time.",
+   "category": "calculators",
+   "keywords": [
+    "compound interest calculator",
+    "savings growth",
+    "interest calculator",
+    "compound interest kaise calculate kare"
+   ],
+   "icon": "i-chart-column",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "mortgage-calculator",
+   "title": "Mortgage Calculator",
+   "short": "Work out your monthly home loan payment.",
+   "category": "calculators",
+   "keywords": [
+    "mortgage calculator",
+    "home loan calculator",
+    "monthly mortgage payment",
+    "home loan emi"
+   ],
+   "icon": "i-landmark",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "tip-calculator",
+   "title": "Tip Calculator",
+   "short": "Split the bill and work out the tip.",
+   "category": "calculators",
+   "keywords": [
+    "tip calculator",
+    "split bill calculator",
+    "restaurant tip",
+    "tip kaise calculate kare"
+   ],
+   "icon": "i-hand-coins",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "time-zone-converter",
+   "title": "Time Zone Converter",
+   "short": "Convert times between world time zones.",
+   "category": "calculators",
+   "keywords": [
+    "time zone converter",
+    "world clock converter",
+    "convert time zones",
+    "time zone converter pakistan"
+   ],
+   "icon": "i-arrow-right-left",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "date-difference",
+   "title": "Date Difference Calculator",
+   "short": "Count days, weeks and months between dates.",
+   "category": "calculators",
+   "keywords": [
+    "date difference calculator",
+    "days between dates",
+    "count days",
+    "do dates ke darmiyan din"
+   ],
+   "icon": "i-diff",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "calorie-tdee-calculator",
+   "title": "Calorie & TDEE Calculator",
+   "short": "Work out your daily calorie needs.",
+   "category": "calculators",
+   "keywords": [
+    "calorie calculator",
+    "tdee calculator",
+    "bmr calculator",
+    "daily calories",
+    "calorie calculator"
+   ],
+   "icon": "i-scale",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "scientific-calculator",
+   "title": "Scientific Calculator",
+   "short": "Sin, cos, log, powers and more.",
+   "category": "calculators",
+   "keywords": [
+    "scientific calculator",
+    "sin cos tan calculator",
+    "log calculator",
+    "scientific calculator online"
+   ],
+   "icon": "i-sigma",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "fraction-calculator",
+   "title": "Fraction Calculator",
+   "short": "Add, subtract, multiply and divide fractions.",
+   "category": "calculators",
+   "keywords": [
+    "fraction calculator",
+    "add fractions",
+    "simplify fractions",
+    "fraction calculator"
+   ],
+   "icon": "i-braces",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   }
  ]
 }

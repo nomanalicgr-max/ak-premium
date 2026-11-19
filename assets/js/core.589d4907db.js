@@ -1110,6 +1110,309 @@ function renderRotatedImage(img, rot, flipH, flipV, jpeg) {
   return canvas;
 }
 
+// Unit tables: each type maps unit keys to their factor in the base unit.
+// Temperature is special (offsets, not factors) and is handled in convertUnit.
+const UNIT_DEFS = {
+  length: [["mm", "millimetres"], ["cm", "centimetres"], ["m", "metres"], ["km", "kilometres"], ["in", "inches"], ["ft", "feet"], ["yd", "yards"], ["mi", "miles"]],
+  weight: [["g", "grams"], ["kg", "kilograms"], ["t", "tonnes"], ["oz", "ounces"], ["lb", "pounds"], ["st", "stone"]],
+  temperature: [["c", "Celsius"], ["f", "Fahrenheit"], ["k", "Kelvin"]],
+  area: [["sqm", "square metres"], ["sqkm", "square kilometres"], ["sqft", "square feet"], ["sqyd", "square yards"], ["acre", "acres"], ["ha", "hectares"]],
+  volume: [["ml", "millilitres"], ["l", "litres"], ["cum", "cubic metres"], ["cup", "US cups"], ["gal", "US gallons"], ["floz", "fluid ounces"]],
+  speed: [["mps", "metres per second"], ["kph", "kilometres per hour"], ["mph", "miles per hour"], ["kn", "knots"]],
+  data: [["b", "bytes"], ["kb", "kilobytes"], ["mb", "megabytes"], ["gb", "gigabytes"], ["tb", "terabytes"]],
+  time: [["s", "seconds"], ["min", "minutes"], ["h", "hours"], ["day", "days"], ["week", "weeks"]],
+  energy: [["j", "joules"], ["kj", "kilojoules"], ["cal", "calories"], ["kcal", "kilocalories"], ["kwh", "kilowatt-hours"]]
+};
+const UNIT_FACTORS = {
+  length: { mm: 0.001, cm: 0.01, m: 1, km: 1000, in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.344 },
+  weight: { g: 0.001, kg: 1, t: 1000, oz: 0.028349523125, lb: 0.45359237, st: 6.35029318 },
+  area: { sqm: 1, sqkm: 1000000, sqft: 0.09290304, sqyd: 0.83612736, acre: 4046.8564224, ha: 10000 },
+  volume: { ml: 0.001, l: 1, cum: 1000, cup: 0.2365882365, gal: 3.785411784, floz: 0.0295735295625 },
+  speed: { mps: 1, kph: 0.2777777777777778, mph: 0.44704, kn: 0.5144444444444445 },
+  data: { b: 1, kb: 1024, mb: 1048576, gb: 1073741824, tb: 1099511627776 },
+  time: { s: 1, min: 60, h: 3600, day: 86400, week: 604800 },
+  energy: { j: 1, kj: 1000, cal: 4.184, kcal: 4184, kwh: 3600000 }
+};
+const UNIT_SHORT = { mm: "mm", cm: "cm", m: "m", km: "km", in: "in", ft: "ft", yd: "yd", mi: "mi", g: "g", kg: "kg", t: "t", oz: "oz", lb: "lb", st: "st", c: "°C", f: "°F", k: "K", sqm: "m²", sqkm: "km²", sqft: "ft²", sqyd: "yd²", acre: "acre", ha: "ha", ml: "ml", l: "l", cum: "m³", cup: "cup", gal: "gal", floz: "fl oz", mps: "m/s", kph: "km/h", mph: "mph", kn: "kn", b: "B", kb: "KB", mb: "MB", gb: "GB", tb: "TB", s: "s", min: "min", h: "h", day: "day", week: "week", j: "J", kj: "kJ", cal: "cal", kcal: "kcal", kwh: "kWh" };
+const TZ_LABELS = { "UTC": "UTC", "Asia/Karachi": "Lahore", "Asia/Dubai": "Dubai", "Asia/Kolkata": "Kolkata", "Asia/Dhaka": "Dhaka", "Asia/Singapore": "Singapore", "Asia/Tokyo": "Tokyo", "Australia/Sydney": "Sydney", "Europe/London": "London", "Europe/Paris": "Paris", "Europe/Berlin": "Berlin", "America/New_York": "New York", "America/Chicago": "Chicago", "America/Denver": "Denver", "America/Los_Angeles": "Los Angeles", "America/Toronto": "Toronto", "Pacific/Auckland": "Auckland" };
+// Round to dp decimals and drop trailing zeros ("5000", not "5000.0000").
+
+/* ---------- Wave 1: Calculators & converters (batch 3) ---------- */
+
+function fmtCalc(n, dp) {
+  const d = dp === undefined ? 4 : dp;
+  if (!isFinite(n)) return "0";
+  return String(Math.round(n * Math.pow(10, d)) / Math.pow(10, d));
+}
+// Round to 2 decimals and drop trailing zeros ("200", "55,054.31" stays grouped by fmtMoney).
+
+function fmtTrim(n) {
+  if (!isFinite(n)) return "0";
+  return String(Math.round(n * 100) / 100);
+}
+// Scientific result: 10 decimals, then trim; very large/small use exponent form.
+
+function fmtSci(v) {
+  if (v === 0) return "0";
+  const r = Math.round(v * 1e10) / 1e10;
+  if (Math.abs(r) >= 1e12 || (Math.abs(r) < 1e-9 && r !== 0)) return r.toExponential(6).replace(/\.?0+e/, "e");
+  return String(r);
+}
+
+function gcdCalc(a, b) {
+  a = Math.abs(a); b = Math.abs(b);
+  while (b) { const t = a % b; a = b; b = t; }
+  return a || 1;
+}
+
+function convertUnit(type, value, from, to) {
+  if (isNaN(value)) return { error: "Please enter a number to convert." };
+  const def = UNIT_DEFS[type];
+  if (!def) return { error: "Please choose a unit type." };
+  let out;
+  if (type === "temperature") {
+    let c;
+    if (from === "c") c = value;
+    else if (from === "f") c = (value - 32) * 5 / 9;
+    else if (from === "k") c = value - 273.15;
+    else return { error: "Please choose a temperature unit." };
+    if (to === "c") out = c;
+    else if (to === "f") out = c * 9 / 5 + 32;
+    else if (to === "k") out = c + 273.15;
+    else return { error: "Please choose a temperature unit." };
+  } else {
+    const f = UNIT_FACTORS[type];
+    if (!f || !f[from] || !f[to]) return { error: "Please choose the units to convert between." };
+    out = value * f[from] / f[to];
+  }
+  return { result: out, text: fmtCalc(value) + " " + (UNIT_SHORT[from] || from) + " = " + fmtCalc(out) + " " + (UNIT_SHORT[to] || to) };
+}
+// The unit-type dropdown options, for the page script (which cannot read
+// the core const tables directly when scripts are eval'd separately).
+
+function unitOptions(type) {
+  return UNIT_DEFS[type] || [];
+}
+
+function discountCalc(price, pct) {
+  if (isNaN(price) || price < 0) return { error: "Please enter an original price of 0 or more." };
+  if (isNaN(pct) || pct < 0 || pct > 100) return { error: "Please enter a discount between 0 and 100 percent." };
+  const discount = Math.round(price * pct) / 100;
+  const final = Math.round((price - discount) * 100) / 100;
+  return { discount, final };
+}
+
+function compoundCalc(principal, rate, years, freq) {
+  if (isNaN(principal) || principal <= 0) return { error: "Please enter a principal amount more than 0." };
+  if (isNaN(rate) || rate < 0) return { error: "Please enter an interest rate of 0 or more." };
+  if (isNaN(years) || years <= 0) return { error: "Please enter a number of years more than 0." };
+  if (!freq || freq <= 0) return { error: "Please choose how often interest is added." };
+  const amount = principal * Math.pow(1 + rate / 100 / freq, freq * years);
+  const rounded = Math.round(amount * 100) / 100;
+  return { amount: rounded, interest: Math.round((rounded - principal) * 100) / 100 };
+}
+
+function tipCalc(bill, pct, people) {
+  if (isNaN(bill) || bill < 0) return { error: "Please enter a bill amount of 0 or more." };
+  if (isNaN(pct) || pct < 0) return { error: "Please enter a tip percent of 0 or more." };
+  if (!people || people < 1 || Math.floor(people) !== people) return { error: "Please enter a whole number of people, at least 1." };
+  const tip = Math.round(bill * pct) / 100;
+  const total = Math.round((bill + tip) * 100) / 100;
+  const perPerson = Math.round(total / people * 100) / 100;
+  return { tip, total, perPerson };
+}
+// Offset (ms) of a time zone at a given instant, via Intl formatToParts.
+
+function zoneOffsetMs(zone, date) {
+  const dtf = new Intl.DateTimeFormat("en-US", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+  const parts = {};
+  dtf.formatToParts(date).forEach((p) => { parts[p.type] = p.value; });
+  const asUTC = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day), Number(parts.hour) % 24, Number(parts.minute), Number(parts.second));
+  return asUTC - date.getTime();
+}
+
+function tzConvert(dateStr, timeStr, fromZone, toZone) {
+  if (!dateStr || !timeStr) return { error: "Please pick a date and a time." };
+  if (!fromZone || !toZone) return { error: "Please choose both time zones." };
+  const m = String(timeStr).match(/^(\d{2}):(\d{2})$/);
+  if (!m) return { error: "Please pick a valid time." };
+  const d = String(dateStr).split("-").map(Number);
+  if (d.length !== 3 || d.some(isNaN)) return { error: "Please pick a valid date." };
+  const wallAsUTC = Date.UTC(d[0], d[1] - 1, d[2], Number(m[1]), Number(m[2]));
+  // Wall time in fromZone -> UTC instant (two passes for DST edges).
+  let utc = wallAsUTC - zoneOffsetMs(fromZone, new Date(wallAsUTC));
+  utc = wallAsUTC - zoneOffsetMs(fromZone, new Date(utc));
+  const toDate = new Date(utc);
+  const fromLabel = TZ_LABELS[fromZone] || fromZone;
+  const toLabel = TZ_LABELS[toZone] || toZone;
+  const toTimeFmt = new Intl.DateTimeFormat("en-GB", { timeZone: toZone, hour: "2-digit", minute: "2-digit", hour12: false });
+  const toDateFmt = new Intl.DateTimeFormat("en-GB", { timeZone: toZone, day: "numeric", month: "short", year: "numeric" });
+  const fromDateFmt = new Intl.DateTimeFormat("en-GB", { timeZone: fromZone, day: "numeric", month: "short", year: "numeric" });
+  // The from wall time is exactly what the user typed; format it directly.
+  const typedTime = m[1] + ":" + m[2];
+  const typedDate = fromDateFmt.format(new Date(Date.UTC(d[0], d[1] - 1, d[2])));
+  return { text: typedTime + " on " + typedDate + " in " + fromLabel + " is " + toTimeFmt.format(toDate) + " on " + toDateFmt.format(toDate) + " in " + toLabel };
+}
+
+function dateDiffCalc(fromStr, toStr) {
+  const a = new Date(fromStr + "T00:00:00");
+  const b = new Date(toStr + "T00:00:00");
+  if (isNaN(a.getTime()) || isNaN(b.getTime())) return { error: "Please pick two valid dates." };
+  const start = a <= b ? a : b;
+  const end = a <= b ? b : a;
+  const days = Math.round((end - start) / 86400000);
+  let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+  if (end.getDate() < start.getDate()) months -= 1;
+  const weeks = Math.floor(days / 7);
+  const remDays = days % 7;
+  return { days, weeks, remDays, months };
+}
+
+function tdeeCalc(age, sex, heightCm, weightKg, factor) {
+  if (!age || age <= 0 || age > 120) return { error: "Please enter an age between 1 and 120." };
+  if (!heightCm || heightCm <= 0) return { error: "Please enter a height more than 0." };
+  if (!weightKg || weightKg <= 0) return { error: "Please enter a weight more than 0." };
+  if (!factor || factor <= 0) return { error: "Please choose an activity level." };
+  const bmr = 10 * weightKg + 6.25 * heightCm - 5 * age + (sex === "female" ? -161 : 5);
+  const bmrRound = Math.round(bmr);
+  return { bmr: bmrRound, tdee: Math.round(bmrRound * factor) };
+}
+// Safe expression evaluator (shunting-yard to RPN). Trig uses degrees.
+// No eval(): only numbers, brackets, operators and the named functions.
+
+function evaluateScientific(expr) {
+  const s = String(expr || "").replace(/\s+/g, "");
+  if (!s) return { error: "Please build a sum first." };
+  const tokens = [];
+  let i = 0;
+  while (i < s.length) {
+    const ch = s[i];
+    if (/[0-9.]/.test(ch)) {
+      let j = i;
+      while (j < s.length && /[0-9.]/.test(s[j])) j++;
+      const num = s.slice(i, j);
+      if ((num.match(/\./g) || []).length > 1 || num === ".") return { error: "Invalid number: " + num };
+      tokens.push({ t: "num", v: parseFloat(num) });
+      i = j;
+    } else if (/[a-z]/.test(ch)) {
+      let j = i;
+      while (j < s.length && /[a-z]/.test(s[j])) j++;
+      const name = s.slice(i, j);
+      if (name === "pi") tokens.push({ t: "num", v: Math.PI });
+      else if (name === "e") tokens.push({ t: "num", v: Math.E });
+      else if (["sin", "cos", "tan", "log", "ln", "sqrt"].includes(name)) tokens.push({ t: "fn", v: name });
+      else return { error: "Unknown word: " + name };
+      i = j;
+    } else if ("+-*/^%!()".includes(ch)) {
+      tokens.push({ t: "op", v: ch });
+      i++;
+    } else {
+      return { error: "Invalid character: " + ch };
+    }
+  }
+  const prec = { "+": 2, "-": 2, "*": 3, "/": 3, "^": 4, "!": 5, "%": 5, "neg": 4 };
+  const rightAssoc = { "^": true };
+  const out = [];
+  const stack = [];
+  let prev = null;
+  for (const tok of tokens) {
+    if (tok.t === "num") { out.push(tok); prev = tok; continue; }
+    if (tok.t === "fn") { stack.push(tok); prev = tok; continue; }
+    const op = tok.v;
+    if (op === "(") { stack.push(tok); prev = tok; continue; }
+    if (op === ")") {
+      let found = false;
+      while (stack.length) {
+        const top = stack.pop();
+        if (top.t === "op" && top.v === "(") { found = true; break; }
+        out.push(top);
+      }
+      if (!found) return { error: "Mismatched brackets." };
+      if (stack.length && stack[stack.length - 1].t === "fn") out.push(stack.pop());
+      prev = tok; continue;
+    }
+    if (op === "!" || op === "%") { out.push(tok); prev = tok; continue; }
+    if (op === "-" && (!prev || (prev.t === "op" && prev.v !== ")" && prev.v !== "!" && prev.v !== "%") || (prev.t === "fn"))) {
+      stack.push({ t: "op", v: "neg" });
+      prev = tok; continue;
+    }
+    if (op === "+" && (!prev || (prev.t === "op" && prev.v !== ")" && prev.v !== "!" && prev.v !== "%") || (prev.t === "fn"))) {
+      prev = tok; continue;
+    }
+    while (stack.length) {
+      const top = stack[stack.length - 1];
+      if (top.t === "fn") { out.push(stack.pop()); continue; }
+      if (top.t === "op" && top.v !== "(") {
+        const p1 = prec[op], p2 = prec[top.v];
+        if (p2 > p1 || (p2 === p1 && !rightAssoc[op])) { out.push(stack.pop()); continue; }
+      }
+      break;
+    }
+    stack.push(tok);
+    prev = tok;
+  }
+  while (stack.length) {
+    const top = stack.pop();
+    if (top.t === "op" && top.v === "(") return { error: "Mismatched brackets." };
+    out.push(top);
+  }
+  const st = [];
+  for (const tok of out) {
+    if (tok.t === "num") { st.push(tok.v); continue; }
+    if (tok.t === "fn") {
+      if (!st.length) return { error: "Missing number for " + tok.v + "." };
+      const x = st.pop();
+      let r;
+      if (tok.v === "sin") r = Math.sin(x * Math.PI / 180);
+      else if (tok.v === "cos") r = Math.cos(x * Math.PI / 180);
+      else if (tok.v === "tan") r = Math.tan(x * Math.PI / 180);
+      else if (tok.v === "log") { if (x <= 0) return { error: "Log needs a number more than 0." }; r = Math.log10(x); }
+      else if (tok.v === "ln") { if (x <= 0) return { error: "Ln needs a number more than 0." }; r = Math.log(x); }
+      else if (tok.v === "sqrt") { if (x < 0) return { error: "Square root needs a number of 0 or more." }; r = Math.sqrt(x); }
+      st.push(r); continue;
+    }
+    const op = tok.v;
+    if (op === "neg") { if (!st.length) return { error: "Missing number." }; st.push(-st.pop()); continue; }
+    if (op === "!") {
+      if (!st.length) return { error: "Missing number for factorial." };
+      const x = st.pop();
+      if (x < 0 || Math.floor(x) !== x || x > 170) return { error: "Factorial only works for whole numbers from 0 to 170." };
+      let r = 1;
+      for (let k = 2; k <= x; k++) r *= k;
+      st.push(r); continue;
+    }
+    if (op === "%") { if (!st.length) return { error: "Missing number for percent." }; st.push(st.pop() / 100); continue; }
+    if (st.length < 2) return { error: "Incomplete sum." };
+    const b = st.pop(), a = st.pop();
+    if (op === "+") st.push(a + b);
+    else if (op === "-") st.push(a - b);
+    else if (op === "*") st.push(a * b);
+    else if (op === "/") { if (b === 0) return { error: "Cannot divide by zero." }; st.push(a / b); }
+    else if (op === "^") st.push(Math.pow(a, b));
+  }
+  if (st.length !== 1) return { error: "Incomplete sum." };
+  const v = st[0];
+  if (!isFinite(v)) return { error: "The answer is too large to show." };
+  return { value: v };
+}
+
+function fractionCalc(n1, d1, op, n2, d2) {
+  if (!Number.isInteger(n1) || !Number.isInteger(d1) || !Number.isInteger(n2) || !Number.isInteger(d2)) return { error: "Please enter whole numbers only." };
+  if (d1 === 0 || d2 === 0) return { error: "The bottom number cannot be zero." };
+  let num, den;
+  if (op === "add") { num = n1 * d2 + n2 * d1; den = d1 * d2; }
+  else if (op === "sub") { num = n1 * d2 - n2 * d1; den = d1 * d2; }
+  else if (op === "mul") { num = n1 * n2; den = d1 * d2; }
+  else if (op === "div") {
+    if (n2 === 0) return { error: "Cannot divide by a fraction of zero." };
+    num = n1 * d2; den = d1 * n2;
+  } else return { error: "Please choose an operation." };
+  if (den < 0) { num = -num; den = -den; }
+  const g = gcdCalc(num, den);
+  num /= g; den /= g;
+  return { num, den, decimal: Math.round(num / den * 10000) / 10000 };
+}
+
 let excelModule = "generator";
 const excelTabBtns = document.querySelectorAll(".excel-tab-btn");
 const excelHints = {
@@ -1811,7 +2114,16 @@ const LIVE_CALCS = [
   { btn: "zakatBtn", inputs: ["zakatCash", "zakatDebts", "zakatGold", "zakatGoldRate", "zakatSilver", "zakatSilverRate", "zakatNisab"], zakat: true },
   { btn: "amountWordsBtn", inputs: ["amountWordsInput"] },
   { btn: "urduCounterBtn", inputs: ["urduCounterInput"] },
-  { btn: "meritBtn", inputs: ["meritObtained1", "meritTotal1", "meritWeight1", "meritObtained2", "meritTotal2", "meritWeight2", "meritObtained3", "meritTotal3", "meritWeight3"], merit: true }
+  { btn: "meritBtn", inputs: ["meritObtained1", "meritTotal1", "meritWeight1", "meritObtained2", "meritTotal2", "meritWeight2", "meritObtained3", "meritTotal3", "meritWeight3"], merit: true },
+  { btn: "unitBtn", inputs: ["unitValue"], selects: ["unitFrom", "unitTo"] },
+  { btn: "discBtn", inputs: ["discPrice", "discPct"] },
+  { btn: "ciBtn", inputs: ["ciPrincipal", "ciRate", "ciYears"], selects: ["ciFreq"] },
+  { btn: "mortBtn", inputs: ["mortPrincipal", "mortRate", "mortYears"] },
+  { btn: "tipBtn", inputs: ["tipBill", "tipPct", "tipPeople"] },
+  { btn: "tzBtn", inputs: ["tzDate", "tzTime"], selects: ["tzFrom", "tzTo"] },
+  { btn: "ddBtn", inputs: ["ddFrom", "ddTo"] },
+  { btn: "tdeeBtn", inputs: ["tdeeAge", "tdeeHeight", "tdeeWeight"], selects: ["tdeeSex", "tdeeActivity"] },
+  { btn: "frBtn", inputs: ["frNum1", "frDen1", "frNum2", "frDen2"], selects: ["frOp"] }
 ];
 LIVE_CALCS.forEach((c) => {
   const btn = $(c.btn); if (!btn) return;
@@ -1857,7 +2169,17 @@ LIVE_CALCS.forEach((c) => {
     { out: "zakatOutput", inputs: ["zakatCash", "zakatDebts", "zakatGold", "zakatGoldRate", "zakatSilver", "zakatSilverRate", "zakatNisab"] },
     { out: "amountWordsOutput", inputs: ["amountWordsInput"] },
     { out: "urduCounterOutput", inputs: ["urduCounterInput"] },
-    { out: "meritOutput", inputs: ["meritObtained1", "meritTotal1", "meritWeight1", "meritObtained2", "meritTotal2", "meritWeight2", "meritObtained3", "meritTotal3", "meritWeight3"] }
+    { out: "meritOutput", inputs: ["meritObtained1", "meritTotal1", "meritWeight1", "meritObtained2", "meritTotal2", "meritWeight2", "meritObtained3", "meritTotal3", "meritWeight3"] },
+    { out: "unitOutput", inputs: ["unitValue"], selects: ["unitType", "unitFrom", "unitTo"] },
+    { out: "discOutput", inputs: ["discPrice", "discPct"] },
+    { out: "ciOutput", inputs: ["ciPrincipal", "ciRate", "ciYears"], selects: ["ciFreq"] },
+    { out: "mortOutput", inputs: ["mortPrincipal", "mortRate", "mortYears"] },
+    { out: "tipOutput", inputs: ["tipBill", "tipPct", "tipPeople"] },
+    { out: "tzOutput", inputs: ["tzDate", "tzTime"], selects: ["tzFrom", "tzTo"] },
+    { out: "ddOutput", inputs: ["ddFrom", "ddTo"] },
+    { out: "tdeeOutput", inputs: ["tdeeAge", "tdeeHeight", "tdeeWeight"], selects: ["tdeeSex", "tdeeActivity"] },
+    { out: "sciOutput", inputs: ["sciDisplay"] },
+    { out: "frOutput", inputs: ["frNum1", "frDen1", "frNum2", "frDen2"], selects: ["frOp"] }
   ];
   CALC_OUTPUTS.forEach((c) => {
     const out = $(c.out); if (!out) return;
