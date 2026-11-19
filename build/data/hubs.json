@@ -1,1 +1,270 @@
-{"hubs":[{"category":"pdf","faqs":[["Are the PDF tools free?","Yes. All 27 PDF tools are free to use in your browser, with no sign-up and no account."],["Do my PDF files get uploaded?","No. Every PDF tool processes files on your device using client-side JavaScript. Files are not uploaded to an AK Premium server."],["Why does PDF to Word only extract text?","PDF to Word, Excel and PowerPoint extract the text of the document. Tables, images and exact layout are not rebuilt, because a PDF does not store the original document structure. The tool page says this plainly."],["What is the file size limit?","Each file can be up to 50 MB. Very large files, and Strong compression or Redact, work best on a desktop because they use more memory."]],"intro":"AK Premium has 27 free PDF tools that run entirely in your browser. Merge several PDFs into one, split a PDF into separate pages, compress a large file, or convert a PDF to Word, Excel, PowerPoint, text, images or Markdown. You can also protect a PDF with a password, unlock one you own, sign it, redact text, rotate or crop pages, add page numbers and watermarks, repair a damaged file, compare two PDFs, and extract text with OCR. Nothing is uploaded to a server and there is no sign-up; files are processed on your device, up to 50 MB each. Two honest limits: PDF to Word, Excel and PowerPoint extract text only, and Word, Excel and PowerPoint to PDF are basic conversions that do not preserve exact layout.","title":"PDF Tools","url":"/pdf-tools"},{"category":"image","faqs":[["Are the image tools free?","Yes. All 4 image tools are free to use in your browser, with no sign-up and no account."],["Do my images get uploaded?","No. Every image tool processes files on your device. Your photos are never uploaded to an AK Premium server."],["Which formats can I convert between?","JPG, PNG, WebP and other common formats. The converter lists the formats it supports on the tool page."],["How accurate is Image to Text (OCR)?","It uses OCR in your browser and works best on clear, straight, high-contrast text. Handwriting, tilted photos and low-resolution images give poor results."]],"intro":"AK Premium has 4 free image tools that run in your browser. Compress photos to a smaller size, resize an image to exact dimensions, convert between common formats such as JPG, PNG and WebP, and extract text from a picture with OCR. Your images are never uploaded to a server; everything is processed on your device, so a photo stays private. Image to Text uses OCR in the browser, which works best on clear, straight text and can be slow on large images, so very large photos are better handled on a desktop. The compressor keeps the image usable for sharing and the web; it is not a professional photo editor, and it does not change the picture itself.","title":"Image Tools","url":"/image-tools"},{"category":"convert","faqs":[["Are the converters free?","Yes. All 7 converters are free to use in your browser, with no sign-up and no account."],["Will my converted document look the same?","No. PDF to Word, Excel and PowerPoint extract text only, and Word, Excel and PowerPoint to PDF are basic conversions that do not preserve fonts, images or exact layout. Use the original application for documents that must look identical."],["What is the file size limit?","Each file can be up to 50 MB. Very large files work best on a desktop."],["Can I convert a scanned PDF?","A scanned PDF has no text layer, so PDF to Word or Excel will return little or no text. Run OCR PDF first to add a text layer, then convert."]],"intro":"AK Premium has 7 free file converters that run in your browser. Convert PDF to Word, Excel or PowerPoint, convert Word, Excel or PowerPoint back to PDF, and turn text or HTML into a PDF. There is no sign-up and no file is uploaded to a server; the conversion happens on your device, up to 50 MB per file. Two honest limits shape what these tools do: PDF to Word, Excel and PowerPoint extract the text of the document, so tables and exact layout are not rebuilt, and Word, Excel and PowerPoint to PDF are basic text conversions that do not preserve fonts, images or exact layout. For documents that must look identical, use the original application.","title":"Convert Tools","url":"/convert-tools"},{"category":"calculators","faqs":[["Are the calculators free?","Yes. All 5 calculators are free to use in your browser, with no sign-up and no account."],["Are the results exact?","They are estimates. An EMI depends on your bank's exact terms, and a BMI is a rough guide. Check against the official source before acting on a result."],["Is my data saved?","No. Calculations happen in your browser and nothing is uploaded or stored."],["Does the loan EMI calculator include fees?","No. It calculates the EMI from amount, interest rate and years only. Processing fees, insurance and taxes are not included."]],"intro":"AK Premium has 5 free calculators that run in your browser. Work out your age from a date of birth, find a percentage or a percentage change, check a body mass index, estimate a loan EMI from amount, rate and years, and convert a CGPA between scales. There is no sign-up and nothing is uploaded; every result is calculated on your device as you type. The results are estimates to help you plan, not financial or medical advice: an EMI depends on the exact terms your bank offers, and a BMI is a rough guide that does not account for muscle, age or health conditions. Check the numbers against the official source before you act on them.","title":"Calculators","url":"/calculators"},{"category":"developer","faqs":[["Is my code uploaded?","No. Everything you paste is processed in your browser and never leaves your device."],["Does the JSON formatter validate my JSON?","Yes. It formats valid JSON and tells you where the error is when the JSON is not valid."],["Are the UUIDs unique?","They are random version 4 UUIDs. The chance of two being the same is negligible, but they are not a substitute for a database key check."],["Can I use these tools for production data?","Do not paste secrets, passwords or production credentials into any browser tool. Use them for snippets and test data."]],"intro":"AK Premium has 6 free developer tools that run in your browser. Format and validate JSON, encode or decode Base64, change text case, generate UUIDs, convert CSV to JSON, and compare two texts side by side to find the differences. Everything you paste stays on your device; no code or data is uploaded to a server and there is no sign-up. The tools are deliberately simple: they do one job, show the result immediately, and let you copy it. They do not connect to a database, run code, or store anything, so they are safe for snippets and test data, but do not paste secrets or production credentials into any browser tool.","title":"Developer Tools","url":"/developer-tools"},{"category":"excel","faqs":[["Do the Excel tools use AI?","No. They are structured wizards that assemble formulas, VBA, regex and DAX from fixed templates using the ranges and values you enter. The output is predictable and you can read every part of it."],["Do the tools read my spreadsheet?","No. They never open or upload your file. They generate text that you paste into Excel and test on a copy of your data."],["Should I trust a generated formula?","Test it on a copy of your data first. The wizards build standard formulas, but your data may need adjustments."],["Can I convert Excel to CSV?","Yes. Excel to CSV converts an .xlsx file to CSV in your browser, and CSV to Excel converts a CSV file back to .xlsx."]],"intro":"AK Premium has 7 free Excel tools that run in your browser. Build formulas with a structured wizard, explain a formula you already have, write a VBA macro, create a regular expression, write a DAX query, and convert Excel files to CSV or CSV files back to Excel. The wizards are not AI: they ask for your ranges and values and assemble the formula, macro or query from fixed templates, so the output is predictable and you can read every part of it. Nothing is uploaded and the tools never read your spreadsheet; they generate text that you paste into Excel and test on a copy of your data. Always test a generated formula before you use it on real data.","title":"Excel Tools","url":"/excel-tools"},{"category":"business","faqs":[["Are the business tools free?","Yes. Both business tools are free to use in your browser, with no sign-up and no account."],["Can I edit the invoice after downloading?","The downloaded PDF is final. To change it, edit the fields on the tool page and download again."],["Are my details stored?","No. Everything you type stays in your browser and is not uploaded or saved."],["Can I use the invoice for tax?","The invoice is a simple document for small jobs. For tax purposes, check the format your accountant or the FBR requires."]],"intro":"AK Premium has 2 free business tools that run in your browser. Create a professional invoice with your business details, client and line items, and download it as a PDF, or build a resume from your details and download it as a PDF. There is no sign-up and nothing you type is uploaded to a server; the document is generated on your device. The tools are made for simple, clean documents: an invoice for a small job or a one-page resume. They do not store your details, connect to accounting software, or send the document anywhere, so keep your own copy after you download it.","title":"Business Tools","url":"/business-tools"},{"category":"everyday","faqs":[["Are the everyday tools free?","Yes. All 3 everyday tools are free to use in your browser, with no sign-up and no account."],["Are generated passwords stored anywhere?","No. Passwords are generated on your device and are never sent or stored. Save them in your own password manager; AK Premium cannot recover them."],["Do QR codes expire?","No. A QR code is an image of the link or text you entered. It works as long as the link itself works."],["Does the word counter work with Urdu?","Yes. It counts words in English and Urdu text."]],"intro":"AK Premium has 3 free everyday tools that run in your browser. Create a QR code for a link or text, generate a strong random password, and count words, characters and sentences in any text. There is no sign-up and nothing is uploaded to a server. Passwords are generated on your device and are never sent or stored anywhere, so they are safe to use, but save them in your own password manager because AK Premium cannot recover them. QR codes are generated locally and do not expire, and the word counter works with English and Urdu text.","title":"Everyday Tools","url":"/everyday-tools"},{"category":"design","faqs":[["Is the colour palette tool free?","Yes. It is free to use in your browser, with no sign-up and no account."],["How do I copy a colour?","Click any colour in the palette to copy its hex code."],["Does it check contrast?","No. It suggests colours that work together but does not check text contrast. Check your text colours against the background before publishing."],["Can I use the palette for a website?","Yes. The hex codes work in any design tool, website or document."]],"intro":"AK Premium has 1 free design tool that runs in your browser. The colour palette generator takes a starting colour and builds a matching palette you can use for a website, document or presentation. Click any colour to copy its hex code. There is no sign-up and nothing is uploaded; the palette is generated on your device. It is a simple starting point, not a full design system: it suggests colours that work together, but it does not check contrast for accessibility, so check your text colours against the background before you publish them.","title":"Design Tools","url":"/design-tools"},{"category":"pakistan","faqs":[["Is the salary tax data verified?","Yes. The salary tax calculator uses FBR slabs for Tax Year 2026 (FY 2025-26) and Tax Year 2027 (FY 2026-27), verified from FBR sources on 9 November 2026. Tax Year 2025 is not included because its slabs were not verified. The calculator shows a slab-wise breakdown, but it is an estimate: your employer's payroll and any deductions can change the final figure."],["What nisab does the Zakat calculator use?","The Zakat calculator uses a nisab of Rs 503,529, the figure reported for Ramadan 2026. It is shown only as reported, and you can enter your own nisab if a different figure applies to you. Zakat is 2.5% of the wealth above nisab held for a full lunar year."],["Which land units does the converter support?","Marla, kanal, square feet, square yards, square metres, acres and hectares. One marla is 272.25 square feet and one kanal is 20 marlas in the standard used across Punjab."],["Can I use the Urdu tools in English?","Yes. Amount to Words writes numbers in English and Urdu, and the Urdu Word Counter counts Urdu text. The tool controls are in English; the Urdu pages at /ur/ explain the six Pakistan tools in Urdu."]],"intro":"Tools made for Pakistan: FBR salary tax, Zakat, land area, amounts in words, Urdu word counting and merit aggregates. Every tool runs in your browser, with no sign-up and no upload. The salary tax calculator uses FBR slabs for Tax Year 2026 and Tax Year 2027, verified on 9 November 2026, and shows a slab-wise breakdown of the annual tax. The Zakat calculator uses the nisab of Rs 503,529 reported for Ramadan 2026. The land converter works with marla, kanal, square feet, square yards and acres, and Amount to Words writes numbers in English and Urdu for cheques and documents.","title":"Pakistan Tools","ur_intro":"پاکستان کے لیے بنائے گئے ٹولز: ٹیکس، زکوٰۃ، رقبہ اور اردو کے ٹولز۔","url":"/country/pakistan"}],"version":1}
+{
+  "hubs": [
+    {
+      "category": "pdf",
+      "faqs": [
+        [
+          "Are the PDF tools free?",
+          "Yes. All 27 PDF tools are free to use in your browser, with no sign-up and no account."
+        ],
+        [
+          "Do my PDF files get uploaded?",
+          "No. Every PDF tool processes files on your device using client-side JavaScript. Files are not uploaded to an AK Premium server."
+        ],
+        [
+          "Why does PDF to Word only extract text?",
+          "PDF to Word, Excel and PowerPoint extract the text of the document. Tables, images and exact layout are not rebuilt, because a PDF does not store the original document structure. The tool page says this plainly."
+        ],
+        [
+          "What is the file size limit?",
+          "Each file can be up to 50 MB. Very large files, and Strong compression or Redact, work best on a desktop because they use more memory."
+        ]
+      ],
+      "intro": "AK Premium has 27 free PDF tools that run entirely in your browser. Merge several PDFs into one, split a PDF into separate pages, compress a large file, or convert a PDF to Word, Excel, PowerPoint, text, images or Markdown. You can also protect a PDF with a password, unlock one you own, sign it, redact text, rotate or crop pages, add page numbers and watermarks, repair a damaged file, compare two PDFs, and extract text with OCR. Nothing is uploaded to a server and there is no sign-up; files are processed on your device, up to 50 MB each. Two honest limits: PDF to Word, Excel and PowerPoint extract text only, and Word, Excel and PowerPoint to PDF are basic conversions that do not preserve exact layout.",
+      "title": "PDF Tools",
+      "url": "/pdf-tools"
+    },
+    {
+      "category": "image",
+      "faqs": [
+        [
+          "Are the image tools free?",
+          "Yes. All 4 image tools are free to use in your browser, with no sign-up and no account."
+        ],
+        [
+          "Do my images get uploaded?",
+          "No. Every image tool processes files on your device. Your photos are never uploaded to an AK Premium server."
+        ],
+        [
+          "Which formats can I convert between?",
+          "JPG, PNG, WebP and other common formats. The converter lists the formats it supports on the tool page."
+        ],
+        [
+          "How accurate is Image to Text (OCR)?",
+          "It uses OCR in your browser and works best on clear, straight, high-contrast text. Handwriting, tilted photos and low-resolution images give poor results."
+        ]
+      ],
+      "intro": "AK Premium has 4 free image tools that run in your browser. Compress photos to a smaller size, resize an image to exact dimensions, convert between common formats such as JPG, PNG and WebP, and extract text from a picture with OCR. Your images are never uploaded to a server; everything is processed on your device, so a photo stays private. Image to Text uses OCR in the browser, which works best on clear, straight text and can be slow on large images, so very large photos are better handled on a desktop. The compressor keeps the image usable for sharing and the web; it is not a professional photo editor, and it does not change the picture itself.",
+      "title": "Image Tools",
+      "url": "/image-tools"
+    },
+    {
+      "category": "convert",
+      "faqs": [
+        [
+          "Are the converters free?",
+          "Yes. All 7 converters are free to use in your browser, with no sign-up and no account."
+        ],
+        [
+          "Will my converted document look the same?",
+          "No. PDF to Word, Excel and PowerPoint extract text only, and Word, Excel and PowerPoint to PDF are basic conversions that do not preserve fonts, images or exact layout. Use the original application for documents that must look identical."
+        ],
+        [
+          "What is the file size limit?",
+          "Each file can be up to 50 MB. Very large files work best on a desktop."
+        ],
+        [
+          "Can I convert a scanned PDF?",
+          "A scanned PDF has no text layer, so PDF to Word or Excel will return little or no text. Run OCR PDF first to add a text layer, then convert."
+        ]
+      ],
+      "intro": "AK Premium has 7 free file converters that run in your browser. Convert PDF to Word, Excel or PowerPoint, convert Word, Excel or PowerPoint back to PDF, and turn text or HTML into a PDF. There is no sign-up and no file is uploaded to a server; the conversion happens on your device, up to 50 MB per file. Two honest limits shape what these tools do: PDF to Word, Excel and PowerPoint extract the text of the document, so tables and exact layout are not rebuilt, and Word, Excel and PowerPoint to PDF are basic text conversions that do not preserve fonts, images or exact layout. For documents that must look identical, use the original application.",
+      "title": "Convert Tools",
+      "url": "/convert-tools"
+    },
+    {
+      "category": "text",
+      "title": "Text Tools",
+      "url": "/text-tools",
+      "intro": "AK Premium has 10 free text tools that run entirely in your browser. Count characters and words, check readability, see which words you use most, sort lines, remove duplicates, find and replace, make placeholder text, preview Markdown, style text with Unicode letters, or hear text read aloud. Paste your text in the box and the result appears at once; nothing is uploaded to a server and there is no sign-up. The tools take text, not files, so there is no file size limit. Two honest limits: the readability score is an estimate from a rule, not a dictionary, and styled Unicode text may show as boxes on old devices that lack the right fonts.",
+      "faqs": [
+        [
+          "Are the text tools free?",
+          "Yes. All 10 text tools are free to use in your browser, with no sign-up and no account."
+        ],
+        [
+          "Do my texts leave my browser?",
+          "No. Every text tool processes your words on your device using client-side JavaScript. Nothing is uploaded to an AK Premium server."
+        ],
+        [
+          "Can I use the text tools on my phone?",
+          "Yes. The tools work in a mobile browser, with large buttons and text boxes that fit a small screen. Text to Speech uses the voices on your phone."
+        ],
+        [
+          "Which text tool should I start with?",
+          "Word Counter for counts, Character Counter for limits, Readability Checker for easy reading, and Find and Replace for fixing a word through a whole text."
+        ]
+      ]
+    },
+    {
+      "category": "calculators",
+      "faqs": [
+        [
+          "Are the calculators free?",
+          "Yes. All 5 calculators are free to use in your browser, with no sign-up and no account."
+        ],
+        [
+          "Are the results exact?",
+          "They are estimates. An EMI depends on your bank's exact terms, and a BMI is a rough guide. Check against the official source before acting on a result."
+        ],
+        [
+          "Is my data saved?",
+          "No. Calculations happen in your browser and nothing is uploaded or stored."
+        ],
+        [
+          "Does the loan EMI calculator include fees?",
+          "No. It calculates the EMI from amount, interest rate and years only. Processing fees, insurance and taxes are not included."
+        ]
+      ],
+      "intro": "AK Premium has 5 free calculators that run in your browser. Work out your age from a date of birth, find a percentage or a percentage change, check a body mass index, estimate a loan EMI from amount, rate and years, and convert a CGPA between scales. There is no sign-up and nothing is uploaded; every result is calculated on your device as you type. The results are estimates to help you plan, not financial or medical advice: an EMI depends on the exact terms your bank offers, and a BMI is a rough guide that does not account for muscle, age or health conditions. Check the numbers against the official source before you act on them.",
+      "title": "Calculators",
+      "url": "/calculators"
+    },
+    {
+      "category": "developer",
+      "faqs": [
+        [
+          "Is my code uploaded?",
+          "No. Everything you paste is processed in your browser and never leaves your device."
+        ],
+        [
+          "Does the JSON formatter validate my JSON?",
+          "Yes. It formats valid JSON and tells you where the error is when the JSON is not valid."
+        ],
+        [
+          "Are the UUIDs unique?",
+          "They are random version 4 UUIDs. The chance of two being the same is negligible, but they are not a substitute for a database key check."
+        ],
+        [
+          "Can I use these tools for production data?",
+          "Do not paste secrets, passwords or production credentials into any browser tool. Use them for snippets and test data."
+        ]
+      ],
+      "intro": "AK Premium has 6 free developer tools that run in your browser. Format and validate JSON, encode or decode Base64, change text case, generate UUIDs, convert CSV to JSON, and compare two texts side by side to find the differences. Everything you paste stays on your device; no code or data is uploaded to a server and there is no sign-up. The tools are deliberately simple: they do one job, show the result immediately, and let you copy it. They do not connect to a database, run code, or store anything, so they are safe for snippets and test data, but do not paste secrets or production credentials into any browser tool.",
+      "title": "Developer Tools",
+      "url": "/developer-tools"
+    },
+    {
+      "category": "excel",
+      "faqs": [
+        [
+          "Do the Excel tools use AI?",
+          "No. They are structured wizards that assemble formulas, VBA, regex and DAX from fixed templates using the ranges and values you enter. The output is predictable and you can read every part of it."
+        ],
+        [
+          "Do the tools read my spreadsheet?",
+          "No. They never open or upload your file. They generate text that you paste into Excel and test on a copy of your data."
+        ],
+        [
+          "Should I trust a generated formula?",
+          "Test it on a copy of your data first. The wizards build standard formulas, but your data may need adjustments."
+        ],
+        [
+          "Can I convert Excel to CSV?",
+          "Yes. Excel to CSV converts an .xlsx file to CSV in your browser, and CSV to Excel converts a CSV file back to .xlsx."
+        ]
+      ],
+      "intro": "AK Premium has 7 free Excel tools that run in your browser. Build formulas with a structured wizard, explain a formula you already have, write a VBA macro, create a regular expression, write a DAX query, and convert Excel files to CSV or CSV files back to Excel. The wizards are not AI: they ask for your ranges and values and assemble the formula, macro or query from fixed templates, so the output is predictable and you can read every part of it. Nothing is uploaded and the tools never read your spreadsheet; they generate text that you paste into Excel and test on a copy of your data. Always test a generated formula before you use it on real data.",
+      "title": "Excel Tools",
+      "url": "/excel-tools"
+    },
+    {
+      "category": "business",
+      "faqs": [
+        [
+          "Are the business tools free?",
+          "Yes. Both business tools are free to use in your browser, with no sign-up and no account."
+        ],
+        [
+          "Can I edit the invoice after downloading?",
+          "The downloaded PDF is final. To change it, edit the fields on the tool page and download again."
+        ],
+        [
+          "Are my details stored?",
+          "No. Everything you type stays in your browser and is not uploaded or saved."
+        ],
+        [
+          "Can I use the invoice for tax?",
+          "The invoice is a simple document for small jobs. For tax purposes, check the format your accountant or the FBR requires."
+        ]
+      ],
+      "intro": "AK Premium has 2 free business tools that run in your browser. Create a professional invoice with your business details, client and line items, and download it as a PDF, or build a resume from your details and download it as a PDF. There is no sign-up and nothing you type is uploaded to a server; the document is generated on your device. The tools are made for simple, clean documents: an invoice for a small job or a one-page resume. They do not store your details, connect to accounting software, or send the document anywhere, so keep your own copy after you download it.",
+      "title": "Business Tools",
+      "url": "/business-tools"
+    },
+    {
+      "category": "everyday",
+      "faqs": [
+        [
+          "Are the everyday tools free?",
+          "Yes. All 3 everyday tools are free to use in your browser, with no sign-up and no account."
+        ],
+        [
+          "Are generated passwords stored anywhere?",
+          "No. Passwords are generated on your device and are never sent or stored. Save them in your own password manager; AK Premium cannot recover them."
+        ],
+        [
+          "Do QR codes expire?",
+          "No. A QR code is an image of the link or text you entered. It works as long as the link itself works."
+        ],
+        [
+          "Does the word counter work with Urdu?",
+          "Yes. It counts words in English and Urdu text."
+        ]
+      ],
+      "intro": "AK Premium has 3 free everyday tools that run in your browser. Create a QR code for a link or text, generate a strong random password, and count words, characters and sentences in any text. There is no sign-up and nothing is uploaded to a server. Passwords are generated on your device and are never sent or stored anywhere, so they are safe to use, but save them in your own password manager because AK Premium cannot recover them. QR codes are generated locally and do not expire, and the word counter works with English and Urdu text.",
+      "title": "Everyday Tools",
+      "url": "/everyday-tools"
+    },
+    {
+      "category": "design",
+      "faqs": [
+        [
+          "Is the colour palette tool free?",
+          "Yes. It is free to use in your browser, with no sign-up and no account."
+        ],
+        [
+          "How do I copy a colour?",
+          "Click any colour in the palette to copy its hex code."
+        ],
+        [
+          "Does it check contrast?",
+          "No. It suggests colours that work together but does not check text contrast. Check your text colours against the background before publishing."
+        ],
+        [
+          "Can I use the palette for a website?",
+          "Yes. The hex codes work in any design tool, website or document."
+        ]
+      ],
+      "intro": "AK Premium has 1 free design tool that runs in your browser. The colour palette generator takes a starting colour and builds a matching palette you can use for a website, document or presentation. Click any colour to copy its hex code. There is no sign-up and nothing is uploaded; the palette is generated on your device. It is a simple starting point, not a full design system: it suggests colours that work together, but it does not check contrast for accessibility, so check your text colours against the background before you publish them.",
+      "title": "Design Tools",
+      "url": "/design-tools"
+    },
+    {
+      "category": "pakistan",
+      "faqs": [
+        [
+          "Is the salary tax data verified?",
+          "Yes. The salary tax calculator uses FBR slabs for Tax Year 2026 (FY 2025-26) and Tax Year 2027 (FY 2026-27), verified from FBR sources on 9 November 2026. Tax Year 2025 is not included because its slabs were not verified. The calculator shows a slab-wise breakdown, but it is an estimate: your employer's payroll and any deductions can change the final figure."
+        ],
+        [
+          "What nisab does the Zakat calculator use?",
+          "The Zakat calculator uses a nisab of Rs 503,529, the figure reported for Ramadan 2026. It is shown only as reported, and you can enter your own nisab if a different figure applies to you. Zakat is 2.5% of the wealth above nisab held for a full lunar year."
+        ],
+        [
+          "Which land units does the converter support?",
+          "Marla, kanal, square feet, square yards, square metres, acres and hectares. One marla is 272.25 square feet and one kanal is 20 marlas in the standard used across Punjab."
+        ],
+        [
+          "Can I use the Urdu tools in English?",
+          "Yes. Amount to Words writes numbers in English and Urdu, and the Urdu Word Counter counts Urdu text. The tool controls are in English; the Urdu pages at /ur/ explain the six Pakistan tools in Urdu."
+        ]
+      ],
+      "intro": "Tools made for Pakistan: FBR salary tax, Zakat, land area, amounts in words, Urdu word counting and merit aggregates. Every tool runs in your browser, with no sign-up and no upload. The salary tax calculator uses FBR slabs for Tax Year 2026 and Tax Year 2027, verified on 9 November 2026, and shows a slab-wise breakdown of the annual tax. The Zakat calculator uses the nisab of Rs 503,529 reported for Ramadan 2026. The land converter works with marla, kanal, square feet, square yards and acres, and Amount to Words writes numbers in English and Urdu for cheques and documents.",
+      "title": "Pakistan Tools",
+      "ur_intro": "پاکستان کے لیے بنائے گئے ٹولز: ٹیکس، زکوٰۃ، رقبہ اور اردو کے ٹولز۔",
+      "url": "/country/pakistan"
+    }
+  ],
+  "version": 1
+}
