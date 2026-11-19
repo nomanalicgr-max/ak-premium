@@ -1212,6 +1212,113 @@
           <p class="status" id="passportStatus"></p>
         </div>
 
+        <div class="workspace-tool" id="tool-charcount">
+          <h2>Character Counter</h2>
+          <textarea id="charCountInput" rows="6" placeholder="Type or paste text here…"></textarea>
+          <pre id="charCountOutput" class="terminal">Characters: 0 | Characters (no spaces): 0 | Words: 0 | Sentences: 0 | Paragraphs: 0 | Reading time: 0 min</pre>
+          <p class="status" id="charCountStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-lorem">
+          <h2>Lorem Ipsum Generator</h2>
+          <div class="field-row">
+            <label>Unit
+              <select id="loremUnit"><option value="paragraphs" selected>Paragraphs</option><option value="sentences">Sentences</option><option value="words">Words</option></select>
+            </label>
+            <label>Count
+              <select id="loremCount"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select>
+            </label>
+          </div>
+          <button id="loremBtn" type="button" class="btn-primary">Generate Lorem Ipsum</button>
+          <pre id="loremOutput" class="terminal">Placeholder text will appear here.</pre>
+          <button id="loremCopyBtn" type="button" class="btn-secondary">Copy Text</button>
+          <p class="status" id="loremStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-dedupe">
+          <h2>Remove Duplicate Lines</h2>
+          <textarea id="dedupeInput" rows="6" placeholder="Paste your lines here, one per row…"></textarea>
+          <label><input id="dedupeCase" type="checkbox"> Case sensitive</label>
+          <button id="dedupeBtn" type="button" class="btn-primary">Remove Duplicates</button>
+          <pre id="dedupeOutput" class="terminal">Cleaned list will appear here.</pre>
+          <button id="dedupeCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <p class="status" id="dedupeStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-sortlines">
+          <h2>Sort Lines</h2>
+          <textarea id="sortInput" rows="6" placeholder="Paste your lines here, one per row…"></textarea>
+          <label>Sort order
+            <select id="sortOrder"><option value="az" selected>A to Z</option><option value="za">Z to A</option><option value="num">Numbers, smallest first</option><option value="len-desc">Longest first</option><option value="len-asc">Shortest first</option></select>
+          </label>
+          <label><input id="sortIgnoreEmpty" type="checkbox" checked> Ignore empty lines</label>
+          <button id="sortBtn" type="button" class="btn-primary">Sort Lines</button>
+          <pre id="sortOutput" class="terminal">Sorted list will appear here.</pre>
+          <button id="sortCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <p class="status" id="sortStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-tts">
+          <h2>Text to Speech</h2>
+          <textarea id="ttsInput" rows="6" placeholder="Type or paste the text to read aloud…"></textarea>
+          <label>Voice
+            <select id="ttsVoice"><option value="">Default voice</option></select>
+          </label>
+          <label>Speed <input id="ttsRate" type="range" min="0.5" max="2" step="0.1" value="1"> <span id="ttsRateLabel">1</span></label>
+          <label>Pitch <input id="ttsPitch" type="range" min="0" max="2" step="0.1" value="1"> <span id="ttsPitchLabel">1</span></label>
+          <button id="ttsSpeakBtn" type="button" class="btn-primary">Speak</button>
+          <button id="ttsStopBtn" type="button" class="btn-secondary">Stop</button>
+          <p class="status" id="ttsStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-markdown">
+          <h2>Markdown Previewer</h2>
+          <textarea id="mdInput" rows="8" placeholder="Type or paste Markdown here…"></textarea>
+          <div id="mdOutput" class="md-preview" aria-live="polite"></div>
+          <p class="status" id="mdStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-fancy">
+          <h2>Fancy Text Generator</h2>
+          <input id="fancyInput" type="text" placeholder="Type a word or short phrase…" autocomplete="off">
+          <div id="fancyOutput"></div>
+          <p class="status" id="fancyStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-findreplace">
+          <h2>Find and Replace</h2>
+          <textarea id="findrepInput" rows="6" placeholder="Paste your text here…"></textarea>
+          <div class="field-row">
+            <label>Find <input id="findrepFind" type="text" placeholder="Text to find" autocomplete="off"></label>
+            <label>Replace with <input id="findrepReplace" type="text" placeholder="Replacement (empty deletes)" autocomplete="off"></label>
+          </div>
+          <label><input id="findrepCase" type="checkbox"> Match case</label>
+          <button id="findrepBtn" type="button" class="btn-primary">Replace All</button>
+          <pre id="findrepOutput" class="terminal">New text will appear here.</pre>
+          <button id="findrepCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <p class="status" id="findrepStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-readability">
+          <h2>Readability Checker</h2>
+          <textarea id="readInput" rows="6" placeholder="Paste your text here…"></textarea>
+          <button id="readBtn" type="button" class="btn-primary">Check Readability</button>
+          <pre id="readOutput" class="terminal">Readability score will appear here.</pre>
+          <p class="status" id="readStatus"></p>
+        </div>
+
+        <div class="workspace-tool" id="tool-wordfreq">
+          <h2>Word Frequency Counter</h2>
+          <textarea id="wfInput" rows="6" placeholder="Paste your text here…"></textarea>
+          <label><input id="wfStopwords" type="checkbox" checked> Ignore common words</label>
+          <label>Show
+            <select id="wfTop"><option value="10" selected>Top 10</option><option value="20">Top 20</option><option value="50">Top 50</option><option value="all">All words</option></select>
+          </label>
+          <button id="wfBtn" type="button" class="btn-primary">Count Word Frequency</button>
+          <pre id="wfOutput" class="terminal">Word counts will appear here.</pre>
+          <p class="status" id="wfStatus"></p>
+        </div>
+
       <section id="section-faq" class="faq-section" aria-label="Frequently asked questions">
         <h2>Frequently Asked Questions</h2>
         <details open><summary>What is AK Premium?</summary><p>AK Premium is a free, browser-based toolkit with PDF tools and an Excel automation engine. It creates, merges, splits, rotates and converts PDFs, and generates Excel formulas, VBA macros, regex patterns and DAX measures.</p></details>
