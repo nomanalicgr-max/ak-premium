@@ -1208,6 +1208,147 @@
    "iconClass": "",
    "badges": [],
    "format": ""
+  },
+  {
+   "slug": "png-to-jpg",
+   "title": "PNG to JPG",
+   "short": "Turn PNG images into JPG.",
+   "category": "image",
+   "keywords": [
+    "png to jpg",
+    "convert png to jpg",
+    "png se jpg",
+    "screenshot to jpg"
+   ],
+   "icon": "i-image-down",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "jpg-to-png",
+   "title": "JPG to PNG",
+   "short": "Turn JPG images into PNG.",
+   "category": "image",
+   "keywords": [
+    "jpg to png",
+    "convert jpg to png",
+    "jpg se png",
+    "jpeg to png"
+   ],
+   "icon": "i-file-image",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "webp-to-jpg",
+   "title": "WebP to JPG",
+   "short": "Turn WebP images into JPG.",
+   "category": "image",
+   "keywords": [
+    "webp to jpg",
+    "convert webp to jpg",
+    "webp se jpg"
+   ],
+   "icon": "i-images",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "webp-to-png",
+   "title": "WebP to PNG",
+   "short": "Turn WebP images into PNG.",
+   "category": "image",
+   "keywords": [
+    "webp to png",
+    "convert webp to png",
+    "webp se png"
+   ],
+   "icon": "i-replace",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "jpg-to-webp",
+   "title": "JPG to WebP",
+   "short": "Turn JPG images into WebP.",
+   "category": "image",
+   "keywords": [
+    "jpg to webp",
+    "convert jpg to webp",
+    "jpg se webp"
+   ],
+   "icon": "i-file-image",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "svg-to-png",
+   "title": "SVG to PNG",
+   "short": "Turn SVG files into PNG images.",
+   "category": "image",
+   "keywords": [
+    "svg to png",
+    "convert svg to png",
+    "svg se png",
+    "vector to png"
+   ],
+   "icon": "i-file-code",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "image-cropper",
+   "title": "Image Cropper",
+   "short": "Crop an image to the part you need.",
+   "category": "image",
+   "keywords": [
+    "crop image",
+    "image cropper",
+    "photo crop",
+    "tasveer crop"
+   ],
+   "icon": "i-crop",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "rotate-flip-image",
+   "title": "Rotate and Flip Image",
+   "short": "Rotate or flip an image in your browser.",
+   "category": "image",
+   "keywords": [
+    "rotate image",
+    "flip image",
+    "rotate photo",
+    "tasveer rotate"
+   ],
+   "icon": "i-rotate-cw",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "passport-photo-maker",
+   "title": "Passport Photo Maker",
+   "short": "Make a passport photo at the right size.",
+   "category": "image",
+   "keywords": [
+    "passport photo",
+    "passport photo maker",
+    "passport size photo",
+    "passport photo size"
+   ],
+   "icon": "i-file-user",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   }
  ]
 }

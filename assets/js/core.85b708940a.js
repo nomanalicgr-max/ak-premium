@@ -68,7 +68,16 @@ const NEXT_STEPS = {
   "tool-headerfooter": [["Add Watermark", "/tools/add-watermark"], ["Add Page Numbers", "/tools/add-page-numbers"], ["Merge PDF", "/tools/merge-pdf"]],
   "tool-flatten": [["Protect PDF", "/tools/protect-pdf"], ["Merge PDF", "/tools/merge-pdf"], ["Compress PDF", "/tools/compress-pdf"]],
   "tool-metadata": [["Edit PDF", "/tools/edit-pdf"], ["Protect PDF", "/tools/protect-pdf"], ["Merge PDF", "/tools/merge-pdf"]],
-  "tool-resizepage": [["Compress PDF", "/tools/compress-pdf"], ["Merge PDF", "/tools/merge-pdf"], ["Organize PDF", "/tools/organize-pdf"]]
+  "tool-resizepage": [["Compress PDF", "/tools/compress-pdf"], ["Merge PDF", "/tools/merge-pdf"], ["Organize PDF", "/tools/organize-pdf"]],
+  "tool-pngtojpg": [["JPG to PNG", "/tools/jpg-to-png"], ["Image Converter", "/tools/image-converter"], ["Image Compressor", "/tools/image-compressor"]],
+  "tool-jpgtopng": [["PNG to JPG", "/tools/png-to-jpg"], ["Image Converter", "/tools/image-converter"], ["Image Compressor", "/tools/image-compressor"]],
+  "tool-webptojpg": [["JPG to WebP", "/tools/jpg-to-webp"], ["Image Converter", "/tools/image-converter"], ["PNG to JPG", "/tools/png-to-jpg"]],
+  "tool-webptopng": [["WebP to JPG", "/tools/webp-to-jpg"], ["Image Converter", "/tools/image-converter"], ["JPG to PNG", "/tools/jpg-to-png"]],
+  "tool-jpgtowebp": [["WebP to JPG", "/tools/webp-to-jpg"], ["Image Converter", "/tools/image-converter"], ["PNG to JPG", "/tools/png-to-jpg"]],
+  "tool-svgtopng": [["Image Converter", "/tools/image-converter"], ["PNG to JPG", "/tools/png-to-jpg"], ["Image Resizer", "/tools/image-resizer"]],
+  "tool-imgcrop": [["Image Resizer", "/tools/image-resizer"], ["Rotate and Flip Image", "/tools/rotate-flip-image"], ["Image Converter", "/tools/image-converter"]],
+  "tool-imgrotateflip": [["Image Cropper", "/tools/image-cropper"], ["Image Resizer", "/tools/image-resizer"], ["Passport Photo Maker", "/tools/passport-photo-maker"]],
+  "tool-passport": [["Image Cropper", "/tools/image-cropper"], ["Image Resizer", "/tools/image-resizer"], ["Rotate and Flip Image", "/tools/rotate-flip-image"]]
 };
 function showSuccess(ws, filename, url) {
   if (!ws) return;
@@ -1061,6 +1070,44 @@ function getPdfImageObj(page, name) {
       if (!done) { done = true; clearTimeout(timer); resolve(null); }
     }
   });
+}
+
+/* Convert one loaded image file to another format on a canvas. JPEG output
+   is flattened onto white (JPG has no transparency). Returns the blob, or
+   null when this browser cannot encode the format. Takes no element ids,
+   so it splits to core.js. */
+
+/* ---------- Wave 1: Image tools (batch 2) ---------- */
+
+async function convertImageFile(file, mime, quality) {
+  const img = await loadImageFromFile(file);
+  const canvas = document.createElement("canvas");
+  canvas.width = img.naturalWidth || img.width;
+  canvas.height = img.naturalHeight || img.height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+  if (mime === "image/jpeg") { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+  ctx.drawImage(img, 0, 0);
+  return canvasToBlob(canvas, mime, quality);
+}
+
+/* Render an image with a rotation (0-3 quarter turns clockwise) and flips
+   onto a fresh canvas. Takes no element ids, so it splits to core.js. */
+
+function renderRotatedImage(img, rot, flipH, flipV, jpeg) {
+  const w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+  const swap = rot % 2 === 1;
+  const canvas = document.createElement("canvas");
+  canvas.width = swap ? h : w; canvas.height = swap ? w : h;
+  const ctx = canvas.getContext("2d");
+  if (jpeg) { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+  ctx.save();
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.rotate((rot * Math.PI) / 2);
+  ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
+  ctx.drawImage(img, -w / 2, -h / 2, w, h);
+  ctx.restore();
+  return canvas;
 }
 
 let excelModule = "generator";

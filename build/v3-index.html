@@ -928,6 +928,99 @@
           <button id="resizePageBtn" type="button" class="btn-primary">Resize Pages</button>
           <p class="status" id="resizePageStatus"></p>
         </div>
+        <div class="workspace-tool" id="tool-pngtojpg">
+          <h2>PNG to JPG</h2>
+          <p>Turns a PNG image into a JPG file at the same size.</p>
+          <input id="pngToJpgInput" type="file" accept="image/png">
+          <button id="pngToJpgBtn" type="button" class="btn-primary">Convert PNG to JPG</button>
+          <p class="status" id="pngToJpgStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-jpgtopng">
+          <h2>JPG to PNG</h2>
+          <p>Turns a JPG image into a PNG file at the same size.</p>
+          <input id="jpgToPngInput" type="file" accept="image/jpeg">
+          <button id="jpgToPngBtn" type="button" class="btn-primary">Convert JPG to PNG</button>
+          <p class="status" id="jpgToPngStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-webptojpg">
+          <h2>WebP to JPG</h2>
+          <p>Turns a WebP image into a JPG file at the same size.</p>
+          <input id="webpToJpgInput" type="file" accept="image/webp">
+          <button id="webpToJpgBtn" type="button" class="btn-primary">Convert WebP to JPG</button>
+          <p class="status" id="webpToJpgStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-webptopng">
+          <h2>WebP to PNG</h2>
+          <p>Turns a WebP image into a PNG file at the same size.</p>
+          <input id="webpToPngInput" type="file" accept="image/webp">
+          <button id="webpToPngBtn" type="button" class="btn-primary">Convert WebP to PNG</button>
+          <p class="status" id="webpToPngStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-jpgtowebp">
+          <h2>JPG to WebP</h2>
+          <p>Turns a JPG image into a smaller WebP file at the same size.</p>
+          <input id="jpgToWebpInput" type="file" accept="image/jpeg">
+          <button id="jpgToWebpBtn" type="button" class="btn-primary">Convert JPG to WebP</button>
+          <p class="status" id="jpgToWebpStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-svgtopng">
+          <h2>SVG to PNG</h2>
+          <p>Turns an SVG file into a PNG image at the width you choose.</p>
+          <input id="svgToPngInput" type="file" accept=".svg,image/svg+xml">
+          <label>Width (px) <input id="svgToPngWidth" type="number" min="16" max="8000" value="1024" placeholder="1024"></label>
+          <button id="svgToPngBtn" type="button" class="btn-primary">Convert SVG to PNG</button>
+          <p class="status" id="svgToPngStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-imgcrop">
+          <h2>Image Cropper</h2>
+          <p>Drag on the preview to choose the part to keep, then download it as a PNG.</p>
+          <input id="imgCropInput" type="file" accept="image/jpeg,image/png,image/webp">
+          <canvas id="imgCropCanvas" style="max-width:100%"></canvas>
+          <div class="field-row">
+            <label>X (px) <input id="imgCropX" type="number" min="0" value="0" placeholder="0"></label>
+            <label>Y (px) <input id="imgCropY" type="number" min="0" value="0" placeholder="0"></label>
+            <label>Width (px) <input id="imgCropW" type="number" min="1" value="0" placeholder="0"></label>
+            <label>Height (px) <input id="imgCropH" type="number" min="1" value="0" placeholder="0"></label>
+          </div>
+          <button id="imgCropBtn" type="button" class="btn-primary">Crop Image</button>
+          <p class="status" id="imgCropStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-imgrotateflip">
+          <h2>Rotate and Flip Image</h2>
+          <p>Turn a picture left or right, or mirror it, then download it.</p>
+          <input id="rotateFlipInput" type="file" accept="image/jpeg,image/png,image/webp">
+          <canvas id="rotateFlipCanvas" style="max-width:100%"></canvas>
+          <div class="field-row">
+            <button id="rotateLeftBtn" type="button" class="btn-secondary">Rotate Left</button>
+            <button id="rotateRightBtn" type="button" class="btn-secondary">Rotate Right</button>
+            <button id="flipHBtn" type="button" class="btn-secondary">Flip Horizontal</button>
+            <button id="flipVBtn" type="button" class="btn-secondary">Flip Vertical</button>
+          </div>
+          <label>Output format
+            <select id="rotateFlipFormat"><option value="png">PNG</option><option value="jpeg">JPEG</option></select>
+          </label>
+          <button id="rotateFlipBtn" type="button" class="btn-primary">Download Image</button>
+          <p class="status" id="rotateFlipStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-passport">
+          <h2>Passport Photo Maker</h2>
+          <p>Cuts your photo to the exact passport size for your country.</p>
+          <input id="passportInput" type="file" accept="image/jpeg,image/png,image/webp">
+          <label>Country
+            <select id="passportCountry">
+              <option value="pk">Pakistan — 35 × 45 mm (413 × 531 px)</option>
+              <option value="in">India — 2 × 2 in (600 × 600 px)</option>
+              <option value="us">USA — 2 × 2 in (600 × 600 px)</option>
+              <option value="uk">United Kingdom — 35 × 45 mm (413 × 531 px)</option>
+              <option value="eu">Europe / Schengen — 35 × 45 mm (413 × 531 px)</option>
+              <option value="ae">UAE — 35 × 45 mm (413 × 531 px)</option>
+              <option value="ca">Canada — 50 × 70 mm (591 × 827 px)</option>
+            </select>
+          </label>
+          <p class="status" id="passportSizeNote">Selected size: 35 × 45 mm (413 × 531 px).</p>
+          <button id="passportBtn" type="button" class="btn-primary">Make Passport Photo</button>
+          <p class="status" id="passportStatus"></p>
+        </div>
 
       <section id="section-faq" class="faq-section" aria-label="Frequently asked questions">
         <h2>Frequently Asked Questions</h2>
