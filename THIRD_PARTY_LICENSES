@@ -1,5 +1,5 @@
 AK Premium — Third-party licences
-Last updated: 18 November 2026
+Last updated: 19 November 2026
 
 AK Premium is built with the open-source libraries, icons and fonts listed
 below. Each entry gives the project, its licence and where to find it.
@@ -19,6 +19,8 @@ Libraries (loaded from public CDNs, except qpdf-wasm which is self-hosted):
 - QRCode (qrcodejs) — MIT License — https://github.com/davidshimjs/qrcodejs
 - qpdf-wasm — wrapper under the MIT License; qpdf itself under the Apache
   License 2.0 — https://github.com/qpdf/qpdf
+- js-yaml — MIT License — https://github.com/nodeca/js-yaml
+- SparkMD5 — WTFPL Version 2 — https://github.com/satazor/js-spark-md5
 
 Icons and fonts:
 - Lucide icons — ISC License — https://lucide.dev
