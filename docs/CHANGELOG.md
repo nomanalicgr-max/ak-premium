@@ -1,5 +1,17 @@
 # AK Premium — Changelog
 
+## v13 — 19 November 2026 (Wave 1 batch 1: 10 PDF tools, 68 → 78 tools)
+
+### New tools (expansion brief §8.1, §14.3)
+- Five landing pages on shared engines, each with its own page, content and FAQs: JPG to PDF and PNG to PDF (share the Images to PDF engine, one image per A4 page), PDF to JPG and PDF to PNG (share the PDF to Images engine, output fixed to that format, per-page links plus one ZIP), HTML to PDF (shares the TXT/HTML to PDF engine, plain 12-point text).
+- Five new tools with real client-side functionality and no new CDN library: Extract Images from PDF (embedded image objects as PNGs, per-image links plus ZIP), Add Header & Footer to PDF (stamps header and footer text on every page), Flatten PDF (flattens form fields, removes annotations), PDF Metadata Editor (shows and edits Title, Author, Subject and Keywords), Resize PDF Page Size (scales every page to A4, Letter or Legal, aspect preserved).
+- Every new tool has unique content per the Quality Gate: a specific 80–120-word intro, 4–6 steps naming the real controls, 2–3 tips, honest limits, a concrete example, and 4 tool-specific FAQs (312 FAQ questions across the site now, all unique). The three shared engines (images-to-pdf, pdf-to-images, txt-html-to-pdf) are refactored into shared core functions; normal-use behaviour is identical, with a 50 MB file-size guard and on-demand pdf.js loading for PDF to Images.
+- Honest limits are stated on each new tool: Extract Images finds only embedded image objects (not vector drawings or backgrounds); Flatten cannot be undone and removes annotations; Header/Footer uses a fixed small grey font; Metadata edits only the four named fields; Resize does not carry over form fields or links; JPG/PNG to PDF places one image per page with no rotation; HTML to PDF strips tags to plain text.
+
+### JavaScript split and testing
+- Per-tool JS split extended: core.js + one tools/<slug>.js per tool (78 files). The split is verified lossless (3,664 code lines, 0 missing/extra). Shared engines live in core.js.
+- Harness run-v13.js: 234 checks, all passing, including the known-answer tax (200,000/month TY2027 → 156,000), Zakat (→ 25,000) and EMI (→ 22,244.45) checks. Sitemap is 106 URLs (was 96). ASSET_V is now "13" (config.js?v=13) and the service-worker cache is "ak-premium-v13".
+
 ## v12 — 18 November 2026 (Design Phases 2–4 completion: unique content for all 68 tools, More-section split, per-tool JS, enforced CSP)
 
 ### Content (design brief §3.5)

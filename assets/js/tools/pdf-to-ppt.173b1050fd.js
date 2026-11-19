@@ -23,3 +23,7 @@ if (pdfPptBtn) pdfPptBtn.addEventListener("click", async () => {
     setStatus("pdfPptStatus", "Done. Presentation file downloaded.");
   } catch (e) { if (!setPdfError("pdfPptStatus", e)) setError("pdfPptStatus", "Could not convert this PDF to PPT."); }
 });
+
+/* Shared engine: plain text (or simple HTML with tags stripped) to a
+   paginated 12-point PDF. Used by TXT / HTML to PDF and by the HTML to
+   PDF landing page. Takes no element ids, so it splits to core.js. */

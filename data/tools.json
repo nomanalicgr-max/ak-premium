@@ -1610,7 +1610,7 @@
           "class": "badge--warn"
         }
       ],
-      "format": "PDF→XLSX",
+      "format": "PDF\u2192XLSX",
       "related": [
         "pdf-to-word",
         "pdf-to-ppt",
@@ -1681,7 +1681,7 @@
           "class": "badge--warn"
         }
       ],
-      "format": "PDF→DOCX",
+      "format": "PDF\u2192DOCX",
       "related": [
         "pdf-to-excel",
         "pdf-to-ppt",
@@ -1752,7 +1752,7 @@
           "class": "badge--warn"
         }
       ],
-      "format": "PDF→PPTX",
+      "format": "PDF\u2192PPTX",
       "meta_description": "Turn extracted PDF text into a .pptx presentation, free in your browser. Text-based conversion, layout is not preserved.",
       "steps": [
         "Choose a PDF file with the file button.",
@@ -1809,7 +1809,7 @@
       "status": "published",
       "regions": [],
       "lastReviewed": "2026-11-18",
-      "format": "TXT→PDF",
+      "format": "TXT\u2192PDF",
       "meta_description": "Paste text or HTML and download it as a PDF, free in your browser. No upload, no sign-up.",
       "steps": [
         "Paste your text or simple HTML into the box.",
@@ -1873,7 +1873,7 @@
           "class": "badge--warn"
         }
       ],
-      "format": "XLSX→PDF",
+      "format": "XLSX\u2192PDF",
       "content": {
         "use": "Converting Excel to PDF is for sharing a sheet that must not be changed: a price list, a report, or a table for a client. The PDF shows the numbers as they are, without formulas.",
         "tip": "Check that the first sheet is the one you want, because only the first sheet is converted. Keep the sheet simple for the best result.",
@@ -1937,7 +1937,7 @@
           "class": "badge--warn"
         }
       ],
-      "format": "DOCX→PDF",
+      "format": "DOCX\u2192PDF",
       "content": {
         "use": "Converting Word to PDF is for sending a document that must look the same everywhere: a CV, a letter, or a form. A PDF cannot be edited by mistake, and it opens on any phone or computer.",
         "tip": "Keep the Word file simple. Headings, lists and tables survive, but complex formatting, images and tracked changes do not.",
@@ -2002,7 +2002,7 @@
           "class": "badge--warn"
         }
       ],
-      "format": "PPTX→PDF",
+      "format": "PPTX\u2192PDF",
       "content": {
         "use": "Converting PowerPoint to PDF is for sharing slides that must look the same on any device, or for printing a deck without PowerPoint. A PDF is also easier to attach to an email than a large presentation file.",
         "tip": "Keep the slides simple. The tool reads the text on each slide, one slide per PDF page.",
@@ -2965,7 +2965,7 @@
       "status": "published",
       "regions": [],
       "lastReviewed": "2026-11-18",
-      "meta_description": "Change text case four ways — upper, lower, title and sentence case — free in your browser.",
+      "meta_description": "Change text case four ways \u2014 upper, lower, title and sentence case \u2014 free in your browser.",
       "steps": [
         "Type or paste your text in the box.",
         "Press UPPERCASE, lowercase, Title Case or Sentence case.",
@@ -3619,9 +3619,9 @@
         "marla",
         "kanal",
         "acre",
-        "مرلہ",
-        "کنال",
-        "ایکڑ",
+        "\u0645\u0631\u0644\u06c1",
+        "\u06a9\u0646\u0627\u0644",
+        "\u0627\u06cc\u06a9\u0691",
         "square feet"
       ],
       "libs": [],
@@ -3668,21 +3668,21 @@
           ]
         ]
       },
-      "ur_sub": "رقبہ کنورٹر (مرلہ، کنال، ایکڑ)",
+      "ur_sub": "\u0631\u0642\u0628\u06c1 \u06a9\u0646\u0648\u0631\u0679\u0631 (\u0645\u0631\u0644\u06c1\u060c \u06a9\u0646\u0627\u0644\u060c \u0627\u06cc\u06a9\u0691)",
       "ur": {
-        "name": "زمین کا کنورٹر",
-        "desc": "مرلہ، کنال، ایکڑ، مربع فٹ، مربع گز اور مربع میٹر کے درمیان رقبہ تبدیل کریں۔",
+        "name": "\u0632\u0645\u06cc\u0646 \u06a9\u0627 \u06a9\u0646\u0648\u0631\u0679\u0631",
+        "desc": "\u0645\u0631\u0644\u06c1\u060c \u06a9\u0646\u0627\u0644\u060c \u0627\u06cc\u06a9\u0691\u060c \u0645\u0631\u0628\u0639 \u0641\u0679\u060c \u0645\u0631\u0628\u0639 \u06af\u0632 \u0627\u0648\u0631 \u0645\u0631\u0628\u0639 \u0645\u06cc\u0679\u0631 \u06a9\u06d2 \u062f\u0631\u0645\u06cc\u0627\u0646 \u0631\u0642\u0628\u06c1 \u062a\u0628\u062f\u06cc\u0644 \u06a9\u0631\u06cc\u06ba\u06d4",
         "steps": [
-          "اپنے پاس موجود رقبہ درج کریں۔",
-          "یونٹ منتخب کریں، مثلاً مرلہ یا کنال۔",
-          "Convert دبائیں، تمام چھ یونٹ ایک ساتھ نظر آئیں گے۔"
+          "\u0627\u067e\u0646\u06d2 \u067e\u0627\u0633 \u0645\u0648\u062c\u0648\u062f \u0631\u0642\u0628\u06c1 \u062f\u0631\u062c \u06a9\u0631\u06cc\u06ba\u06d4",
+          "\u06cc\u0648\u0646\u0679 \u0645\u0646\u062a\u062e\u0628 \u06a9\u0631\u06cc\u06ba\u060c \u0645\u062b\u0644\u0627\u064b \u0645\u0631\u0644\u06c1 \u06cc\u0627 \u06a9\u0646\u0627\u0644\u06d4",
+          "Convert \u062f\u0628\u0627\u0626\u06cc\u06ba\u060c \u062a\u0645\u0627\u0645 \u0686\u06be \u06cc\u0648\u0646\u0679 \u0627\u06cc\u06a9 \u0633\u0627\u062a\u06be \u0646\u0638\u0631 \u0622\u0626\u06cc\u06ba \u06af\u06d2\u06d4"
         ],
-        "tip": "مرلہ اور کنال پاکستان میں سب سے زیادہ استعمال ہونے والے یونٹ ہیں۔",
-        "limit": "یہ کنورٹر پاکستان کے معیاری یونٹ استعمال کرتا ہے۔ ایک مرلہ 272.25 مربع فٹ کے برابر ہے۔",
+        "tip": "\u0645\u0631\u0644\u06c1 \u0627\u0648\u0631 \u06a9\u0646\u0627\u0644 \u067e\u0627\u06a9\u0633\u062a\u0627\u0646 \u0645\u06cc\u06ba \u0633\u0628 \u0633\u06d2 \u0632\u06cc\u0627\u062f\u06c1 \u0627\u0633\u062a\u0639\u0645\u0627\u0644 \u06c1\u0648\u0646\u06d2 \u0648\u0627\u0644\u06d2 \u06cc\u0648\u0646\u0679 \u06c1\u06cc\u06ba\u06d4",
+        "limit": "\u06cc\u06c1 \u06a9\u0646\u0648\u0631\u0679\u0631 \u067e\u0627\u06a9\u0633\u062a\u0627\u0646 \u06a9\u06d2 \u0645\u0639\u06cc\u0627\u0631\u06cc \u06cc\u0648\u0646\u0679 \u0627\u0633\u062a\u0639\u0645\u0627\u0644 \u06a9\u0631\u062a\u0627 \u06c1\u06d2\u06d4 \u0627\u06cc\u06a9 \u0645\u0631\u0644\u06c1 272.25 \u0645\u0631\u0628\u0639 \u0641\u0679 \u06a9\u06d2 \u0628\u0631\u0627\u0628\u0631 \u06c1\u06d2\u06d4",
         "faq": [
           [
-            "کیا یہ کنورٹر مفت ہے؟",
-            "جی ہاں، تمام ٹولز مفت ہیں اور آپ کی فائل یا ڈیٹا براؤزر سے باہر نہیں جاتا۔"
+            "\u06a9\u06cc\u0627 \u06cc\u06c1 \u06a9\u0646\u0648\u0631\u0679\u0631 \u0645\u0641\u062a \u06c1\u06d2\u061f",
+            "\u062c\u06cc \u06c1\u0627\u06ba\u060c \u062a\u0645\u0627\u0645 \u0679\u0648\u0644\u0632 \u0645\u0641\u062a \u06c1\u06cc\u06ba \u0627\u0648\u0631 \u0622\u067e \u06a9\u06cc \u0641\u0627\u0626\u0644 \u06cc\u0627 \u0688\u06cc\u0679\u0627 \u0628\u0631\u0627\u0624\u0632\u0631 \u0633\u06d2 \u0628\u0627\u06c1\u0631 \u0646\u06c1\u06cc\u06ba \u062c\u0627\u062a\u0627\u06d4"
           ]
         ]
       }
@@ -3704,7 +3704,7 @@
         "fbr tax",
         "tax slab",
         "salary tax",
-        "تنخواہ ٹیکس",
+        "\u062a\u0646\u062e\u0648\u0627\u06c1 \u0679\u06cc\u06a9\u0633",
         "fbr"
       ],
       "libs": [],
@@ -3757,21 +3757,21 @@
           ]
         ]
       },
-      "ur_sub": "تنخواہ ٹیکس کیلکولیٹر",
+      "ur_sub": "\u062a\u0646\u062e\u0648\u0627\u06c1 \u0679\u06cc\u06a9\u0633 \u06a9\u06cc\u0644\u06a9\u0648\u0644\u06cc\u0679\u0631",
       "ur": {
-        "name": "پاکستان سیلری ٹیکس کیلکولیٹر",
-        "desc": "اپنی ماہانہ تنخواہ پر ایف بی آر ٹیکس کا تخمینہ لگائیں۔",
+        "name": "\u067e\u0627\u06a9\u0633\u062a\u0627\u0646 \u0633\u06cc\u0644\u0631\u06cc \u0679\u06cc\u06a9\u0633 \u06a9\u06cc\u0644\u06a9\u0648\u0644\u06cc\u0679\u0631",
+        "desc": "\u0627\u067e\u0646\u06cc \u0645\u0627\u06c1\u0627\u0646\u06c1 \u062a\u0646\u062e\u0648\u0627\u06c1 \u067e\u0631 \u0627\u06cc\u0641 \u0628\u06cc \u0622\u0631 \u0679\u06cc\u06a9\u0633 \u06a9\u0627 \u062a\u062e\u0645\u06cc\u0646\u06c1 \u0644\u06af\u0627\u0626\u06cc\u06ba\u06d4",
         "steps": [
-          "اپنی مجموعی ماہانہ تنخواہ روپوں میں درج کریں۔",
-          "ٹیکس سال منتخب کریں۔ ٹیکس سال 2027 موجودہ سال ہے۔",
-          "Calculate Tax دبائیں، سالانہ ٹیکس، ماہانہ ٹیکس اور گھر لے جانے والی تنخواہ نظر آئے گی۔"
+          "\u0627\u067e\u0646\u06cc \u0645\u062c\u0645\u0648\u0639\u06cc \u0645\u0627\u06c1\u0627\u0646\u06c1 \u062a\u0646\u062e\u0648\u0627\u06c1 \u0631\u0648\u067e\u0648\u06ba \u0645\u06cc\u06ba \u062f\u0631\u062c \u06a9\u0631\u06cc\u06ba\u06d4",
+          "\u0679\u06cc\u06a9\u0633 \u0633\u0627\u0644 \u0645\u0646\u062a\u062e\u0628 \u06a9\u0631\u06cc\u06ba\u06d4 \u0679\u06cc\u06a9\u0633 \u0633\u0627\u0644 2027 \u0645\u0648\u062c\u0648\u062f\u06c1 \u0633\u0627\u0644 \u06c1\u06d2\u06d4",
+          "Calculate Tax \u062f\u0628\u0627\u0626\u06cc\u06ba\u060c \u0633\u0627\u0644\u0627\u0646\u06c1 \u0679\u06cc\u06a9\u0633\u060c \u0645\u0627\u06c1\u0627\u0646\u06c1 \u0679\u06cc\u06a9\u0633 \u0627\u0648\u0631 \u06af\u06be\u0631 \u0644\u06d2 \u062c\u0627\u0646\u06d2 \u0648\u0627\u0644\u06cc \u062a\u0646\u062e\u0648\u0627\u06c1 \u0646\u0638\u0631 \u0622\u0626\u06d2 \u06af\u06cc\u06d4"
         ],
-        "tip": "یہ صرف تنخواہ پر ٹیکس کا تخمینہ ہے، چھوٹ یا الاؤنس شامل نہیں۔",
-        "limit": "یہ ایک تخمینہ ہے، ٹیکس مشورہ نہیں۔ ٹیکس سلیب ایف بی آر سے تصدیق شدہ ہیں، 9 نومبر 2026۔",
+        "tip": "\u06cc\u06c1 \u0635\u0631\u0641 \u062a\u0646\u062e\u0648\u0627\u06c1 \u067e\u0631 \u0679\u06cc\u06a9\u0633 \u06a9\u0627 \u062a\u062e\u0645\u06cc\u0646\u06c1 \u06c1\u06d2\u060c \u0686\u06be\u0648\u0679 \u06cc\u0627 \u0627\u0644\u0627\u0624\u0646\u0633 \u0634\u0627\u0645\u0644 \u0646\u06c1\u06cc\u06ba\u06d4",
+        "limit": "\u06cc\u06c1 \u0627\u06cc\u06a9 \u062a\u062e\u0645\u06cc\u0646\u06c1 \u06c1\u06d2\u060c \u0679\u06cc\u06a9\u0633 \u0645\u0634\u0648\u0631\u06c1 \u0646\u06c1\u06cc\u06ba\u06d4 \u0679\u06cc\u06a9\u0633 \u0633\u0644\u06cc\u0628 \u0627\u06cc\u0641 \u0628\u06cc \u0622\u0631 \u0633\u06d2 \u062a\u0635\u062f\u06cc\u0642 \u0634\u062f\u06c1 \u06c1\u06cc\u06ba\u060c 9 \u0646\u0648\u0645\u0628\u0631 2026\u06d4",
         "faq": [
           [
-            "ٹیکس سال 2027 کا کیا مطلب ہے؟",
-            "ٹیکس سال 2027 مالی سال 2026-27 ہے، جو موجودہ سال ہے۔"
+            "\u0679\u06cc\u06a9\u0633 \u0633\u0627\u0644 2027 \u06a9\u0627 \u06a9\u06cc\u0627 \u0645\u0637\u0644\u0628 \u06c1\u06d2\u061f",
+            "\u0679\u06cc\u06a9\u0633 \u0633\u0627\u0644 2027 \u0645\u0627\u0644\u06cc \u0633\u0627\u0644 2026-27 \u06c1\u06d2\u060c \u062c\u0648 \u0645\u0648\u062c\u0648\u062f\u06c1 \u0633\u0627\u0644 \u06c1\u06d2\u06d4"
           ]
         ]
       }
@@ -3791,8 +3791,8 @@
       "keywords": [
         "nisab",
         "zakat on gold",
-        "زکوٰۃ",
-        "نصاب"
+        "\u0632\u06a9\u0648\u0670\u06c3",
+        "\u0646\u0635\u0627\u0628"
       ],
       "libs": [],
       "engine": "tool-zakat",
@@ -3838,21 +3838,21 @@
           ]
         ]
       },
-      "ur_sub": "زکوٰۃ کیلکولیٹر",
+      "ur_sub": "\u0632\u06a9\u0648\u0670\u06c3 \u06a9\u06cc\u0644\u06a9\u0648\u0644\u06cc\u0679\u0631",
       "ur": {
-        "name": "زکوٰۃ کیلکولیٹر",
-        "desc": "اپنی زکوٰۃ 2.5 فیصد کے حساب سے معلوم کریں۔",
+        "name": "\u0632\u06a9\u0648\u0670\u06c3 \u06a9\u06cc\u0644\u06a9\u0648\u0644\u06cc\u0679\u0631",
+        "desc": "\u0627\u067e\u0646\u06cc \u0632\u06a9\u0648\u0670\u06c3 2.5 \u0641\u06cc\u0635\u062f \u06a9\u06d2 \u062d\u0633\u0627\u0628 \u0633\u06d2 \u0645\u0639\u0644\u0648\u0645 \u06a9\u0631\u06cc\u06ba\u06d4",
         "steps": [
-          "نقد رقم اور بینک بیلنس درج کریں، اور قرضے منہا کریں۔",
-          "سونا اور چاندی تولہ میں درج کریں، موجودہ نرخ کے ساتھ۔",
-          "Calculate Zakat دبائیں، نصاب اور زکوٰۃ نظر آئے گی۔"
+          "\u0646\u0642\u062f \u0631\u0642\u0645 \u0627\u0648\u0631 \u0628\u06cc\u0646\u06a9 \u0628\u06cc\u0644\u0646\u0633 \u062f\u0631\u062c \u06a9\u0631\u06cc\u06ba\u060c \u0627\u0648\u0631 \u0642\u0631\u0636\u06d2 \u0645\u0646\u06c1\u0627 \u06a9\u0631\u06cc\u06ba\u06d4",
+          "\u0633\u0648\u0646\u0627 \u0627\u0648\u0631 \u0686\u0627\u0646\u062f\u06cc \u062a\u0648\u0644\u06c1 \u0645\u06cc\u06ba \u062f\u0631\u062c \u06a9\u0631\u06cc\u06ba\u060c \u0645\u0648\u062c\u0648\u062f\u06c1 \u0646\u0631\u062e \u06a9\u06d2 \u0633\u0627\u062a\u06be\u06d4",
+          "Calculate Zakat \u062f\u0628\u0627\u0626\u06cc\u06ba\u060c \u0646\u0635\u0627\u0628 \u0627\u0648\u0631 \u0632\u06a9\u0648\u0670\u06c3 \u0646\u0638\u0631 \u0622\u0626\u06d2 \u06af\u06cc\u06d4"
         ],
-        "tip": "نصاب ساڑھے سات تولہ سونا یا ساڑھے باون تولہ چاندی ہے۔",
-        "limit": "یہ ایک تخمینہ ہے، مذہبی مشورہ نہیں۔ سرکاری نصاب ہر سال دوبارہ جاری ہوتا ہے۔",
+        "tip": "\u0646\u0635\u0627\u0628 \u0633\u0627\u0691\u06be\u06d2 \u0633\u0627\u062a \u062a\u0648\u0644\u06c1 \u0633\u0648\u0646\u0627 \u06cc\u0627 \u0633\u0627\u0691\u06be\u06d2 \u0628\u0627\u0648\u0646 \u062a\u0648\u0644\u06c1 \u0686\u0627\u0646\u062f\u06cc \u06c1\u06d2\u06d4",
+        "limit": "\u06cc\u06c1 \u0627\u06cc\u06a9 \u062a\u062e\u0645\u06cc\u0646\u06c1 \u06c1\u06d2\u060c \u0645\u0630\u06c1\u0628\u06cc \u0645\u0634\u0648\u0631\u06c1 \u0646\u06c1\u06cc\u06ba\u06d4 \u0633\u0631\u06a9\u0627\u0631\u06cc \u0646\u0635\u0627\u0628 \u06c1\u0631 \u0633\u0627\u0644 \u062f\u0648\u0628\u0627\u0631\u06c1 \u062c\u0627\u0631\u06cc \u06c1\u0648\u062a\u0627 \u06c1\u06d2\u06d4",
         "faq": [
           [
-            "زکوٰۃ کتنی فیصد ہے؟",
-            "زکوٰۃ نصاب سے زیادہ دولت پر 2.5 فیصد ہے۔"
+            "\u0632\u06a9\u0648\u0670\u06c3 \u06a9\u062a\u0646\u06cc \u0641\u06cc\u0635\u062f \u06c1\u06d2\u061f",
+            "\u0632\u06a9\u0648\u0670\u06c3 \u0646\u0635\u0627\u0628 \u0633\u06d2 \u0632\u06cc\u0627\u062f\u06c1 \u062f\u0648\u0644\u062a \u067e\u0631 2.5 \u0641\u06cc\u0635\u062f \u06c1\u06d2\u06d4"
           ]
         ]
       }
@@ -3872,7 +3872,7 @@
       "keywords": [
         "cheque amount",
         "amount in words",
-        "رقم الفاظ میں",
+        "\u0631\u0642\u0645 \u0627\u0644\u0641\u0627\u0638 \u0645\u06cc\u06ba",
         "rupees in words"
       ],
       "libs": [],
@@ -3893,7 +3893,7 @@
         "use": "Amount to words is for invoices, cheques and receipts, where an amount must be written out in words as well as figures. A shop, a school and a freelancer all use it so the amount cannot be changed by adding a digit.",
         "tip": "Type the amount with or without commas. The tool shows the amount in English and in Urdu, with the Urdu line reading right to left.",
         "limit": "The tool handles amounts from 0 to 999,999,999. It writes rupees and paisa only, and it does not handle other currencies.",
-        "example": "125,000 becomes one hundred twenty-five thousand rupees only, and ایک لاکھ پچیس ہزار روپے صرف.",
+        "example": "125,000 becomes one hundred twenty-five thousand rupees only, and \u0627\u06cc\u06a9 \u0644\u0627\u06a9\u06be \u067e\u0686\u06cc\u0633 \u06c1\u0632\u0627\u0631 \u0631\u0648\u067e\u06d2 \u0635\u0631\u0641.",
         "faq": [
           [
             "Why do I need words on a cheque?",
@@ -3913,21 +3913,21 @@
           ]
         ]
       },
-      "ur_sub": "رقم الفاظ میں",
+      "ur_sub": "\u0631\u0642\u0645 \u0627\u0644\u0641\u0627\u0638 \u0645\u06cc\u06ba",
       "ur": {
-        "name": "رقم الفاظ میں",
-        "desc": "رقم کو انگریزی اور اردو میں الفاظ میں لکھیں۔",
+        "name": "\u0631\u0642\u0645 \u0627\u0644\u0641\u0627\u0638 \u0645\u06cc\u06ba",
+        "desc": "\u0631\u0642\u0645 \u06a9\u0648 \u0627\u0646\u06af\u0631\u06cc\u0632\u06cc \u0627\u0648\u0631 \u0627\u0631\u062f\u0648 \u0645\u06cc\u06ba \u0627\u0644\u0641\u0627\u0638 \u0645\u06cc\u06ba \u0644\u06a9\u06be\u06cc\u06ba\u06d4",
         "steps": [
-          "رقم روپوں میں درج کریں۔",
-          "Write in Words دبائیں۔",
-          "انگریزی یا اردو لائن کاپی کریں۔"
+          "\u0631\u0642\u0645 \u0631\u0648\u067e\u0648\u06ba \u0645\u06cc\u06ba \u062f\u0631\u062c \u06a9\u0631\u06cc\u06ba\u06d4",
+          "Write in Words \u062f\u0628\u0627\u0626\u06cc\u06ba\u06d4",
+          "\u0627\u0646\u06af\u0631\u06cc\u0632\u06cc \u06cc\u0627 \u0627\u0631\u062f\u0648 \u0644\u0627\u0626\u0646 \u06a9\u0627\u067e\u06cc \u06a9\u0631\u06cc\u06ba\u06d4"
         ],
-        "tip": "یہ چیک اور رسیدوں کے لیے کارآمد ہے۔",
-        "limit": "زیادہ سے زیادہ رقم 999,999,999 روپے ہے۔",
+        "tip": "\u06cc\u06c1 \u0686\u06cc\u06a9 \u0627\u0648\u0631 \u0631\u0633\u06cc\u062f\u0648\u06ba \u06a9\u06d2 \u0644\u06cc\u06d2 \u06a9\u0627\u0631\u0622\u0645\u062f \u06c1\u06d2\u06d4",
+        "limit": "\u0632\u06cc\u0627\u062f\u06c1 \u0633\u06d2 \u0632\u06cc\u0627\u062f\u06c1 \u0631\u0642\u0645 999,999,999 \u0631\u0648\u067e\u06d2 \u06c1\u06d2\u06d4",
         "faq": [
           [
-            "کیا اردو میں بھی لکھا جاتا ہے؟",
-            "جی ہاں، انگریزی اور اردو دونوں لائنیں ایک ساتھ بنتی ہیں۔"
+            "\u06a9\u06cc\u0627 \u0627\u0631\u062f\u0648 \u0645\u06cc\u06ba \u0628\u06be\u06cc \u0644\u06a9\u06be\u0627 \u062c\u0627\u062a\u0627 \u06c1\u06d2\u061f",
+            "\u062c\u06cc \u06c1\u0627\u06ba\u060c \u0627\u0646\u06af\u0631\u06cc\u0632\u06cc \u0627\u0648\u0631 \u0627\u0631\u062f\u0648 \u062f\u0648\u0646\u0648\u06ba \u0644\u0627\u0626\u0646\u06cc\u06ba \u0627\u06cc\u06a9 \u0633\u0627\u062a\u06be \u0628\u0646\u062a\u06cc \u06c1\u06cc\u06ba\u06d4"
           ]
         ]
       }
@@ -3946,7 +3946,7 @@
       "icon": "i-letter-text",
       "keywords": [
         "urdu words",
-        "اردو الفاظ",
+        "\u0627\u0631\u062f\u0648 \u0627\u0644\u0641\u0627\u0638",
         "urdu character count"
       ],
       "libs": [],
@@ -3987,21 +3987,21 @@
           ]
         ]
       },
-      "ur_sub": "اردو الفاظ شمار کنندہ",
+      "ur_sub": "\u0627\u0631\u062f\u0648 \u0627\u0644\u0641\u0627\u0638 \u0634\u0645\u0627\u0631 \u06a9\u0646\u0646\u062f\u06c1",
       "ur": {
-        "name": "اردو الفاظ گننے والا",
-        "desc": "اردو متن کے الفاظ اور حروف گنیں۔",
+        "name": "\u0627\u0631\u062f\u0648 \u0627\u0644\u0641\u0627\u0638 \u06af\u0646\u0646\u06d2 \u0648\u0627\u0644\u0627",
+        "desc": "\u0627\u0631\u062f\u0648 \u0645\u062a\u0646 \u06a9\u06d2 \u0627\u0644\u0641\u0627\u0638 \u0627\u0648\u0631 \u062d\u0631\u0648\u0641 \u06af\u0646\u06cc\u06ba\u06d4",
         "steps": [
-          "اپنا اردو متن باکس میں لکھیں یا چسپاں کریں۔",
-          "Count Words دبائیں۔",
-          "الفاظ، حروف اور پڑھنے کا وقت دیکھیں۔"
+          "\u0627\u067e\u0646\u0627 \u0627\u0631\u062f\u0648 \u0645\u062a\u0646 \u0628\u0627\u06a9\u0633 \u0645\u06cc\u06ba \u0644\u06a9\u06be\u06cc\u06ba \u06cc\u0627 \u0686\u0633\u067e\u0627\u06ba \u06a9\u0631\u06cc\u06ba\u06d4",
+          "Count Words \u062f\u0628\u0627\u0626\u06cc\u06ba\u06d4",
+          "\u0627\u0644\u0641\u0627\u0638\u060c \u062d\u0631\u0648\u0641 \u0627\u0648\u0631 \u067e\u0691\u06be\u0646\u06d2 \u06a9\u0627 \u0648\u0642\u062a \u062f\u06cc\u06a9\u06be\u06cc\u06ba\u06d4"
         ],
-        "tip": "یہ مضامین اور تحریروں کی لمبائی جانچنے کے لیے کارآمد ہے۔",
-        "limit": "گنتی آپ کے متن پر مبنی ہے، ہجے یا گرامر نہیں جانچی جاتی۔",
+        "tip": "\u06cc\u06c1 \u0645\u0636\u0627\u0645\u06cc\u0646 \u0627\u0648\u0631 \u062a\u062d\u0631\u06cc\u0631\u0648\u06ba \u06a9\u06cc \u0644\u0645\u0628\u0627\u0626\u06cc \u062c\u0627\u0646\u0686\u0646\u06d2 \u06a9\u06d2 \u0644\u06cc\u06d2 \u06a9\u0627\u0631\u0622\u0645\u062f \u06c1\u06d2\u06d4",
+        "limit": "\u06af\u0646\u062a\u06cc \u0622\u067e \u06a9\u06d2 \u0645\u062a\u0646 \u067e\u0631 \u0645\u0628\u0646\u06cc \u06c1\u06d2\u060c \u06c1\u062c\u06d2 \u06cc\u0627 \u06af\u0631\u0627\u0645\u0631 \u0646\u06c1\u06cc\u06ba \u062c\u0627\u0646\u0686\u06cc \u062c\u0627\u062a\u06cc\u06d4",
         "faq": [
           [
-            "کیا میرا متن محفوظ رہتا ہے؟",
-            "جی ہاں، متن آپ کے براؤزر میں ہی رہتا ہے، کہیں اپ لوڈ نہیں ہوتا۔"
+            "\u06a9\u06cc\u0627 \u0645\u06cc\u0631\u0627 \u0645\u062a\u0646 \u0645\u062d\u0641\u0648\u0638 \u0631\u06c1\u062a\u0627 \u06c1\u06d2\u061f",
+            "\u062c\u06cc \u06c1\u0627\u06ba\u060c \u0645\u062a\u0646 \u0622\u067e \u06a9\u06d2 \u0628\u0631\u0627\u0624\u0632\u0631 \u0645\u06cc\u06ba \u06c1\u06cc \u0631\u06c1\u062a\u0627 \u06c1\u06d2\u060c \u06a9\u06c1\u06cc\u06ba \u0627\u067e \u0644\u0648\u0688 \u0646\u06c1\u06cc\u06ba \u06c1\u0648\u062a\u0627\u06d4"
           ]
         ]
       }
@@ -4021,7 +4021,7 @@
       "keywords": [
         "merit",
         "aggregate",
-        "میرٹ",
+        "\u0645\u06cc\u0631\u0679",
         "marks percentage",
         "merit calculator"
       ],
@@ -4063,24 +4063,700 @@
           ]
         ]
       },
-      "ur_sub": "فیصد اور میرٹ کیلکولیٹر",
+      "ur_sub": "\u0641\u06cc\u0635\u062f \u0627\u0648\u0631 \u0645\u06cc\u0631\u0679 \u06a9\u06cc\u0644\u06a9\u0648\u0644\u06cc\u0679\u0631",
       "ur": {
-        "name": "نمبر اور میرٹ کیلکولیٹر",
-        "desc": "اپنے نمبروں اور میرٹ کا مجموعہ معلوم کریں۔",
+        "name": "\u0646\u0645\u0628\u0631 \u0627\u0648\u0631 \u0645\u06cc\u0631\u0679 \u06a9\u06cc\u0644\u06a9\u0648\u0644\u06cc\u0679\u0631",
+        "desc": "\u0627\u067e\u0646\u06d2 \u0646\u0645\u0628\u0631\u0648\u06ba \u0627\u0648\u0631 \u0645\u06cc\u0631\u0679 \u06a9\u0627 \u0645\u062c\u0645\u0648\u0639\u06c1 \u0645\u0639\u0644\u0648\u0645 \u06a9\u0631\u06cc\u06ba\u06d4",
         "steps": [
-          "ہر حصے کے حاصل کردہ نمبر، کل نمبر اور وزن درج کریں۔",
-          "یقینی بنائیں کہ وزن کا مجموعہ 100 فیصد ہے۔",
-          "Calculate Aggregate دبائیں، ہر حصے کا حصہ اور کل مجموعہ نظر آئے گا۔"
+          "\u06c1\u0631 \u062d\u0635\u06d2 \u06a9\u06d2 \u062d\u0627\u0635\u0644 \u06a9\u0631\u062f\u06c1 \u0646\u0645\u0628\u0631\u060c \u06a9\u0644 \u0646\u0645\u0628\u0631 \u0627\u0648\u0631 \u0648\u0632\u0646 \u062f\u0631\u062c \u06a9\u0631\u06cc\u06ba\u06d4",
+          "\u06cc\u0642\u06cc\u0646\u06cc \u0628\u0646\u0627\u0626\u06cc\u06ba \u06a9\u06c1 \u0648\u0632\u0646 \u06a9\u0627 \u0645\u062c\u0645\u0648\u0639\u06c1 100 \u0641\u06cc\u0635\u062f \u06c1\u06d2\u06d4",
+          "Calculate Aggregate \u062f\u0628\u0627\u0626\u06cc\u06ba\u060c \u06c1\u0631 \u062d\u0635\u06d2 \u06a9\u0627 \u062d\u0635\u06c1 \u0627\u0648\u0631 \u06a9\u0644 \u0645\u062c\u0645\u0648\u0639\u06c1 \u0646\u0638\u0631 \u0622\u0626\u06d2 \u06af\u0627\u06d4"
         ],
-        "tip": "میرٹ کا وزن عام طور پر تعلیمی ادارے بتاتے ہیں۔",
-        "limit": "زیادہ سے زیادہ تین حصے شامل کیے جا سکتے ہیں۔",
+        "tip": "\u0645\u06cc\u0631\u0679 \u06a9\u0627 \u0648\u0632\u0646 \u0639\u0627\u0645 \u0637\u0648\u0631 \u067e\u0631 \u062a\u0639\u0644\u06cc\u0645\u06cc \u0627\u062f\u0627\u0631\u06d2 \u0628\u062a\u0627\u062a\u06d2 \u06c1\u06cc\u06ba\u06d4",
+        "limit": "\u0632\u06cc\u0627\u062f\u06c1 \u0633\u06d2 \u0632\u06cc\u0627\u062f\u06c1 \u062a\u06cc\u0646 \u062d\u0635\u06d2 \u0634\u0627\u0645\u0644 \u06a9\u06cc\u06d2 \u062c\u0627 \u0633\u06a9\u062a\u06d2 \u06c1\u06cc\u06ba\u06d4",
         "faq": [
           [
-            "وزن کا کیا مطلب ہے؟",
-            "وزن یہ بتاتا ہے کہ ہر حصے کی کل میرٹ میں کتنی اہمیت ہے، مثلاً 50 فیصد۔"
+            "\u0648\u0632\u0646 \u06a9\u0627 \u06a9\u06cc\u0627 \u0645\u0637\u0644\u0628 \u06c1\u06d2\u061f",
+            "\u0648\u0632\u0646 \u06cc\u06c1 \u0628\u062a\u0627\u062a\u0627 \u06c1\u06d2 \u06a9\u06c1 \u06c1\u0631 \u062d\u0635\u06d2 \u06a9\u06cc \u06a9\u0644 \u0645\u06cc\u0631\u0679 \u0645\u06cc\u06ba \u06a9\u062a\u0646\u06cc \u0627\u06c1\u0645\u06cc\u062a \u06c1\u06d2\u060c \u0645\u062b\u0644\u0627\u064b 50 \u0641\u06cc\u0635\u062f\u06d4"
           ]
         ]
       }
+    },
+    {
+      "slug": "jpg-to-pdf",
+      "workspace": "tool-jpgtopdf",
+      "title": {
+        "en": "JPG to PDF"
+      },
+      "short": {
+        "en": "Turn JPG images into one PDF."
+      },
+      "category": "pdf",
+      "group": "convert",
+      "icon": "i-images",
+      "keywords": [
+        "jpg to pdf",
+        "jpeg to pdf",
+        "images to pdf",
+        "photo to pdf",
+        "jpg se pdf"
+      ],
+      "libs": [
+        "jspdf"
+      ],
+      "engine": "tool-images",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Turn JPG images into one PDF, one photo per page, in your browser. Free, private, no uploads.",
+      "steps": [
+        "Choose one or more JPG images with the file button.",
+        "Check that the images are in the order you want, because each image becomes one page in that order.",
+        "Press Convert JPG to PDF.",
+        "Save the downloaded PDF, which has one image per page."
+      ],
+      "content": {
+        "use": "JPG to PDF turns photos into a single PDF file, one photo per page. A student photographs handwritten notes and sends them as one PDF to a teacher. A job applicant photographs certificates and attaches one PDF to an application. A shop owner photographs receipts and keeps them as one monthly PDF. Each photo is fitted to an A4 page with a small margin, so nothing is cropped, and the photos stay in the order you selected them. The PDF is built in your browser with jsPDF, so your photos are never uploaded anywhere and you do not need an account.",
+        "tip": "Choose the images in the order you want them to appear, because each image becomes one page in that order. For the sharpest result, use clear photos; a blurry photo stays blurry in the PDF. If a photo is sideways, rotate it on your phone or computer first, because this tool does not rotate images.",
+        "limit": "Only JPG and JPEG images are accepted, and each file must be under 50 MB. Each image is placed on its own page, so you cannot put two images side by side on one page. Very large images are fitted to the page, not kept at full size, and the tool does not rotate images.",
+        "example": "Choosing 4 photos of handwritten notes and pressing Convert JPG to PDF gives one 4-page PDF, with each photo on its own A4 page.",
+        "faq": [
+          [
+            "Can I convert a PNG image here?",
+            "No. This page only accepts JPG and JPEG images. Use PNG to PDF for PNG images, or Images to PDF if you have a mix of JPG, PNG and WebP images."
+          ],
+          [
+            "How do I set the page order?",
+            "Choose the images in the order you want the pages to appear. Each image becomes one page in that order, and there is no reorder step on this page."
+          ],
+          [
+            "What is the downloaded file called?",
+            "ak-premium-jpg-to-pdf.pdf. It has one page per image, in the order you selected them, and your original images are not changed."
+          ],
+          [
+            "Can I convert many photos at once?",
+            "Yes. Choose as many JPG images as you need, each under 50 MB. Each image becomes one page, so ten photos give a ten-page PDF."
+          ]
+        ]
+      },
+      "related": [
+        "png-to-pdf",
+        "images-to-pdf",
+        "compress-pdf",
+        "merge-pdf"
+      ]
+    },
+    {
+      "slug": "png-to-pdf",
+      "workspace": "tool-pngtopdf",
+      "title": {
+        "en": "PNG to PDF"
+      },
+      "short": {
+        "en": "Turn PNG images into one PDF."
+      },
+      "category": "pdf",
+      "group": "convert",
+      "icon": "i-file-image",
+      "keywords": [
+        "png to pdf",
+        "screenshot to pdf",
+        "images to pdf",
+        "png se pdf"
+      ],
+      "libs": [
+        "jspdf"
+      ],
+      "engine": "tool-images",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Turn PNG images into one PDF, one image per page, in your browser. Free, private, no uploads.",
+      "steps": [
+        "Choose one or more PNG images with the file button.",
+        "Check that the images are in the order you want, because each image becomes one page in that order.",
+        "Press Convert PNG to PDF.",
+        "Save the downloaded PDF, which has one image per page."
+      ],
+      "content": {
+        "use": "PNG to PDF turns screenshots and pictures into a single PDF file, one image per page. A student screenshots a diagram and sends it as one PDF to a teacher. An office worker screenshots a chart and attaches one PDF to a report. A designer screenshots a mockup and shares one PDF with a client. Each image is fitted to an A4 page with a small margin, so nothing is cropped, and the images stay in the order you selected them. The PDF is built in your browser with jsPDF, so your images are never uploaded anywhere and you do not need an account.",
+        "tip": "Choose the images in the order you want them to appear, because each image becomes one page in that order. PNG images keep sharp edges, so they suit screenshots and diagrams. If an image is sideways, rotate it on your phone or computer first, because this tool does not rotate images.",
+        "limit": "Only PNG images are accepted, and each file must be under 50 MB. Each image is placed on its own page, so you cannot put two images side by side on one page. Very large images are fitted to the page, not kept at full size, and the tool does not rotate images.",
+        "example": "Choosing 3 screenshots of a chart and pressing Convert PNG to PDF gives one 3-page PDF, with each screenshot on its own A4 page.",
+        "faq": [
+          [
+            "Can I convert a JPG image here?",
+            "No. This page only accepts PNG images. Use JPG to PDF for JPG images, or Images to PDF if you have a mix of JPG, PNG and WebP images."
+          ],
+          [
+            "Does the PDF keep full image quality?",
+            "No. Each image is fitted to an A4 page, so a very large image is scaled down. The result is a clean, readable PDF, not a full-resolution archive of your images."
+          ],
+          [
+            "What file do I get after converting?",
+            "You download one PDF named ak-premium-png-to-pdf.pdf. It has one page per image, in the order you selected them, and your original images are not changed."
+          ],
+          [
+            "Can I convert many screenshots at once?",
+            "Yes. Choose as many PNG images as you need, each under 50 MB. Each image becomes one page, so ten screenshots give a ten-page PDF."
+          ]
+        ]
+      },
+      "related": [
+        "jpg-to-pdf",
+        "images-to-pdf",
+        "compress-pdf",
+        "merge-pdf"
+      ]
+    },
+    {
+      "slug": "pdf-to-jpg",
+      "workspace": "tool-pdftojpg",
+      "title": {
+        "en": "PDF to JPG"
+      },
+      "short": {
+        "en": "Render PDF pages as JPG images."
+      },
+      "category": "pdf",
+      "group": "convert",
+      "icon": "i-image-down",
+      "keywords": [
+        "pdf to jpg",
+        "pdf pages to jpg",
+        "pdf to image",
+        "pdf se jpg"
+      ],
+      "libs": [
+        "pdfjs",
+        "jszip"
+      ],
+      "engine": "tool-pdfimages",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Render PDF pages as JPG images, with a download link per page and one ZIP file. Free, private, no uploads.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Press Convert PDF to JPG and wait for the status message to say it is done.",
+        "Download each page JPG from the links shown, such as Download page 2 JPG.",
+        "Or download the whole set at once as one ZIP file named ak-premium-pages.zip."
+      ],
+      "content": {
+        "use": "PDF to JPG turns every page of a PDF into a JPG picture, so you can share a single page in a chat, add it to a slide or post it online. A teacher turns one page of a worksheet into a JPG to share in a class group. A student turns a diagram page into a JPG to paste into an assignment. A shop owner turns a price page into a JPG for a social media post. Each page is rendered at one and a half times its normal size for a sharp picture. After the conversion, you get a download link for each page and one ZIP file with all the pages together.",
+        "tip": "If you only need one page, download just that page's JPG link instead of the whole ZIP. JPG files are smaller than PNG, so they suit sharing in chats. Large PDFs take a while because every page is rendered in your browser, so wait for the status message to say it is done.",
+        "limit": "Each page becomes a separate JPG, so a 50-page PDF gives 50 pictures and one ZIP. The JPGs are pictures of the pages, not editable text. A scanned PDF renders as a picture of the scan, which is fine, but a very large PDF may be slow or run out of browser memory.",
+        "example": "Converting a 3-page worksheet gives three JPG links, page 1, page 2 and page 3, plus a ZIP file with all three JPGs inside.",
+        "faq": [
+          [
+            "Can I download just one page?",
+            "Yes. After the conversion, each page has its own link, such as Download page 2 JPG. Press the link for the page you need. The ZIP is only for downloading all pages at once."
+          ],
+          [
+            "What size are the JPG images?",
+            "Each page is rendered at one and a half times its normal size, so the pictures are sharp enough to share or print. They are not full-resolution scans."
+          ],
+          [
+            "Can I get PNG images instead of JPG?",
+            "Yes. Use PDF to PNG for PNG images. This page only makes JPG images, which are smaller and suit sharing in chats."
+          ],
+          [
+            "Why is a long PDF slow to convert?",
+            "Every page is drawn in your browser one by one. A long PDF with many pages takes longer, and a very large file may run out of memory. Try a smaller file if it stops."
+          ]
+        ]
+      },
+      "related": [
+        "pdf-to-png",
+        "pdf-to-images",
+        "image-compressor",
+        "image-converter"
+      ]
+    },
+    {
+      "slug": "pdf-to-png",
+      "workspace": "tool-pdftopng",
+      "title": {
+        "en": "PDF to PNG"
+      },
+      "short": {
+        "en": "Render PDF pages as PNG images."
+      },
+      "category": "pdf",
+      "group": "convert",
+      "icon": "i-file-image",
+      "keywords": [
+        "pdf to png",
+        "pdf pages to png",
+        "pdf to image",
+        "pdf se png"
+      ],
+      "libs": [
+        "pdfjs",
+        "jszip"
+      ],
+      "engine": "tool-pdfimages",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Render PDF pages as PNG images, with a download link per page and one ZIP file. Free, private, no uploads.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Press Convert PDF to PNG and wait for the status message to say it is done.",
+        "Download each page PNG from the links shown, such as Download page 2 PNG.",
+        "Or download the whole set at once as one ZIP file named ak-premium-pages.zip."
+      ],
+      "content": {
+        "use": "PDF to PNG turns every page of a PDF into a PNG picture, which keeps sharp edges and is easy to edit afterwards. A teacher turns a worksheet page into a PNG to crop and reuse in a new handout. A student turns a diagram page into a PNG to label it in an image editor. A designer turns a layout page into a PNG to check the spacing closely. Each page is rendered at one and a half times its normal size, so text stays crisp. After the conversion, you get a download link for each page and one ZIP file with all the pages together.",
+        "tip": "If you only need one page, download just that page's PNG link instead of the whole ZIP. PNG keeps text sharp, so it suits diagrams and pages you want to edit. Large PDFs take a while because every page is rendered in your browser, so wait for the status message to say it is done.",
+        "limit": "Each page becomes a separate PNG, so a 50-page PDF gives 50 pictures and one ZIP. The PNGs are pictures of the pages, not editable text. A scanned PDF renders as a picture of the scan, which is fine, but a very large PDF may be slow or run out of browser memory.",
+        "example": "Converting a 3-page worksheet gives three PNG links, page 1, page 2 and page 3, plus a ZIP file with all three PNGs inside.",
+        "faq": [
+          [
+            "How do I save a single page?",
+            "After the conversion, each page has its own link, such as Download page 2 PNG. Press the link for the page you need. The ZIP is only for downloading all pages at once."
+          ],
+          [
+            "Are the PNG images full size?",
+            "No. Each page is rendered at one and a half times its normal size, so the pictures are sharp enough to share or print. They are not full-resolution scans."
+          ],
+          [
+            "Can I choose JPG output here?",
+            "No. This page only makes PNG images, which keep text sharper and suit editing. Use PDF to JPG for JPG images."
+          ],
+          [
+            "What if my PDF is very large?",
+            "Every page is drawn in your browser one by one, so a long PDF takes longer. A very large file may run out of memory. Try a smaller file if the conversion stops."
+          ]
+        ]
+      },
+      "related": [
+        "pdf-to-jpg",
+        "pdf-to-images",
+        "image-compressor",
+        "image-converter"
+      ]
+    },
+    {
+      "slug": "html-to-pdf",
+      "workspace": "tool-htmltopdf",
+      "title": {
+        "en": "HTML to PDF"
+      },
+      "short": {
+        "en": "Turn an HTML file into a PDF."
+      },
+      "category": "pdf",
+      "group": "convert",
+      "icon": "i-file-code",
+      "keywords": [
+        "html to pdf",
+        "web page to pdf",
+        "html file to pdf",
+        "html se pdf"
+      ],
+      "libs": [
+        "jspdf"
+      ],
+      "engine": "tool-txthtml",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Turn a saved HTML file into a PDF in your browser. Free, private, no uploads.",
+      "steps": [
+        "Choose an HTML file with the file button. The file must end in .html or .htm.",
+        "Press Convert HTML to PDF.",
+        "Wait for the status message to say the PDF is downloaded.",
+        "Open the PDF to check the text, because HTML tags and formatting are not kept."
+      ],
+      "content": {
+        "use": "HTML to PDF turns a saved web page file into a PDF, which is handy when you have a page saved on your computer and need it as a document. A student saves a course page as an HTML file and turns it into a PDF to read offline. An office worker saves a notice from a website and turns it into a PDF to attach to an email. A shop owner saves a price page and turns it into a PDF to print. The HTML tags are stripped out, so the result is plain text in a simple 12-point font, flowing across pages as needed. Nothing is uploaded; the PDF is built in your browser.",
+        "tip": "Save the web page as an HTML file first, then choose it here. Check the PDF after converting, because the tool strips HTML tags and extra spaces. For a clean result, use a simple page rather than one full of menus and adverts.",
+        "limit": "HTML tags are stripped and formatting is not kept. The PDF is plain 12-point text only, with no bold, headings, images or tables. Very long pages flow across pages automatically, but you cannot choose the font, size or page layout. A page that is mostly images gives a PDF with little or no text.",
+        "example": "Choosing a saved notice page and pressing Convert HTML to PDF downloads ak-premium-html-to-pdf.pdf with the page's words as plain text on one page.",
+        "faq": [
+          [
+            "Will my page look the same in the PDF?",
+            "No. All HTML tags are stripped out and the text becomes plain 12-point text. Use it for simple pages, not for formatted web pages."
+          ],
+          [
+            "What happens to very long pages?",
+            "The text flows across pages automatically. The tool adds pages as needed, so a long page becomes a multi-page PDF."
+          ],
+          [
+            "Can I convert a web page by its address?",
+            "No. You must save the page as an HTML file on your device first, then choose that file here. The tool does not fetch pages from the internet."
+          ],
+          [
+            "Is my HTML file uploaded anywhere?",
+            "No. The PDF is built in your browser with jsPDF, so the file never leaves your device. No account is needed and nothing is sent to a server."
+          ]
+        ]
+      },
+      "related": [
+        "txt-html-to-pdf",
+        "create-pdf",
+        "word-to-pdf",
+        "merge-pdf"
+      ]
+    },
+    {
+      "slug": "extract-images-from-pdf",
+      "workspace": "tool-extractimages",
+      "title": {
+        "en": "Extract Images from PDF"
+      },
+      "short": {
+        "en": "Save the images inside a PDF as PNG files."
+      },
+      "category": "pdf",
+      "group": "convert",
+      "icon": "i-image-down",
+      "keywords": [
+        "extract images from pdf",
+        "pdf image extractor",
+        "save images from pdf",
+        "pdf se images"
+      ],
+      "libs": [
+        "pdfjs",
+        "jszip"
+      ],
+      "engine": "tool-extractimages",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Save the images embedded in a PDF as PNG files, one link per image and one ZIP file. Free, private, no uploads.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Press Extract Images and wait for the status message to say it is done.",
+        "Download each image PNG from the links shown, such as Download ak-premium-image-1-1.png.",
+        "Or download all the images at once as one ZIP file named ak-premium-images.zip."
+      ],
+      "content": {
+        "use": "Extract Images from PDF saves the pictures that are embedded inside a PDF as separate PNG files, so you can reuse them. A teacher takes a diagram out of a PDF handout to use in a new worksheet. A student saves a chart from a PDF report to paste into an assignment. A shop owner saves a product photo from a PDF catalogue to post online. Each image is saved at its original size as a PNG, with its page number in the file name. The images are read in your browser, so your PDF is never uploaded anywhere.",
+        "tip": "If you only need one image, download just its PNG link instead of the whole ZIP. The file name shows the page number, so ak-premium-image-2-1.png is the first image on page 2. Large PDFs take a while because every page is read in your browser, so wait for the status message to say it is done.",
+        "limit": "Only embedded image objects are found. Tiny inline images, vector drawings and page backgrounds are not extracted, so a PDF made only of shapes may give no images. Some images may be skipped if their format cannot be read. The extracted PNGs are the embedded pictures, not the whole page.",
+        "example": "Extracting images from a 5-page catalogue with 2 photos on page 1 and 1 chart on page 3 gives 3 PNG links and a ZIP file with all 3 images inside.",
+        "faq": [
+          [
+            "What images does this tool find?",
+            "It finds pictures embedded inside the PDF, such as photos and charts. It does not find vector drawings, page backgrounds or tiny inline images, so some PDFs give no images at all."
+          ],
+          [
+            "Are the images saved at full size?",
+            "Yes. Each image is saved at the size it is stored in the PDF. The PNG is the embedded picture itself, not a screenshot of the page."
+          ],
+          [
+            "Can I download just one image?",
+            "Yes. After the extraction, each image has its own link, such as Download ak-premium-image-1-1.png. Press the link for the image you need. The ZIP is only for downloading all images at once."
+          ],
+          [
+            "Why did my PDF give no images?",
+            "The PDF may have no embedded pictures. A text-only PDF, or one made of vector shapes and backgrounds, has nothing to extract. Try PDF to Images if you need a picture of the whole page."
+          ]
+        ]
+      },
+      "related": [
+        "pdf-to-images",
+        "pdf-to-jpg",
+        "image-compressor",
+        "pdf-to-text"
+      ]
+    },
+    {
+      "slug": "add-header-footer-pdf",
+      "workspace": "tool-headerfooter",
+      "title": {
+        "en": "Add Header and Footer to PDF"
+      },
+      "short": {
+        "en": "Stamp header and footer text on every page."
+      },
+      "category": "pdf",
+      "group": "edit",
+      "icon": "i-letter-text",
+      "keywords": [
+        "add header to pdf",
+        "add footer to pdf",
+        "header footer pdf",
+        "pdf header footer"
+      ],
+      "libs": [
+        "pdf-lib"
+      ],
+      "engine": "tool-headerfooter",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Stamp the same header and footer text on every page of a PDF, in your browser. Free, private, no uploads.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Type the header text in the Header text field, or leave it blank if you only want a footer.",
+        "Type the footer text in the Footer text field, or leave it blank if you only want a header.",
+        "Press Add Header & Footer.",
+        "Save the downloaded PDF, which has the header and footer on every page."
+      ],
+      "content": {
+        "use": "Add Header and Footer to PDF stamps the same header and footer text on every page of a PDF, which is handy when a document needs a title, a page note or a company name on each page. A teacher adds a class name at the top and a date at the bottom of a handout. An office worker adds a project name at the top and a confidentiality note at the bottom of a report. A shop owner adds a shop name at the top and a phone number at the bottom of a price list. The text is stamped in a small grey font near the top and bottom edges, and the original pages are not changed.",
+        "tip": "Keep the header and footer short, under about 90 characters each, so the text fits on the page. Use the header for a title or project name and the footer for a date or page note. You can fill in only one of the two fields if you need just a header or just a footer.",
+        "limit": "The header and footer are stamped in a fixed small grey font near the top and bottom edges, and you cannot choose the font, size or colour. Very long text is shrunk to fit, and text longer than the page width is cut off. The stamp is added to every page, so you cannot skip a page.",
+        "example": "Adding the header Spring Term 2026 and the footer Page 1 of 10 to a 4-page handout gives a 4-page PDF with the header at the top and the footer at the bottom of every page.",
+        "faq": [
+          [
+            "Can I add only a header?",
+            "Yes. Fill in the Header text field and leave the Footer text field blank. The tool adds only the header, and the footer is skipped on every page."
+          ],
+          [
+            "Can I add only a footer?",
+            "Yes. Fill in the Footer text field and leave the Header text field blank. The tool adds only the footer, and the header is skipped on every page."
+          ],
+          [
+            "Can I change the font or colour?",
+            "No. The header and footer use a fixed small grey Helvetica font. You cannot choose the font, size or colour on this page."
+          ],
+          [
+            "Does the stamp cover my page text?",
+            "It can, if your page text runs to the very top or bottom edge. The header sits near the top and the footer near the bottom, so pages with wide margins work best."
+          ]
+        ]
+      },
+      "related": [
+        "add-watermark",
+        "add-page-numbers",
+        "edit-pdf",
+        "merge-pdf"
+      ]
+    },
+    {
+      "slug": "flatten-pdf",
+      "workspace": "tool-flatten",
+      "title": {
+        "en": "Flatten PDF"
+      },
+      "short": {
+        "en": "Flatten form fields and annotations in a PDF."
+      },
+      "category": "pdf",
+      "group": "edit",
+      "icon": "i-archive",
+      "keywords": [
+        "flatten pdf",
+        "flatten pdf form",
+        "make pdf uneditable",
+        "pdf flatten"
+      ],
+      "libs": [
+        "pdf-lib"
+      ],
+      "engine": "tool-flatten",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Flatten a PDF so form fields become permanent text and annotations are removed. Free, private, no uploads.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Press Flatten PDF and wait for the status message to say it is done.",
+        "Save the downloaded PDF named ak-premium-flattened.pdf.",
+        "Open the PDF to check that the form answers are now part of the page, because flattening cannot be undone."
+      ],
+      "content": {
+        "use": "Flatten PDF turns form fields and annotations in a PDF into permanent page content, so the filled-in answers and notes can no longer be changed or removed. A student flattens a filled application form before sending it, so the answers cannot be edited by mistake. An office worker flattens a signed form so the signature stays as it is. A shop owner flattens a price list with notes so the notes print exactly as shown. Form fields become plain text on the page, and annotations such as comments and links are removed. The flattened PDF looks the same, but nothing in it can be edited as a form any more.",
+        "tip": "Keep a copy of the original PDF before you flatten it, because flattening cannot be undone. Flatten a form only after every field is filled in, because empty fields become blank text. Check the flattened PDF before you send it, to make sure every answer is still readable.",
+        "limit": "Flattening cannot be undone, so keep a copy of the original. Form fields become plain text and can no longer be edited or filled in. Annotations such as comments, highlights and links are removed. A password-protected PDF must be unlocked first.",
+        "example": "Flattening a 2-page application form with 10 filled fields gives a 2-page PDF where the answers are now part of the page and cannot be changed.",
+        "faq": [
+          [
+            "What does flattening a PDF do?",
+            "It turns form fields into permanent text on the page and removes annotations. The PDF looks the same, but the fields can no longer be edited or filled in."
+          ],
+          [
+            "Can I undo flattening?",
+            "No. Flattening is permanent. Keep a copy of the original PDF before you flatten it, because the form fields cannot be restored afterwards."
+          ],
+          [
+            "Does flattening change how the PDF looks?",
+            "No. The filled-in answers stay where they were, as plain text on the page. Only the ability to edit them is gone, and annotations such as comments are removed."
+          ],
+          [
+            "Can I flatten a protected PDF?",
+            "No. A password-protected PDF must be unlocked first. Use Unlock PDF with the password, then flatten the unlocked file. The unlocked file is a normal PDF that this tool can open."
+          ]
+        ]
+      },
+      "related": [
+        "protect-pdf",
+        "merge-pdf",
+        "pdf-to-pdf-a",
+        "compress-pdf"
+      ]
+    },
+    {
+      "slug": "pdf-metadata-editor",
+      "workspace": "tool-metadata",
+      "title": {
+        "en": "PDF Metadata Editor"
+      },
+      "short": {
+        "en": "View and edit a PDF's title, author and more."
+      },
+      "category": "pdf",
+      "group": "edit",
+      "icon": "i-square-pen",
+      "keywords": [
+        "pdf metadata editor",
+        "edit pdf title",
+        "pdf author",
+        "pdf properties"
+      ],
+      "libs": [
+        "pdf-lib"
+      ],
+      "engine": "tool-metadata",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "View and edit a PDF's title, author, subject and keywords, in your browser. Free, private, no uploads.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Read the current title, author, subject and keywords shown under Current metadata, and check the fields are filled in with them.",
+        "Change the Title, Author, Subject or Keywords fields to the values you want.",
+        "Press Update Metadata.",
+        "Save the downloaded PDF, which has the new metadata and the same pages."
+      ],
+      "content": {
+        "use": "PDF Metadata Editor shows and changes the hidden details of a PDF, such as its title, author, subject and keywords. A student sets the title and author of an assignment PDF so it shows the right name in a reader. An office worker sets the subject of a report PDF so it is easy to find later. A shop owner sets keywords on a price list PDF so it turns up in a search. The metadata is the text a PDF reader shows in the document properties, and it does not change the pages themselves. The edited PDF is saved with the same pages and layout, only the details are new.",
+        "tip": "Fill in the title and author first, because those are the details most readers show. Use keywords that describe the document, separated by commas, so it is easy to find later. Leave a field blank if you want that detail removed from the PDF.",
+        "limit": "Only the title, author, subject and keywords can be changed. The producer, creator and dates are not edited by this tool. A password-protected PDF must be unlocked first. Some PDF readers may still show old details if they cached the file.",
+        "example": "Setting the title to Spring Term Report, the author to Ayesha Khan and the keywords to term report, spring 2026 on a 6-page PDF gives a 6-page PDF with those details in its properties.",
+        "faq": [
+          [
+            "What is PDF metadata?",
+            "It is the hidden detail stored in a PDF, such as its title, author, subject and keywords. A PDF reader shows it in the document properties, and search tools can use it to find the file."
+          ],
+          [
+            "Does editing metadata change my pages?",
+            "No. The pages, text and layout stay exactly the same. Only the title, author, subject and keywords stored in the file are changed."
+          ],
+          [
+            "Can I remove a detail?",
+            "Yes. Leave that field blank and press Update Metadata. The blank detail is removed from the PDF, and the other details are kept."
+          ],
+          [
+            "Can I edit a protected PDF?",
+            "No. A password-protected PDF must be unlocked first. Use Unlock PDF with the password, then edit the metadata of the unlocked file."
+          ]
+        ]
+      },
+      "related": [
+        "edit-pdf",
+        "protect-pdf",
+        "merge-pdf",
+        "organize-pdf"
+      ]
+    },
+    {
+      "slug": "resize-pdf-page-size",
+      "workspace": "tool-resizepage",
+      "title": {
+        "en": "Resize PDF Page Size"
+      },
+      "short": {
+        "en": "Scale every page to A4, Letter or Legal."
+      },
+      "category": "pdf",
+      "group": "edit",
+      "icon": "i-scaling",
+      "keywords": [
+        "resize pdf page size",
+        "pdf a4 letter",
+        "change pdf page size",
+        "pdf page size"
+      ],
+      "libs": [
+        "pdf-lib"
+      ],
+      "engine": "tool-resizepage",
+      "maxFileMB": 50,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Scale every page of a PDF to A4, Letter or Legal, in your browser. Free, private, no uploads.",
+      "steps": [
+        "Choose a PDF file with the file button.",
+        "Pick a page size from the Page size list: A4, Letter or Legal.",
+        "Press Resize Pages.",
+        "Save the downloaded PDF, which has every page at the size you picked."
+      ],
+      "content": {
+        "use": "Resize PDF Page Size scales every page of a PDF to A4, Letter or Legal, which is handy when a PDF was made for a different paper size and needs to print cleanly. A student resizes a US Letter assignment to A4 so it prints correctly on local paper. An office worker resizes an A4 report to Letter for a client in the United States. A shop owner resizes a Legal-size price list to A4 for a local printer. Each page is scaled to fit the new size, keeping its shape, and centred on the page. The text and pictures are scaled with the page, so nothing is cropped.",
+        "tip": "Pick the size your printer uses before you resize, because A4 is the usual size in Pakistan and Letter is the usual size in the United States. If the original page is a very different shape, the scaled page has small margins on two sides. Check the resized PDF before you print it.",
+        "limit": "Each page is scaled to fit the new size, keeping its shape, so a page of a very different shape has small margins on two sides. Form fields and links are not carried over to the resized pages. A password-protected PDF must be unlocked first.",
+        "example": "Resizing a 3-page US Letter assignment to A4 gives a 3-page PDF at A4 size (595 by 842 points), with each page scaled to fit and centred.",
+        "faq": [
+          [
+            "What sizes can I choose?",
+            "A4, Letter and Legal. A4 is 595 by 842 points, Letter is 612 by 792 points, and Legal is 612 by 1008 points. Pick the size your printer uses."
+          ],
+          [
+            "Does resizing crop my pages?",
+            "No. Each page is scaled to fit the new size, keeping its shape, and centred on the page. Nothing is cropped, but a page of a very different shape has small margins on two sides."
+          ],
+          [
+            "Does resizing change my text?",
+            "No. The text and pictures are scaled with the page, so they stay in the same place relative to each other. Only the page size and the scale change."
+          ],
+          [
+            "Can I resize a protected PDF?",
+            "No. A password-protected PDF must be unlocked first. Use Unlock PDF with the password, then resize the unlocked file. The unlocked file is a normal PDF that this tool can open."
+          ]
+        ]
+      },
+      "related": [
+        "compress-pdf",
+        "merge-pdf",
+        "organize-pdf",
+        "pdf-to-pdf-a"
+      ]
     }
   ]
 }

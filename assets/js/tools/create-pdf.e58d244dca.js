@@ -14,3 +14,7 @@ if (createPdfBtn) createPdfBtn.addEventListener("click", () => {
   doc.save("ak-premium-created.pdf");
   setStatus("createPdfStatus", "Done. PDF downloaded.");
 });
+
+/* Shared engine: images to PDF (one image per A4 page, fitted with a
+   small margin). Used by Images to PDF and by the JPG to PDF and PNG to
+   PDF landing pages. Takes no element ids, so it splits to core.js. */

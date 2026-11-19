@@ -58,7 +58,17 @@ const NEXT_STEPS = {
   "tool-ocrpdf": [["PDF to Word", "/tools/pdf-to-word"], ["Redact PDF", "/tools/redact-pdf"]],
   "tool-ocr": [["PDF to Word", "/tools/pdf-to-word"], ["Translate Helper", "/tools/translate-helper"]],
   "tool-images": [["Compress PDF", "/tools/compress-pdf"], ["Merge PDF", "/tools/merge-pdf"]],
-  "tool-pdfimages": [["Image Compressor", "/tools/image-compressor"], ["Images to PDF", "/tools/images-to-pdf"]]
+  "tool-pdfimages": [["Image Compressor", "/tools/image-compressor"], ["Images to PDF", "/tools/images-to-pdf"]],
+  "tool-jpgtopdf": [["PNG to PDF", "/tools/png-to-pdf"], ["Images to PDF", "/tools/images-to-pdf"], ["Compress PDF", "/tools/compress-pdf"]],
+  "tool-pngtopdf": [["JPG to PDF", "/tools/jpg-to-pdf"], ["Images to PDF", "/tools/images-to-pdf"], ["Compress PDF", "/tools/compress-pdf"]],
+  "tool-pdftojpg": [["PDF to PNG", "/tools/pdf-to-png"], ["PDF to Images", "/tools/pdf-to-images"], ["Image Compressor", "/tools/image-compressor"]],
+  "tool-pdftopng": [["PDF to JPG", "/tools/pdf-to-jpg"], ["PDF to Images", "/tools/pdf-to-images"], ["Image Compressor", "/tools/image-compressor"]],
+  "tool-htmltopdf": [["TXT / HTML to PDF", "/tools/txt-html-to-pdf"], ["Create PDF", "/tools/create-pdf"], ["Merge PDF", "/tools/merge-pdf"]],
+  "tool-extractimages": [["PDF to Images", "/tools/pdf-to-images"], ["PDF to JPG", "/tools/pdf-to-jpg"], ["Image Compressor", "/tools/image-compressor"]],
+  "tool-headerfooter": [["Add Watermark", "/tools/add-watermark"], ["Add Page Numbers", "/tools/add-page-numbers"], ["Merge PDF", "/tools/merge-pdf"]],
+  "tool-flatten": [["Protect PDF", "/tools/protect-pdf"], ["Merge PDF", "/tools/merge-pdf"], ["Compress PDF", "/tools/compress-pdf"]],
+  "tool-metadata": [["Edit PDF", "/tools/edit-pdf"], ["Protect PDF", "/tools/protect-pdf"], ["Merge PDF", "/tools/merge-pdf"]],
+  "tool-resizepage": [["Compress PDF", "/tools/compress-pdf"], ["Merge PDF", "/tools/merge-pdf"], ["Organize PDF", "/tools/organize-pdf"]]
 };
 function showSuccess(ws, filename, url) {
   if (!ws) return;
@@ -811,6 +821,36 @@ function getPrefs() {
 
 /* ---------- PDF Studio ---------- */
 
+async function imagesToPdf(files, statusId, outName) {
+  const JsPDF = getJsPdf();
+  if (!needLibrary(!!JsPDF, "jsPDF", statusId)) return;
+  setStatus(statusId, "Converting " + files.length + " image(s)…");
+  try {
+    const doc = new JsPDF();
+    for (let i = 0; i < files.length; i++) {
+      const dataUrl = await new Promise((resolve, reject) => {
+        const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = reject; r.readAsDataURL(files[i]);
+      });
+      const img = new Image();
+      await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = dataUrl; });
+      if (i > 0) doc.addPage();
+      const pageW = doc.internal.pageSize.getWidth();
+      const pageH = doc.internal.pageSize.getHeight();
+      const ratio = Math.min((pageW - 20) / img.width, (pageH - 20) / img.height);
+      const w = img.width * ratio, h = img.height * ratio;
+      // Re-encode through a canvas as PNG: jsPDF cannot reliably add WebP
+      // (or some PNG variants) directly, which previously failed silently
+      // for WebP uploads even though WebP is listed as accepted.
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width; canvas.height = img.height;
+      canvas.getContext("2d").drawImage(img, 0, 0);
+      doc.addImage(canvas.toDataURL("image/png"), "PNG", (pageW - w) / 2, (pageH - h) / 2, w, h);
+    }
+    doc.save(outName);
+    setStatus(statusId, "Done. PDF downloaded.");
+  } catch (e) { if (!setPdfError(statusId, e)) setError(statusId, "Could not convert these images. Please try JPG or PNG files and try again."); }
+}
+
 async function loadPdfLibDoc(file, statusId) {
   if (!needLibrary(!!window.PDFLib, "pdf-lib", statusId)) return null;
   const bytes = await readAsArrayBuffer(file);
@@ -910,6 +950,117 @@ async function ocrPdfPages(file, lang, statusId, onProgress) {
     if (onProgress) onProgress(i / pdf.numPages);
   }
   return out.join("\n");
+}
+
+async function renderPdfPagesToImages(file, format, statusId, outputEl) {
+  const ext = String(format).toLowerCase() === "jpg" ? "jpg" : "png";
+  const mime = ext === "jpg" ? "image/jpeg" : "image/png";
+  const label = ext.toUpperCase();
+  if (!(await ensurePdfJs(statusId))) return;
+  try {
+    const bytes = await readAsArrayBuffer(file);
+    const pdf = await window.pdfjsLib.getDocument({ data: bytes }).promise;
+    outputEl.innerHTML = "";
+    const blobs = [];
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 1.5 });
+      const canvas = document.createElement("canvas");
+      canvas.width = viewport.width; canvas.height = viewport.height;
+      await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+      const blob = await new Promise((res) => canvas.toBlob(res, mime));
+      if (!blob) continue;
+      blobs.push({ name: "ak-premium-page-" + i + "." + ext, blob });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = "ak-premium-page-" + i + "." + ext; a.textContent = "Download page " + i + " " + label;
+      outputEl.appendChild(a); outputEl.appendChild(document.createElement("br"));
+    }
+    if (window.JSZip && blobs.length) {
+      const zip = new window.JSZip();
+      blobs.forEach((b) => zip.file(b.name, b.blob));
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      downloadBlob(zipBlob, "ak-premium-pages.zip");
+      setStatus(statusId, "Done. " + label + " links are above; ZIP download also started.");
+    } else {
+      setStatus(statusId, "Done. " + label + " links are above. ZIP needs JSZip, which did not load.");
+    }
+  } catch (e) { if (!setPdfError(statusId, e)) setError(statusId, "Could not render this PDF to images. Please check the file."); }
+}
+
+/* ---------- Converters ---------- */
+
+function textToPdf(raw, statusId, outName) {
+  const JsPDF = getJsPdf();
+  if (!needLibrary(!!JsPDF, "jsPDF", statusId)) return;
+  const clean = raw.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  const doc = new JsPDF();
+  doc.setFontSize(12);
+  addWrappedTextPaginated(doc, clean);
+  doc.save(outName);
+  setStatus(statusId, "Done. PDF downloaded.");
+}
+
+/* Convert one pdf.js image object (from page.objs) to a PNG blob.
+   Handles the three pdf.js image kinds and ImageBitmap objects.
+   Returns null when the image format cannot be handled. Takes no
+   element ids, so it splits to core.js. */
+
+/* ---------- Wave 1: PDF matrix (batch 1) ---------- */
+
+async function pdfImageToBlob(img) {
+  if (!img || !img.width || !img.height) return null;
+  const w = img.width, h = img.height;
+  const canvas = document.createElement("canvas");
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+  if (img.bitmap) {
+    ctx.drawImage(img.bitmap, 0, 0);
+  } else if (img.kind === 3 && img.data) { /* RGBA_32BPP: 4 bytes per pixel */
+    const buf = new Uint8ClampedArray(img.data.buffer, img.data.byteOffset, w * h * 4);
+    ctx.putImageData(new ImageData(buf, w, h), 0, 0);
+  } else if (img.kind === 2 && img.data) { /* RGB_24BPP: 3 bytes per pixel */
+    const rgba = new Uint8ClampedArray(w * h * 4);
+    for (let i = 0; i < w * h; i++) {
+      rgba[i * 4] = img.data[i * 3];
+      rgba[i * 4 + 1] = img.data[i * 3 + 1];
+      rgba[i * 4 + 2] = img.data[i * 3 + 2];
+      rgba[i * 4 + 3] = 255;
+    }
+    ctx.putImageData(new ImageData(rgba, w, h), 0, 0);
+  } else if (img.kind === 1 && img.data) { /* GRAYSCALE_1BPP: 1 bit per pixel, bit 1 is white */
+    const rgba = new Uint8ClampedArray(w * h * 4);
+    for (let i = 0; i < w * h; i++) {
+      const byte = img.data[i >> 3];
+      const bit = (byte >> (7 - (i & 7))) & 1;
+      const v = bit ? 255 : 0;
+      rgba[i * 4] = v; rgba[i * 4 + 1] = v; rgba[i * 4 + 2] = v; rgba[i * 4 + 3] = 255;
+    }
+    ctx.putImageData(new ImageData(rgba, w, h), 0, 0);
+  } else {
+    return null;
+  }
+  return new Promise((res) => canvas.toBlob(res, "image/png"));
+}
+
+/* Fetch one embedded image object from a page, with a timeout so a
+   missing object cannot hang the extraction. */
+
+function getPdfImageObj(page, name) {
+  return new Promise((resolve) => {
+    let done = false;
+    const timer = setTimeout(() => { if (!done) { done = true; resolve(null); } }, 10000);
+    try {
+      page.objs.get(name, (img) => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        resolve(img || null);
+      });
+    } catch (e) {
+      if (!done) { done = true; clearTimeout(timer); resolve(null); }
+    }
+  });
 }
 
 let excelModule = "generator";

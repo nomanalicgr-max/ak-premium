@@ -13,3 +13,8 @@ if (pdfTextBtn) pdfTextBtn.addEventListener("click", async () => {
     setStatus("pdfTextStatus", "Done. Text file downloaded.");
   } catch (e) { if (!setPdfError("pdfTextStatus", e)) setError("pdfTextStatus", "Could not extract text from this PDF. Scanned-image PDFs without a text layer cannot be read this way."); }
 });
+
+/* Shared engine: render PDF pages to images (one image per page, at
+   1.5x scale, with a per-page link and one ZIP file). Used by PDF to
+   Images and by the PDF to JPG and PDF to PNG landing pages. Takes no
+   element ids, so it splits to core.js. */
