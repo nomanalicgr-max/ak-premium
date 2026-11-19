@@ -1513,6 +1513,166 @@
    "iconClass": "",
    "badges": [],
    "format": ""
+  },
+  {
+   "slug": "character-counter",
+   "title": "Character Counter",
+   "short": "Count characters, words and reading time.",
+   "category": "text",
+   "keywords": [
+    "character counter",
+    "count characters",
+    "character count online",
+    "how many characters"
+   ],
+   "icon": "i-type",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "lorem-ipsum-generator",
+   "title": "Lorem Ipsum Generator",
+   "short": "Placeholder text for designs and layouts.",
+   "category": "text",
+   "keywords": [
+    "lorem ipsum generator",
+    "placeholder text",
+    "dummy text generator",
+    "lorem ipsum"
+   ],
+   "icon": "i-text-quote",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "remove-duplicate-lines",
+   "title": "Remove Duplicate Lines",
+   "short": "Clean a list by dropping repeated lines.",
+   "category": "text",
+   "keywords": [
+    "remove duplicate lines",
+    "deduplicate lines",
+    "remove duplicates",
+    "clean list"
+   ],
+   "icon": "i-diff",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "sort-lines",
+   "title": "Sort Lines",
+   "short": "Sort lines A to Z, by number or length.",
+   "category": "text",
+   "keywords": [
+    "sort lines",
+    "sort lines alphabetically",
+    "sort text lines",
+    "alphabetical sort"
+   ],
+   "icon": "i-list-ordered",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "text-to-speech",
+   "title": "Text to Speech",
+   "short": "Hear your text read aloud in the browser.",
+   "category": "text",
+   "keywords": [
+    "text to speech",
+    "read text aloud",
+    "tts online",
+    "text to speech free"
+   ],
+   "icon": "i-languages",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "markdown-previewer",
+   "title": "Markdown Previewer",
+   "short": "See Markdown formatted as you type.",
+   "category": "text",
+   "keywords": [
+    "markdown previewer",
+    "markdown preview online",
+    "markdown to html",
+    "markdown viewer"
+   ],
+   "icon": "i-file-code",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "fancy-text-generator",
+   "title": "Fancy Text Generator",
+   "short": "Styled Unicode text for names and posts.",
+   "category": "text",
+   "keywords": [
+    "fancy text generator",
+    "stylish text",
+    "unicode text generator",
+    "fancy fonts"
+   ],
+   "icon": "i-case-sensitive",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "find-and-replace",
+   "title": "Find and Replace",
+   "short": "Replace every match in your text at once.",
+   "category": "text",
+   "keywords": [
+    "find and replace",
+    "replace text online",
+    "replace all",
+    "find replace tool"
+   ],
+   "icon": "i-replace",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "readability-checker",
+   "title": "Readability Checker",
+   "short": "Flesch score and grade for your text.",
+   "category": "text",
+   "keywords": [
+    "readability checker",
+    "flesch reading ease",
+    "readability score",
+    "check readability"
+   ],
+   "icon": "i-file-text",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
+  },
+  {
+   "slug": "word-frequency",
+   "title": "Word Frequency Counter",
+   "short": "See which words you use most.",
+   "category": "text",
+   "keywords": [
+    "word frequency counter",
+    "word frequency",
+    "most used words",
+    "word count frequency"
+   ],
+   "icon": "i-chart-column",
+   "iconClass": "",
+   "badges": [],
+   "format": ""
   }
  ]
 }
