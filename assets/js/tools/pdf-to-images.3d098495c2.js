@@ -1,0 +1,11 @@
+/* AK Premium v12 — pdf-to-images (split from app.js). Loads after core.js, only on its own tool page. */
+
+/* ---------- New PDF tools: Remove Pages + Add Watermark ---------- */
+
+const pdfImagesBtn = $("pdfImagesBtn");
+if (pdfImagesBtn) pdfImagesBtn.addEventListener("click", async () => {
+  const file = ($("pdfImagesInput").files || [])[0];
+  if (!file) { setError("pdfImagesStatus", "Please select a PDF file first."); return; }
+  if (!checkFileSize(file, "pdfImagesStatus")) return;
+  renderPdfPagesToImages(file, "png", "pdfImagesStatus", $("pdfImagesOutput"));
+});
