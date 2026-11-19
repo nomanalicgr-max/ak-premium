@@ -1,5 +1,20 @@
 # AK Premium — Changelog
 
+## v14 — 19 November 2026 (Wave 1 batch 2: 9 image tools, 78 → 87 tools)
+
+### New tools (expansion brief §8.1, §14.3)
+- Nine image tools, all canvas-based in the browser with one shared engine (convertImageFile in core.js): PNG to JPG, JPG to PNG, WebP to JPG, WebP to PNG, JPG to WebP (0.92 quality, friendly error if the browser cannot encode WebP), SVG to PNG (chosen width, default 1024 px, viewBox fallback), Image Cropper (drag a rectangle on the preview plus X/Y/Width/Height boxes, PNG output), Rotate & Flip Image (Rotate Left/Right in 90-degree steps, Flip Horizontal/Vertical, live preview, PNG/JPEG output), Passport Photo Maker (centre-crops to exact passport sizes by country: PK/UK/EU/AE 35×45 mm, IN/US 2×2 in, CA 50×70 mm, JPG output).
+- Every new tool has unique content per the Quality Gate: a specific 80–120-word intro, 4–6 steps naming the real controls, 2–3 tips, honest limits, a concrete example, and 4 tool-specific FAQs (348 FAQ questions across the site now, all unique).
+- Honest limits are stated on each new tool: converters handle one image at a time at original size; JPG output flattens transparency to white; SVG to PNG cannot draw SVGs linking external images or fonts; the cropper output is always PNG; Rotate/Flip JPEG output flattens transparency; Passport Photo Maker only sets size and shape and cannot guarantee a form will accept the photo, and some visas use a different size.
+- HEIC to JPG is NOT built in this batch: no MIT/Apache/BSD HEIC decoder exists — every in-browser HEIC decoder goes through libheif (LGPL-3.0) plus libde265 (LGPL-3.0), and HEVC is patent-encumbered. No fake converter was shipped and no registry entry or page exists for it. It needs a licence decision before it can be built.
+
+### Homepage (design brief §2.3)
+- The homepage category-section cap is now enforced by the generator for every category, not just PDF: each section shows at most 8 cards with a "See all N tools →" link using the full count. With 13 image tools the image section had 13 cards; it now shows 8 with "See all 13 tools →". Hubs and the /tools index still list all tools.
+
+### JavaScript split and testing
+- Per-tool JS split extended: core.js + one tools/<slug>.js per tool (87 files). The split is verified lossless (3,980 code lines, 0 missing/extra). The shared canvas engine lives in core.js.
+- Harness run-v14.js: 252 checks, all passing, including the known-answer tax (200,000/month TY2027 → 156,000), Zakat (→ 25,000) and EMI (→ 22,244.45) checks, and a Node canvas round-trip (real pixels: PNG→JPG valid JPEG, JPG→PNG valid PNG, transparency flattens to white, rotate 90° swaps dimensions, flip mirrors, crop and passport sizes exact). Sitemap is 115 URLs (was 106). ASSET_V is now "14" (config.js?v=14) and the service-worker cache is "ak-premium-v14".
+
 ## v13 — 19 November 2026 (Wave 1 batch 1: 10 PDF tools, 68 → 78 tools)
 
 ### New tools (expansion brief §8.1, §14.3)
