@@ -77,7 +77,17 @@ const NEXT_STEPS = {
   "tool-svgtopng": [["Image Converter", "/tools/image-converter"], ["PNG to JPG", "/tools/png-to-jpg"], ["Image Resizer", "/tools/image-resizer"]],
   "tool-imgcrop": [["Image Resizer", "/tools/image-resizer"], ["Rotate and Flip Image", "/tools/rotate-flip-image"], ["Image Converter", "/tools/image-converter"]],
   "tool-imgrotateflip": [["Image Cropper", "/tools/image-cropper"], ["Image Resizer", "/tools/image-resizer"], ["Passport Photo Maker", "/tools/passport-photo-maker"]],
-  "tool-passport": [["Image Cropper", "/tools/image-cropper"], ["Image Resizer", "/tools/image-resizer"], ["Rotate and Flip Image", "/tools/rotate-flip-image"]]
+  "tool-passport": [["Image Cropper", "/tools/image-cropper"], ["Image Resizer", "/tools/image-resizer"], ["Rotate and Flip Image", "/tools/rotate-flip-image"]],
+  "tool-charcount": [["Word Counter", "/tools/word-counter"], ["Readability Checker", "/tools/readability-checker"], ["Word Frequency Counter", "/tools/word-frequency"]],
+  "tool-lorem": [["Fancy Text Generator", "/tools/fancy-text-generator"], ["Markdown Previewer", "/tools/markdown-previewer"], ["Word Counter", "/tools/word-counter"]],
+  "tool-dedupe": [["Sort Lines", "/tools/sort-lines"], ["Find and Replace", "/tools/find-and-replace"], ["Text Diff Checker", "/tools/text-diff-checker"]],
+  "tool-sortlines": [["Remove Duplicate Lines", "/tools/remove-duplicate-lines"], ["Find and Replace", "/tools/find-and-replace"], ["Text Diff Checker", "/tools/text-diff-checker"]],
+  "tool-tts": [["Readability Checker", "/tools/readability-checker"], ["Word Counter", "/tools/word-counter"], ["Translate Helper", "/tools/translate-helper"]],
+  "tool-markdown": [["Text Diff Checker", "/tools/text-diff-checker"], ["Word Counter", "/tools/word-counter"], ["Case Converter", "/tools/case-converter"]],
+  "tool-fancy": [["Case Converter", "/tools/case-converter"], ["Word Counter", "/tools/word-counter"], ["QR Code Generator", "/tools/qr-code-generator"]],
+  "tool-findreplace": [["Remove Duplicate Lines", "/tools/remove-duplicate-lines"], ["Sort Lines", "/tools/sort-lines"], ["Text Diff Checker", "/tools/text-diff-checker"]],
+  "tool-readability": [["Word Counter", "/tools/word-counter"], ["Word Frequency Counter", "/tools/word-frequency"], ["Character Counter", "/tools/character-counter"]],
+  "tool-wordfreq": [["Word Counter", "/tools/word-counter"], ["Readability Checker", "/tools/readability-checker"], ["Character Counter", "/tools/character-counter"]]
 };
 function showSuccess(ws, filename, url) {
   if (!ws) return;
@@ -1413,6 +1423,269 @@ function fractionCalc(n1, d1, op, n2, d2) {
   return { num, den, decimal: Math.round(num / den * 10000) / 10000 };
 }
 
+// Lorem ipsum sentence pool (classic placeholder text, public domain).
+const LOREM_SENTENCES = [
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "Curabitur pretium tincidunt lacus nulla gravida orci a odio.",
+  "Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.",
+  "Integer in mauris eu nibh euismod gravida.",
+  "Duis ac tellus et risus vulputate vehicula.",
+  "Donec lobortis risus a elit efficitur, at feugiat nibh tincidunt.",
+  "Phasellus auctor, lorem et aliquet facilisis, justo sapien cursus mi, vitae facilisis sapien magna in metus.",
+  "Vivamus luctus eros aliquet convallis ultricies.",
+  "Mauris augue massa, ultrices non ligula nec, egestas finibus erat.",
+  "Sed porttitor lectus nibh, at sagittis libero tincidunt at.",
+  "Nulla porttitor accumsan tincidunt.",
+  "Quisque velit nisi, pretium ut lacinia in, elementum id enim.",
+  "Donec sollicitudin molestie malesuada.",
+  "Proin eget tortor risus.",
+  "Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.",
+  "Pellentesque in ipsum id orci porta dapibus."
+];
+// Common English words ignored by the word-frequency tool when asked.
+const STOPWORDS = new Set("the a an and or but of to in on for with is are was were be been it its this that these those i you he she we they at by from as not no so if then than too very can will would should could have has had do does did my your his her our their am".split(" "));
+// Small capital letters (Unicode has no small capital for x, so x stays x).
+const SMALL_CAPS = { a: "ᴀ", b: "ʙ", c: "ᴄ", d: "ᴅ", e: "ᴇ", f: "ꜰ", g: "ɢ", h: "ʜ", i: "ɪ", j: "ᴊ", k: "ᴋ", l: "ʟ", m: "ᴍ", n: "ɴ", o: "ᴏ", p: "ᴘ", q: "ꞯ", r: "ʀ", s: "ꜱ", t: "ᴛ", u: "ᴜ", v: "ᴠ", w: "ᴡ", x: "x", y: "ʏ", z: "ᴢ" };
+// Build a Unicode letter map from contiguous mathematical alphanumeric
+// blocks; exceptions override the slots that hold other characters
+// (italic h is U+210E, script B/E/F/H/I/L/M/R, double-struck C/H/N/P/Q/R/Z).
+
+/* ---------- Wave 1: Text & writing tools (batch 4) ---------- */
+
+function buildFancyMap(capBase, smallBase, digitBase, capEx, smallEx) {
+  const m = {};
+  for (let i = 0; i < 26; i++) {
+    m[String.fromCharCode(65 + i)] = String.fromCodePoint(capBase + i);
+    m[String.fromCharCode(97 + i)] = String.fromCodePoint(smallBase + i);
+  }
+  if (digitBase) for (let i = 0; i < 10; i++) m[String(i)] = String.fromCodePoint(digitBase + i);
+  if (capEx) for (const k in capEx) m[k] = capEx[k];
+  if (smallEx) for (const k in smallEx) m[k] = smallEx[k];
+  return m;
+}
+const FANCY_MAPS = {
+  bold: buildFancyMap(0x1D400, 0x1D41A, 0x1D7CE),
+  italic: buildFancyMap(0x1D434, 0x1D44E, null, null, { h: "ℎ" }),
+  boldItalic: buildFancyMap(0x1D468, 0x1D482, null),
+  monospace: buildFancyMap(0x1D670, 0x1D68A, 0x1D7F6),
+  script: buildFancyMap(0x1D49C, 0x1D4B6, null, { B: "ℬ", E: "ℰ", F: "ℱ", H: "ℋ", I: "ℐ", L: "ℒ", M: "ℳ", R: "ℛ" }, { e: "ℯ", g: "ℊ" }),
+  doubleStruck: buildFancyMap(0x1D538, 0x1D552, null, { C: "ℂ", H: "ℍ", N: "ℕ", P: "ℙ", Q: "ℚ", R: "ℝ", Z: "ℤ" }),
+  circled: buildFancyMap(0x24B6, 0x24D0, null),
+  smallCaps: Object.assign({}, SMALL_CAPS, Object.fromEntries(Object.keys(SMALL_CAPS).map((k) => [k.toUpperCase(), SMALL_CAPS[k]])))
+};
+// Circled digits: 1-9 are U+2460-U+2468, 0 is U+24EA.
+for (let d = 1; d <= 9; d++) FANCY_MAPS.circled[String(d)] = String.fromCodePoint(0x245F + d);
+FANCY_MAPS.circled["0"] = "⓪";
+
+function loremIpsum(unit, count) {
+  count = Math.max(1, Math.min(20, parseInt(count, 10) || 1));
+  if (unit === "sentences") {
+    const out = [];
+    for (let i = 0; i < count; i++) out.push(LOREM_SENTENCES[i % LOREM_SENTENCES.length]);
+    return { text: out.join(" ") };
+  }
+  if (unit === "words") {
+    const words = LOREM_SENTENCES.join(" ").split(/\s+/);
+    const out = [];
+    for (let i = 0; i < count; i++) out.push(words[i % words.length]);
+    return { text: out.join(" ") };
+  }
+  const paras = [];
+  for (let p = 0; p < count; p++) {
+    const s = [];
+    for (let i = 0; i < 5; i++) s.push(LOREM_SENTENCES[(p * 5 + i) % LOREM_SENTENCES.length]);
+    paras.push(s.join(" "));
+  }
+  return { text: paras.join("\n\n") };
+}
+
+function dedupeLines(text, caseSensitive) {
+  const lines = String(text || "").split("\n");
+  const seen = new Set();
+  const kept = [];
+  let removed = 0;
+  for (const line of lines) {
+    const t = line.trim();
+    if (!t) continue;
+    const key = caseSensitive ? t : t.toLowerCase();
+    if (seen.has(key)) { removed++; continue; }
+    seen.add(key);
+    kept.push(t);
+  }
+  return { lines: kept, removed };
+}
+
+function sortLinesFn(text, order, ignoreEmpty) {
+  const lines = String(text || "").split("\n").map((s) => s.trim());
+  const kept = ignoreEmpty ? lines.filter(Boolean) : lines;
+  const sorted = kept.slice();
+  if (order === "za") sorted.sort((a, b) => b.localeCompare(a));
+  else if (order === "num") sorted.sort((a, b) => {
+    const na = parseFloat(a), nb = parseFloat(b);
+    if (isNaN(na) && isNaN(nb)) return a.localeCompare(b);
+    if (isNaN(na)) return 1;
+    if (isNaN(nb)) return -1;
+    return na - nb;
+  });
+  else if (order === "len-desc") sorted.sort((a, b) => b.length - a.length);
+  else if (order === "len-asc") sorted.sort((a, b) => a.length - b.length);
+  else sorted.sort((a, b) => a.localeCompare(b));
+  return { lines: sorted };
+}
+
+function findReplace(text, find, replace, matchCase) {
+  if (!find) return { error: "Please enter the text to find." };
+  const src = String(text || "");
+  const rep = replace === undefined || replace === null ? "" : String(replace);
+  let count = 0;
+  let result = "";
+  if (matchCase) {
+    count = src.split(find).length - 1;
+    result = src.split(find).join(rep);
+  } else {
+    const low = src.toLowerCase(), fl = find.toLowerCase();
+    let i = 0, at;
+    while ((at = low.indexOf(fl, i)) !== -1) { count++; result += src.slice(i, at) + rep; i = at + fl.length; }
+    result += src.slice(i);
+  }
+  return { result, count };
+}
+// Syllables by vowel-group rule (not a dictionary): count vowel groups,
+// take one away for a silent e, add one back for a sounded -le, min 1.
+
+function countSyllables(word) {
+  const w = String(word || "").toLowerCase().replace(/[^a-z]/g, "");
+  if (!w) return 0;
+  if (w.length <= 3) return 1;
+  let n = (w.match(/[aeiouy]+/g) || []).length;
+  if (w.endsWith("e")) n -= 1;
+  if (w.endsWith("le") && w.length > 2 && !/[aeiouy]/.test(w.charAt(w.length - 3))) n += 1;
+  return Math.max(1, n);
+}
+
+function readabilityScore(text) {
+  const s = String(text || "").trim();
+  if (!s) return { error: "Please enter some text to check." };
+  const words = s.split(/\s+/).filter(Boolean);
+  const sentences = (s.match(/[^.!?]+[.!?]+/g) || [s]).length;
+  let syllables = 0;
+  for (const w of words) syllables += countSyllables(w);
+  const wps = words.length / sentences;
+  const spw = syllables / words.length;
+  const ease = 206.835 - 1.015 * wps - 84.6 * spw;
+  const grade = 0.39 * wps + 11.8 * spw - 15.59;
+  let level = "Very difficult";
+  if (ease >= 90) level = "Very easy";
+  else if (ease >= 80) level = "Easy";
+  else if (ease >= 70) level = "Fairly easy";
+  else if (ease >= 60) level = "Standard";
+  else if (ease >= 50) level = "Fairly difficult";
+  else if (ease >= 30) level = "Difficult";
+  return { words: words.length, sentences, syllables, ease: Math.round(ease * 10) / 10, grade: Math.round(grade * 10) / 10, level };
+}
+
+function wordFrequency(text, ignoreStopwords, topN) {
+  const words = String(text || "").toLowerCase().match(/[a-z']+/g) || [];
+  const counts = {};
+  for (const w of words) {
+    const clean = w.replace(/^'+|'+$/g, "");
+    if (!clean) continue;
+    if (ignoreStopwords && STOPWORDS.has(clean)) continue;
+    counts[clean] = (counts[clean] || 0) + 1;
+  }
+  const rows = Object.keys(counts).map((w) => [w, counts[w]]);
+  rows.sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
+  const n = topN === "all" ? rows.length : (parseInt(topN, 10) || 10);
+  return { rows: rows.slice(0, n), total: rows.length };
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function mdInline(s) {
+  let out = s;
+  out = out.replace(/`([^`\n]+)`/g, "<code>$1</code>");
+  out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+  out = out.replace(/__([^_]+)__/g, "<strong>$1</strong>");
+  out = out.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+  out = out.replace(/_([^_]+)_/g, "<em>$1</em>");
+  out = out.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+|\/[^)\s]*)\)/g, "<a href=\"$2\" target=\"_blank\" rel=\"noopener\">$1</a>");
+  return out;
+}
+// Safe Markdown subset: HTML is escaped first, so pasted tags show as text,
+// never run. Supports headings, bold, italic, code, lists, links, quotes,
+// rules and code blocks. No tables, footnotes or raw HTML.
+
+function renderMarkdown(text) {
+  const lines = String(text || "").replace(/\r\n?/g, "\n").split("\n");
+  const blocks = [];
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (!line.trim()) { i++; continue; }
+    let m;
+    if ((m = line.match(/^(#{1,3})\s+(.*)$/))) {
+      blocks.push("<h" + m[1].length + ">" + mdInline(escapeHtml(m[2])) + "</h" + m[1].length + ">");
+      i++;
+    } else if (/^```/.test(line)) {
+      const buf = [];
+      i++;
+      while (i < lines.length && !/^```/.test(lines[i])) { buf.push(lines[i]); i++; }
+      i++;
+      blocks.push("<pre><code>" + escapeHtml(buf.join("\n")) + "</code></pre>");
+    } else if (/^---+$/.test(line.trim())) {
+      blocks.push("<hr>");
+      i++;
+    } else if (/^>\s?/.test(line)) {
+      const buf = [];
+      while (i < lines.length && /^>\s?/.test(lines[i])) { buf.push(lines[i].replace(/^>\s?/, "")); i++; }
+      blocks.push("<blockquote>" + mdInline(escapeHtml(buf.join(" "))) + "</blockquote>");
+    } else if (/^[-*]\s+/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^[-*]\s+/.test(lines[i])) { items.push("<li>" + mdInline(escapeHtml(lines[i].replace(/^[-*]\s+/, ""))) + "</li>"); i++; }
+      blocks.push("<ul>" + items.join("") + "</ul>");
+    } else if (/^\d+\.\s+/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^\d+\.\s+/.test(lines[i])) { items.push("<li>" + mdInline(escapeHtml(lines[i].replace(/^\d+\.\s+/, ""))) + "</li>"); i++; }
+      blocks.push("<ol>" + items.join("") + "</ol>");
+    } else {
+      const buf = [line];
+      i++;
+      while (i < lines.length && lines[i].trim() && !/^(#{1,3}\s|```|---+\s*$|>\s?|[-*]\s+|\d+\.\s+)/.test(lines[i])) { buf.push(lines[i]); i++; }
+      blocks.push("<p>" + mdInline(escapeHtml(buf.join(" "))) + "</p>");
+    }
+  }
+  return blocks.join("\n");
+}
+
+function fancyStyles(text) {
+  const s = String(text || "");
+  const out = {};
+  for (const name in FANCY_MAPS) {
+    const map = FANCY_MAPS[name];
+    out[name] = [...s].map((ch) => map[ch] || ch).join("");
+  }
+  return out;
+}
+// Labelled style rows for the page script (which cannot read the core
+// const tables directly when scripts are eval'd separately).
+
+function fancyRows(text) {
+  const styles = fancyStyles(text);
+  return [["Bold", styles.bold], ["Italic", styles.italic], ["Bold Italic", styles.boldItalic], ["Monospace", styles.monospace], ["Script", styles.script], ["Double-struck", styles.doubleStruck], ["Circled", styles.circled], ["Small Caps", styles.smallCaps]];
+}
+// The voices on this device, for the page script (same eval reason as above).
+
+function ttsVoiceList() {
+  if (!("speechSynthesis" in window) || !window.speechSynthesis) return [];
+  return window.speechSynthesis.getVoices() || [];
+}
+
 let excelModule = "generator";
 const excelTabBtns = document.querySelectorAll(".excel-tab-btn");
 const excelHints = {
@@ -2123,7 +2396,12 @@ const LIVE_CALCS = [
   { btn: "tzBtn", inputs: ["tzDate", "tzTime"], selects: ["tzFrom", "tzTo"] },
   { btn: "ddBtn", inputs: ["ddFrom", "ddTo"] },
   { btn: "tdeeBtn", inputs: ["tdeeAge", "tdeeHeight", "tdeeWeight"], selects: ["tdeeSex", "tdeeActivity"] },
-  { btn: "frBtn", inputs: ["frNum1", "frDen1", "frNum2", "frDen2"], selects: ["frOp"] }
+  { btn: "frBtn", inputs: ["frNum1", "frDen1", "frNum2", "frDen2"], selects: ["frOp"] },
+  { btn: "loremBtn", inputs: [], selects: ["loremUnit", "loremCount"] },
+  { btn: "dedupeBtn", inputs: ["dedupeInput"] },
+  { btn: "sortBtn", inputs: ["sortInput"], selects: ["sortOrder"] },
+  { btn: "readBtn", inputs: ["readInput"] },
+  { btn: "wfBtn", inputs: ["wfInput"], selects: ["wfTop"] }
 ];
 LIVE_CALCS.forEach((c) => {
   const btn = $(c.btn); if (!btn) return;

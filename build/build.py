@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "15"  # v15 (2026-11-19): Wave 1 batch 3 — 10 calculators & converters (unit, discount, compound interest, mortgage, tip, time zone, date difference, calorie/TDEE, scientific, fraction). Content hashes replace ?v= for CSS/JS; config.js still uses ?v=.
+ASSET_V = "16"  # v16 (2026-11-19): Wave 1 batch 4 — 10 text & writing tools (character counter, lorem ipsum, remove duplicate lines, sort lines, text to speech, markdown previewer, fancy text, find and replace, readability, word frequency) + new Text Tools hub. Content hashes replace ?v= for CSS/JS; config.js still uses ?v=.
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -101,6 +101,7 @@ CAT_APP = {
     "pdf": "UtilitiesApplication", "convert": "UtilitiesApplication",
     "image": "UtilitiesApplication", "excel": "BusinessApplication",
     "calculators": "BusinessApplication", "pakistan": "UtilitiesApplication",
+    "text": "UtilitiesApplication",
     "everyday": "UtilitiesApplication", "developer": "UtilitiesApplication",
     "business": "BusinessApplication", "design": "UtilitiesApplication",
 }
@@ -115,7 +116,7 @@ assert len({e["slug"] for e in REGISTRY}) == len(REGISTRY), "duplicate slugs in 
 OLD = {e["slug"]: {"description": e["meta_description"]} for e in REGISTRY if "meta_description" in e}
 
 CAT_LABELS = {
-    "pdf": "PDF Tools", "convert": "Convert", "excel": "Excel Tools",
+    "pdf": "PDF Tools", "convert": "Convert", "text": "Text Tools", "excel": "Excel Tools",
     "image": "Image Tools", "everyday": "Everyday Tools", "developer": "Developer Tools",
     "calculators": "Calculators", "business": "Business Tools", "design": "Design Tools",
     "pakistan": "Pakistan Tools",
@@ -136,8 +137,8 @@ STRINGS = json.loads((BUILD / "locales" / "en.json").read_text())
 # Homepage section order (design brief 2.3, max 8 cards per section): every
 # category gets its own section. The old "More tools" group (12 cards) was
 # split into Everyday, Developer, Business and Design (v12).
-CAT_ORDER = ["pdf", "convert", "image", "excel", "calculators", "everyday", "developer", "business", "design"]
-CAT_ORDER_ALL = ["pdf", "convert", "excel", "image", "everyday", "developer", "calculators", "business", "design", "pakistan"]  # /tools index order
+CAT_ORDER = ["pdf", "convert", "text", "image", "excel", "calculators", "everyday", "developer", "business", "design"]
+CAT_ORDER_ALL = ["pdf", "convert", "text", "excel", "image", "everyday", "developer", "calculators", "business", "design", "pakistan"]  # /tools index order
 
 # SVG sprite: Lucide icons (ISC license, https://lucide.dev) + sun/moon for
 # the theme toggle. One symbol per tool, referenced as <use href="#i-<name>">.
@@ -824,6 +825,7 @@ MEGA_TOP = {
     "pdf": ["merge-pdf", "compress-pdf", "split-pdf"],
     "image": ["image-compressor", "image-resizer", "image-converter"],
     "convert": ["pdf-to-word", "pdf-to-excel", "word-to-pdf"],
+    "text": ["word-frequency", "markdown-previewer", "character-counter"],
     "calculators": ["percentage-calculator", "loan-emi-calculator", "age-calculator"],
     "developer": ["json-formatter", "base64", "text-diff-checker"],
     "excel": ["formula-generator", "vba-macro-writer", "regex-creator"],
@@ -831,7 +833,7 @@ MEGA_TOP = {
     "everyday": ["qr-code-generator", "password-generator", "word-counter"],
     "design": ["color-palette"],
 }
-MEGA_CATS = ["pdf", "image", "convert", "calculators", "developer", "excel", "business", "everyday", "design"]
+MEGA_CATS = ["pdf", "image", "convert", "text", "calculators", "developer", "excel", "business", "everyday", "design"]
 
 def site_header(active="", lang_href="/ur/", lang_label="اردو", lang_lang="ur"):
     def cur(page):
@@ -1117,7 +1119,7 @@ def build_homepage():
     zakat = next(t for t in ALL_TOOLS if t["slug"] == "zakat-calculator")
     cards.append('<section class="tool-section cv" id="section-islamic" aria-label="Islamic tools"><h2>Islamic tools</h2><div class="tool-grid">' + card_html(zakat) + '</div><p class="section-sub">' + esc(STRINGS["islamic"]["note"]) + '</p></section>')
     home_faq = [
-        ("What is AK Premium?", "AK Premium is a free, browser-based toolkit with %d+ tools for PDF, image, Excel, everyday, developer, calculator, business, design and Pakistan tasks. Every tool runs in your browser, with no sign-up." % n),
+        ("What is AK Premium?", "AK Premium is a free, browser-based toolkit with %d+ tools for PDF, image, text, Excel, everyday, developer, calculator, business, design and Pakistan tasks. Every tool runs in your browser, with no sign-up." % n),
         ("Is AK Premium free?", "Yes. The built-in tools on AK Premium are free to use in your browser."),
         ("Do files leave my browser?", "No. Built-in AK Premium tools process files locally in your browser using client-side JavaScript. Files are not uploaded to an AK Premium server."),
         ("Can I preview a file before converting it?", "Yes. When you choose a PDF, the tool page shows its name, size and page count and renders page 1 as a preview under the file chooser before you convert, so you can confirm it is the right document. Images show a thumbnail. Previews are made in your browser and files are not uploaded."),
@@ -1146,7 +1148,7 @@ def build_homepage():
     + '<div class="chips" aria-label="Trending searches">'
     + "".join('<button type="button" class="chip" data-query="%s">%s</button>' % (esc(q), esc(q)) for q in ["Merge PDF", "Compress PDF", "PDF to Word", "Image Compressor", "Percentage Calculator", "Zakat Calculator"])
     + '</div>\n</section>\n'
-    + '<nav class="jump-bar" aria-label="Tool categories"><a href="#section-popular">Popular</a><a href="#section-pdf">PDF</a><a href="#section-convert">Convert</a><a href="#section-image">Image</a><a href="#section-excel">Excel</a><a href="#section-calculators">Calculators</a><a href="#section-everyday">Everyday</a><a href="#section-developer">Developer</a><a href="#section-business">Business</a><a href="#section-design">Design</a><a href="#section-country">Country tools</a><a href="#section-islamic">Islamic</a><a href="#section-faq">FAQ</a></nav>\n'
+    + '<nav class="jump-bar" aria-label="Tool categories"><a href="#section-popular">Popular</a><a href="#section-pdf">PDF</a><a href="#section-convert">Convert</a><a href="#section-text">Text</a><a href="#section-image">Image</a><a href="#section-excel">Excel</a><a href="#section-calculators">Calculators</a><a href="#section-everyday">Everyday</a><a href="#section-developer">Developer</a><a href="#section-business">Business</a><a href="#section-design">Design</a><a href="#section-country">Country tools</a><a href="#section-islamic">Islamic</a><a href="#section-faq">FAQ</a></nav>\n'
     + AD_SLOT % ("leaderboard", "leaderboard")
     + "\n".join(cards)
     + '\n<section class="tool-section" id="section-faq" aria-label="Frequently asked questions"><h2>Frequently Asked Questions</h2>'
@@ -1462,8 +1464,8 @@ def build_sw():
     precache = ["/", "/country/pakistan", "/tools", HASHED["styles"], HASHED["common"], HASHED["core"],
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
-    sw = '''/* AK Premium service worker (v15). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v15";
+    sw = '''/* AK Premium service worker (v16). Generated by build.py; do not hand-edit. */
+const CACHE = "ak-premium-v16";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

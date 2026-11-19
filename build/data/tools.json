@@ -6004,6 +6004,662 @@
         "unit-converter",
         "age-calculator"
       ]
+    },
+    {
+      "slug": "character-counter",
+      "workspace": "tool-charcount",
+      "title": {
+        "en": "Character Counter"
+      },
+      "short": {
+        "en": "Count characters, words and reading time."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-type",
+      "keywords": [
+        "character counter",
+        "count characters",
+        "character count online",
+        "how many characters"
+      ],
+      "libs": [],
+      "engine": "tool-charcount",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Count characters, words, sentences and reading time in your browser, live as you type.",
+      "steps": [
+        "Type or paste your text in the box.",
+        "Read the live counts below the box: Characters, Characters (no spaces), Words, Sentences, Paragraphs and Reading time.",
+        "Edit the text in the box and the counts update with every keystroke.",
+        "Use the Characters count when a form, post or message limits the length."
+      ],
+      "content": {
+        "use": "Character Counter counts the characters in your text as you type, so you can check a limit before you submit or post. A student checks that an essay title fits the limit. A job applicant checks that a cover letter fits the box on the form. A writer checks that a post fits the character limit of a social site. A shop owner checks that a product name fits the label. The counts update live with every keystroke, so there is nothing to press. Words, sentences, paragraphs and reading time are shown too, so the page works as a quick word counter as well. The text never leaves your browser.",
+        "tip": "Check the count before you submit a form, because a form may cut off extra characters without warning. If the count looks high, check for extra spaces or repeated paragraphs at the end of the text.",
+        "limit": "The tool counts what you type; it does not check spelling, grammar or meaning. Reading time is a rough guide at 200 words per minute and is rounded up to whole minutes. A line break counts as one character, and most emoji count as two.",
+        "example": "Pasting 'Hello world' shows Characters: 11, Characters (no spaces): 10, Words: 2 and Reading time: 1 min.",
+        "faq": [
+          [
+            "Does a line break count as a character?",
+            "Yes. A line break is one character, and a space is one character too. If you press Enter twice, the two line breaks count as two characters, so a long text with many blank lines counts higher than it looks."
+          ],
+          [
+            "Does it count emoji as one character?",
+            "No. Most emoji count as two characters, because the browser stores them as two code units. A simple smiley counts as two, and a flag or a family emoji can count as more, so a post with many emoji may reach the limit sooner."
+          ],
+          [
+            "Can I count characters for a post?",
+            "Yes. Paste the post text in the box and read the Characters count. Compare it with the limit of the site you post on, and trim the text until the count fits. The count updates as you type, so you can watch it while you edit."
+          ],
+          [
+            "Why does the count change when I paste?",
+            "Pasting adds the characters of the pasted text to the count, including spaces and line breaks. If the count jumps more than you expect, the pasted text may have extra spaces or blank lines at the end, which you can delete."
+          ]
+        ]
+      },
+      "related": [
+        "word-counter",
+        "readability-checker",
+        "word-frequency",
+        "case-converter"
+      ]
+    },
+    {
+      "slug": "lorem-ipsum-generator",
+      "workspace": "tool-lorem",
+      "title": {
+        "en": "Lorem Ipsum Generator"
+      },
+      "short": {
+        "en": "Placeholder text for designs and layouts."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-text-quote",
+      "keywords": [
+        "lorem ipsum generator",
+        "placeholder text",
+        "dummy text generator",
+        "lorem ipsum"
+      ],
+      "libs": [],
+      "engine": "tool-lorem",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Generate lorem ipsum placeholder text in paragraphs, sentences or words, free in your browser.",
+      "steps": [
+        "Choose Paragraphs, Sentences or Words in the 'Unit' list.",
+        "Choose how many you need in the 'Count' list.",
+        "Press Generate Lorem Ipsum.",
+        "Read the placeholder text in the box below the button.",
+        "Press Copy Text to copy it to the clipboard."
+      ],
+      "content": {
+        "use": "Lorem Ipsum Generator makes placeholder text for a design, so you can see how a page looks before the real words are ready. A designer fills a new website layout with paragraphs to check the spacing. A student makes a sample document to test a font. A developer fills a form with sentences to check that long text does not break the layout. You choose paragraphs, sentences or words, choose how many, and press the button to get the text. The words are the classic Latin filler text that designers have used for years, so readers focus on the layout, not the words. The text never leaves your browser.",
+        "tip": "Use paragraphs for a page layout and sentences for a single block of text. The first sentence is always the classic 'Lorem ipsum dolor sit amet', so readers will know at once that the text is a placeholder.",
+        "limit": "The text is placeholder Latin, not real English, so do not publish it as content. You can ask for 1 to 20 paragraphs, sentences or words at a time. The sentences come in the same order every time, so the output is the same for the same choices.",
+        "example": "Choosing Sentences and 2 gives 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'",
+        "faq": [
+          [
+            "What is lorem ipsum?",
+            "It is classic Latin placeholder text that designers have used for years to fill a layout. The words mean nothing in English, so readers focus on how the page looks instead of reading the words."
+          ],
+          [
+            "Can I use lorem ipsum in a real website?",
+            "No. It is only a placeholder for a design that is not finished yet. Replace it with real words before you publish, because visitors will not understand Latin filler text and may think the page is broken."
+          ],
+          [
+            "How many paragraphs should I use?",
+            "Use as many as the space needs. One paragraph fills a small block, three paragraphs fill a page section, and more than five is rare, because a real page would use real words by then."
+          ],
+          [
+            "Is the text the same every time?",
+            "Yes. The sentences come in the same order every time, so the same choices always give the same text. That makes it easy to compare two layouts, because only the layout changes, not the words."
+          ]
+        ]
+      },
+      "related": [
+        "fancy-text-generator",
+        "word-counter",
+        "markdown-previewer",
+        "case-converter"
+      ]
+    },
+    {
+      "slug": "remove-duplicate-lines",
+      "workspace": "tool-dedupe",
+      "title": {
+        "en": "Remove Duplicate Lines"
+      },
+      "short": {
+        "en": "Clean a list by dropping repeated lines."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-diff",
+      "keywords": [
+        "remove duplicate lines",
+        "deduplicate lines",
+        "remove duplicates",
+        "clean list"
+      ],
+      "libs": [],
+      "engine": "tool-dedupe",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Remove duplicate lines from a list, keeping the first copy of each line, free in your browser.",
+      "steps": [
+        "Paste your lines in the box, one line per row.",
+        "Tick 'Case sensitive' if Apple and apple should count as different lines.",
+        "Press Remove Duplicates.",
+        "Read the cleaned list below the button and the count of removed lines.",
+        "Press Copy Result to copy the cleaned list."
+      ],
+      "content": {
+        "use": "Remove Duplicate Lines cleans a list by keeping the first copy of each line and dropping the rest, so a messy list becomes a clean one. A teacher removes repeated names from a class list. A shop owner removes repeated items from a stock list. A student removes repeated lines from notes copied from two sources. A worker cleans an email list before sending. You paste the lines, choose whether case matters, and press the button. Empty lines are removed too, and the order of the lines stays the same. The tool shows how many lines were removed, so you can check the result. The text never leaves your browser.",
+        "tip": "Sort the list first if you want the kept lines in alphabetical order, because this tool keeps the order you pasted. Tick 'Case sensitive' only when Apple and apple really are different lines.",
+        "limit": "Lines are trimmed, so extra spaces at the start or end do not stop a match. Empty lines are removed, and only the first copy of each line is kept. The tool does not sort the lines; use Sort Lines if you want them in order.",
+        "example": "Pasting 'apple', 'banana', 'apple', 'cherry' and 'banana' on separate lines keeps apple, banana and cherry, and reports 2 duplicate lines removed.",
+        "faq": [
+          [
+            "Does it keep the first or the last copy?",
+            "The first copy. The first time a line appears it is kept, and every later copy of the same line is removed. The order of the kept lines is the order they first appeared in your list."
+          ],
+          [
+            "Are blank lines removed?",
+            "Yes. Empty lines are removed from the result, so the cleaned list has no blank rows. If you need a blank line between groups, add it back yourself after you copy the cleaned list."
+          ],
+          [
+            "Is it case sensitive?",
+            "Only if you tick the box. With the box unticked, Apple and apple count as the same line, and only the first one is kept. With the box ticked, they count as different lines, and both are kept."
+          ],
+          [
+            "What happens to the order of the lines?",
+            "Nothing. The kept lines stay in the order you pasted them, because the tool only removes copies, it does not sort. If you want them in alphabetical order, open Sort Lines next and sort the cleaned list."
+          ]
+        ]
+      },
+      "related": [
+        "sort-lines",
+        "word-counter",
+        "find-and-replace",
+        "text-diff-checker"
+      ]
+    },
+    {
+      "slug": "sort-lines",
+      "workspace": "tool-sortlines",
+      "title": {
+        "en": "Sort Lines"
+      },
+      "short": {
+        "en": "Sort lines A to Z, by number or length."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-list-ordered",
+      "keywords": [
+        "sort lines",
+        "sort lines alphabetically",
+        "sort text lines",
+        "alphabetical sort"
+      ],
+      "libs": [],
+      "engine": "tool-sortlines",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Sort lines of text A to Z, Z to A, by number or by length, free in your browser.",
+      "steps": [
+        "Paste your lines in the box, one line per row.",
+        "Choose the order in the 'Sort order' list, such as A to Z or Numbers, smallest first.",
+        "Tick 'Ignore empty lines' to leave blank lines out of the result.",
+        "Press Sort Lines.",
+        "Read the sorted list below the button, or press Copy Result to copy it."
+      ],
+      "content": {
+        "use": "Sort Lines puts a list in order, so you can find things fast instead of reading the whole list. A teacher sorts student names from A to Z. A shop owner sorts product codes by number. A worker sorts a list of tasks from shortest to longest. A student sorts notes by the length of each line. You paste the lines, choose the order, and press the button. A to Z and Z to A use the alphabet, Numbers puts the smallest number first, and the length orders sort by how long each line is. The original text is not changed; the sorted list appears below the box. The text never leaves your browser.",
+        "tip": "Use 'Numbers, smallest first' for lists that start with a number, such as '2 apples' and '10 apples'. Lines that do not start with a number go to the end of the list.",
+        "limit": "Sorting is by the alphabet, so capital letters sort before small letters in some browsers. Lines that do not start with a number go to the end when you sort by number. The original text in the box is not changed.",
+        "example": "Sorting 'banana', 'apple' and 'cherry' from A to Z gives apple, banana and cherry.",
+        "faq": [
+          [
+            "How are numbers sorted?",
+            "By value, smallest first. A line that starts with 2 comes before a line that starts with 10, because 2 is smaller than 10. Lines that do not start with a number go to the end of the list."
+          ],
+          [
+            "What happens to empty lines?",
+            "It depends on the tick box. With 'Ignore empty lines' ticked, blank lines are left out of the result. With it unticked, blank lines stay in the list and sort to the top."
+          ],
+          [
+            "Does sorting change the original text?",
+            "No. The text in the box stays as you typed it, and the sorted list appears below the button. You can change the order and press the button again to sort the same lines differently."
+          ],
+          [
+            "Can I sort numbers and words together?",
+            "Yes, with the number order. Lines that start with a number sort by that number, and lines that start with a word go to the end, in alphabetical order among themselves."
+          ]
+        ]
+      },
+      "related": [
+        "remove-duplicate-lines",
+        "word-counter",
+        "find-and-replace",
+        "text-diff-checker"
+      ]
+    },
+    {
+      "slug": "text-to-speech",
+      "workspace": "tool-tts",
+      "title": {
+        "en": "Text to Speech"
+      },
+      "short": {
+        "en": "Hear your text read aloud in the browser."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-languages",
+      "keywords": [
+        "text to speech",
+        "read text aloud",
+        "tts online",
+        "text to speech free"
+      ],
+      "libs": [],
+      "engine": "tool-tts",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Hear text read aloud in your browser with your device voices, speed and pitch controls.",
+      "steps": [
+        "Type or paste the text in the box.",
+        "Choose a voice in the 'Voice' list, if your browser offers more than one.",
+        "Move the Speed and Pitch sliders if you want it faster, slower, higher or lower.",
+        "Press Speak to hear the text read aloud.",
+        "Press Stop to end it early."
+      ],
+      "content": {
+        "use": "Text to Speech reads your text aloud in the browser, so you can listen instead of reading. A student listens to notes while walking. A writer hears how a sentence sounds before publishing it. A parent reads a story aloud with the device while cooking. A language learner hears the sound of English words. You type or paste the text, choose a voice if your browser offers more than one, set the speed and pitch, and press Speak. The voice comes from your device and browser, so the voices on offer differ from one device to another. The text never leaves your browser.",
+        "tip": "Short sentences read more clearly than very long ones, so split a long paragraph before you press Speak. If a voice sounds wrong, try another voice from the list, because voices differ by device.",
+        "limit": "Voices come from your device and browser, and some browsers offer no voice choice at all. Long text may be cut off by the browser, and the spoken audio cannot be downloaded from this page. The tool does not work in browsers without speech support.",
+        "example": "Typing 'Hello, this is a test.' and pressing Speak reads the sentence aloud in the chosen voice.",
+        "faq": [
+          [
+            "Which browsers can read text aloud?",
+            "Most modern browsers, including Chrome and Edge on desktop and Android, and Safari on iPhone and Mac. If the Speak button says your browser does not support it, try Chrome, which has the widest voice support."
+          ],
+          [
+            "Can I change the voice?",
+            "Yes, if your device offers more than one. The Voice list shows every voice your browser knows, and you can pick one before you press Speak. Some devices offer only one voice, and some offer none to choose."
+          ],
+          [
+            "Why is there no voice to choose?",
+            "Your device or browser has no extra voices installed. The tool then uses the default voice, and Speak still works. Installing a voice in your device settings may add more choices to the list."
+          ],
+          [
+            "Can I download the spoken audio?",
+            "No. The voice is made live by your browser and is not saved as a file. This page has no download for the audio, so if you need a recording, use a screen recorder or a voice recorder app."
+          ]
+        ]
+      },
+      "related": [
+        "readability-checker",
+        "word-counter",
+        "markdown-previewer",
+        "translate-helper"
+      ]
+    },
+    {
+      "slug": "markdown-previewer",
+      "workspace": "tool-markdown",
+      "title": {
+        "en": "Markdown Previewer"
+      },
+      "short": {
+        "en": "See Markdown formatted as you type."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-file-code",
+      "keywords": [
+        "markdown previewer",
+        "markdown preview online",
+        "markdown to html",
+        "markdown viewer"
+      ],
+      "libs": [],
+      "engine": "tool-markdown",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Preview Markdown as formatted text in your browser, live as you type, with headings, lists and links.",
+      "steps": [
+        "Type or paste Markdown in the box.",
+        "Read the formatted preview below the box; it updates as you type.",
+        "Use # for a heading, **word** for bold, *word* for italic and - for a list item.",
+        "Paste a link as [text](https://example.com) to see it as a clickable link."
+      ],
+      "content": {
+        "use": "Markdown Previewer turns Markdown text into a formatted preview as you type, so you can see the result before you publish it. A writer checks a blog post with headings, bold words and lists. A student checks homework written in Markdown. A developer checks a readme file before uploading it. A shop owner checks a product note with a link. You type or paste the Markdown and the preview appears below the box at once. Headings, bold, italic, code, lists, links, quotes and rules are shown, and the text is kept safe, because any HTML you paste is shown as text, not run. The text never leaves your browser.",
+        "tip": "Write one blank line between paragraphs, or they will run together in the preview. Start a list with a dash and a space, and keep each item on its own line.",
+        "limit": "Only a subset of Markdown is shown: headings, bold, italic, code, lists, links, quotes and rules. Tables, footnotes and raw HTML are not supported, and any HTML you paste is shown as text, not run.",
+        "example": "Typing '# Hello' on one line and 'This is **bold** text.' on the next shows a big Hello heading and a paragraph with bold in it.",
+        "faq": [
+          [
+            "Which Markdown features work here?",
+            "Headings, bold, italic, inline code, code blocks, lists, links, quotes and horizontal rules. Tables, footnotes and raw HTML are not supported, and any HTML you paste is shown as plain text."
+          ],
+          [
+            "Can I paste HTML in the text?",
+            "Yes, but it is shown as text, not run. The tool escapes HTML first, so a tag such as a script tag appears in the preview as plain words. That keeps the preview safe on any page."
+          ],
+          [
+            "Does it support tables?",
+            "No. Tables are not part of the subset this tool shows, so table text appears as plain lines in the preview. If you need a table, write it in a full Markdown editor that supports tables."
+          ],
+          [
+            "Can I print the preview?",
+            "Yes. Use your browser print command to print the page, and the preview prints as it looks on screen. The Markdown box prints too, so you may want to copy the preview into a document first."
+          ]
+        ]
+      },
+      "related": [
+        "text-diff-checker",
+        "word-counter",
+        "case-converter",
+        "local-summarizer"
+      ]
+    },
+    {
+      "slug": "fancy-text-generator",
+      "workspace": "tool-fancy",
+      "title": {
+        "en": "Fancy Text Generator"
+      },
+      "short": {
+        "en": "Styled Unicode text for names and posts."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-case-sensitive",
+      "keywords": [
+        "fancy text generator",
+        "stylish text",
+        "unicode text generator",
+        "fancy fonts"
+      ],
+      "libs": [],
+      "engine": "tool-fancy",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Turn plain text into bold, italic, script and more Unicode styles, free in your browser.",
+      "steps": [
+        "Type a word or short phrase in the box.",
+        "Read the styled versions below the box: Bold, Italic, Monospace, Script and more.",
+        "Press the Copy button next to a style to copy that version.",
+        "Paste the copied text where you want it, such as a profile name or a message."
+      ],
+      "content": {
+        "use": "Fancy Text Generator changes plain text into styled Unicode letters, so a name or message stands out. A student styles a profile name with bold letters. A shop owner styles a sale announcement with script letters. A writer styles a heading with monospace letters. A friend sends a message in circled letters for fun. You type the words once and the page shows them in eight styles, each with its own Copy button. The styles are special Unicode characters, not real formatting, so they work in most apps but may look different on some devices. The text never leaves your browser.",
+        "tip": "Bold and italic work in most apps, but script and double-struck letters may show as boxes on old devices, so test the copied text where you plan to use it. Keep the text short, because styled letters take more space.",
+        "limit": "Styled text is made of special Unicode characters, not real formatting, so some apps and old devices may show boxes instead of letters. Screen readers may read styled letters oddly, so do not use them for important information.",
+        "example": "Typing 'Hello' shows Bold as '𝐇𝐞𝐥𝐥𝐨' and Script as 'ℋℯ𝓁𝓁𝓄'.",
+        "faq": [
+          [
+            "Will the styled text work everywhere?",
+            "In most apps, yes. Bold, italic and monospace work almost everywhere, but script and double-struck letters may show as boxes on old devices. Test the copied text where you plan to use it before you publish."
+          ],
+          [
+            "Why do some styles look like boxes?",
+            "The device does not have a font with those Unicode letters. Each style uses special characters, and if the font has no drawing for a character, the device shows a box instead. Try another style, which may have better font support."
+          ],
+          [
+            "Can I use styled text on social media?",
+            "Yes. Most social apps accept Unicode letters in names, bios and posts, because they are ordinary text characters. Some apps may show them differently, so check how the name looks on another phone before you keep it."
+          ],
+          [
+            "Is the text still searchable?",
+            "Not always. A search looks for plain letters, and styled letters are different characters, so a search for Hello may not find a styled Hello. Use plain text for anything people need to search for."
+          ]
+        ]
+      },
+      "related": [
+        "case-converter",
+        "word-counter",
+        "character-counter",
+        "qr-code-generator"
+      ]
+    },
+    {
+      "slug": "find-and-replace",
+      "workspace": "tool-findreplace",
+      "title": {
+        "en": "Find and Replace"
+      },
+      "short": {
+        "en": "Replace every match in your text at once."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-replace",
+      "keywords": [
+        "find and replace",
+        "replace text online",
+        "replace all",
+        "find replace tool"
+      ],
+      "libs": [],
+      "engine": "tool-findreplace",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Find and replace every match of a word or phrase in your text, free in your browser.",
+      "steps": [
+        "Paste your text in the box.",
+        "Type the text to find in the 'Find' box.",
+        "Type the replacement in the 'Replace with' box, or leave it empty to delete the matches.",
+        "Tick 'Match case' if Cat and cat should be treated as different words.",
+        "Press Replace All, then read the new text and the count of replacements below the button."
+      ],
+      "content": {
+        "use": "Find and Replace changes every match of a word or phrase in your text at once, so you do not have to fix each one by hand. A writer changes a character name through a whole story. A student fixes a repeated spelling mistake in an essay. A shop owner changes a price word in a list of products. A worker updates a date in a long note. You paste the text, type what to find and what to put in its place, and press Replace All. The tool counts the replacements, so you can check that every match was changed. The new text appears below the button, ready to copy. The text never leaves your browser.",
+        "tip": "Leave the 'Replace with' box empty to delete the matches. Check the replacement count after you press the button, because a count of 0 means the find text was not in the text at all.",
+        "limit": "The search is plain text, not a pattern, so special characters are treated as ordinary letters. Replacing cannot be undone on this page, so copy the new text before you change the input. The tool replaces every match at once.",
+        "example": "Replacing 'cat' with 'dog' in 'The cat sat on the cat mat' gives 'The dog sat on the dog mat', with 2 replacements.",
+        "faq": [
+          [
+            "Does it replace every match?",
+            "Yes. Pressing Replace All changes every match in the text at once, and the status line tells you how many were replaced. If the count is 0, the find text was not in the text at all."
+          ],
+          [
+            "Is the search case sensitive?",
+            "Only if you tick the box. With the box unticked, Cat and cat count as the same word, and both are replaced. With the box ticked, only the exact capitalisation you typed is replaced."
+          ],
+          [
+            "Can I use special characters in the search?",
+            "Yes. The search is plain text, so a dot, a star or a bracket is treated as an ordinary letter, not as a pattern. That makes it safe to search for prices, file names and other text with symbols."
+          ],
+          [
+            "Does it change the original text?",
+            "No. The text in the box stays as you typed it, and the new text appears below the button. Copy the new text before you change the input, because pressing the button again works on the text in the box."
+          ]
+        ]
+      },
+      "related": [
+        "remove-duplicate-lines",
+        "sort-lines",
+        "text-diff-checker",
+        "word-counter"
+      ]
+    },
+    {
+      "slug": "readability-checker",
+      "workspace": "tool-readability",
+      "title": {
+        "en": "Readability Checker"
+      },
+      "short": {
+        "en": "Flesch score and grade for your text."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-file-text",
+      "keywords": [
+        "readability checker",
+        "flesch reading ease",
+        "readability score",
+        "check readability"
+      ],
+      "libs": [],
+      "engine": "tool-readability",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Check readability with the Flesch Reading Ease score and grade level, free in your browser.",
+      "steps": [
+        "Paste your text in the box.",
+        "Press Check Readability.",
+        "Read the Flesch Reading Ease score, the grade level, and the word, sentence and syllable counts.",
+        "Compare the score with the guide: 90 and above is Very easy, 60 to 70 is Standard, below 30 is Very difficult."
+      ],
+      "content": {
+        "use": "Readability Checker scores your text with the Flesch Reading Ease and the Flesch-Kincaid grade, so you can tell how easy it is to read. A writer checks that a blog post is easy for most readers. A teacher checks that a handout fits the class level. A student checks an essay before handing it in. A shop owner checks that a product note is plain and clear. You paste the text and press the button. The tool counts words, sentences and syllables, then works out the scores and a plain label, from Very easy to Very difficult. The scores describe the text, not the reader, and syllables are estimated by a rule. The text never leaves your browser.",
+        "tip": "Short sentences and short words raise the score, so split long sentences if the text scores below 60. Compare two versions of the same text to see which one reads more easily.",
+        "limit": "Syllables are estimated by a rule that counts vowel groups, not by a dictionary, so unusual words may score slightly differently. The score describes the text, not the reader, and a low score does not mean the text is wrong.",
+        "example": "The two sentences 'The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.' score 93.7, grade 2.3, Very easy.",
+        "faq": [
+          [
+            "What is a good readability score?",
+            "A Flesch Reading Ease of 60 to 70 is Standard, which most adults read with ease. Above 80 is Easy, and above 90 is Very easy. Below 30 is Very difficult, and it suits a specialist reader, not a general one."
+          ],
+          [
+            "How are syllables counted?",
+            "By a rule, not by a dictionary. The tool counts groups of vowels in each word, takes one away for a silent e at the end, and counts at least one syllable per word. Unusual words may score slightly differently."
+          ],
+          [
+            "What is the Flesch Reading Ease score?",
+            "It is a score from 0 to 100 that rates how easy a text is to read, from the average sentence length and the average syllables per word. A higher score means easier reading, and a lower score means harder reading."
+          ],
+          [
+            "Does it work for other languages?",
+            "Not really. The Flesch formulas were made for English, and the syllable rule counts English vowel groups. Text in another language may give a score, but the score will not mean the same thing."
+          ]
+        ]
+      },
+      "related": [
+        "word-counter",
+        "character-counter",
+        "word-frequency",
+        "local-summarizer"
+      ]
+    },
+    {
+      "slug": "word-frequency",
+      "workspace": "tool-wordfreq",
+      "title": {
+        "en": "Word Frequency Counter"
+      },
+      "short": {
+        "en": "See which words you use most."
+      },
+      "category": "text",
+      "group": "",
+      "icon": "i-chart-column",
+      "keywords": [
+        "word frequency counter",
+        "word frequency",
+        "most used words",
+        "word count frequency"
+      ],
+      "libs": [],
+      "engine": "tool-wordfreq",
+      "maxFileMB": null,
+      "wave": 1,
+      "status": "published",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-19",
+      "meta_description": "Count how often each word appears in your text, most used first, free in your browser.",
+      "steps": [
+        "Paste your text in the box.",
+        "Tick 'Ignore common words' to leave out words such as the and and.",
+        "Choose how many words to show in the 'Show' list.",
+        "Press Count Word Frequency.",
+        "Read the list below the button: the most used word first, with its count."
+      ],
+      "content": {
+        "use": "Word Frequency counts how often each word appears in your text, so you can see what a piece of writing is really about. A student checks whether an essay repeats one word too much. A writer checks the key words in an article before choosing a title. A teacher checks the common words in a reading passage. A shop owner checks which words customers use most in reviews. You paste the text, choose whether to ignore common words such as the and and, and press the button. The list shows the most used word first, with its count, and words with the same count are listed in alphabetical order. The text never leaves your browser.",
+        "tip": "Tick 'Ignore common words' to see the real key words, because the and and are the most used words in almost every text. A word that appears far more than the rest is usually the topic of the text.",
+        "limit": "Only words made of English letters are counted; numbers, punctuation and words in other scripts are ignored. Words are counted without capitals, so Cat and cat count as the same word.",
+        "example": "In 'the cat and the dog and the bird' with common words ignored, bird, cat and dog each show 1.",
+        "faq": [
+          [
+            "What counts as a word?",
+            "A run of English letters. Numbers, punctuation and spaces break words apart, and words are counted without capitals, so Cat and cat count as the same word. Words in other scripts are ignored by this tool."
+          ],
+          [
+            "Why are common words left out?",
+            "Only when you tick the box. Common words such as the and and appear in almost every text, so they hide the real key words. Unticking the box shows every word, including the common ones, with their counts."
+          ],
+          [
+            "Can I see all the words, not just the top ones?",
+            "Yes. Choose All words in the Show list, and the tool lists every different word in the text, most used first. For a long text the list is long, so Top 10 or Top 20 is easier to read."
+          ],
+          [
+            "Does it count words in other languages?",
+            "No. This tool only counts words made of English letters, so Urdu, Arabic and other scripts are ignored. If your text is in another language, use Word Counter, which counts words by spaces instead."
+          ]
+        ]
+      },
+      "related": [
+        "word-counter",
+        "readability-checker",
+        "character-counter",
+        "case-converter"
+      ]
     }
   ]
 }

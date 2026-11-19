@@ -308,6 +308,22 @@ body.tool-page .workspace-tool{display:block}
   margin:0;font-variant-numeric:tabular-nums;
 }
 .output-box{white-space:pre-wrap;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:var(--s-3);max-height:300px;overflow:auto;font-variant-numeric:tabular-nums}
+/* Markdown preview (v16): rendered output of the Markdown Previewer. */
+.md-preview{border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface-2);padding:var(--s-4);min-height:120px;max-height:520px;overflow:auto}
+.md-preview h1{font-size:1.5rem;margin:0 0 var(--s-2)}
+.md-preview h2{font-size:1.25rem;margin:var(--s-3) 0 var(--s-2)}
+.md-preview h3{font-size:1.125rem;margin:var(--s-3) 0 var(--s-2)}
+.md-preview p{margin:0 0 var(--s-3)}
+.md-preview ul,.md-preview ol{padding-inline-start:var(--s-5);margin:0 0 var(--s-3)}
+.md-preview blockquote{border-inline-start:4px solid var(--primary);color:var(--muted);margin:0 0 var(--s-3);padding:var(--s-2) var(--s-3)}
+.md-preview code{font-family:var(--font-mono);font-size:.875rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:0 var(--s-1)}
+.md-preview pre{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-3);overflow:auto;margin:0 0 var(--s-3)}
+.md-preview pre code{border:0;background:none;padding:0}
+.md-preview hr{border:0;border-top:1px solid var(--border);margin:var(--s-4) 0}
+/* Fancy text rows (v16): style name + styled text + Copy button. */
+.fancy-row{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap;margin-top:var(--s-2)}
+.fancy-name{width:90px;font-weight:700;color:var(--heading);flex:none}
+.fancy-text{flex:1;min-width:120px;overflow-wrap:anywhere}
 /* Calculator / tool results: large, bold, tabular figures. */
 .result-value{font-size:1.5rem;font-weight:800;color:var(--heading);font-variant-numeric:tabular-nums;line-height:1.3}
 
