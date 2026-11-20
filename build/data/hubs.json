@@ -12,15 +12,15 @@
      "No. Every PDF tool processes files on your device using client-side JavaScript. Files are not uploaded to an AK Premium server."
     ],
     [
-     "Why does PDF to Word only extract text?",
-     "PDF to Word, Excel and PowerPoint extract the text of the document. Tables, images and exact layout are not rebuilt, because a PDF does not store the original document structure. The tool page says this plainly."
+     "What does PDF to Markdown keep from my document?",
+     "It keeps the text layer of the PDF, page by page, with each page under its own heading in the downloaded .md file. Images, tables, fonts and colours are not kept, and a scanned PDF with no text layer gives no text."
     ],
     [
      "What is the file size limit?",
      "Each file can be up to 50 MB. Very large files, and Strong compression or Redact, work best on a desktop because they use more memory."
     ]
    ],
-   "intro": "AK Premium has 37 free PDF tools that run entirely in your browser. Merge several PDFs into one, split a PDF into separate pages, compress a large file, or convert a PDF to Word, Excel, PowerPoint, text, images or Markdown. You can also protect a PDF with a password, unlock one you own, sign it, redact text, rotate or crop pages, add page numbers and watermarks, repair a damaged file, compare two PDFs, and extract text with OCR. Nothing is uploaded to a server and there is no sign-up; files are processed on your device, up to 50 MB each. Two honest limits: PDF to Word, Excel and PowerPoint extract text only, and Word, Excel and PowerPoint to PDF are basic conversions that do not preserve exact layout.",
+   "intro": "AK Premium has 37 free PDF tools that run entirely in your browser. Merge several PDFs into one, split a PDF into separate pages, compress a large file, or convert a PDF to text, images or Markdown. For Word, Excel and PowerPoint conversions, use the Convert tools hub (/convert-tools). You can also protect a PDF with a password, unlock one you own, sign it, redact text, rotate or crop pages, add page numbers and watermarks, repair a damaged file, compare two PDFs, and extract text with OCR. Nothing is uploaded to a server and there is no sign-up; files are processed on your device, up to 50 MB each. Two honest limits: the Word, Excel and PowerPoint conversions on the Convert tools hub extract text only, and files converted back to PDF there are basic conversions that do not preserve exact layout.",
    "title": "PDF Tools",
    "url": "/pdf-tools"
   },
