@@ -12,7 +12,7 @@ if (mergeInput) mergeInput.addEventListener("change", async () => {
     const file = mergeOrder[idx];
     const item = document.createElement("div");
     item.className = "thumb"; item.draggable = true; item.dataset.idx = idx;
-    item.innerHTML = "<strong>" + idx + 1 + ". " + file.name.replace(/</g, "&lt;") + "</strong><br>" + humanBytes(file.size);
+    item.innerHTML = "<strong>" + String(idx + 1).padStart(2, "0") + ". " + file.name.replace(/</g, "&lt;") + "</strong><br>" + humanBytes(file.size);
     try {
       const pdf = await window.pdfjsLib.getDocument({ data: await readAsArrayBuffer(file) }).promise;
       const page = await pdf.getPage(1);

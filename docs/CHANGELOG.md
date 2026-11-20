@@ -1,5 +1,18 @@
 # AK Premium — Changelog
 
+## v18 — 20 November 2026 (2026-11-20 live re-audit fixes: hub counts, header-search count, sticky nav, merge-PDF numbering)
+
+### Fixes from the 20 November live re-audit
+- Hub intros now show the post-v17 counts: 37 PDF tools, 13 image tools, 15 calculators, 12 text tools and 14 developer tools (they still said 27, 4, 5, 10 and 6). The FAQ answers and meta descriptions follow the same numbers, because they are generated from the same intro text.
+- The header search count is now dynamic: it reads the registry total at build time (117 tools), so it can never go stale again. It said "68 tools" before; the placeholder and the hint under the search box both show the live count now.
+- Homepage section headings no longer hide under the sticky category bar when jumped to: sections now carry a 140px scroll margin, clearing the sticky header and the jump bar.
+- Merge PDF thumbnail numbering fixed: uploading the same file twice labelled the thumbnails "01." and "11." because the label code added the number to a string instead of adding two numbers. Thumbnails now read "01.", "02." and so on, and merging still works in the shown order.
+- Harness run-v18.js: 321 checks, all passing, including the new v18 checks for the hub counts, the dynamic search count, the scroll margin and the merge-PDF numbering.
+
+### JavaScript split and testing
+- The in-place build no longer fails at the generator-shipping step: build.py now skips copying a file onto itself (shutil SameFileError) when the output tree is the working tree.
+- ASSET_V is now "18" (config.js?v=18) and the service-worker cache is "ak-premium-v18".
+
 ## v17 — 19 November 2026 (Wave 1 batch 5: 10 developer & text tools, 107 → 117 tools)
 
 ### New tools (expansion brief §8.1, §14.3)

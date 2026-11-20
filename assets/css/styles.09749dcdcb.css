@@ -225,7 +225,7 @@ input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="tr
 .tab.active{background:var(--heading);color:var(--bg);border-color:var(--heading)}
 
 /* ---------- tool cards ---------- */
-.tool-section{margin-bottom:var(--s-6)}
+.tool-section{margin-bottom:var(--s-6);scroll-margin-top:140px} /* v18: clear the sticky header (68px) + sticky jump bar when jumping to a section, so the heading is not clipped */
 .tool-section h2{margin:0 0 var(--s-3)}
 .section-sub{color:var(--muted);margin:calc(var(--s-2) * -1) 0 var(--s-3);font-size:.875rem}
 /* Favourites helper text sits below the grid (v12 fix): the negative top

@@ -1,1 +1,65 @@
-{"country":{"empty":"No tools for {country} yet.","request":"Request a tool for {country}"},"favourites":{"add":"Add {name} to favourites","empty":"Tap the star on any tool to save it here.","heading":"Favourites","remove":"Remove {name} from favourites"},"globe":{"language":"Language","languageOptions":{"en":"English"},"note":"Region, units and paper size set the defaults for calculators and PDF tools. No location is detected or sent anywhere.","paper":"Default paper size","paperOptions":{"a4":"A4","letter":"Letter"},"region":"Region","regionOptions":{"ae":"UAE & Saudi Arabia","global":"Global","in":"India","pk":"Pakistan","uk":"United Kingdom","us":"United States"},"title":"Language & region","units":"Units","unitsOptions":{"imperial":"Imperial","metric":"Metric"}},"headerSearch":{"empty":"No tools match your search.","hint":"Type to search all 68 tools.","placeholder":"Search all tools…"},"hub":{"gridView":"Grid view","listView":"List view","seeAll":"See all {n} tools","seeAllOne":"See all 1 tool"},"islamic":{"note":"More Islamic tools, including prayer times and a Hijri converter, are planned for a later wave."},"language":"en","recent":{"clear":"Clear","heading":"Recently used"},"search":{"found":"Found {n} tool(s) matching \"{q}\".","noResultsRequest":"Or tell us which tool you need.","noResultsTitle":"No tools match \"{q}\".","noResultsTry":"Try one of these popular tools:"},"version":1}
+{
+ "country": {
+  "empty": "No tools for {country} yet.",
+  "request": "Request a tool for {country}"
+ },
+ "favourites": {
+  "add": "Add {name} to favourites",
+  "empty": "Tap the star on any tool to save it here.",
+  "heading": "Favourites",
+  "remove": "Remove {name} from favourites"
+ },
+ "globe": {
+  "language": "Language",
+  "languageOptions": {
+   "en": "English"
+  },
+  "note": "Region, units and paper size set the defaults for calculators and PDF tools. No location is detected or sent anywhere.",
+  "paper": "Default paper size",
+  "paperOptions": {
+   "a4": "A4",
+   "letter": "Letter"
+  },
+  "region": "Region",
+  "regionOptions": {
+   "ae": "UAE & Saudi Arabia",
+   "global": "Global",
+   "in": "India",
+   "pk": "Pakistan",
+   "uk": "United Kingdom",
+   "us": "United States"
+  },
+  "title": "Language & region",
+  "units": "Units",
+  "unitsOptions": {
+   "imperial": "Imperial",
+   "metric": "Metric"
+  }
+ },
+ "headerSearch": {
+  "empty": "No tools match your search.",
+  "hint": "Type to search all {n} tools.",
+  "placeholder": "Search all {n} tools…"
+ },
+ "hub": {
+  "gridView": "Grid view",
+  "listView": "List view",
+  "seeAll": "See all {n} tools",
+  "seeAllOne": "See all 1 tool"
+ },
+ "islamic": {
+  "note": "More Islamic tools, including prayer times and a Hijri converter, are planned for a later wave."
+ },
+ "language": "en",
+ "recent": {
+  "clear": "Clear",
+  "heading": "Recently used"
+ },
+ "search": {
+  "found": "Found {n} tool(s) matching \"{q}\".",
+  "noResultsRequest": "Or tell us which tool you need.",
+  "noResultsTitle": "No tools match \"{q}\".",
+  "noResultsTry": "Try one of these popular tools:"
+ },
+ "version": 1
+}
