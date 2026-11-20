@@ -1,5 +1,18 @@
 # AK Premium — Changelog
 
+## v17 — 19 November 2026 (Wave 1 batch 5: 10 developer & text tools, 107 → 117 tools)
+
+### New tools (expansion brief §8.1, §14.3)
+- Ten developer and text tools, all pure client-side: Speech to Text (Web Speech API, live transcript + interim results, language select en-US/en-GB/ur-PK/ar-SA/hi-IN, copy transcript; the limit callout discloses that the browser vendor may process the audio on its own speech service), Slug Generator (live slug from any title, lower-case letters/numbers/hyphens, non-English letters converted where possible, copy slug), JSON to YAML and YAML to JSON (js-yaml 4.1.0, MIT, pinned with SRI), JSON to XML and XML to JSON (hand-rolled converters, no new library), JSON to CSV (flattens nested objects with dotted keys, download as .csv), JWT Decoder (header + payload + signature shown, base64url decode; the limit callout states it does not check the signature), Hash Generator (text or file up to 10 MB; MD5, SHA-1, SHA-256, SHA-384, SHA-512; SHA via crypto.subtle, MD5 via SparkMD5), URL Encode Decode (value mode and full-URL mode, which keeps : / ? = &).
+- Every new tool has unique content per the Quality Gate: a specific 80–120-word intro, 4–6 steps naming the real controls, 2–3 tips, honest limits, a concrete example with real numbers verified against the tool (for example slug "Hello World! My First Post" → hello-world-my-first-post, SHA-256("hello") = 2cf24dba…9824, MD5("hello") = 5d41402abc4b2a76b9719d911017c592), and 4 tool-specific FAQs (468 FAQ questions across the site now, all unique).
+- Honest limits are stated on each new tool: speech to text needs a browser with speech recognition and a microphone, and the vendor may process the audio; the YAML tools reject duplicate keys and non-plain scalars; XML conversion escapes special characters and renames invalid tag names; JSON to CSV needs an array of objects (a single object is wrapped); the JWT decoder never verifies a signature; the hash generator takes files up to 10 MB only.
+- Speech to Text cannot be fully verified in the cloud test browser (no microphone, no speech-recognition engine), so only its friendly-error guard path was tested there — like Text to Speech in v16, it needs a re-check on a real device with a microphone. Currency Converter, HEIC to JPG and Background Remover are still not built, for the reasons already recorded (live rate API, licence).
+
+### JavaScript split and testing
+- Per-tool JS split extended: core.js + one tools/<slug>.js per tool (117 files). The split is verified lossless (5,197 code lines, 0 missing/extra). The shared batch 5 logic (slugify, JSON↔YAML/XML/CSV, JWT decode, hashing, URL encode/decode, speech-recognition constructor) lives in core.js; per-tool files never read a core const table directly (the v15 jsdom lesson).
+- A real bug was found and fixed by the harness during verification: the hash generator's MD5 path passed a Uint8Array (text) or ArrayBuffer (file) to blueimp-md5, which only takes strings — it silently hashed the text "104,101,108,108,111" instead of "hello", so every MD5 was wrong. MD5 now uses SparkMD5 3.0.2 (WTFPL Version 2, cdnjs, pinned with SRI): text goes in as a string, files as an ArrayBuffer, both verified against Node's crypto (including bytes above 0x7F). The Licenses page and THIRD_PARTY_LICENSES now list js-yaml (MIT) and SparkMD5 (WTFPL Version 2).
+- Harness run-v17.js: 300 checks, all passing, including live known-answer checks for all 10 new tools (slug hello-world-my-first-post + cafe-tea-2026, JSON↔YAML and JSON↔XML round trips, JSON→CSV two rows + nested address.city, JWT sample token → HS256 header and John Doe payload, SHA-256/MD5/SHA-1 of "hello", URL encode/decode both modes, speech-to-text friendly error without the API) and the existing known-answer tax (200,000/month TY2027 → 156,000), Zakat (→ 25,000) and EMI (→ 22,244.45) checks. Sitemap is 146 URLs (was 136). ASSET_V is now "17" (config.js?v=17) and the service-worker cache is "ak-premium-v17".
+
 ## v16 — 19 November 2026 (Wave 1 batch 4: 10 text & writing tools, 97 → 107 tools)
 
 ### New tools (expansion brief §8.1, §14.3)
@@ -623,3 +636,5 @@ Pakistan/Urdu tools are added.
 ## v2 — 1 November 2026
 - 62 tools, file preview, auto-fit grid, FAQ fix. GitHub commit
   b67e952, Vercel Production Ready.
+
+v17 re-trigger: re-run Vercel check after quota reset

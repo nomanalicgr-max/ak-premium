@@ -87,7 +87,17 @@ const NEXT_STEPS = {
   "tool-fancy": [["Case Converter", "/tools/case-converter"], ["Word Counter", "/tools/word-counter"], ["QR Code Generator", "/tools/qr-code-generator"]],
   "tool-findreplace": [["Remove Duplicate Lines", "/tools/remove-duplicate-lines"], ["Sort Lines", "/tools/sort-lines"], ["Text Diff Checker", "/tools/text-diff-checker"]],
   "tool-readability": [["Word Counter", "/tools/word-counter"], ["Word Frequency Counter", "/tools/word-frequency"], ["Character Counter", "/tools/character-counter"]],
-  "tool-wordfreq": [["Word Counter", "/tools/word-counter"], ["Readability Checker", "/tools/readability-checker"], ["Character Counter", "/tools/character-counter"]]
+  "tool-wordfreq": [["Word Counter", "/tools/word-counter"], ["Readability Checker", "/tools/readability-checker"], ["Character Counter", "/tools/character-counter"]],
+  "tool-stt": [["Text to Speech", "/tools/text-to-speech"], ["Word Counter", "/tools/word-counter"], ["Readability Checker", "/tools/readability-checker"]],
+  "tool-slug": [["URL Encode Decode", "/tools/url-encode-decode"], ["Case Converter", "/tools/case-converter"], ["Word Counter", "/tools/word-counter"]],
+  "tool-jsonyaml": [["YAML to JSON", "/tools/yaml-to-json"], ["JSON Formatter", "/tools/json-formatter"], ["JSON to XML", "/tools/json-to-xml"]],
+  "tool-yamljson": [["JSON to YAML", "/tools/json-to-yaml"], ["JSON Formatter", "/tools/json-formatter"], ["JSON to CSV", "/tools/json-to-csv"]],
+  "tool-jsonxml": [["XML to JSON", "/tools/xml-to-json"], ["JSON Formatter", "/tools/json-formatter"], ["JSON to YAML", "/tools/json-to-yaml"]],
+  "tool-xmljson": [["JSON to XML", "/tools/json-to-xml"], ["JSON Formatter", "/tools/json-formatter"], ["CSV to JSON", "/tools/csv-to-json"]],
+  "tool-jsoncsv": [["CSV to JSON", "/tools/csv-to-json"], ["JSON Formatter", "/tools/json-formatter"], ["CSV to Excel", "/tools/csv-to-excel"]],
+  "tool-jwt": [["Base64", "/tools/base64"], ["JSON Formatter", "/tools/json-formatter"], ["Hash Generator", "/tools/hash-generator"]],
+  "tool-hash": [["Password Generator", "/tools/password-generator"], ["Base64", "/tools/base64"], ["JWT Decoder", "/tools/jwt-decoder"]],
+  "tool-urlenc": [["Slug Generator", "/tools/slug-generator"], ["Base64", "/tools/base64"], ["JWT Decoder", "/tools/jwt-decoder"]]
 };
 function showSuccess(ws, filename, url) {
   if (!ws) return;
@@ -220,7 +230,9 @@ const LIB_URLS = {
   "pptxgenjs": "https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js",
   "tesseract": "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js",
   "qrcode": "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
-  "jspdf": "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+  "jspdf": "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
+  "js-yaml": "https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js",
+  "md5": "https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js"
 };
 /* SRI hashes for the pinned libraries above (Phase 4.2); same values as
    build.py. The docx URL was corrected at the same time: docx@8.5.0
@@ -236,11 +248,13 @@ const LIB_SRI = {
   "pptxgenjs": "sha384-Cck14aA9cifjYolcnjebXRfWGkz5ltHMBiG4px/j8GS+xQcb7OhNQWZYyWjQ+UwQ",
   "tesseract": "sha384-GJqSu7vueQ9qN0E9yLPb3Wtpd7OrgK8KmYzC8T1IysG1bcvxvIO4qtYR/D3A991F",
   "qrcode": "sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU",
-  "jspdf": "sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk"
+  "jspdf": "sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk",
+  "js-yaml": "sha384-+pxiN6T7yvpryuJmE1gM9PX7yQit15auDb+ZwwvJOd/4be2Cie5/IuVXgQb/S9du",
+  "md5": "sha384-WAahC3S+69Co45zyyuhCjvdMwo7a42Yn0mM0IgZIUlYNebG24AVkPUltj3BQnM85"
 };
 const _libLoaded = {};
 function loadLibrary(name, statusId) {
-  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "qrcode" ? "QRCode" : name] || _libLoaded[name]) return Promise.resolve(true);
+  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "qrcode" ? "QRCode" : name === "js-yaml" ? "jsyaml" : name] || _libLoaded[name]) return Promise.resolve(true);
   return new Promise((resolve) => {
     const sc = document.createElement("script");
     sc.src = LIB_URLS[name]; sc.async = true;
@@ -1684,6 +1698,167 @@ function fancyRows(text) {
 function ttsVoiceList() {
   if (!("speechSynthesis" in window) || !window.speechSynthesis) return [];
   return window.speechSynthesis.getVoices() || [];
+}
+
+/* Pure functions are function declarations, so the splitter puts them in
+   core.js automatically. Handlers read core helpers only through functions,
+   never through core const tables (jsdom cannot see const across evals). */
+
+/* ---------- Wave 1: Developer tools (batch 5) ---------- */
+
+function slugifyText(text) {
+  return String(text || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+}
+
+function jsonToYamlText(text) {
+  if (typeof window.jsyaml === "undefined") throw new Error("The YAML library did not load.");
+  return window.jsyaml.dump(JSON.parse(text));
+}
+
+function yamlToJsonText(text) {
+  if (typeof window.jsyaml === "undefined") throw new Error("The YAML library did not load.");
+  return JSON.stringify(window.jsyaml.load(text), null, 2);
+}
+
+function escapeXml(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function xmlTagName(key) {
+  const safe = String(key).replace(/[^a-zA-Z0-9_.-]/g, "_");
+  return /^[a-zA-Z_]/.test(safe) ? safe : "field_" + safe;
+}
+
+function jsonToXmlValue(value, tag) {
+  if (value === null || value === undefined) return "<" + tag + " />";
+  if (Array.isArray(value)) return value.map((item) => jsonToXmlValue(item, "item")).join("");
+  if (typeof value === "object") {
+    let out = "";
+    for (const key of Object.keys(value)) out += jsonToXmlValue(value[key], xmlTagName(key));
+    return "<" + tag + ">" + out + "</" + tag + ">";
+  }
+  return "<" + tag + ">" + escapeXml(String(value)) + "</" + tag + ">";
+}
+
+function jsonToXmlText(text) {
+  const data = JSON.parse(text);
+  if (Array.isArray(data)) return "<root>" + jsonToXmlValue(data, "items") + "</root>";
+  return jsonToXmlValue(data, "root");
+}
+
+function xmlNodeToJson(node) {
+  const out = {};
+  for (let i = 0; i < (node.attributes || []).length; i++) {
+    const attr = node.attributes[i];
+    out["@" + attr.name] = attr.value;
+  }
+  const kids = [];
+  for (let i = 0; i < node.childNodes.length; i++) kids.push(node.childNodes[i]);
+  const elements = kids.filter((c) => c.nodeType === 1);
+  const text = kids.filter((c) => c.nodeType === 3).map((c) => c.nodeValue).join("").trim();
+  for (const el of elements) {
+    const value = xmlNodeToJson(el);
+    if (out[el.tagName] === undefined) out[el.tagName] = value;
+    else if (Array.isArray(out[el.tagName])) out[el.tagName].push(value);
+    else out[el.tagName] = [out[el.tagName], value];
+  }
+  if (Object.keys(out).length === 0) return text;
+  if (text) out["#text"] = text;
+  return out;
+}
+
+function xmlToJsonText(text) {
+  const doc = new DOMParser().parseFromString(text, "text/xml");
+  const err = doc.querySelector("parsererror");
+  if (err) throw new Error("That XML could not be read. Check that every tag is closed and there is one top tag.");
+  const root = doc.documentElement;
+  const result = {};
+  result[root.tagName] = xmlNodeToJson(root);
+  return JSON.stringify(result, null, 2);
+}
+
+function flattenJsonRow(obj, prefix, out) {
+  for (const key of Object.keys(obj)) {
+    const full = prefix ? prefix + "." + key : key;
+    const value = obj[key];
+    if (value !== null && typeof value === "object" && !Array.isArray(value)) flattenJsonRow(value, full, out);
+    else if (Array.isArray(value)) out[full] = JSON.stringify(value);
+    else out[full] = value === null || value === undefined ? "" : value;
+  }
+  return out;
+}
+
+function jsonToCsvText(text) {
+  const data = JSON.parse(text);
+  if (!Array.isArray(data)) throw new Error("Please paste a JSON list, for example [{\"name\": \"Ali\"}].");
+  if (!data.length) throw new Error("The list is empty, so there is nothing to convert.");
+  const rows = data.map((item) => {
+    if (item === null || typeof item !== "object" || Array.isArray(item)) throw new Error("Each item in the list must be an object with named fields.");
+    return flattenJsonRow(item, "", {});
+  });
+  const cols = [];
+  for (const row of rows) for (const key of Object.keys(row)) if (cols.indexOf(key) === -1) cols.push(key);
+  const cell = (v) => {
+    const s = String(v === null || v === undefined ? "" : v);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+  const lines = [cols.map(cell).join(",")];
+  for (const row of rows) lines.push(cols.map((c) => cell(row[c])).join(","));
+  return lines.join("\n");
+}
+
+function base64UrlDecode(segment) {
+  let s = String(segment).replace(/-/g, "+").replace(/_/g, "/");
+  while (s.length % 4) s += "=";
+  const bin = atob(s);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder("utf-8").decode(bytes);
+}
+
+function decodeJwt(token) {
+  const parts = String(token || "").trim().split(".");
+  if (parts.length !== 3) throw new Error("A JWT has three parts joined by two dots. Check that you pasted the whole token.");
+  const header = JSON.parse(base64UrlDecode(parts[0]));
+  const payload = JSON.parse(base64UrlDecode(parts[1]));
+  let expired = null;
+  let expiryDate = null;
+  if (payload && typeof payload.exp === "number") {
+    expiryDate = new Date(payload.exp * 1000);
+    expired = expiryDate.getTime() < Date.now();
+  }
+  return { header: header, payload: payload, signature: parts[2], expired: expired, expiryDate: expiryDate };
+}
+
+function bytesToHex(buf) {
+  const bytes = new Uint8Array(buf);
+  let out = "";
+  for (let i = 0; i < bytes.length; i++) out += bytes[i].toString(16).padStart(2, "0");
+  return out;
+}
+
+async function hashData(algo, data) {
+  if (algo === "MD5") {
+    /* SparkMD5 hashes strings and ArrayBuffers correctly. blueimp-md5 only
+       takes strings: passed a Uint8Array it hashes the text "104,101,108,
+       108,111", so text goes in as a string and files as an ArrayBuffer. */
+    if (typeof window.SparkMD5 === "undefined") throw new Error("The MD5 library did not load.");
+    if (typeof data === "string") return window.SparkMD5.hash(data);
+    const buf = data instanceof ArrayBuffer ? data : data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
+    return window.SparkMD5.ArrayBuffer.hash(buf);
+  }
+  if (!window.crypto || !window.crypto.subtle) throw new Error("SHA hashes need a secure page. Open this site over HTTPS and try again.");
+  const buf = await window.crypto.subtle.digest(algo, data);
+  return bytesToHex(buf);
+}
+
+function urlEncodeText(text, mode) { return mode === "full" ? encodeURI(text) : encodeURIComponent(text); }
+
+function urlDecodeText(text) { return decodeURIComponent(text); }
+
+function sttRecognitionCtor() {
+  if (typeof window !== "undefined" && (window.SpeechRecognition || window.webkitSpeechRecognition)) return window.SpeechRecognition || window.webkitSpeechRecognition;
+  return null;
 }
 
 let excelModule = "generator";

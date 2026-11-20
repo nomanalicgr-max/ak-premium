@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "16"  # v16 (2026-11-19): Wave 1 batch 4 — 10 text & writing tools (character counter, lorem ipsum, remove duplicate lines, sort lines, text to speech, markdown previewer, fancy text, find and replace, readability, word frequency) + new Text Tools hub. Content hashes replace ?v= for CSS/JS; config.js still uses ?v=.
+ASSET_V = "17"  # v17 (2026-11-19): Wave 1 batch 5 — 10 developer & text tools (speech to text, slug generator, JSON to YAML, YAML to JSON, JSON to XML, XML to JSON, JSON to CSV, JWT decoder, hash generator, URL encode/decode). Content hashes replace ?v= for CSS/JS; config.js still uses ?v=.
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -93,6 +93,8 @@ SRI = {
  "tesseract": "sha384-GJqSu7vueQ9qN0E9yLPb3Wtpd7OrgK8KmYzC8T1IysG1bcvxvIO4qtYR/D3A991F",
  "qrcode": "sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU",
  "jspdf": "sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk",
+ "js-yaml": "sha384-+pxiN6T7yvpryuJmE1gM9PX7yQit15auDb+ZwwvJOd/4be2Cie5/IuVXgQb/S9du",
+ "md5": "sha384-WAahC3S+69Co45zyyuhCjvdMwo7a42Yn0mM0IgZIUlYNebG24AVkPUltj3BQnM85",
 }
 
 # Valid schema.org applicationCategory values (Phase 4.1). The old code put
@@ -246,6 +248,10 @@ SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="tru
   <path d="m2 16 6 6" />
   <circle cx="16" cy="9" r="2.9" />
   <circle cx="6" cy="5" r="3" /></symbol>
+    <symbol id="i-hash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="9" y2="9" />
+  <line x1="4" x2="20" y1="15" y2="15" />
+  <line x1="10" x2="8" y1="3" y2="21" />
+  <line x1="16" x2="14" y1="3" y2="21" /></symbol>
     <symbol id="i-image-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21" />
   <path d="m14 19 3 3v-5.5" />
   <path d="m17 22 3-3" />
@@ -254,6 +260,9 @@ SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="tru
   <path d="M4 8a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2" />
   <circle cx="13" cy="7" r="1" fill="currentColor" />
   <rect x="8" y="2" width="14" height="14" rx="2" /></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m2 21 9.6-9.6" />
+  <path d="m7.5 15.5 2.3 2.3a1 1 0 0 1 0 1.4l-2.1 2.1a1 1 0 0 1-1.4 0L4 19" />
+  <circle cx="15.5" cy="7.5" r="5.5" /></symbol>
     <symbol id="i-key-round" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" />
   <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" /></symbol>
     <symbol id="i-landmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18v-7" />
@@ -280,6 +289,11 @@ SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="tru
     <symbol id="i-lightbulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
   <path d="M9 18h6" />
   <path d="M10 22h4" /></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></symbol>
+    <symbol id="i-link-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2" />
+  <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
+  <line x1="8" x2="16" y1="12" y2="12" /></symbol>
     <symbol id="i-list-ordered" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5h10" />
   <path d="M11 12h10" />
   <path d="M11 19h10" />
@@ -293,6 +307,9 @@ SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="tru
     <symbol id="i-merge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6 4-4 4 4" />
   <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22" />
   <path d="m20 22-5-5" /></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19v3" />
+  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+  <rect x="9" y="2" width="6" height="13" rx="3" /></symbol>
     <symbol id="i-minimize-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m14 10 7-7" />
   <path d="M20 10h-6V4" />
   <path d="m3 21 7-7" />
@@ -766,6 +783,8 @@ LIB_SCRIPT = {
  "tesseract": '<script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" integrity="' + SRI["tesseract"] + '" crossorigin="anonymous"></script>',
  "qrcode": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="' + SRI["qrcode"] + '" crossorigin="anonymous"></script>',
  "jspdf": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="' + SRI["jspdf"] + '" crossorigin="anonymous"></script>',
+ "js-yaml": '<script defer src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js" integrity="' + SRI["js-yaml"] + '" crossorigin="anonymous"></script>',
+ "md5": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js" integrity="' + SRI["md5"] + '" crossorigin="anonymous"></script>',
 }
 
 # Preconnect hosts (Phase 4.3): one <link rel="preconnect"> per CDN host a
@@ -776,6 +795,7 @@ LIB_HOST = {
  "tesseract": "https://cdn.jsdelivr.net", "pdfjs": "https://cdnjs.cloudflare.com",
  "jszip": "https://cdnjs.cloudflare.com", "mammoth": "https://cdnjs.cloudflare.com",
  "qrcode": "https://cdnjs.cloudflare.com", "jspdf": "https://cdnjs.cloudflare.com",
+ "js-yaml": "https://cdn.jsdelivr.net", "md5": "https://cdnjs.cloudflare.com",
 }
 
 def esc(x): return html.escape(str(x), quote=True)
@@ -1225,7 +1245,7 @@ def build_info_pages():
         '</div></div>')
     info_page("cookies", "Cookie Policy | AK Premium", "AK Premium Cookie Policy: which cookies the site uses, what the consent banner does, and how to change your choice.",
         "Cookie Policy",
-        '<p><strong>Last updated: 17 November 2026.</strong></p>'
+        '<p><strong>Last updated: 19 November 2026.</strong></p>'
         '<h2>What cookies are</h2><p>Cookies are small files a website asks your browser to store. AK Premium also uses local storage in your browser for the same kind of small settings. This page lists everything the site stores, and when.</p>'
         '<h2>What this site stores</h2><p>AK Premium stores only small settings in your browser, and only on your device:</p>'
         '<ul><li><strong>Theme</strong> (light or dark) and <strong>language, region, units and paper size</strong> choices, so the site looks and behaves the way you set it.</li>'
@@ -1238,7 +1258,7 @@ def build_info_pages():
         '<h2>Contact</h2><p>For questions about cookies, contact <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a>.</p>')
     info_page("dmca", "DMCA | AK Premium", "AK Premium DMCA: how to report copyright infringement and how takedown notices are handled.",
         "DMCA",
-        '<p><strong>Last updated: 17 November 2026.</strong></p>'
+        '<p><strong>Last updated: 19 November 2026.</strong></p>'
         '<h2>What this site hosts</h2><p>AK Premium is a set of browser tools built by Mirza Noman Ali. The site does not host user content: the tools process files in your own browser and do not upload, store or publish them, so there is no user-uploaded content on the site to take down.</p>'
         '<h2>How to send a takedown notice</h2><p>If you believe content on AK Premium infringes your copyright, send a notice by email to <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a> with:</p>'
         '<ul><li>A description of the copyrighted work you believe is infringed.</li><li>The exact URL of the page on AK Premium where the material appears.</li><li>Your name, address, email and phone number.</li><li>A statement that you have a good-faith belief the use is not authorised by the copyright owner, its agent or the law.</li><li>A statement that the information in your notice is accurate and, under penalty of perjury, that you are authorised to act for the copyright owner.</li><li>Your physical or electronic signature.</li></ul>'
@@ -1246,7 +1266,7 @@ def build_info_pages():
         '<h2>Contact</h2><p>For DMCA notices, email <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a>.</p>')
     info_page("licenses", "Licenses | AK Premium", "AK Premium Licenses: the open-source libraries, icons and fonts the site uses, with their licences.",
         "Licenses",
-        '<p><strong>Last updated: 17 November 2026.</strong></p>'
+        '<p><strong>Last updated: 19 November 2026.</strong></p>'
         '<p>AK Premium is built with open-source libraries, icons and fonts. Each one is listed below with its licence. The full licence text for each project is in that project\u2019s own repository.</p>'
         '<h2>Libraries</h2><ul>'
         '<li>pdf-lib \u2014 MIT License</li>'
@@ -1259,6 +1279,8 @@ def build_info_pages():
         '<li>PptxGenJS \u2014 MIT License</li>'
         '<li>JSZip \u2014 MIT License</li>'
         '<li>QRCode \u2014 MIT License</li>'
+        '<li>js-yaml (used by JSON to YAML and YAML to JSON) \u2014 MIT License</li>'
+        '<li>SparkMD5 (used by Hash Generator for MD5) \u2014 WTFPL Version 2</li>'
         '<li>qpdf-wasm (used by Protect PDF and Unlock PDF) \u2014 wrapper under the MIT License; qpdf itself under the Apache License 2.0</li>'
         '</ul><h2>Icons and fonts</h2><ul>'
         '<li>Lucide icons \u2014 ISC License</li>'
@@ -1465,7 +1487,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v16). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v16";
+const CACHE = "ak-premium-v17";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

@@ -1319,6 +1319,99 @@
           <p class="status" id="wfStatus"></p>
         </div>
 
+        <div class="workspace-tool" id="tool-stt">
+          <h2>Speech to Text</h2>
+          <label>Language
+            <select id="sttLang"><option value="en-US" selected>English (US)</option><option value="en-GB">English (UK)</option><option value="ur-PK">Urdu</option><option value="ar-SA">Arabic</option><option value="hi-IN">Hindi</option></select>
+          </label>
+          <button id="sttStartBtn" type="button" class="btn-primary">Start Listening</button>
+          <button id="sttStopBtn" type="button" class="btn-secondary" disabled>Stop</button>
+          <pre id="sttTranscript" class="terminal">Your transcript will appear here.</pre>
+          <p class="status" id="sttInterim" aria-live="polite"></p>
+          <button id="sttCopyBtn" type="button" class="btn-secondary">Copy Transcript</button>
+          <p class="status" id="sttStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-slug">
+          <h2>Slug Generator</h2>
+          <textarea id="slugInput" rows="4" placeholder="Type or paste your title here…"></textarea>
+          <pre id="slugOutput" class="terminal">Your slug will appear here.</pre>
+          <button id="slugCopyBtn" type="button" class="btn-secondary">Copy Slug</button>
+          <p class="status" id="slugStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-jsonyaml">
+          <h2>JSON to YAML</h2>
+          <textarea id="jyInput" rows="8" placeholder="Paste your JSON here…"></textarea>
+          <button id="jyBtn" type="button" class="btn-primary">Convert to YAML</button>
+          <pre id="jyOutput" class="terminal">Your YAML will appear here.</pre>
+          <button id="jyCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <p class="status" id="jyStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-yamljson">
+          <h2>YAML to JSON</h2>
+          <textarea id="yjInput" rows="8" placeholder="Paste your YAML here…"></textarea>
+          <button id="yjBtn" type="button" class="btn-primary">Convert to JSON</button>
+          <pre id="yjOutput" class="terminal">Your JSON will appear here.</pre>
+          <button id="yjCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <p class="status" id="yjStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-jsonxml">
+          <h2>JSON to XML</h2>
+          <textarea id="jxInput" rows="8" placeholder="Paste your JSON here…"></textarea>
+          <button id="jxBtn" type="button" class="btn-primary">Convert to XML</button>
+          <pre id="jxOutput" class="terminal">Your XML will appear here.</pre>
+          <button id="jxCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <p class="status" id="jxStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-xmljson">
+          <h2>XML to JSON</h2>
+          <textarea id="xjInput" rows="8" placeholder="Paste your XML here…"></textarea>
+          <button id="xjBtn" type="button" class="btn-primary">Convert to JSON</button>
+          <pre id="xjOutput" class="terminal">Your JSON will appear here.</pre>
+          <button id="xjCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <p class="status" id="xjStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-jsoncsv">
+          <h2>JSON to CSV</h2>
+          <textarea id="jcInput" rows="8" placeholder="Paste your JSON list here…"></textarea>
+          <button id="jcBtn" type="button" class="btn-primary">Convert to CSV</button>
+          <pre id="jcOutput" class="terminal">Your CSV will appear here.</pre>
+          <button id="jcCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <button id="jcDownloadBtn" type="button" class="btn-secondary">Download CSV</button>
+          <p class="status" id="jcStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-jwt">
+          <h2>JWT Decoder</h2>
+          <textarea id="jwtInput" rows="4" placeholder="Paste your JWT token here…"></textarea>
+          <button id="jwtBtn" type="button" class="btn-primary">Decode Token</button>
+          <pre id="jwtOutput" class="terminal">The decoded header and payload will appear here.</pre>
+          <button id="jwtCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <p class="status" id="jwtStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-hash">
+          <h2>Hash Generator</h2>
+          <textarea id="hashInput" rows="4" placeholder="Type or paste your text here…"></textarea>
+          <label>Or choose a file <input id="hashFile" type="file"></label>
+          <label>Algorithm
+            <select id="hashAlgo"><option value="MD5">MD5</option><option value="SHA-1">SHA-1</option><option value="SHA-256" selected>SHA-256</option><option value="SHA-384">SHA-384</option><option value="SHA-512">SHA-512</option></select>
+          </label>
+          <button id="hashBtn" type="button" class="btn-primary">Generate Hash</button>
+          <pre id="hashOutput" class="terminal">Your hash will appear here.</pre>
+          <button id="hashCopyBtn" type="button" class="btn-secondary">Copy Hash</button>
+          <p class="status" id="hashStatus"></p>
+        </div>
+        <div class="workspace-tool" id="tool-urlenc">
+          <h2>URL Encode Decode</h2>
+          <textarea id="urlInput" rows="4" placeholder="Type or paste your URL or text here…"></textarea>
+          <label>Encode mode
+            <select id="urlMode"><option value="value" selected>Encode a value</option><option value="full">Encode a full URL</option></select>
+          </label>
+          <button id="urlEncodeBtn" type="button" class="btn-primary">Encode</button>
+          <button id="urlDecodeBtn" type="button" class="btn-secondary">Decode</button>
+          <pre id="urlOutput" class="terminal">Your result will appear here.</pre>
+          <button id="urlCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <p class="status" id="urlStatus"></p>
+        </div>
+
       <section id="section-faq" class="faq-section" aria-label="Frequently asked questions">
         <h2>Frequently Asked Questions</h2>
         <details open><summary>What is AK Premium?</summary><p>AK Premium is a free, browser-based toolkit with PDF tools and an Excel automation engine. It creates, merges, splits, rotates and converts PDFs, and generates Excel formulas, VBA macros, regex patterns and DAX measures.</p></details>
