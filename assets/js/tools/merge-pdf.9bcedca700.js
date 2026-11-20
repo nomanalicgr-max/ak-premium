@@ -13,6 +13,9 @@ if (mergeInput) mergeInput.addEventListener("change", async () => {
     if (!dup) mergeOrder.push(file);
   }
   mergeInput.value = "";
+  // The button reflects the real list, not the (cleared) file input: enabled
+  // once two or more files are listed, including after a drag reorder.
+  const mergeBtn = $("mergePdfBtn"); if (mergeBtn) mergeBtn.disabled = mergeOrder.length < 2;
   const list = $("mergeList"); if (!list) return;
   list.innerHTML = "";
   if (!(await ensurePdfJs("mergePdfStatus"))) return;

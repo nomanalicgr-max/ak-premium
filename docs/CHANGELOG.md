@@ -1,5 +1,11 @@
 # AK Premium — Changelog
 
+## v20 — 20 November 2026 (live-test follow-up: Merge button after reorder)
+
+### Fix
+- Merge PDF: after dragging thumbnails to reorder, the Merge PDFs button stayed disabled and no merged file could be produced. The cause was the generic file-button gate, which enables a tool's button from its file input — but Merge PDF clears the input after each pick (so later picks add to the list), leaving the input empty. The gate now skips Merge PDF, and the merge handler enables the button from the real file list (enabled once two or more files are listed, including after a reorder). The button starts disabled on first load, as before.
+- Harness run-v20.js: 346 checks, all passing, including new checks that the Merge button is disabled after one file, enabled after two files, and still enabled after a drag reorder.
+
 ## v19 — 20 November 2026 (2026-11-20 live re-audit fault fixes, round 2: merge accumulate, hero search distinct count, OCR dropdown, pdf hub intro + FAQ)
 
 ### Fixes from the 20 November live re-audit

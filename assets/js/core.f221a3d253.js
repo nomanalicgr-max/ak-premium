@@ -2748,6 +2748,13 @@ LIVE_CALCS.forEach((c) => {
     const fileInput = ws.querySelector('input[type="file"]');
     const btn = ws.querySelector(".btn-primary");
     if (!fileInput || !btn) return;
+    // Merge PDF keeps its own list (mergeOrder) and clears the file input
+    // after each pick, so input.files is empty even when files are listed.
+    // The gate would disable the Merge button after every pick and reorder
+    // (it runs before the merge handler, because core.js loads first); the
+    // merge handler manages the button from mergeOrder instead, and the
+    // merge click handler already guards "at least two files".
+    if (btn.id === "mergePdfBtn") return;
     const update = () => { btn.disabled = !(fileInput.files && fileInput.files.length); };
     fileInput.addEventListener("change", update);
     update();
