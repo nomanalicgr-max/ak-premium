@@ -636,3 +636,5 @@ Pakistan/Urdu tools are added.
 ## v2 — 1 November 2026
 - 62 tools, file preview, auto-fit grid, FAQ fix. GitHub commit
   b67e952, Vercel Production Ready.
+
+v17 re-trigger: re-run Vercel check after quota reset
