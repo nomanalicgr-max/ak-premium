@@ -150,9 +150,10 @@
         "pdf-to-word"
       ],
       "steps": [
-        "Choose two or more PDF files with the file button. Each one shows a thumbnail of its first page.",
+        "Choose two or more PDF files with the file button. Each one shows a thumbnail of its first page. You can add more files later and they join the list instead of replacing it.",
         "Drag the thumbnails into the order you want the pages to appear.",
-        "Press Merge PDFs and download the single combined file."
+        "Press Merge PDFs and download the single combined file.",
+        "The merged file downloads as ak-premium-merged.pdf with every page in the order shown."
       ],
       "content": {
         "use": "People merge PDFs when a report, invoice set or application form is split across several files and needs to be sent as one document. A teacher merges chapter PDFs into one handout, a shop owner merges daily bills into one monthly file, and a student merges assignment pages before uploading them to a portal.",

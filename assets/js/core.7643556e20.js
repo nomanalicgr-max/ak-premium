@@ -428,22 +428,24 @@ function visibleCards() {
 function filterCards() {
   const query = (heroSearch ? heroSearch.value : "").trim();
   const cards = document.querySelectorAll(".tool-card");
-  let visible = 0; const sectionsWithVisible = new Set();
+  let visible = 0; const sectionsWithVisible = new Set(); const seenSlugs = new Set();
   cards.forEach((card) => {
     // Search wins over the PDF tab filter: a trending chip like "VBA Macro Writer"
     // must find its tool even when a PDF tab was active before.
     const show = query ? cardMatches(card, query) : (currentGroup === "all" || card.dataset.group === currentGroup);
     card.style.display = show ? "" : "none";
-    if (show) { visible++; const sec = card.closest(".tool-section"); if (sec) sectionsWithVisible.add(sec.id); }
+    // One tool can render several cards (Popular strip, hub sections), so the
+    // search count uses distinct tools, not card elements.
+    if (show) { visible++; const slug = card.dataset.slug || card.dataset.target; if (slug) seenSlugs.add(slug); const sec = card.closest(".tool-section"); if (sec) sectionsWithVisible.add(sec.id); }
   });
   if (searchStatus) {
     // Search status from the UI strings (Global shell, locales/en.json).
     const tpl = (window.AK_STRINGS && window.AK_STRINGS.search && window.AK_STRINGS.search.found) || "Found {n} tool(s) matching \"{q}\".";
-    searchStatus.textContent = query ? tpl.replace("{n}", String(visible)).replace("{q}", query) : "";
+    searchStatus.textContent = query ? tpl.replace("{n}", String(seenSlugs.size)).replace("{q}", query) : "";
   }
   const noResults = $("noResults");
   if (noResults) {
-    const showEmpty = !!query && visible === 0;
+    const showEmpty = !!query && seenSlugs.size === 0;
     noResults.hidden = !showEmpty;
     if (showEmpty) { const qEl = $("noResultsQuery"); if (qEl) qEl.textContent = query; }
   }

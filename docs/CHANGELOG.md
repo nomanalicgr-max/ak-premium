@@ -1,5 +1,17 @@
 # AK Premium — Changelog
 
+## v19 — 20 November 2026 (2026-11-20 live re-audit fault fixes, round 2: merge accumulate, hero search distinct count, OCR dropdown, pdf hub intro + FAQ)
+
+### Fixes from the 20 November live re-audit
+- Merge PDF now accumulates files: picking more files later adds them to the list instead of replacing it, and picking the same file twice no longer adds a duplicate (files are matched by name, size and last-modified time). The steps on the Merge PDF page now say so. Thumbnails still number 01., 02. and so on.
+- Hero search now counts distinct tools, not cards: searching "merge" reports "Found 1 tool" (Merge PDF appears twice — Popular strip and PDF section — but is one tool), where it used to count both cards.
+- Image to Text language dropdown now shows Latin-only labels (English, Urdu, Arabic, Hindi, English + Urdu) instead of Urdu/Arabic/Hindi script, so the labels render on every device. The language values (eng, urd, ara, hin, eng+urd) are unchanged.
+- PDF Tools hub intro no longer promises Word, Excel and PowerPoint conversions on that page: it now points at the Convert tools hub (/convert-tools) and states honestly that those conversions extract text only. The hub FAQ "Why does PDF to Word only extract text?" is replaced with "What does PDF to Markdown keep from my document?".
+- Harness run-v19.js: 339 checks, all passing, including the new v19 live checks for the merge accumulate behaviour, the hero search distinct count, the OCR dropdown labels and the pdf hub intro + FAQ.
+
+### JavaScript split and testing
+- The per-tool JS split is verified lossless (5,202 code lines, 0 missing/extra). ASSET_V is now "19" (config.js?v=19) and the service-worker cache is "ak-premium-v19".
+
 ## v18 — 20 November 2026 (2026-11-20 live re-audit fixes: hub counts, header-search count, sticky nav, merge-PDF numbering)
 
 ### Fixes from the 20 November live re-audit

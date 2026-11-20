@@ -4,7 +4,15 @@
 
 const mergeInput = $("mergeInput");
 if (mergeInput) mergeInput.addEventListener("change", async () => {
-  mergeOrder = Array.from(mergeInput.files || []);
+  // Accumulate: files picked later join the list instead of replacing it.
+  // The input is cleared after reading, so the reorder handler's synthetic
+  // change event appends nothing and only re-renders the thumbnails.
+  const picked = Array.from(mergeInput.files || []);
+  for (const file of picked) {
+    const dup = mergeOrder.some((f) => f.name === file.name && f.size === file.size && f.lastModified === file.lastModified);
+    if (!dup) mergeOrder.push(file);
+  }
+  mergeInput.value = "";
   const list = $("mergeList"); if (!list) return;
   list.innerHTML = "";
   if (!(await ensurePdfJs("mergePdfStatus"))) return;
