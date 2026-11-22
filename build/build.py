@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "21"  # v21 (2026-11-22): advanced upgrade plan batch 1 — Compress PDF real levels, PDF to Excel table detection with real Excel types, JSON Formatter repair/schema/JSONPath, tax year comparison, EMI/mortgage amortisation schedules.
+ASSET_V = "22"  # v22 (2026-11-22): advanced upgrade plan batch 2 — Markdown Previewer full CommonMark, Image Compressor batch + AVIF + target size, Unit Converter more types + all-units view, JWT Decoder signature verification, e-Sign stamp + real PAdES, PDF to Text layout-aware extraction, PDF to Excel column fix.
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -89,6 +89,9 @@ SRI = {
  "jsonrepair": "sha384-2I3jTKkZ/Kqabhjo6l7hVZMJ7CBTAC/T52HC0PCG9iEry5vIS5qUckwnfztzkn/I",
  "ajv2020": "sha384-vsMiC2R9fcX/SqeA9xJ+Lpbbe1fRi7RDpgHenZH7A8yXAoX+9T4m8MfuwrafZAAL",
  "jsonpath-plus": "sha384-WRNZdkoNW+1xEvqdyoIRVG67lUx2bnGU+UCK7h6NoxSegyWY6t75F/9c7c4h/Tvp",
+ "marked": "sha384-948ahk4ZmxYVYOc+rxN1H2gM1EJ2Duhp7uHtZ4WSLkV4Vtx5MUqnV+l7u9B+jFv+",
+ "marked-footnote": "sha384-eMG0oh50tjGAfa6zAmiAlwrgAO4MmBKb5wosyU0mpQx80qj0fUYCBt1KwO9e8qxp",
+ "forge": "sha384-xE6n3RBMZWgwAhyzoIMfY7HN3oDBa/+HBwFFNyxsdY8kseup7C4Blx1yDzprEESV",
  "xlsx": "sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw",
  "jszip": "sha384-+mbV2IY1Zk/X1p/nWllGySJSUN8uMs+gUAN10Or95UBH0fpj6GfKgPmgC5EXieXG",
  "mammoth": "sha384-nFoSjZIoH3CCp8W639jJyQkuPHinJ2NHe7on1xvlUA7SuGfJAfvMldrsoAVm6ECz",
@@ -557,9 +560,9 @@ ws_replace("tool-pdfword", '''<div class="workspace-tool" id="tool-pdfword">
 
 ws_replace("tool-imgcompress", '''<div class="workspace-tool" id="tool-imgcompress">
 <h2>Image Compressor</h2>
-<input id="imgCompressInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+<input id="imgCompressInput" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple>
 <label>Quality <input id="imgCompressQuality" type="range" min="10" max="100" value="80"> <span id="imgCompressQualityLabel">80%</span></label>
-<label>Format <select id="imgCompressFormat"><option value="jpeg">JPEG (smallest for photos)</option><option value="png">PNG (keeps transparency)</option><option value="webp">WebP (small, good quality)</option></select></label>
+<label>Format <select id="imgCompressFormat"><option value="jpeg">JPEG (smallest for photos)</option><option value="png">PNG (keeps transparency)</option><option value="webp">WebP (small, good quality)</option><option value="avif">AVIF (smallest, Chrome and Edge only)</option></select></label>
 <label>Target size in KB (optional) <input id="imgCompressTargetKB" type="number" min="10" placeholder="Example: 200"></label>
 <button id="imgCompressBtn" type="button" class="btn-primary">Compress Images</button>
 <div id="imgCompressOutput" class="image-output"></div>
@@ -804,6 +807,9 @@ LIB_SCRIPT = {
  # an inline script, because the enforced CSP has no 'unsafe-inline' and
  # would block an inline module script.
  "jsonpath-plus": '<script type="module" src="https://cdn.jsdelivr.net/npm/jsonpath-plus@10.3.0/dist/index-browser-esm.min.js" integrity="' + SRI["jsonpath-plus"] + '" crossorigin="anonymous"></script><script type="module" src="' + HASHED["jsonpath-bridge"] + '"></script>',
+ "marked": '<script defer src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js" integrity="' + SRI["marked"] + '" crossorigin="anonymous"></script>',
+ "marked-footnote": '<script defer src="https://cdn.jsdelivr.net/npm/marked-footnote@1.3.0/dist/index.umd.js" integrity="' + SRI["marked-footnote"] + '" crossorigin="anonymous"></script>',
+ "forge": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js" integrity="' + SRI["forge"] + '" crossorigin="anonymous"></script>',
 }
 
 # Preconnect hosts (Phase 4.3): one <link rel="preconnect"> per CDN host a
@@ -817,6 +823,8 @@ LIB_HOST = {
  "js-yaml": "https://cdn.jsdelivr.net", "md5": "https://cdnjs.cloudflare.com",
  "jsonrepair": "https://cdn.jsdelivr.net", "ajv2020": "https://cdnjs.cloudflare.com",
  "jsonpath-plus": "https://cdn.jsdelivr.net",
+ "marked": "https://cdn.jsdelivr.net", "marked-footnote": "https://cdn.jsdelivr.net",
+ "forge": "https://cdnjs.cloudflare.com",
 }
 
 def esc(x): return html.escape(str(x), quote=True)
@@ -1306,6 +1314,9 @@ def build_info_pages():
         '<li>jsonrepair (used by JSON Formatter to repair broken JSON) \u2014 ISC License</li>'
         '<li>Ajv (used by JSON Formatter to validate JSON Schema) \u2014 MIT License</li>'
         '<li>jsonpath-plus (used by JSON Formatter for JSONPath queries) \u2014 MIT License</li>'
+        '<li>marked (used by Markdown Previewer for full CommonMark rendering) \u2014 MIT License</li>'
+        '<li>marked-footnote (used by Markdown Previewer for footnotes) \u2014 MIT License</li>'
+        '<li>node-forge (used by e-Sign to read .p12 certificates and make detached PKCS#7 signatures) \u2014 BSD-3-Clause License</li>'
         '</ul><h2>Icons and fonts</h2><ul>'
         '<li>Lucide icons \u2014 ISC License</li>'
         '<li>Inter, Plus Jakarta Sans and Noto Nastaliq Urdu fonts \u2014 SIL Open Font License 1.1</li>'
@@ -1511,7 +1522,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v18). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v21";
+const CACHE = "ak-premium-v22";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

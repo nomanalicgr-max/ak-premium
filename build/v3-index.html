@@ -357,6 +357,9 @@
         <div class="workspace-tool" id="tool-pdftext">
           <h2>PDF to Text</h2>
           <input id="pdfTextInput" type="file" accept="application/pdf">
+          <label>Output format
+            <select id="pdfTextFormat"><option value="txt" selected>Plain text (.txt)</option><option value="md">Markdown — headings marked (.md)</option><option value="csv">Tables as CSV (.csv)</option></select>
+          </label>
           <button id="pdfTextBtn" type="button" class="btn-primary">Extract Text</button>
           <p class="status" id="pdfTextStatus"></p>
         </div>
@@ -376,6 +379,32 @@
             <button id="esignClearBtn" type="button" class="btn-secondary">Clear Signature</button>
             <button id="esignDownloadBtn" type="button" class="btn-primary">Download Signature PNG</button>
           </div>
+          <label>Or type your name
+            <input id="esignTyped" type="text" placeholder="Type your name…" autocomplete="off">
+          </label>
+          <button id="esignTypeBtn" type="button" class="btn-secondary">Use Typed Signature</button>
+          <h2>Sign a PDF</h2>
+          <input id="esignPdfInput" type="file" accept="application/pdf">
+          <div class="field-row">
+            <label>Pages
+              <select id="esignPages"><option value="all" selected>All pages</option><option value="first">First page</option><option value="last">Last page</option><option value="custom">One page…</option></select>
+            </label>
+            <label>Page number <input id="esignPageNum" type="number" min="1" placeholder="Page"></label>
+            <label>Position
+              <select id="esignPos"><option value="bottom-right" selected>Bottom right</option><option value="bottom-left">Bottom left</option><option value="top-right">Top right</option><option value="top-left">Top left</option><option value="centre">Centre</option></select>
+            </label>
+            <label>Width (points) <input id="esignWidth" type="number" min="50" max="400" value="150" placeholder="150"></label>
+          </div>
+          <button id="esignStampBtn" type="button" class="btn-primary">Sign PDF &amp; Download</button>
+          <h2>Digital signature (with your own certificate)</h2>
+          <p>Sign with a .p12 certificate file. This adds a real digital signature to the PDF. The signature is self-signed, not issued by a trusted authority, so a PDF reader will show it as signed by your own certificate until that certificate is trusted.</p>
+          <label>Certificate file (.p12 or .pfx)
+            <input id="esignP12Input" type="file" accept=".p12,.pfx,application/x-pkcs12">
+          </label>
+          <label>Certificate password
+            <input id="esignP12Pass" type="password" placeholder="Password for the .p12 file" autocomplete="off">
+          </label>
+          <button id="esignDigitalBtn" type="button" class="btn-primary">Digitally Sign PDF</button>
           <p class="status" id="esignStatus"></p>
         </div>
 
@@ -503,7 +532,13 @@
 
         <div class="workspace-tool" id="tool-imgcompress">
           <h2>Image Compressor</h2>
-          <input id="imgCompressInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+          <input id="imgCompressInput" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple>
+          <div class="field-row">
+            <label>Output format
+              <select id="imgCompressFormat"><option value="jpeg" selected>JPEG</option><option value="png">PNG</option><option value="webp">WebP</option><option value="avif">AVIF</option></select>
+            </label>
+            <label>Target size (KB, optional) <input id="imgCompressTargetKB" type="number" min="10" placeholder="e.g. 500"></label>
+          </div>
           <label>Quality <input id="imgCompressQuality" type="range" min="10" max="100" value="80"> <span id="imgCompressQualityLabel">80%</span></label>
           <button id="imgCompressBtn" type="button" class="btn-primary">Compress Images</button>
           <div id="imgCompressOutput" class="image-output"></div>
@@ -748,7 +783,7 @@
         <div class="workspace-tool" id="tool-unit">
           <h2>Unit Converter</h2>
           <label>Unit type
-            <select id="unitType"><option value="length">Length</option><option value="weight">Weight</option><option value="temperature">Temperature</option><option value="area">Area</option><option value="volume">Volume</option><option value="speed">Speed</option><option value="data">Data</option><option value="time">Time</option><option value="energy">Energy</option></select>
+            <select id="unitType"><option value="length">Length</option><option value="weight">Weight</option><option value="temperature">Temperature</option><option value="area">Area</option><option value="volume">Volume</option><option value="speed">Speed</option><option value="data">Data</option><option value="time">Time</option><option value="energy">Energy</option><option value="pressure">Pressure</option><option value="power">Power</option><option value="fuel">Fuel economy</option><option value="cooking">Cooking</option></select>
           </label>
           <label>Value <input id="unitValue" type="number" placeholder="Value"></label>
           <div class="field-row">
@@ -758,9 +793,23 @@
             <label>To
               <select id="unitTo"><option value="mm">millimetres (mm)</option><option value="cm">centimetres (cm)</option><option value="m">metres (m)</option><option value="km" selected>kilometres (km)</option><option value="in">inches (in)</option><option value="ft">feet (ft)</option><option value="yd">yards (yd)</option><option value="mi">miles (mi)</option></select>
             </label>
+            <button id="unitSwapBtn" type="button" class="btn-secondary" aria-label="Swap from and to units">Swap</button>
+          </div>
+          <div id="unitCookRow" style="display:none">
+            <p>Grams to cups, by ingredient (estimates):</p>
+            <div class="field-row">
+              <label>Ingredient
+                <select id="unitIngredient"><option value="water">Water</option><option value="milk">Milk</option><option value="flour">Flour</option><option value="sugar">Sugar</option><option value="butter">Butter</option><option value="rice">Rice (uncooked)</option><option value="oats">Oats</option><option value="honey">Honey</option><option value="oil">Oil</option><option value="cocoa">Cocoa powder</option></select>
+              </label>
+              <label>Grams <input id="unitGrams" type="number" min="0" placeholder="Grams"></label>
+            </div>
+            <p class="status" id="unitCookOut"></p>
           </div>
           <button id="unitBtn" type="button" class="btn-primary">Convert Units</button>
           <pre id="unitOutput" class="terminal">Result will appear here.</pre>
+          <div id="unitAll"></div>
+          <div id="unitShortcuts"></div>
+          <div id="unitRecent"></div>
           <p class="status" id="unitStatus"></p>
         </div>
 
@@ -1319,6 +1368,11 @@
           <h2>Markdown Previewer</h2>
           <textarea id="mdInput" rows="8" placeholder="Type or paste Markdown here…"></textarea>
           <div id="mdOutput" class="md-preview" aria-live="polite"></div>
+          <p class="status" id="mdStats"></p>
+          <div class="field-row">
+            <button id="mdCopyBtn" type="button" class="btn-secondary">Copy HTML</button>
+            <button id="mdDownloadBtn" type="button" class="btn-secondary">Download HTML</button>
+          </div>
           <p class="status" id="mdStatus"></p>
         </div>
 
@@ -1429,6 +1483,11 @@
           <button id="jwtBtn" type="button" class="btn-primary">Decode Token</button>
           <pre id="jwtOutput" class="terminal">The decoded header and payload will appear here.</pre>
           <button id="jwtCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <label>Secret for the signature check (stays in your browser)
+            <input id="jwtSecret" type="password" placeholder="Paste the HMAC secret…" autocomplete="off">
+          </label>
+          <button id="jwtVerifyBtn" type="button" class="btn-primary">Verify Signature</button>
+          <pre id="jwtVerifyOut" class="terminal">The signature check will appear here.</pre>
           <p class="status" id="jwtStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-hash">
