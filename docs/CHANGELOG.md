@@ -1,5 +1,31 @@
 # AK Premium — Changelog
 
+## v22 — 22 November 2026 (advanced upgrade plan, batch 2: 7 tools)
+
+### Markdown Previewer — full CommonMark
+- The hand-rolled subset is gone: rendering now uses marked (MIT) with GFM tables, task lists and footnotes via marked-footnote, so tables, checkboxes and footnotes all render. Raw HTML in the input is still escaped, never run, and the limit callout says so. Word count and the Download HTML export still work.
+
+### Image Compressor — batch, AVIF, target size
+- Drop many images at once and download them all as one ZIP (JSZip, already in use). AVIF output is offered where the browser can save it; where it cannot, the tool says so honestly instead of failing silently ("cannot save AVIF… Try WebP"). A quality slider shows the before/after size live, and a target-size mode tries to get each image under a chosen size and says when it cannot.
+
+### Unit Converter — more types, all units at once
+- New types: pressure, energy, power, fuel economy and cooking (tsp/tbsp/ml). Type a value once and see every unit in that type together (5 km shows metres, miles, feet and more in one view). A swap button reverses from/to, recent conversions are kept (max 8, in the browser only), and common pair shortcuts are offered. Cooking mode converts grams to cups per ingredient from a density table, labelled as estimates.
+
+### JWT Decoder — signature verification
+- The decoder no longer just decodes: paste a secret and it verifies HS256/HS384/HS512 with the browser's WebCrypto HMAC, showing VERIFIED or INVALID. A token with alg "none" shows a warning and is never called verified, and RS256 (or any asymmetric algorithm) honestly says it cannot be verified here. The secret never leaves the browser.
+
+### e-Sign — stamp and a real digital signature
+- The drawn or typed signature can now be stamped onto chosen pages of a PDF at a chosen spot (pdf-lib), instead of only downloading a PNG. A real digital signature (PAdES) is also possible with a user-supplied .p12 certificate via node-forge (detached PKCS#7, ByteRange patched in place) — verified with openssl smime on a self-signed test certificate. The limit callout is honest: self-signed only, not a CA-trusted qualified signature, and the certificate and password never leave the browser.
+
+### PDF to Text — layout-aware extraction
+- Extraction now uses the positions of words on the page, so a two-column document reads left column first, then right, instead of mixing the columns line by line. Lines that straddle the column gutter are split at the gap. The heading is marked and the output says when a two-column layout was detected.
+
+### PDF to Excel — Total-row column fix
+- A row with empty middle cells no longer collapses left: the Total row of a price list now exports its total in column D (17500), not column B. Found in the v21 live test and fixed here.
+
+### JavaScript split and testing
+- The per-tool JS split is verified lossless (6,429 code lines, 0 missing/extra). ASSET_V is now "22" (config.js?v=22) and the service-worker cache is "ak-premium-v22". Harness run-v22.js: 411 checks, all passing, including 38 new batch-2 checks (Markdown tables/task lists/footnotes + HTML escaping, unit conversions with exact known answers, JWT verify/reject/none, e-Sign stamp page + PAdES openssl verification, PDF to Text column order, PDF to Excel Total-row column).
+
 ## v21 — 22 November 2026 (advanced upgrade plan, batch 1: 6 tools)
 
 ### Compress PDF — real levels
