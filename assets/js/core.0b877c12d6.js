@@ -901,7 +901,206 @@ async function loadPdfLibDoc(file, statusId) {
   const bytes = await readAsArrayBuffer(file);
   return window.PDFLib.PDFDocument.load(bytes);
 }
+/* Parse "1-3, 5, 8-10" (or "all", or empty) into sorted 0-based page
+   indices, validated against the real page count. Returns {pages} or
+   {error}. Unlike parsePageSelection (remove-pages), keeping every page
+   is allowed here. */
+
+function parsePageList(input, count) {
+  const text = String(input || "").trim().toLowerCase();
+  if (!text || text === "all") {
+    const pages = [];
+    for (let i = 0; i < count; i++) pages.push(i);
+    return { pages };
+  }
+  const keep = new Set();
+  const tokens = text.split(",").map((t) => t.trim()).filter(Boolean);
+  if (!tokens.length) return { error: "Please enter page ranges, for example 1-3, 5, 8-10." };
+  for (const token of tokens) {
+    if (token.includes("-")) {
+      const parts = token.split("-").map((x) => x.trim());
+      if (parts.length !== 2) return { error: "Invalid range: " + token + ". Use a range like 4-5." };
+      const a = parseInt(parts[0], 10), b = parseInt(parts[1], 10);
+      if (!a || !b || b < a || a < 1 || b > count) return { error: "Range " + token + " is outside 1 to " + count + "." };
+      for (let i = a; i <= b; i++) keep.add(i - 1);
+    } else {
+      const n = parseInt(token, 10);
+      if (!n || String(n) !== token || n < 1 || n > count) return { error: "Page " + token + " is outside 1 to " + count + "." };
+      keep.add(n - 1);
+    }
+  }
+  return { pages: [...keep].sort((a, b) => a - b) };
+}
+/* PDF outline (bookmarks) via pdf-lib's low-level API. pdf-lib has no
+   high-level outline API, so this reads the catalog /Outlines tree
+   directly. Returns [{title, pageIndex, children}] with 0-based page
+   indices; pageIndex is -1 when the destination could not be resolved
+   (for example a named destination outside the Names tree). */
+
+function pdfOutlineTitleText(titleObj) {
+  if (!titleObj) return "";
+  try { if (typeof titleObj.decodeText === "function") return titleObj.decodeText(); } catch (e) {}
+  try { return String(titleObj.asString ? titleObj.asString() : titleObj); } catch (e) { return ""; }
+}
+
+function pdfFindNamedDest(doc, node, name) {
+  if (!node || typeof node.get !== "function") return null;
+  const PL = window.PDFLib;
+  const names = node.get(PL.PDFName.of("Names"));
+  if (names instanceof PL.PDFArray) {
+    for (let i = 0; i + 1 < names.size(); i += 2) {
+      const n = names.get(i);
+      const nm = n && typeof n.asString === "function" ? n.asString() : String(n);
+      if (nm === name) return names.get(i + 1);
+    }
+  }
+  const kids = node.get(PL.PDFName.of("Kids"));
+  if (kids instanceof PL.PDFArray) {
+    for (let i = 0; i < kids.size(); i++) {
+      const found = pdfFindNamedDest(doc, doc.context.lookup(kids.get(i)), name);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
+function pdfDestPageRef(doc, dest) {
+  if (!dest) return null;
+  const PL = window.PDFLib;
+  if (dest instanceof PL.PDFArray) {
+    const first = dest.get(0);
+    return first instanceof PL.PDFRef ? first : null;
+  }
+  if (dest instanceof PL.PDFName) {
+    const names = doc.catalog.get(PL.PDFName.of("Names"));
+    if (!names) return null;
+    const namesDict = doc.context.lookup(names);
+    if (!namesDict || typeof namesDict.get !== "function") return null;
+    const dests = namesDict.get(PL.PDFName.of("Dests"));
+    if (!dests) return null;
+    const found = pdfFindNamedDest(doc, doc.context.lookup(dests), dest.asString());
+    if (!found) return null;
+    return pdfDestPageRef(doc, found);
+  }
+  return null;
+}
+
+function readPdfOutline(doc) {
+  const out = [];
+  try {
+    const PL = window.PDFLib;
+    const outlinesRef = doc.catalog.get(PL.PDFName.of("Outlines"));
+    if (!outlinesRef) return out;
+    const outlines = doc.context.lookup(outlinesRef);
+    if (!outlines || typeof outlines.get !== "function") return out;
+    const pageRefs = doc.getPages().map((p) => p.ref.toString());
+    const walk = (itemRef, depth) => {
+      if (depth > 10) return null;
+      const item = doc.context.lookup(itemRef);
+      if (!item || typeof item.get !== "function") return null;
+      const title = pdfOutlineTitleText(item.get(PL.PDFName.of("Title")));
+      let dest = item.get(PL.PDFName.of("Dest"));
+      if (!dest) {
+        const action = item.get(PL.PDFName.of("A"));
+        if (action) {
+          const aDict = action instanceof PL.PDFDict ? action : doc.context.lookup(action);
+          if (aDict && typeof aDict.get === "function") dest = aDict.get(PL.PDFName.of("D"));
+        }
+      }
+      const pageRef = pdfDestPageRef(doc, dest);
+      const pageIndex = pageRef ? pageRefs.indexOf(pageRef.toString()) : -1;
+      const node = { title, pageIndex, children: [] };
+      const first = item.get(PL.PDFName.of("First"));
+      if (first) {
+        let cur = first;
+        for (let guard = 0; guard < 500 && cur; guard++) {
+          const child = walk(cur, depth + 1);
+          if (child) node.children.push(child);
+          const curDict = doc.context.lookup(cur);
+          cur = curDict && typeof curDict.get === "function" ? curDict.get(PL.PDFName.of("Next")) : null;
+        }
+      }
+      return node;
+    };
+    const first = outlines.get(PL.PDFName.of("First"));
+    let cur = first;
+    for (let guard = 0; guard < 500 && cur; guard++) {
+      const node = walk(cur, 0);
+      if (node) out.push(node);
+      const curDict = doc.context.lookup(cur);
+      cur = curDict && typeof curDict.get === "function" ? curDict.get(PL.PDFName.of("Next")) : null;
+    }
+  } catch (e) { /* an unreadable outline is not a fatal error; callers skip it */ }
+  return out;
+}
+
+function pdfTitleHex(text) {
+  let hex = "FEFF";
+  for (let i = 0; i < text.length; i++) hex += text.charCodeAt(i).toString(16).padStart(4, "0");
+  return window.PDFLib.PDFHexString.of(hex);
+}
+/* Build a bookmark outline in doc from [{title, pageRef, children}].
+   pageRef must be a page reference in this document. Returns false when
+   the tree is empty. Titles are stored as UTF-16BE so Urdu and other
+   non-Latin titles survive. */
+
+function buildPdfOutline(doc, tree) {
+  const PL = window.PDFLib;
+  const ctx = doc.context;
+  const buildItems = (nodes, parentRef) => {
+    let firstRef = null, prevRef = null, count = 0;
+    for (const node of nodes) {
+      const dict = PL.PDFDict.withContext(ctx);
+      dict.set(PL.PDFName.of("Title"), pdfTitleHex(node.title || "Untitled"));
+      dict.set(PL.PDFName.of("Parent"), parentRef);
+      dict.set(PL.PDFName.of("Dest"), ctx.obj([node.pageRef, PL.PDFName.of("Fit")]));
+      const ref = ctx.register(dict);
+      if (!firstRef) firstRef = ref;
+      if (prevRef) {
+        const prevDict = ctx.lookup(prevRef);
+        prevDict.set(PL.PDFName.of("Next"), ref);
+        dict.set(PL.PDFName.of("Prev"), prevRef);
+      }
+      prevRef = ref;
+      count++;
+      if (node.children && node.children.length) {
+        const sub = buildItems(node.children, ref);
+        dict.set(PL.PDFName.of("First"), sub.firstRef);
+        dict.set(PL.PDFName.of("Last"), sub.lastRef);
+        dict.set(PL.PDFName.of("Count"), PL.PDFNumber.of(sub.count));
+        count += sub.count;
+      }
+    }
+    return { firstRef, lastRef: prevRef, count };
+  };
+  const root = PL.PDFDict.withContext(ctx);
+  const rootRef = ctx.register(root);
+  const top = buildItems(tree, rootRef);
+  if (!top.firstRef) return false;
+  root.set(PL.PDFName.of("Type"), PL.PDFName.of("Outlines"));
+  root.set(PL.PDFName.of("First"), top.firstRef);
+  root.set(PL.PDFName.of("Last"), top.lastRef);
+  root.set(PL.PDFName.of("Count"), PL.PDFNumber.of(top.count));
+  doc.catalog.set(PL.PDFName.of("Outlines"), rootRef);
+  doc.catalog.set(PL.PDFName.of("PageMode"), PL.PDFName.of("UseOutlines"));
+  return true;
+}
+/* Merge entries keep per-file choices: {file, ranges, rotate}. Ranges are
+   typed in the thumbnail (empty = all pages); rotate is 0/90/180/270. */
 let mergeOrder = [];
+
+function splitPartName(title, i) {
+  const slug = String(title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
+  return String(i + 1).padStart(2, "0") + "-" + (slug || ("part-" + (i + 1))) + ".pdf";
+}
+
+function romanNumeral(n) {
+  if (!n || n < 1 || n > 3999) return String(n);
+  const table = [[1000, "m"], [900, "cm"], [500, "d"], [400, "cd"], [100, "c"], [90, "xc"], [50, "l"], [40, "xl"], [10, "x"], [9, "ix"], [5, "v"], [4, "iv"], [1, "i"]];
+  let out = "";
+  for (const [v, s] of table) { while (n >= v) { out += s; n -= v; } }
+  return out;
+}
 
 function sizeChangeNote(oldSize, newSize) {
   const pct = Math.round((1 - newSize / oldSize) * 100);
@@ -2715,29 +2914,79 @@ async function extractPdfTextWithPassword(file, password, statusId) {
 /* Protect / Unlock use qpdf-wasm (real standard AES-256 PDF encryption),
    self-hosted at /vendor/qpdf, run in a Web Worker. The old .akenc
    browser-only encryption is removed completely. */
+let _lastQpdfError = null;
 
-function runQpdf(op, bytes, password, statusId) {
+function getLastQpdfError() { return _lastQpdfError; }
+/* extra: extra message fields for the worker (for example {opts: {...}}
+   for Protect). silent: do not show the error in the status line; the
+   caller reads getLastQpdfError() instead (batch Unlock). For op "info"
+   the promise resolves with the inspection object, not bytes. */
+
+function runQpdf(op, bytes, password, statusId, extra, silent) {
   return new Promise((resolve) => {
+    _lastQpdfError = null;
+    const fail = (code, message) => { _lastQpdfError = code; if (!silent) setError(statusId, message); resolve(null); };
     let worker;
-    try { worker = new Worker("/assets/js/qpdf-worker.js?v=7", { type: "module" }); }
-    catch (e) { setError(statusId, "PDF encryption could not start in this browser. Please try Chrome, Edge or Firefox."); resolve(null); return; }
-    const timer = setTimeout(() => { try { worker.terminate(); } catch (e) {} setError(statusId, "PDF encryption is taking too long. Please try a smaller file."); resolve(null); }, 120000);
+    try { worker = new Worker("/assets/js/qpdf-worker.js?v=8", { type: "module" }); }
+    catch (e) { fail("WORKER_ERROR", "PDF encryption could not start in this browser. Please try Chrome, Edge or Firefox."); return; }
+    const timer = setTimeout(() => { try { worker.terminate(); } catch (e) {} fail("TIMEOUT", "PDF encryption is taking too long. Please try a smaller file."); }, 120000);
     worker.onmessage = (e) => {
       clearTimeout(timer); worker.terminate();
-      if (e.data && e.data.ok) resolve(new Uint8Array(e.data.bytes));
-      else {
+      if (e.data && e.data.ok) {
+        if (op === "info") resolve(e.data.info || null);
+        else resolve(new Uint8Array(e.data.bytes));
+      } else {
         const code = e.data && e.data.error;
-        if (code === "WRONG_PASSWORD") setError(statusId, "Wrong password. Please check the password and try again.");
-        else if (code === "NOT_ENCRYPTED") setError(statusId, "This PDF is not password-protected.");
-        else if (op === "optimize") setError(statusId, "Could not compress this PDF (" + code + "). Please check the file.");
-        else setError(statusId, "Could not process this PDF (" + code + "). Please check the file and password.");
-        resolve(null);
+        if (code === "WRONG_PASSWORD") fail(code, "Wrong password. Please check the password and try again.");
+        else if (code === "NOT_ENCRYPTED") fail(code, "This PDF is not password-protected.");
+        else if (op === "optimize") fail(code, "Could not compress this PDF (" + code + "). Please check the file.");
+        else fail(code, "Could not process this PDF (" + code + "). Please check the file and password.");
       }
     };
-    worker.onerror = () => { clearTimeout(timer); setError(statusId, "PDF encryption could not load. Check your connection and try again."); resolve(null); };
-    worker.postMessage({ op, bytes, password }, [bytes.buffer]);
+    worker.onerror = () => { clearTimeout(timer); fail("WORKER_ERROR", "PDF encryption could not load. Check your connection and try again."); };
+    const msg = { op, bytes, password };
+    if (extra) Object.assign(msg, extra);
+    worker.postMessage(msg, [bytes.buffer]);
   });
 }
+
+async function runQpdfInfo(bytes, password, statusId) {
+  return runQpdf("info", bytes, password || "", statusId);
+}
+/* Human-readable permission lists from a qpdf --json capabilities object.
+   Missing keys are left out (older files may not report them). */
+
+function formatPdfPermissions(caps) {
+  const labels = [
+    ["printhigh", "high-quality printing"],
+    ["printlow", "low-quality printing"],
+    ["extract", "copying text and images"],
+    ["modify", "changing the document"],
+    ["modifyannotations", "adding comments"],
+    ["modifyforms", "filling in forms"],
+    ["modifyassembly", "assembling pages"],
+    ["modifyother", "other changes"],
+    ["accessibility", "screen-reader access"]
+  ];
+  const allowed = [], locked = [];
+  for (const [key, label] of labels) {
+    if (caps[key] === true) allowed.push(label);
+    else if (caps[key] === false) locked.push(label);
+  }
+  return { allowed, locked };
+}
+
+function pdfEncryptionSummary(p) {
+  const bits = p && p.bits ? p.bits : null;
+  const r = p && p.R ? p.R : null;
+  const method = p && p.method ? p.method : "";
+  if (bits && r) return "AES-" + bits + ", revision " + r + (method ? " (" + method + ")" : "");
+  if (r) return "Standard PDF encryption, revision " + r;
+  return "Standard PDF encryption";
+}
+/* Last protection check, keyed by file + password, so Unlock can report
+   which password opened the file without a second worker round-trip. */
+let unlockLastInfo = null;
 
 const navMore = $("navMore"); const moreBtn = $("moreBtn");
 if (moreBtn && navMore) {

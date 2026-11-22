@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "22"  # v22 (2026-11-22): advanced upgrade plan batch 2 — Markdown Previewer full CommonMark, Image Compressor batch + AVIF + target size, Unit Converter more types + all-units view, JWT Decoder signature verification, e-Sign stamp + real PAdES, PDF to Text layout-aware extraction, PDF to Excel column fix.
+ASSET_V = "23"  # v23 (2026-11-23): advanced upgrade plan batch 3 — Merge PDF page ranges + bookmark merge, Split PDF modes, Add Page Numbers options, Add Watermark options, Unlock PDF protection check + batch, Protect PDF permission flags.
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -496,8 +496,12 @@ ws_replace("tool-compress", '''<div class="workspace-tool" id="tool-compress">
 ws_replace("tool-split", '''<div class="workspace-tool" id="tool-split">
 <h2>Split PDF</h2>
 <input id="splitInput" type="file" accept="application/pdf">
-<label>Mode <select id="splitMode"><option value="range">Page ranges</option><option value="every">Extract every page (ZIP)</option></select></label>
-<label>Page ranges <input id="splitRanges" type="text" placeholder="Example: 1-3, 5, 8-10"></label>
+<label>Mode <select id="splitMode"><option value="range">Page ranges</option><option value="every">Extract every page (ZIP)</option><option value="bookmarks">Split by bookmarks (ZIP)</option><option value="everyn">Every N pages (ZIP)</option><option value="chunks">Split into equal parts (ZIP)</option><option value="size">Split by file size (ZIP)</option></select></label>
+<label id="splitRowRanges">Page ranges <input id="splitRanges" type="text" placeholder="Example: 1-3, 5, 8-10"></label>
+<label id="splitRowEveryN" style="display:none">Pages per part <input id="splitEveryN" type="number" min="1" value="5"></label>
+<label id="splitRowChunks" style="display:none">Number of parts <input id="splitChunks" type="number" min="2" value="2"></label>
+<label id="splitRowSize" style="display:none">Max size per part (MB) <input id="splitMaxMB" type="number" min="0.5" step="0.5" value="5"></label>
+<p id="splitRowBookmarks" class="file-limit-note" style="display:none">Splits at each top-level bookmark, so each chapter becomes its own PDF, named after the bookmark.</p>
 <p class="file-limit-note">Files up to 50 MB. Ranges are checked against the real page count.</p>
 <button id="splitPdfBtn" type="button" class="btn-primary">Split PDF</button>
 <p class="status" id="splitPdfStatus" aria-live="polite"></p>
@@ -507,7 +511,8 @@ ws_replace("tool-merge", '''<div class="workspace-tool" id="tool-merge">
 <h2>Merge PDF</h2>
 <input id="mergeInput" type="file" accept="application/pdf" multiple>
 <div id="mergeList" class="thumb-list" aria-label="Files to merge, drag to reorder"></div>
-<p class="file-limit-note">Files up to 50 MB each. Drag the thumbnails to change the order.</p>
+<label>Blank pages between files <input id="mergeBlanks" type="number" min="0" max="5" value="0"></label>
+<p class="file-limit-note">Files up to 50 MB each. Drag the thumbnails to change the order. For each file you can pick which pages to take and rotate them. Bookmarks from your files are kept in the merged PDF when the files have them.</p>
 <button id="mergePdfBtn" type="button" class="btn-primary" disabled>Merge PDFs</button>
 <p class="status" id="mergePdfStatus" aria-live="polite"></p>
 </div>''')
@@ -526,7 +531,14 @@ ws_replace("tool-protect", '''<div class="workspace-tool" id="tool-protect">
 <p>Real standard PDF password encryption (AES-256, qpdf). The file stays a normal .pdf and opens in Acrobat and Chrome with the password you set. Keep the password safe, it cannot be recovered.</p>
 <input id="protectInput" type="file" accept="application/pdf">
 <label>Password <input id="protectPassword" type="password" autocomplete="off" minlength="4"></label>
-<p class="file-limit-note">Files up to 50 MB. The password is used in your browser only and is never sent anywhere.</p>
+<label>Owner password (optional, leave blank to use the same password) <input id="protectOwnerPassword" type="password" autocomplete="off"></label>
+<label>Printing <select id="protectPrint"><option value="full" selected>Allowed, full quality</option><option value="low">Allowed, low quality only</option><option value="none">Not allowed</option></select></label>
+<label><input id="protectAllowCopy" type="checkbox"> Allow copying text and images</label>
+<label><input id="protectAllowForms" type="checkbox"> Allow filling in forms</label>
+<label><input id="protectAllowAnnotate" type="checkbox"> Allow adding comments</label>
+<label><input id="protectAllowAssemble" type="checkbox"> Allow assembling pages (insert, delete, rotate)</label>
+<label><input id="protectAllowModify" type="checkbox"> Allow any other changes</label>
+<p class="file-limit-note">Files up to 50 MB. The password is used in your browser only and is never sent anywhere. Screen-reader access always stays on. By default only printing is allowed: copying, editing and forms are off until you tick them.</p>
 <button id="protectPdfBtn" type="button" class="btn-primary">Protect PDF with Password</button>
 <p class="status" id="protectPdfStatus" aria-live="polite"></p>
 </div>''')
@@ -534,10 +546,54 @@ ws_replace("tool-protect", '''<div class="workspace-tool" id="tool-protect">
 ws_replace("tool-unlock", '''<div class="workspace-tool" id="tool-unlock">
 <h2>Unlock PDF</h2>
 <p>Removes the password from a standard password-protected PDF you own, keeping the original pages and layout. You must know the password. This tool does not guess or crack passwords.</p>
-<input id="unlockInput" type="file" accept="application/pdf">
+<input id="unlockInput" type="file" accept="application/pdf" multiple>
 <label>PDF password <input id="unlockPassword" type="password" autocomplete="off"></label>
+<button id="unlockCheckBtn" type="button" class="btn-secondary">Check Protection</button>
+<pre id="unlockInfo" class="terminal">Protection details will appear here. Choose a file and press Check Protection to see whether it is locked, which password it needs and what is locked.</pre>
+<p class="file-limit-note">Files up to 50 MB each. You can choose several files at once — the same password is tried for each, and the unlocked ones download as one ZIP.</p>
 <button id="unlockPdfBtn" type="button" class="btn-primary">Unlock PDF</button>
 <p class="status" id="unlockPdfStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-numbers", '''<div class="workspace-tool" id="tool-numbers">
+<h2>Add Page Numbers</h2>
+<input id="numbersInput" type="file" accept="application/pdf">
+<label>Position <select id="numbersPosition"><option value="bc" selected>Bottom centre</option><option value="bl">Bottom left</option><option value="br">Bottom right</option><option value="tc">Top centre</option><option value="tl">Top left</option><option value="tr">Top right</option></select></label>
+<div class="field-row">
+<label>Font <select id="numbersFont"><option value="helvetica" selected>Helvetica</option><option value="helvetica-bold">Helvetica Bold</option><option value="times">Times Roman</option><option value="times-bold">Times Roman Bold</option><option value="courier">Courier</option><option value="courier-bold">Courier Bold</option></select></label>
+<label>Size <input id="numbersSize" type="number" min="8" max="36" value="11"></label>
+<label>Colour <input id="numbersColor" type="color" value="#333333"></label>
+</div>
+<label>Number format <select id="numbersFormat"><option value="n" selected>Number only (1, 2, 3)</option><option value="page-n">Page 1, Page 2</option><option value="page-n-of-t">Page 1 of 12</option></select></label>
+<div class="field-row">
+<label>Start numbering at <input id="numbersStart" type="number" min="1" value="1"></label>
+<label>Skip first pages <input id="numbersSkip" type="number" min="0" value="0"></label>
+<label>First pages in roman numerals (0 = none) <input id="numbersRoman" type="number" min="0" value="0"></label>
+</div>
+<p class="file-limit-note">Files up to 50 MB. Numbers are stamped on top of the page, so they may sit over a footer that is already there.</p>
+<button id="pageNumbersBtn" type="button" class="btn-primary">Add Page Numbers</button>
+<p class="status" id="pageNumbersStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-watermark", '''<div class="workspace-tool" id="tool-watermark">
+<h2>Add Watermark</h2>
+<input id="watermarkInput" type="file" accept="application/pdf">
+<label>Watermark type <select id="watermarkKind"><option value="text" selected>Text</option><option value="image">Image (logo)</option></select></label>
+<label id="watermarkTextRow">Watermark text <input id="watermarkText" type="text" placeholder="Example: DRAFT" maxlength="60"></label>
+<label id="watermarkImageRow" style="display:none">Logo image (PNG or JPG) <input id="watermarkImage" type="file" accept="image/png,image/jpeg"></label>
+<label id="watermarkScaleRow" style="display:none">Logo size (% of page width) <input id="watermarkImageScale" type="number" min="10" max="100" value="50"></label>
+<div class="field-row">
+<label>Angle (degrees) <input id="watermarkAngle" type="number" min="-90" max="90" value="-45"></label>
+<label>Size <input id="watermarkSize" type="number" min="12" max="200" value="48"></label>
+<label>Colour <input id="watermarkColor" type="color" value="#808080"></label>
+</div>
+<label>Opacity <input id="watermarkOpacity" type="range" min="0.05" max="0.8" step="0.05" value="0.35"> <span id="watermarkOpacityLabel">35%</span></label>
+<label><input id="watermarkTiled" type="checkbox"> Repeat the watermark across the page (text only)</label>
+<label>Pages <select id="watermarkPages"><option value="all" selected>All pages</option><option value="odd">Odd pages only</option><option value="even">Even pages only</option><option value="range">Page range</option></select></label>
+<label id="watermarkRangeRow" style="display:none">Page range <input id="watermarkPageRange" type="text" placeholder="Example: 1-3, 5"></label>
+<p class="file-limit-note">Files up to 50 MB. A watermark is a visible mark only. It does not password-protect the file or stop someone from copying the text.</p>
+<button id="watermarkBtn" type="button" class="btn-primary">Add Watermark</button>
+<p class="status" id="watermarkStatus" aria-live="polite"></p>
 </div>''')
 
 ws_replace("tool-redact", '''<div class="workspace-tool" id="tool-redact">
@@ -1522,7 +1578,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v18). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v22";
+const CACHE = "ak-premium-v23";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
