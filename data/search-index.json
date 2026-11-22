@@ -70,7 +70,10 @@
    "keywords": [
     "reorder pages",
     "rearrange pdf",
-    "sort pages"
+    "sort pages",
+    "split pdf page",
+    "duplicate page",
+    "extract pages"
    ],
    "icon": "i-layout-grid",
    "iconClass": "",
@@ -84,7 +87,9 @@
    "category": "pdf",
    "keywords": [
     "delete pages",
-    "remove pdf pages"
+    "remove pdf pages",
+    "remove blank pages",
+    "delete blank pages"
    ],
    "icon": "i-file-minus",
    "iconClass": "",
@@ -98,7 +103,10 @@
    "category": "pdf",
    "keywords": [
     "turn pages",
-    "flip pdf"
+    "flip pdf",
+    "rotate one page",
+    "deskew pdf",
+    "auto rotate pdf"
    ],
    "icon": "i-rotate-cw",
    "iconClass": "",
@@ -141,7 +149,9 @@
    "keywords": [
     "write on pdf",
     "annotate pdf",
-    "add text to pdf"
+    "add text to pdf",
+    "white out pdf",
+    "correct pdf text"
    ],
    "icon": "i-file-pen",
    "iconClass": "",
@@ -244,7 +254,10 @@
    "category": "pdf",
    "keywords": [
     "trim pdf",
-    "crop margins"
+    "crop margins",
+    "crop one side",
+    "remove white borders",
+    "crop to a4"
    ],
    "icon": "i-crop",
    "iconClass": "",
@@ -259,7 +272,10 @@
    "keywords": [
     "black out text",
     "hide text",
-    "remove sensitive text"
+    "remove sensitive text",
+    "redact cnic",
+    "redact email",
+    "redact scanned pdf"
    ],
    "icon": "i-eye-off",
    "iconClass": "",
