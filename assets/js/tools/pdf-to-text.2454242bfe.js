@@ -1,6 +1,6 @@
 /* AK Premium v12 — pdf-to-text (split from app.js). Loads after core.js, only on its own tool page. */
 
-/* ---------- New PDF tools: Remove Pages + Add Watermark ---------- */
+/* ---------- Remove Pages: visual picker, blank-page and text search ---------- */
 
 const pdfTextBtn = $("pdfTextBtn");
 if (pdfTextBtn) pdfTextBtn.addEventListener("click", async () => {

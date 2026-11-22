@@ -1,6 +1,6 @@
 /* AK Premium v12 — compress-pdf (split from app.js). Loads after core.js, only on its own tool page. */
 
-/* ---------- PDF Studio ---------- */
+/* ---------- Rotate PDF: per-page picker, OSD auto-rotate, deskew ---------- */
 
 const compressQuality = $("compressQuality");
 if (compressQuality) compressQuality.addEventListener("input", () => {

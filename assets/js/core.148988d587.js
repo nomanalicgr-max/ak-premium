@@ -1094,6 +1094,14 @@ function splitPartName(title, i) {
   return String(i + 1).padStart(2, "0") + "-" + (slug || ("part-" + (i + 1))) + ".pdf";
 }
 
+let rotAngles = []; /* per-page angle (0/90/180/270), filled when the picker renders */
+let rotPdf = null; /* pdf.js document for the picked file */
+/* Score a candidate deskew angle: rotate the dark pixels by the angle and
+   measure how strongly they line up into horizontal rows (sum of squared
+   row counts). Pure, unit-testable. */
+
+/* ---------- Rotate PDF: per-page picker, OSD auto-rotate, deskew ---------- */
+
 function romanNumeral(n) {
   if (!n || n < 1 || n > 3999) return String(n);
   const table = [[1000, "m"], [900, "cm"], [500, "d"], [400, "cd"], [100, "c"], [90, "xc"], [50, "l"], [40, "xl"], [10, "x"], [9, "ix"], [5, "v"], [4, "iv"], [1, "i"]];
@@ -1263,6 +1271,21 @@ function parsePageSelection(input, count) {
   if (remove.size >= count) return { error: "You cannot remove every page. Keep at least one page." };
   return { remove };
 }
+
+/* Compact [1,2,3,5] to "1-3, 5" for the page list box. */
+
+/* ---------- Remove Pages: visual picker, blank-page and text search ---------- */
+
+function countInkPixels(imageData) {
+  const d = imageData.data || [];
+  let ink = 0;
+  for (let i = 0; i + 3 < d.length; i += 4) {
+    if (d[i] < 200 || d[i + 1] < 200 || d[i + 2] < 200) ink++;
+  }
+  return ink;
+}
+let removePagesPdf = null; /* pdf.js document, kept while the picker is shown */
+let removePagesSelected = new Set(); /* 1-based page numbers */
 
 async function extractPdfLayout(file, statusId) {
   if (!(await ensurePdfJs(statusId))) return null;
@@ -2988,6 +3011,32 @@ function pdfEncryptionSummary(p) {
    which password opened the file without a second worker round-trip. */
 let unlockLastInfo = null;
 
+function inkBBoxFromImageData(imageData) {
+  const d = imageData.data || [];
+  const w = imageData.width || 0, h = imageData.height || 0;
+  let x0 = w, y0 = h, x1 = -1, y1 = -1;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      if (d[i] < 200 || d[i + 1] < 200 || d[i + 2] < 200) {
+        if (x < x0) x0 = x; if (x > x1) x1 = x;
+        if (y < y0) y0 = y; if (y > y1) y1 = y;
+      }
+    }
+  }
+  if (x1 < 0) return null;
+  return { x0, y0, x1, y1 };
+}
+/* Centred crop box for a target width/height ratio. Pure, unit-testable. */
+
+const REDACT_PATTERNS = {
+  email: "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}",
+  phone: "(?:\\+92[\\s-]?3\\d{2}[\\s-]?\\d{7}|03\\d{2}[\\s-]?\\d{7}|(?:\\+\\d{1,3}[\\s-]?)?\\(?\\d{2,4}\\)?[\\s-]?\\d{3,4}[\\s-]?\\d{4})",
+  cnic: "\\d{5}-\\d{7}-\\d",
+  iban: "[A-Z]{2}\\d{2}[A-Z0-9]{11,30}",
+  date: "(?:\\d{1,2}[/\\-.]\\d{1,2}[/\\-.]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
+};
+
 const navMore = $("navMore"); const moreBtn = $("moreBtn");
 if (moreBtn && navMore) {
   moreBtn.addEventListener("click", (e) => {
@@ -3175,7 +3224,9 @@ function canvasToBlob(canvas, type, quality) {
   return new Promise((resolve) => canvas.toBlob(resolve, type, quality));
 }
 
-let organizePages = []; /* [{index (0-based), rotation}] */
+let organizePages = []; /* [{index (0-based), rotation, blank, split}] */
+let organizeSelected = new Set(); /* positions in organizePages, for "Download selected pages" */
+let organizeFileKey = ""; /* rebuild the page list only when a new file is picked */
 
 /* ---------- Phase 1 handlers: Image ---------- */
 

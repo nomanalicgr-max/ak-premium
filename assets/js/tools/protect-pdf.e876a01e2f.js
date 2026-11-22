@@ -33,3 +33,6 @@ if (protectPdfBtn) protectPdfBtn.addEventListener("click", async () => {
   });
   setStatus("protectPdfStatus", "Done. Standard password-protected PDF downloaded (" + humanBytes(file.size) + " to " + humanBytes(out.length) + "). It opens in Acrobat and Chrome with this password. Keep the password safe, it cannot be recovered." + (ownerPassword && ownerPassword !== password ? " The owner password is different from the user password." : "") + (perm.locked.length ? " Not allowed: " + perm.locked.join(", ") + "." : ""));
 });
+
+/* Ink bounding box in an ImageData object (pixel units), or null when the
+   page has no ink. Pure, unit-testable. */

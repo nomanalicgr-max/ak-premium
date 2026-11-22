@@ -37,9 +37,46 @@ CORE_NAMES = {
     'loadTaxData', 'calcSalaryTax', 'numToWordsEn', 'numToWordsUr',
     'addWrappedTextPaginatedFrom', 'initCategoryFromHash', 'activateToolPageWorkspace',
 }
+# Pure helpers used by exactly ONE tool -> that tool's bundle, not core.
+# (countInkPixels / inkBBoxFromImageData stay in core: remove-pages AND
+# crop-pdf both call them. A helper in a tool bundle is still visible to
+# that tool's page, which loads core.js first and then its own bundle.)
+TOOL_NAMES = {
+    'deskewBestAngle': 'rotate-pdf',
+    'vectorBlankText': 'redact-pdf',
+    'wrapTextToWidth': 'edit-pdf',
+    'cropBoxFromRatio': 'crop-pdf',
+    'rangesFromPages': 'remove-pages',
+}
+# Load-time const lookups of DYNAMICALLY created controls -> that tool's
+# bundle, not core. The split routes a chunk by the ids it touches, but
+# ids created by JS (innerHTML of a wrapper div) are invisible to
+# dump-id2slug.py, so such a chunk has no known slug and falls through to
+# core — where it runs BEFORE the tool bundle creates the element, the
+# lookup returns null, the guarded `if (el)` skips the listener, and the
+# control silently does nothing. (Found in v24: the remove-pages blank/
+# search buttons, the rotate auto-rotate/deskew buttons, the crop scope
+# select and the edit font select were all dead in the split build while
+# the unsplit probe passed. A chunk that references at least one STATIC id
+# of the tool routes correctly on its own — e.g. rdPatternSel, which also
+# touches the static redactText id — so only the pure-dynamic ones are
+# listed here.)
+TOOL_CONSTS = {
+    'rotAutoBtn': 'rotate-pdf',
+    'rotDeskewBtn': 'rotate-pdf',
+    'rmSearchBtn': 'remove-pages',
+    'rmBlankBtn': 'remove-pages',
+    'crScopeEl': 'crop-pdf',
+    'edFontSel': 'edit-pdf',
+}
 # data tables that live inside a tool section but are read by core helpers
 # (loadTaxData reads TAX_SLABS_FALLBACK; numToWordsEn reads ONES_EN/TENS_EN).
-CORE_CONSTS = {'TAX_SLABS_FALLBACK', 'ONES_EN', 'TENS_EN', 'TAX_DATA'}  # also let TAX_DATA (loadTaxData in core reads it)
+CORE_CONSTS = {'TAX_SLABS_FALLBACK', 'ONES_EN', 'TENS_EN', 'TAX_DATA', 'REDACT_PATTERNS'}  # also let TAX_DATA (loadTaxData in core reads it)
+# REDACT_PATTERNS: the table is declared at the tail of the crop section
+# (app.js ~5653), so without hoisting it rides inside the cropPdfBtn chunk
+# into tools/crop-pdf.js — but only redact-pdf.js reads it, so the redact
+# page threw "REDACT_PATTERNS is not defined" whenever a pattern was
+# chosen. Hoisting it to core (loaded on every page) fixes it.
 def hoist_core_consts(chunk_lines):
     """Pull CORE_CONSTS statements out of a chunk; return (kept, hoisted)."""
     kept, hoisted, i = [], [], 0
@@ -127,6 +164,10 @@ for j in range(len(secs) - 1):
         # or ids from two tools mean shared code -> core.
         if name in CORE_NAMES:
             target = 'core'
+        elif name in TOOL_NAMES:
+            target = 'tool-' + TOOL_NAMES[name]
+        elif name in TOOL_CONSTS:
+            target = 'tool-' + TOOL_CONSTS[name]
         elif name in TASKS_MAP:
             target = 'tool-' + TASKS_MAP[name]
         elif has_shared or len(slugs) > 1:

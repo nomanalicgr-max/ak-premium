@@ -1,6 +1,6 @@
 /* AK Premium v12 — pdf-to-png (split from app.js). Loads after core.js, only on its own tool page. */
 
-/* ---------- New PDF tools: Remove Pages + Add Watermark ---------- */
+/* ---------- Remove Pages: visual picker, blank-page and text search ---------- */
 
 const pdfToPngBtn = $("pdfToPngBtn");
 if (pdfToPngBtn) pdfToPngBtn.addEventListener("click", async () => {
