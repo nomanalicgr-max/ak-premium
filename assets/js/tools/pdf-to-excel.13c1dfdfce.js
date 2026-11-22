@@ -51,7 +51,10 @@ if (pdfExcelDownloadBtn) pdfExcelDownloadBtn.addEventListener("click", () => {
     chosen.forEach((tb, n) => {
       const aoa = tb.rows.map((row) => {
         const out = [];
-        row.forEach((c) => { if (c) out.push(excelCellValue(c.text)); });
+        /* Empty cells keep their column: a blank cell is pushed as an empty
+           string, never skipped, so a Total row with empty Qty and Price
+           still puts its total in the Total column. */
+        row.forEach((c) => { out.push(c ? excelCellValue(c.text) : ""); });
         return out;
       });
       const ws = window.XLSX.utils.aoa_to_sheet(aoa);

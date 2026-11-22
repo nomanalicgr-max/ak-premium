@@ -234,7 +234,10 @@ const LIB_URLS = {
   "js-yaml": "https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js",
   "md5": "https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js",
   "jsonrepair": "https://cdn.jsdelivr.net/npm/jsonrepair@3.11.0/lib/umd/jsonrepair.min.js",
-  "ajv2020": "https://cdnjs.cloudflare.com/ajax/libs/ajv/8.17.1/ajv2020.min.js"
+  "ajv2020": "https://cdnjs.cloudflare.com/ajax/libs/ajv/8.17.1/ajv2020.min.js",
+  "marked": "https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js",
+  "marked-footnote": "https://cdn.jsdelivr.net/npm/marked-footnote@1.3.0/dist/index.umd.js",
+  "forge": "https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"
 };
 /* SRI hashes for the pinned libraries above (Phase 4.2); same values as
    build.py. The docx URL was corrected at the same time: docx@8.5.0
@@ -254,11 +257,14 @@ const LIB_SRI = {
   "js-yaml": "sha384-+pxiN6T7yvpryuJmE1gM9PX7yQit15auDb+ZwwvJOd/4be2Cie5/IuVXgQb/S9du",
   "md5": "sha384-WAahC3S+69Co45zyyuhCjvdMwo7a42Yn0mM0IgZIUlYNebG24AVkPUltj3BQnM85",
   "jsonrepair": "sha384-2I3jTKkZ/Kqabhjo6l7hVZMJ7CBTAC/T52HC0PCG9iEry5vIS5qUckwnfztzkn/I",
-  "ajv2020": "sha384-vsMiC2R9fcX/SqeA9xJ+Lpbbe1fRi7RDpgHenZH7A8yXAoX+9T4m8MfuwrafZAAL"
+  "ajv2020": "sha384-vsMiC2R9fcX/SqeA9xJ+Lpbbe1fRi7RDpgHenZH7A8yXAoX+9T4m8MfuwrafZAAL",
+  "marked": "sha384-948ahk4ZmxYVYOc+rxN1H2gM1EJ2Duhp7uHtZ4WSLkV4Vtx5MUqnV+l7u9B+jFv+",
+  "marked-footnote": "sha384-eMG0oh50tjGAfa6zAmiAlwrgAO4MmBKb5wosyU0mpQx80qj0fUYCBt1KwO9e8qxp",
+  "forge": "sha384-xE6n3RBMZWgwAhyzoIMfY7HN3oDBa/+HBwFFNyxsdY8kseup7C4Blx1yDzprEESV"
 };
 const _libLoaded = {};
 function loadLibrary(name, statusId) {
-  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "qrcode" ? "QRCode" : name === "js-yaml" ? "jsyaml" : name === "jsonrepair" ? "JSONRepair" : name] || _libLoaded[name]) return Promise.resolve(true);
+  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "qrcode" ? "QRCode" : name === "js-yaml" ? "jsyaml" : name === "jsonrepair" ? "JSONRepair" : name === "marked-footnote" ? "markedFootnote" : name] || _libLoaded[name]) return Promise.resolve(true);
   return new Promise((resolve) => {
     const sc = document.createElement("script");
     sc.src = LIB_URLS[name]; sc.async = true;
@@ -1059,7 +1065,7 @@ function parsePageSelection(input, count) {
   return { remove };
 }
 
-async function extractPdfLines(file, statusId) {
+async function extractPdfLayout(file, statusId) {
   if (!(await ensurePdfJs(statusId))) return null;
   const bytes = await readAsArrayBuffer(file);
   const pdf = await window.pdfjsLib.getDocument({ data: bytes }).promise;
@@ -1079,9 +1085,79 @@ async function extractPdfLines(file, statusId) {
       line.items.push(it);
     }
     lines.forEach((l) => { l.items.sort((a, b) => a.x - b.x); l.text = l.items.map((i) => i.str).join(" ").replace(/\s+/g, " ").trim(); });
-    pages.push({ page: i, lines: lines.filter((l) => l.text) });
+    const kept = lines.filter((l) => l.text);
+    /* Heading flag: a short line set in a clearly larger size than the
+       page's usual text. */
+    const heights = items.map((it) => it.h).sort((a, b) => a - b);
+    const medH = heights.length ? heights[Math.floor(heights.length / 2)] : 12;
+    kept.forEach((l) => {
+      const maxH = Math.max.apply(null, l.items.map((it) => it.h));
+      l.heading = maxH >= medH * 1.3 && l.text.length <= 120;
+    });
+    /* Column break: a vertical gap wider than 40pt that appears at nearly
+       the same x on at least half of the multi-item lines. */
+    let splitX = null;
+    const breaks = [];
+    kept.forEach((l) => {
+      for (let k = 1; k < l.items.length; k++) {
+        const gap = l.items[k].x - (l.items[k - 1].x + l.items[k - 1].w);
+        if (gap > 40) breaks.push((l.items[k - 1].x + l.items[k - 1].w + l.items[k].x) / 2);
+      }
+    });
+    if (breaks.length) {
+      breaks.sort((a, b) => a - b);
+      let best = null, bestCount = 0, run = [breaks[0]];
+      for (let k = 1; k <= breaks.length; k++) {
+        if (k < breaks.length && breaks[k] - breaks[k - 1] <= 10) { run.push(breaks[k]); continue; }
+        if (run.length > bestCount) { bestCount = run.length; best = run; }
+        run = k < breaks.length ? [breaks[k]] : [];
+      }
+      const multiLines = kept.filter((l) => l.items.length > 1).length;
+      if (best && bestCount >= Math.max(2, Math.ceil(multiLines / 2))) splitX = best.reduce((s, v) => s + v, 0) / best.length;
+    }
+    /* Split a line that straddles the column gutter at a wide gap, so the
+       left-column words and the right-column words read as separate lines.
+       A heading or a line with no wide gap across the gutter stays whole. */
+    if (splitX !== null) {
+      const split = [];
+      kept.forEach((l) => {
+        let cut = -1;
+        if (!l.heading) {
+          for (let k = 1; k < l.items.length; k++) {
+            const gap = l.items[k].x - (l.items[k - 1].x + l.items[k - 1].w);
+            if (gap > 40 && l.items[k - 1].x + l.items[k - 1].w <= splitX && l.items[k].x >= splitX) { cut = k; break; }
+          }
+        }
+        if (cut === -1) { split.push(l); return; }
+        const mk = (items) => ({ y: l.y, items, text: items.map((i) => i.str).join(" ").replace(/\s+/g, " ").trim(), heading: false });
+        split.push(mk(l.items.slice(0, cut)), mk(l.items.slice(cut)));
+      });
+      kept.length = 0;
+      kept.push.apply(kept, split);
+    }
+    kept.forEach((l) => { l.col = splitX === null ? 0 : (l.items[0].x < splitX ? 0 : 1); });
+    kept.sort((a, b) => (a.col - b.col) || (b.y - a.y));
+    pages.push({ page: i, lines: kept, columns: splitX === null ? 1 : 2 });
   }
   return pages;
+}
+/* Group pdf.js text items into lines by y-coordinate (within 3pt) and sort
+   each line by x, so paragraphs and simple tables keep their shape instead
+   of collapsing into one long string. Returns [{page, lines:[{y, text, items}]}].
+   Lines come back in layout order: on a two-column page the left column
+   reads first, then the right column. */
+
+async function extractPdfLines(file, statusId) {
+  const layout = await extractPdfLayout(file, statusId);
+  if (!layout) return null;
+  return layout.map((pg) => ({ page: pg.page, lines: pg.lines.map((l) => ({ y: l.y, text: l.text, items: l.items })) }));
+}
+/* Quote one cell for CSV output: wrap in quotes when it holds a comma, a
+   quote or a line break, and double any quotes inside. */
+
+function csvCell(s) {
+  const t = String(s == null ? "" : s);
+  return /[",\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
 }
 
 function splitLineIntoColumns(line) {
@@ -1158,6 +1234,101 @@ async function renderPdfPagesToImages(file, format, statusId, outputEl) {
     }
   } catch (e) { if (!setPdfError(statusId, e)) setError(statusId, "Could not render this PDF to images. Please check the file."); }
 }
+
+/* ---------- e-Sign canvas ---------- */
+
+async function digitallySignPdf(file, p12File, password, statusId) {
+  const forge = window.forge;
+  if (!forge) {
+    setError(statusId, "The signing library did not load. Check your connection and try again.");
+    return null;
+  }
+  let key, cert;
+  try {
+    const buf = forge.util.createBuffer(new Uint8Array(await p12File.arrayBuffer()));
+    const p12 = forge.pkcs12.pkcs12FromAsn1(forge.asn1.fromDer(buf), password || "");
+    const keyBags = p12.getBags({ bagType: forge.pki.oids.pkcs8ShroudedKeyBag })[forge.pki.oids.pkcs8ShroudedKeyBag] || [];
+    const certBags = p12.getBags({ bagType: forge.pki.oids.certBag })[forge.pki.oids.certBag] || [];
+    if (!keyBags.length || !keyBags[0].key) throw new Error("No private key was found in this .p12 file.");
+    if (!certBags.length || !certBags[0].cert) throw new Error("No certificate was found in this .p12 file.");
+    key = keyBags[0].key; cert = certBags[0].cert;
+  } catch (e) {
+    if (e.message && /key|certificate/.test(e.message)) throw e;
+    throw new Error("Could not read this .p12 file. Check the password and that the file is a PKCS#12 certificate.");
+  }
+  const doc = await loadPdfLibDoc(file, statusId);
+  if (!doc) return null;
+  const L = window.PDFLib;
+  const numArray = (nums) => { const arr = L.PDFArray.withContext(doc.context); nums.forEach((n) => arr.push(L.PDFNumber.of(n))); return arr; };
+  const refArray = (refs) => { const arr = L.PDFArray.withContext(doc.context); refs.forEach((r) => arr.push(r)); return arr; };
+  const sigDict = L.PDFDict.withContext(doc.context);
+  sigDict.set(L.PDFName.of("Type"), L.PDFName.of("Sig"));
+  sigDict.set(L.PDFName.of("Filter"), L.PDFName.of("Adobe.PPKLite"));
+  sigDict.set(L.PDFName.of("SubFilter"), L.PDFName.of("adbe.pkcs7.detached"));
+  sigDict.set(L.PDFName.of("ByteRange"), numArray([0, 0, 0, 0]));
+  sigDict.set(L.PDFName.of("Contents"), L.PDFHexString.of("A".repeat(ESIGN_SIG_PLACEHOLDER_HEX)));
+  const sigRef = doc.context.register(sigDict);
+  const widgetDict = L.PDFDict.withContext(doc.context);
+  widgetDict.set(L.PDFName.of("Type"), L.PDFName.of("Annot"));
+  widgetDict.set(L.PDFName.of("Subtype"), L.PDFName.of("Widget"));
+  widgetDict.set(L.PDFName.of("FT"), L.PDFName.of("Sig"));
+  widgetDict.set(L.PDFName.of("T"), L.PDFString.of("Signature1"));
+  widgetDict.set(L.PDFName.of("Rect"), numArray([0, 0, 0, 0]));
+  widgetDict.set(L.PDFName.of("V"), sigRef);
+  widgetDict.set(L.PDFName.of("F"), L.PDFNumber.of(4));
+  const widgetRef = doc.context.register(widgetDict);
+  const acroForm = L.PDFDict.withContext(doc.context);
+  acroForm.set(L.PDFName.of("Fields"), refArray([widgetRef]));
+  acroForm.set(L.PDFName.of("SigFlags"), L.PDFNumber.of(3));
+  doc.catalog.set(L.PDFName.of("AcroForm"), doc.context.register(acroForm));
+  const pages = doc.getPages();
+  if (!pages.length) throw new Error("This PDF has no pages.");
+  const existingAnnots = pages[0].node.Annots();
+  if (existingAnnots) existingAnnots.push(widgetRef);
+  else pages[0].node.set(L.PDFName.of("Annots"), refArray([widgetRef]));
+  let bytes = new Uint8Array(await doc.save({ useObjectStreams: false }));
+  const toStr = (b) => { let s = ""; const chunk = 8192; for (let i = 0; i < b.length; i += chunk) s += String.fromCharCode.apply(null, b.subarray(i, i + chunk)); return s; };
+  const fromStr = (s) => { const b = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i) & 0xff; return b; };
+  let s = toStr(bytes);
+  const brShort = "/ByteRange [ 0 0 0 0 ]";
+  const brWide = "/ByteRange [ 0 0000000000 0000000000 0000000000 ]";
+  const brIdx = s.indexOf(brShort);
+  if (brIdx === -1) throw new Error("Could not prepare the signature field. Please try a different PDF.");
+  s = s.slice(0, brIdx) + brWide + s.slice(brIdx + brShort.length);
+  bytes = fromStr(s);
+  s = toStr(bytes);
+  const hexRun = "A".repeat(ESIGN_SIG_PLACEHOLDER_HEX);
+  const cIdx = s.indexOf("<" + hexRun + ">");
+  if (cIdx === -1) throw new Error("Could not prepare the signature field. Please try a different PDF.");
+  const contentsStart = cIdx;
+  const contentsEnd = cIdx + hexRun.length + 2;
+  const brFinal = "/ByteRange [ 0 " + String(contentsStart).padStart(10, "0") + " " + String(contentsEnd).padStart(10, "0") + " " + String(bytes.length - contentsEnd).padStart(10, "0") + " ]";
+  const brWideRe = /\/ByteRange \[ 0 0000000000 0000000000 0000000000 \]/;
+  if (!brWideRe.test(s)) throw new Error("Could not prepare the signature field. Please try a different PDF.");
+  s = s.replace(brWideRe, brFinal);
+  bytes = fromStr(s);
+  const signed = new Uint8Array(contentsStart + (bytes.length - contentsEnd));
+  signed.set(bytes.subarray(0, contentsStart), 0);
+  signed.set(bytes.subarray(contentsEnd), contentsStart);
+  const p7 = forge.pkcs7.createSignedData();
+  p7.content = forge.util.createBuffer(signed);
+  p7.addCertificate(cert);
+  p7.addSigner({ key, certificate: cert, digestAlgorithm: forge.pki.oids.sha256, authenticatedAttributes: [{ type: forge.pki.oids.contentType, value: forge.pki.oids.data }, { type: forge.pki.oids.messageDigest }, { type: forge.pki.oids.signingTime, value: new Date() }] });
+  p7.sign({ detached: true });
+  const der = forge.asn1.toDer(p7.toAsn1()).getBytes();
+  if (der.length * 2 > ESIGN_SIG_PLACEHOLDER_HEX) throw new Error("This certificate's signature is too large for the signature field. Try a certificate with a shorter chain.");
+  const derHex = forge.util.bytesToHex(der).toUpperCase();
+  const padded = (derHex + "0".repeat(ESIGN_SIG_PLACEHOLDER_HEX)).slice(0, ESIGN_SIG_PLACEHOLDER_HEX);
+  s = toStr(bytes);
+  const cIdx2 = s.indexOf("<" + hexRun + ">");
+  if (cIdx2 === -1) throw new Error("Could not finish the signature. Please try again.");
+  s = s.slice(0, cIdx2 + 1) + padded + s.slice(cIdx2 + 1 + hexRun.length);
+  return fromStr(s);
+}
+
+/* Stamp the drawn or typed signature onto chosen pages of a PDF, at a
+   chosen spot, with pdf-lib. This is a picture of the signature, not a
+   certificate-based digital signature. */
 
 /* PDF to Excel (advanced): real tables from the pdf.js x/y grid, not word
    gaps. Rows are clustered by baseline, columns by shared left edges, and
@@ -1435,7 +1606,11 @@ const UNIT_DEFS = {
   speed: [["mps", "metres per second"], ["kph", "kilometres per hour"], ["mph", "miles per hour"], ["kn", "knots"]],
   data: [["b", "bytes"], ["kb", "kilobytes"], ["mb", "megabytes"], ["gb", "gigabytes"], ["tb", "terabytes"]],
   time: [["s", "seconds"], ["min", "minutes"], ["h", "hours"], ["day", "days"], ["week", "weeks"]],
-  energy: [["j", "joules"], ["kj", "kilojoules"], ["cal", "calories"], ["kcal", "kilocalories"], ["kwh", "kilowatt-hours"]]
+  energy: [["j", "joules"], ["kj", "kilojoules"], ["cal", "calories"], ["kcal", "kilocalories"], ["kwh", "kilowatt-hours"]],
+  pressure: [["pa", "pascals"], ["kpa", "kilopascals"], ["bar", "bar"], ["psi", "pounds per square inch"], ["atm", "atmospheres"], ["mmhg", "millimetres of mercury"]],
+  power: [["w", "watts"], ["kw", "kilowatts"], ["hp", "horsepower"], ["mw", "megawatts"]],
+  fuel: [["l100km", "litres per 100 km"], ["kml", "kilometres per litre"], ["mpgus", "miles per gallon (US)"], ["mpguk", "miles per gallon (UK)"]],
+  cooking: [["tsp", "teaspoons"], ["tbsp", "tablespoons"], ["ml", "millilitres"], ["cup", "US cups"], ["l", "litres"]]
 };
 const UNIT_FACTORS = {
   length: { mm: 0.001, cm: 0.01, m: 1, km: 1000, in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.344 },
@@ -1445,9 +1620,16 @@ const UNIT_FACTORS = {
   speed: { mps: 1, kph: 0.2777777777777778, mph: 0.44704, kn: 0.5144444444444445 },
   data: { b: 1, kb: 1024, mb: 1048576, gb: 1073741824, tb: 1099511627776 },
   time: { s: 1, min: 60, h: 3600, day: 86400, week: 604800 },
-  energy: { j: 1, kj: 1000, cal: 4.184, kcal: 4184, kwh: 3600000 }
+  energy: { j: 1, kj: 1000, cal: 4.184, kcal: 4184, kwh: 3600000 },
+  pressure: { pa: 1, kpa: 1000, bar: 100000, psi: 6894.757293168, atm: 101325, mmhg: 133.322387415 },
+  power: { w: 1, kw: 1000, hp: 745.699872, mw: 1000000 },
+  cooking: { tsp: 4.92892159375, tbsp: 14.78676478125, ml: 1, cup: 236.5882365, l: 1000 }
 };
-const UNIT_SHORT = { mm: "mm", cm: "cm", m: "m", km: "km", in: "in", ft: "ft", yd: "yd", mi: "mi", g: "g", kg: "kg", t: "t", oz: "oz", lb: "lb", st: "st", c: "°C", f: "°F", k: "K", sqm: "m²", sqkm: "km²", sqft: "ft²", sqyd: "yd²", acre: "acre", ha: "ha", ml: "ml", l: "l", cum: "m³", cup: "cup", gal: "gal", floz: "fl oz", mps: "m/s", kph: "km/h", mph: "mph", kn: "kn", b: "B", kb: "KB", mb: "MB", gb: "GB", tb: "TB", s: "s", min: "min", h: "h", day: "day", week: "week", j: "J", kj: "kJ", cal: "cal", kcal: "kcal", kwh: "kWh" };
+const UNIT_SHORT = { mm: "mm", cm: "cm", m: "m", km: "km", in: "in", ft: "ft", yd: "yd", mi: "mi", g: "g", kg: "kg", t: "t", oz: "oz", lb: "lb", st: "st", c: "°C", f: "°F", k: "K", sqm: "m²", sqkm: "km²", sqft: "ft²", sqyd: "yd²", acre: "acre", ha: "ha", ml: "ml", l: "l", cum: "m³", cup: "cup", gal: "gal", floz: "fl oz", mps: "m/s", kph: "km/h", mph: "mph", kn: "kn", b: "B", kb: "KB", mb: "MB", gb: "GB", tb: "TB", s: "s", min: "min", h: "h", day: "day", week: "week", j: "J", kj: "kJ", cal: "cal", kcal: "kcal", kwh: "kWh", pa: "Pa", kpa: "kPa", bar: "bar", psi: "psi", atm: "atm", mmhg: "mmHg", w: "W", kw: "kW", hp: "hp", mw: "MW", l100km: "L/100 km", kml: "km/L", mpgus: "mpg (US)", mpguk: "mpg (UK)", tsp: "tsp", tbsp: "tbsp" };
+/* Grams per US cup, used by the cooking estimator. These are typical values,
+   not exact: density varies by brand, grind and how firmly a cup is packed,
+   so every cooking result is labelled an estimate. */
+const COOK_DENSITY = { water: 236, milk: 245, flour: 120, sugar: 200, butter: 227, rice: 185, oats: 90, honey: 340, oil: 218, cocoa: 100 };
 const TZ_LABELS = { "UTC": "UTC", "Asia/Karachi": "Lahore", "Asia/Dubai": "Dubai", "Asia/Kolkata": "Kolkata", "Asia/Dhaka": "Dhaka", "Asia/Singapore": "Singapore", "Asia/Tokyo": "Tokyo", "Australia/Sydney": "Sydney", "Europe/London": "London", "Europe/Paris": "Paris", "Europe/Berlin": "Berlin", "America/New_York": "New York", "America/Chicago": "Chicago", "America/Denver": "Denver", "America/Los_Angeles": "Los Angeles", "America/Toronto": "Toronto", "Pacific/Auckland": "Auckland" };
 // Round to dp decimals and drop trailing zeros ("5000", not "5000.0000").
 
@@ -1484,7 +1666,15 @@ function convertUnit(type, value, from, to) {
   const def = UNIT_DEFS[type];
   if (!def) return { error: "Please choose a unit type." };
   let out;
-  if (type === "temperature") {
+  if (type === "fuel") {
+    /* Fuel economy is reciprocal: litres per 100 km is the base, and
+       km/L or mpg convert by dividing into a constant. */
+    if (!(value > 0)) return { error: "Please enter a number more than 0 for fuel economy." };
+    const toBase = { l100km: (v) => v, kml: (v) => 100 / v, mpgus: (v) => 235.2145833 / v, mpguk: (v) => 282.4809363 / v };
+    const fromBase = { l100km: (v) => v, kml: (v) => 100 / v, mpgus: (v) => 235.2145833 / v, mpguk: (v) => 282.4809363 / v };
+    if (!toBase[from] || !fromBase[to]) return { error: "Please choose the units to convert between." };
+    out = fromBase[to](toBase[from](value));
+  } else if (type === "temperature") {
     let c;
     if (from === "c") c = value;
     else if (from === "f") c = (value - 32) * 5 / 9;
@@ -1506,6 +1696,40 @@ function convertUnit(type, value, from, to) {
 
 function unitOptions(type) {
   return UNIT_DEFS[type] || [];
+}
+/* Every unit of one type at once: type 5 km and see metres, miles and feet
+   together. Returns formatted lines like "5000 m". */
+
+function unitAllRows(type, value, from) {
+  const rows = [];
+  const def = UNIT_DEFS[type] || [];
+  def.forEach(([key]) => {
+    if (key === from) return;
+    const r = convertUnit(type, value, from, key);
+    if (!r.error) rows.push(fmtCalc(r.result) + " " + (UNIT_SHORT[key] || key));
+  });
+  return rows;
+}
+/* Cooking estimator: grams of one ingredient into US cups, from the density
+   table above. Returns null for an unknown ingredient or a bad amount. */
+
+function cookCups(ingredient, grams) {
+  const g = COOK_DENSITY[ingredient];
+  if (!g || !(grams > 0)) return null;
+  return grams / g;
+}
+const UNIT_RECENT_KEY = "ak-unit-recent";
+
+function unitRecents() {
+  try { return JSON.parse(localStorage.getItem(UNIT_RECENT_KEY) || "[]"); } catch (e) { return []; }
+}
+
+function unitSaveRecent(entry) {
+  try {
+    const list = unitRecents().filter((r) => !(r.type === entry.type && r.value === entry.value && r.from === entry.from && r.to === entry.to));
+    list.unshift(entry);
+    localStorage.setItem(UNIT_RECENT_KEY, JSON.stringify(list.slice(0, 8)));
+  } catch (e) { /* private mode: recents stay off */ }
 }
 
 function discountCalc(price, pct) {
@@ -1924,8 +2148,26 @@ function mdInline(s) {
 // Safe Markdown subset: HTML is escaped first, so pasted tags show as text,
 // never run. Supports headings, bold, italic, code, lists, links, quotes,
 // rules and code blocks. No tables, footnotes or raw HTML.
+/* Full CommonMark rendering via marked (MIT) with the marked-footnote
+   extension for footnotes. Raw HTML is escaped first, so a pasted tag is
+   shown as text and never runs — the same safe rule the old hand-rolled
+   renderer used. GFM tables and task lists come with marked itself. Falls
+   back to the hand-rolled subset when the library did not load. */
+let _markedFootnoteOn = false;
 
 function renderMarkdown(text) {
+  if (window.marked) {
+    if (!_markedFootnoteOn && window.markedFootnote) {
+      try { window.marked.use(window.markedFootnote()); } catch (e) { /* footnotes stay off */ }
+      _markedFootnoteOn = true;
+    }
+    const safe = String(text || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    try { return window.marked.parse(safe); } catch (e) { return renderMarkdownFallback(text); }
+  }
+  return renderMarkdownFallback(text);
+}
+
+function renderMarkdownFallback(text) {
   const lines = String(text || "").replace(/\r\n?/g, "\n").split("\n");
   const blocks = [];
   let i = 0;
@@ -2106,6 +2348,12 @@ function base64UrlDecode(segment) {
   return new TextDecoder("utf-8").decode(bytes);
 }
 
+function base64UrlEncode(bytes) {
+  let bin = "";
+  bytes.forEach((b) => { bin += String.fromCharCode(b); });
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
 function decodeJwt(token) {
   const parts = String(token || "").trim().split(".");
   if (parts.length !== 3) throw new Error("A JWT has three parts joined by two dots. Check that you pasted the whole token.");
@@ -2118,6 +2366,36 @@ function decodeJwt(token) {
     expired = expiryDate.getTime() < Date.now();
   }
   return { header: header, payload: payload, signature: parts[2], expired: expired, expiryDate: expiryDate };
+}
+/* Recompute an HMAC signature with the pasted secret (WebCrypto) and compare
+   it with the token's own signature. The secret is used only inside this
+   browser tab and is never sent anywhere. */
+
+async function verifyJwtHmac(token, secret, alg) {
+  const parts = String(token || "").trim().split(".");
+  if (parts.length !== 3) throw new Error("A JWT has three parts joined by two dots. Check that you pasted the whole token.");
+  const hash = { HS256: "SHA-256", HS384: "SHA-384", HS512: "SHA-512" }[alg];
+  if (!hash) throw new Error("This tool checks HMAC signatures (HS256, HS384, HS512) only.");
+  if (!window.crypto || !window.crypto.subtle) throw new Error("This browser does not offer WebCrypto, so the signature cannot be checked here.");
+  const key = await window.crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash }, false, ["sign"]);
+  const sig = await window.crypto.subtle.sign("HMAC", key, new TextEncoder().encode(parts[0] + "." + parts[1]));
+  const expected = base64UrlEncode(new Uint8Array(sig));
+  if (expected.length !== parts[2].length) return false;
+  let diff = 0;
+  for (let i = 0; i < expected.length; i++) diff |= expected.charCodeAt(i) ^ parts[2].charCodeAt(i);
+  return diff === 0;
+}
+/* Plain-words expiry note: "expires in 3 hours" or "expired 2 days ago". */
+
+function jwtExpiryNote(d) {
+  if (!d.expiryDate) return "";
+  const diff = d.expiryDate.getTime() - Date.now();
+  const mins = Math.round(Math.abs(diff) / 60000);
+  let span;
+  if (mins < 60) span = mins + " minute" + (mins === 1 ? "" : "s");
+  else if (mins < 1440) { const h = Math.round(mins / 60); span = h + " hour" + (h === 1 ? "" : "s"); }
+  else { const dys = Math.round(mins / 1440); span = dys + " day" + (dys === 1 ? "" : "s"); }
+  return diff < 0 ? " (expired " + span + " ago)" : " (expires in " + span + ")";
 }
 
 function bytesToHex(buf) {
@@ -2649,6 +2927,22 @@ function canvasToBlob(canvas, type, quality) {
 }
 
 let organizePages = []; /* [{index (0-based), rotation}] */
+
+/* ---------- Phase 1 handlers: Image ---------- */
+
+function imgCompressFormatNote(format) {
+  if (format === "jpeg") return "JPEG output flattens transparency.";
+  if (format === "png") return "PNG keeps transparency but may stay large.";
+  if (format === "avif") return "AVIF is the smallest at good quality, but some older browsers and apps cannot open it.";
+  return "WebP keeps good quality at small sizes.";
+}
+
+function canvasSupportsAvif() {
+  try {
+    const c = document.createElement("canvas");
+    return c.toDataURL("image/avif").indexOf("data:image/avif") === 0;
+  } catch (e) { return false; }
+}
 
 let qrGenerated = false;
 

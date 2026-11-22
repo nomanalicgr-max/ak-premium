@@ -29,6 +29,10 @@ if (watermarkBtn) watermarkBtn.addEventListener("click", async () => {
   } catch (e) { if (!setPdfError("watermarkStatus", e)) setError("watermarkStatus", "Could not add a watermark to this PDF."); }
 });
 
-/* Group pdf.js text items into lines by y-coordinate (within 3pt) and sort
-   each line by x, so paragraphs and simple tables keep their shape instead
-   of collapsing into one long string. Returns [{page, lines:[{y, text, items}]}]. */
+/* Layout-aware extraction: group pdf.js text items into lines, detect a
+   two-column page from a vertical gap shared by most lines, order lines
+   column by column (left column top to bottom, then right column), and flag
+   headings by font size. Returns [{page, columns, lines:[{y, text, heading,
+   col, items}]}]. A line that spans both columns (a full-width heading, for
+   example) is read with the left column. Single-column pages keep the old
+   top-to-bottom order. */

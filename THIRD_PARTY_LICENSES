@@ -24,6 +24,9 @@ Libraries (loaded from public CDNs, except qpdf-wasm which is self-hosted):
 - jsonrepair — ISC License — https://github.com/josdejong/jsonrepair
 - Ajv (JSON Schema 2020-12) — MIT License — https://github.com/ajv-validator/ajv
 - jsonpath-plus — MIT License — https://github.com/brettz9/jsonpath-plus
+- marked — MIT License — https://github.com/markedjs/marked
+- marked-footnote — MIT License — https://github.com/bent10/marked-extensions
+- node-forge — BSD-3-Clause License — https://github.com/digitalbazaar/forge
 
 Icons and fonts:
 - Lucide icons — ISC License — https://lucide.dev
