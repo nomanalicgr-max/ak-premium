@@ -660,7 +660,7 @@
         "en": "PDF to Text"
       },
       "short": {
-        "en": "Extract text as a .txt file."
+        "en": "Layout-aware text extraction: columns, headings, order."
       },
       "category": "pdf",
       "group": "convert",
@@ -680,31 +680,32 @@
       "lastReviewed": "2026-11-18",
       "steps": [
         "Choose a PDF file with the file button.",
+        "Pick Plain text, Markdown or CSV (tables) as the output format.",
         "Press Extract Text.",
-        "Save the downloaded .txt file, which lists the text page by page."
+        "Save the downloaded file, which lists the text page by page."
       ],
-      "meta_description": "Extract text from a PDF into a .txt file, free in your browser. Works on PDFs that already have a text layer.",
+      "meta_description": "Extract text from a PDF with layout awareness: columns kept in reading order, headings marked, and tables as CSV, free in your browser.",
       "content": {
-        "use": "PDF to Text pulls the words out of a PDF and saves them as a plain .txt file, so you can reuse the text in a document, an email or a search. A student extracts a chapter to quote in an essay. An office worker extracts a report to paste figures into a spreadsheet. A researcher extracts several papers to search them together. The text is grouped by page, with a '--- Page N ---' marker before each page, so you can always tell where a line came from. The work happens in your browser and the original PDF is never changed.",
-        "tip": "If the result is empty or garbled, the PDF is probably a scan with no text layer. Use OCR PDF first to read the pages, then extract text from the new PDF. Copy the text into your document and check the line breaks before you use it.",
-        "limit": "The tool only reads PDFs that already have a text layer. A scanned-image PDF with no text layer gives no text, and the tool says so. Tables, columns and layout are not preserved; the text comes out as plain lines in reading order.",
-        "example": "Extracting text from a 4-page report downloads ak-premium-text.txt with the words from all 4 pages, each page starting with a '--- Page N ---' marker.",
+        "use": "PDF to Text pulls the words out of a PDF and saves them as a file, using the position of each word on the page to keep the reading order. A student extracts a two-column newsletter and gets the left column first, then the right, instead of lines mixed together. An office worker extracts a report as Markdown, where large text becomes headings. A clerk extracts the tables from a statement as CSV, with the columns kept.",
+        "tip": "Markdown mode marks text that is clearly larger than the body text as a heading, which makes long documents easier to scan. CSV mode exports the tables the tool detects, one table per file section, with the columns kept. If the order looks wrong, try the plain text format and check a few lines against the PDF.",
+        "limit": "The tool only reads PDFs that already have a text layer. A scanned-image PDF with no text layer gives no text, and the tool says so. Tables, columns and layout are kept from word positions, so a very unusual layout, rotated text or a complicated design may still read in the wrong order; check the result before you trust it.",
+        "example": "Extracting text from a two-column newsletter downloads ak-premium-text.txt with the left column first and the right column second, each page starting with a '--- Page N ---' marker. In Markdown mode the same file marks the article titles as headings.",
         "faq": [
           [
-            "Why did I get an empty text file?",
-            "The PDF is probably a scan made of images, with no text layer to read. Use OCR PDF first to read the pages into a text PDF, then run PDF to Text on that file."
+            "Does the text keep the page layout?",
+            "Yes, as far as word positions allow. The tool reads the position of each word, so a two-column page comes out left column first, then right column, instead of lines mixed together. The exact page design is not kept."
           ],
           [
-            "Does the .txt file keep the page layout?",
-            "No. The text comes out as plain lines grouped by page, with a '--- Page N ---' marker. Tables, columns, fonts and images are not kept."
+            "How does the Markdown format work?",
+            "Markdown mode marks text that is clearly larger than the body text as a heading, keeps paragraphs in order, and marks each page. It is plain Markdown you can paste into a document or a notes app."
           ],
           [
-            "Can I extract text from only one page?",
-            "No. The tool extracts the whole PDF at once. Open the .txt file afterwards and copy the page you need, using the page markers to find it."
+            "Can I extract tables as a spreadsheet?",
+            "Yes. Choose CSV (tables) as the format and the tool exports the tables it detects, with the columns kept, as comma-separated values you can open in Excel or Google Sheets."
           ],
           [
-            "What is the file called when it downloads?",
-            "It downloads as ak-premium-text.txt. Rename it after downloading if you want a different name."
+            "Why is the reading order wrong in my PDF?",
+            "The tool guesses the reading order from word positions. A page with sidebars, boxes, rotated text or an unusual design can confuse that guess. Check the result against the PDF, and try the plain text format if the Markdown or CSV order looks wrong."
           ]
         ]
       }
@@ -774,7 +775,7 @@
         "en": "e-Sign"
       },
       "short": {
-        "en": "Draw a signature, download PNG."
+        "en": "Draw a signature, stamp a PDF, or digitally sign it."
       },
       "category": "pdf",
       "group": "edit",
@@ -784,40 +785,44 @@
         "signature",
         "electronic signature"
       ],
-      "libs": [],
+      "libs": [
+        "pdf-lib",
+        "forge"
+      ],
       "engine": "tool-esign",
       "maxFileMB": null,
       "wave": 1,
       "status": "published",
       "regions": [],
       "lastReviewed": "2026-11-18",
-      "meta_description": "Draw your signature and download it as a PNG, free in your browser. A visual signature for documents and forms.",
+      "meta_description": "Draw a signature and download it as a PNG, stamp it onto a PDF, or digitally sign a PDF with your own .p12 certificate, free in your browser.",
       "steps": [
-        "Draw your signature on the canvas with your mouse or finger.",
-        "Press Clear Signature to start again if the drawing looks wrong.",
-        "Press Download Signature PNG to save the signature."
+        "Draw your signature on the canvas with your mouse or finger, or type your name and press Use Typed Signature.",
+        "Press Download Signature PNG to save the signature, or Clear Signature to start again.",
+        "To stamp it onto a PDF, choose the PDF, pick the pages, position and width, then press Sign PDF & Download.",
+        "To digitally sign a PDF with a certificate, choose the PDF, choose your .p12 certificate file, type its password, then press Digitally Sign PDF."
       ],
       "content": {
-        "use": "e-Sign lets you draw a signature on a blank canvas and download it as a PNG image, so you can paste it onto a form, a letter or a document. A shop owner signs a delivery note by drawing on a phone screen. A student signs a permission slip and pastes the image into a Word file. An office worker signs a cover letter without printing it. The canvas is 520 by 180 pixels, which is wide enough for a normal signature. Your drawing never leaves your browser, and the downloaded PNG has a plain background you can place over a document.",
-        "tip": "Draw slowly and in one smooth motion for the cleanest line. If the signature looks wrong, press Clear Signature and draw it again. On a phone, use your finger and turn the phone sideways for more room.",
-        "limit": "The signature is a picture only. It is not a legal digital signature and it does not add your signature to a PDF; it downloads a PNG you place yourself. A blank canvas will not download, and the tool shows a message asking you to draw first.",
-        "example": "Drawing a signature on the canvas and pressing Download Signature PNG saves ak-premium-signature.png, ready to paste into a letter.",
+        "use": "e-Sign lets you draw a signature on a blank canvas and download it as a PNG, stamp it onto chosen pages of a PDF at a chosen spot, or digitally sign a PDF with your own .p12 certificate. A shop owner signs a delivery note by drawing on a phone screen. A freelancer stamps a typed signature onto the last page of an invoice. A student digitally signs a form with a self-signed certificate. The stamp is a picture of your signature; the digital signature is a real cryptographic signature inside the PDF.",
+        "tip": "Draw slowly and in one smooth motion for the cleanest line. For stamping, the bottom right of the last page is the usual place for a signature. For the digital signature, you need your own .p12 or .pfx certificate file and its password; both stay in your browser and are never uploaded.",
+        "limit": "The stamp is a picture of your signature, not a certificate-based signature. The digital signature is self-signed: it proves the PDF was signed with your certificate, but a PDF reader will show it as not trusted until your certificate is trusted, because no trusted authority issued it. A .p12 file with a long certificate chain may not fit the signature field. A blank canvas will not download.",
+        "example": "Drawing a signature and pressing Download Signature PNG saves ak-premium-signature.png. Stamping it on the last page of a one-page invoice downloads ak-premium-signed.pdf. Digitally signing the same PDF with a .p12 file downloads ak-premium-digitally-signed.pdf, and a PDF reader shows a signature panel for it.",
         "faq": [
           [
-            "Can I sign a PDF directly with e-Sign?",
-            "No. e-Sign downloads a PNG image of your signature. Open your document, paste the image where the signature goes, and save the document yourself."
+            "What is the difference between stamping and digitally signing?",
+            "Stamping places a picture of your signature onto the PDF pages, like signing with a pen. Digitally signing adds a cryptographic signature with your .p12 certificate, which a PDF reader can check to confirm the file was signed with that certificate and not changed afterwards."
           ],
           [
-            "Is this a legal digital signature?",
-            "No. It is a picture of your handwriting, not a certificate-based digital signature. It works for informal notes and forms, not for documents that need a certified signature."
+            "Where do I get a .p12 certificate file?",
+            "A .p12 file holds your private key and certificate. You can make a self-signed one with OpenSSL on your computer, or export one from a certificate you already own. AK Premium does not make or store certificates for you."
           ],
           [
-            "Can I use e-Sign on my phone?",
-            "Yes. Draw on the canvas with your finger. Turn the phone sideways if the canvas feels narrow."
+            "Why does my PDF reader say the signature is not trusted?",
+            "The signature is self-signed, not issued by a trusted certificate authority, so readers show it as signed by your own certificate but not trusted. That is normal for a self-signed certificate; it still proves the file was signed with your certificate."
           ],
           [
-            "Why does nothing download when I press the button?",
-            "The canvas is probably blank. Draw a signature first; the tool refuses to download an empty canvas and asks you to draw."
+            "Is my certificate password sent anywhere?",
+            "No. Your .p12 file and its password are read only in your browser to make the signature, and they are never uploaded or sent to any server."
           ]
         ]
       }
@@ -1624,26 +1629,26 @@
         "Tick the tables you want, press Download Excel, and check a few cells before trusting a total."
       ],
       "content": {
-        "use": "Converting a PDF to Excel is for getting numbers out of a PDF table: a bank statement, a price list, a stock report or a fee table that needs to be sorted, totalled or charted. Once the numbers are in Excel, formulas can work on them. The tool reads the real table layout from the PDF, so numbers, dates and currency become real Excel values instead of text.",
-        "tip": "Tables with clear gaps between columns convert best. If a table has merged cells, the merged value spans the right number of columns in Excel. Use Find Tables first and tick only the tables you need — each one gets its own sheet.",
-        "limit": "Tables are detected from the positions of words on the page. A table with no gaps between columns, rotated text or a complicated layout may not split cleanly, so check a few cells before you trust a total. OCR is a fallback for scanned pages and can misread faint or handwritten text. A pixel-perfect copy of a PDF table needs a paid desktop tool; this one keeps the values and layout as close as it can in the browser.",
-        "example": "A price list PDF with item, quantity and price columns becomes a spreadsheet with those three columns, the prices stored as numbers so you can total them in Excel.",
+        "use": "Converting a PDF to Excel is for getting numbers out of a PDF table: a bank statement, a price list, a stock report or a fee table that needs to be sorted, totalled or charted. Once the numbers are in a spreadsheet they are real Excel values, so you can total them, sort them and chart them. Empty cells keep their column position, so a Total row with empty quantity and price cells still puts its total in the Total column.",
+        "tip": "Tables with clear gaps between columns convert best. If a table has merged cells, the merged value spans the right number of columns in Excel. Use Find Tables first and tick only the tables you need — each one gets its own sheet. After downloading, check a total row before you trust it.",
+        "limit": "Tables are detected from the positions of words on the page. A table with no gaps between columns, rotated text or a complicated layout may not split cleanly, so check a few cells before you trust a total. Scanned PDFs need the OCR option, which reads English text only and is slower.",
+        "example": "A price list PDF with item, quantity, price and total columns becomes a spreadsheet with those four columns, the prices stored as numbers so you can total them in Excel. A Total row at the bottom with empty quantity and price cells still exports its total in the Total column, not shifted left.",
         "faq": [
           [
+            "Do empty cells keep their column in the spreadsheet?",
+            "Yes. An empty cell is kept as an empty cell in its own column, so a Total row with empty quantity and price cells still puts its total in the Total column, not shifted left into an earlier column."
+          ],
+          [
             "Are the numbers in my Excel file real numbers?",
-            "Yes, when the tool recognises them. Amounts, percentages and dates are stored as real Excel values, so you can total or sort them. Anything it cannot read as a number stays as text, so check a few cells first."
+            "Yes. Prices, quantities and totals are stored as real Excel numbers, and dates and currency are stored with their Excel types, so you can total, sort and chart them."
           ],
           [
             "What happens with merged cells?",
-            "A value that spans several columns in the PDF is written across the same columns in Excel, using a merged cell range. The sheet keeps the shape of the original table."
+            "A cell that spans several columns in the PDF is written as a merged range in Excel, so the value appears once and covers the same columns it covered in the PDF."
           ],
           [
             "What if my PDF has several tables?",
-            "Press Find Tables and tick the ones you want. Each ticked table gets its own sheet in the downloaded file, named Table 1, Table 2 and so on."
-          ],
-          [
-            "My PDF is a scan. Can it still work?",
-            "Tick the OCR option before pressing Find Tables. The tool reads the scanned page as text first, then finds the tables in it. OCR needs a clear scan and can misread faint print, so check the result."
+            "Each table you tick gets its own sheet in the downloaded file, named Table 1, Table 2, and so on, in the order they appear in the PDF."
           ]
         ]
       },
@@ -2435,7 +2440,7 @@
         "en": "Image Compressor"
       },
       "short": {
-        "en": "Shrink photos and images for sharing."
+        "en": "Batch compress images, ZIP download, AVIF output."
       },
       "category": "image",
       "group": "",
@@ -2456,35 +2461,36 @@
       "regions": [],
       "lastReviewed": "2026-11-18",
       "steps": [
-        "Choose one or more images with the file button.",
-        "Pick JPEG, PNG or WebP and set the quality, or enter a target size in KB.",
+        "Drop one or more images on the file button, or choose them from your device.",
+        "Pick JPEG, PNG, WebP or AVIF as the output format and move the quality slider; each file shows its size before and after.",
+        "If you need a file under a specific size, enter the target size in KB and the tool lowers the quality step by step until it fits.",
         "Press Compress and download the smaller image, or the ZIP file if there is more than one."
       ],
       "content": {
-        "use": "Compressing images is for photos that are too large to upload, email or post: a product photo for an online store, a scanned document photo, or a picture for a website. Smaller images load faster and use less data.",
-        "tip": "If you need a file under a specific size, enter the target size in KB and let the tool lower the quality step by step until it fits. WebP usually gives the smallest file at good quality.",
-        "limit": "JPEG output flattens transparency, so a PNG with a transparent background becomes a white background. PNG output keeps transparency but may stay large. The tool works on one image at a time in the browser, so very large batches take a while.",
-        "example": "A 4 MB phone photo at 80% JPEG quality often becomes about 800 KB with no visible difference on a screen.",
+        "use": "Image Compressor shrinks photos and images so they are small enough to upload, email or post. A shop owner compresses ten product photos at once and downloads one ZIP. A student shrinks a 4 MB phone photo to under 500 KB for a form. The quality slider shows the size before and after for each file, AVIF gives the smallest files where the browser supports it, and target-size mode tries to get under a size you choose.",
+        "tip": "AVIF usually gives the smallest file at good quality, but older browsers cannot make it; the tool tells you and falls back to WebP or JPEG. For photos, JPEG at 75 to 85 percent is the sweet spot. For a picture with text or a logo, keep PNG or WebP so the edges stay sharp.",
+        "limit": "AVIF output needs a browser that supports it; Safari versions before 16 do not, and the tool says so instead of failing quietly. Target size is best-effort: a photo that is already heavily compressed cannot always be made smaller, and the tool says so. JPEG output flattens transparency, so a PNG with a transparent background becomes a white background.",
+        "example": "Dropping five phone photos totalling 12 MB and choosing JPEG at 75 percent gives a ZIP of about 3 MB, with each file listed as before 2.4 MB, after 600 KB.",
         "faq": [
           [
-            "Which format should I choose?",
-            "JPEG for photos, PNG when you need transparency or sharp text, WebP when you want the smallest file and the place you are uploading it accepts WebP."
+            "Can I compress several images at once?",
+            "Yes. Drop or choose as many images as you like, press Compress, and download one ZIP file with all the smaller images inside. Each file shows its own before and after size."
           ],
           [
-            "Can I compress many images at once?",
-            "Yes. Choose several images and they are all compressed. If there is more than one, you also get a ZIP file with all of them in it."
+            "What is AVIF and why is it smaller?",
+            "AVIF is a newer image format that keeps the same quality at a much smaller size than JPEG. It needs a modern browser to make; if yours cannot, the tool tells you and uses WebP or JPEG instead."
           ],
           [
-            "Does it change the size of the picture?",
-            "No. The width and height in pixels stay the same. Only the file gets smaller, because the picture is saved again at a lower quality."
+            "What happens if the target size cannot be reached?",
+            "The tool lowers the quality step by step and stops at the lowest usable quality. If the file still cannot fit under your target, it says so and downloads the smallest version it could make, instead of pretending it fits."
           ],
           [
-            "What does the target size box do?",
-            "It tells the tool the largest file you want, in KB. For JPEG and WebP it lowers the quality step by step until the file fits, or until quality reaches 10 percent."
+            "Does compression change the picture's dimensions?",
+            "No. Compression only makes the file smaller; the width and height in pixels stay the same. If you need a smaller picture, use Resize Image instead."
           ]
         ]
       },
-      "meta_description": "Compress JPG, PNG and WebP images into smaller JPEGs, free in your browser. Same images, smaller files."
+      "meta_description": "Compress JPG, PNG, WebP and AVIF images in batches in your browser, with a quality slider and a target-size mode. Download one file or a ZIP."
     },
     {
       "slug": "image-resizer",
@@ -5357,7 +5363,7 @@
         "en": "Unit Converter"
       },
       "short": {
-        "en": "Convert length, weight, temperature and more."
+        "en": "Convert length, weight, temperature, pressure and more."
       },
       "category": "calculators",
       "group": "",
@@ -5380,35 +5386,35 @@
         "global"
       ],
       "lastReviewed": "2026-11-19",
-      "meta_description": "Convert length, weight, temperature, area, volume, speed, data, time and energy in your browser.",
+      "meta_description": "Convert length, weight, temperature, area, volume, speed, data, time, energy, pressure, power, fuel economy and cooking units in your browser.",
       "steps": [
-        "Choose the kind of unit in the 'Unit type' list, such as Length or Weight.",
-        "Type the number in the 'Value' box.",
-        "Choose the unit you have in the 'From' list and the unit you want in the 'To' list.",
-        "Press Convert Units, or just wait, because the result updates as you type.",
-        "Read the answer under the button, shown with both units."
+        "Choose the kind of unit in the 'Unit type' list, such as Length, Pressure, Energy, Power, Fuel or Cooking.",
+        "Type the number in the 'Value' box. The result updates as you type, and shows every unit of that kind at once.",
+        "Choose the unit you have in the 'From' list and the unit you want in the 'To' list, or press Swap to reverse them.",
+        "In Cooking mode, pick an ingredient to change grams into cups, or cups into grams.",
+        "Your recent conversions are kept under the result, so you can tap one to run it again."
       ],
       "content": {
-        "use": "Unit Converter changes a measurement from one unit to another in your browser. A student changes 5 kilometres into metres for a homework answer. A cook changes 250 grams into ounces for a recipe from another country. A traveller changes miles into kilometres to read a road sign. A shop owner changes square feet into square metres for a floor plan. You pick the kind of unit, type the number, choose the unit you have and the unit you want, and the answer appears at once. Length, weight, temperature, area, volume, speed, data, time and energy are all covered, so most everyday conversions are one page away.",
-        "tip": "For recipes, check whether the book uses US cups or metric cups before you convert volume. For temperature, remember that 0 degrees Celsius is 32 degrees Fahrenheit, so the two scales do not start at the same place. Data units here use 1024, so 1 MB is 1024 KB, which is how computers count storage.",
-        "limit": "Only one number is converted at a time, and the result is rounded to 4 decimal places. Temperature uses Celsius, Fahrenheit and Kelvin only. Data units use 1024 per step, not 1000, and volume uses US cups and gallons.",
-        "example": "Choosing Length, typing 5, and converting kilometres to metres gives 5 km = 5000 m.",
+        "use": "Unit Converter changes a measurement from one unit to another in your browser. A student changes 5 kilometres into metres for homework. A driver checks fuel use in miles per gallon against litres per 100 km. A cook changes 250 grams of flour into cups. Typing a value shows every unit of that kind at once, so 5 km shows metres, miles and feet together. Common pairs are one tap away, and recent conversions are remembered in this browser.",
+        "tip": "In Cooking mode, pick the ingredient first: one cup of flour weighs about 120 grams but one cup of sugar weighs about 200 grams, so the answer changes. For fuel, remember that a smaller litres-per-100-km number means better economy, while a bigger miles-per-gallon number does. Press Swap to reverse a conversion instead of retyping it.",
+        "limit": "Cooking cup weights are estimates from common density tables, not exact measurements, and are labelled as estimates. Recent conversions are stored only in this browser, at most 8 of them, and are lost if you clear site data. Data units use 1024 per step, not 1000, and volume uses US measures.",
+        "example": "Choosing Pressure and typing 1 bar shows 100 kPa, 14.5 psi and 0.987 atm at once. Choosing Energy, 1 kWh shows 3.6 MJ. Choosing Power, 1 hp shows about 745.7 W. In Cooking mode, 120 grams of flour shows about 1 cup.",
         "faq": [
           [
-            "How do I convert kilometres to miles?",
-            "Choose Length, type the kilometres, set From to kilometres and To to miles, then press Convert Units. The answer shows the miles at once."
+            "How do I convert bar to kilopascals?",
+            "Choose Pressure, type the number, pick bar in the From list and kilopascal in the To list. 1 bar equals 100 kPa, and the all-units view shows psi and atm at the same time."
           ],
           [
-            "Why is 0 Celsius not 0 Fahrenheit?",
-            "The two scales start at different places. Water freezes at 0 degrees Celsius and 32 degrees Fahrenheit, so 0 Celsius is 32 Fahrenheit, not zero."
+            "What does the cooking mode do?",
+            "Cooking mode changes grams into cups, or cups into grams, using a density table for each ingredient, because one cup of flour does not weigh the same as one cup of sugar. The weights are estimates and are labelled as such."
           ],
           [
-            "Does it convert kilograms to pounds?",
-            "Yes. Choose Weight, type the kilograms, set From to kilograms and To to pounds. One kilogram is about 2.20 pounds."
+            "Can I see all units at once?",
+            "Yes. As soon as you type a value, the result lists every unit of the chosen kind together, so 5 kilometres shows metres, miles, feet and yards in one view."
           ],
           [
-            "Can I convert square feet to square metres?",
-            "Yes. Choose Area, type the square feet, set From to square feet and To to square metres. The answer is rounded to 4 decimal places."
+            "Does the converter remember my recent conversions?",
+            "Yes. Your last 8 conversions are kept in this browser under the result, and tapping one runs it again. They are stored only on your device and disappear if you clear site data."
           ]
         ]
       },
@@ -6348,7 +6354,7 @@
         "en": "Markdown Previewer"
       },
       "short": {
-        "en": "See Markdown formatted as you type."
+        "en": "Full Markdown preview: tables, task lists, footnotes."
       },
       "category": "text",
       "group": "",
@@ -6359,7 +6365,10 @@
         "markdown to html",
         "markdown viewer"
       ],
-      "libs": [],
+      "libs": [
+        "marked",
+        "marked-footnote"
+      ],
       "engine": "tool-markdown",
       "maxFileMB": null,
       "wave": 1,
@@ -6368,34 +6377,35 @@
         "global"
       ],
       "lastReviewed": "2026-11-19",
-      "meta_description": "Preview Markdown as formatted text in your browser, live as you type, with headings, lists and links.",
+      "meta_description": "Preview Markdown as formatted text in your browser, live as you type, with tables, task lists and footnotes.",
       "steps": [
-        "Type or paste Markdown in the box.",
-        "Read the formatted preview below the box; it updates as you type.",
-        "Use # for a heading, **word** for bold, *word* for italic and - for a list item.",
-        "Paste a link as [text](https://example.com) to see it as a clickable link."
+        "Type or paste Markdown in the box; the preview updates as you type.",
+        "Make a table with a header row, a row of dashes, then the rows, like | Item | Price |.",
+        "Make a task list with - [ ] for an open item and - [x] for a done item.",
+        "Add a footnote with [^1] in the text and [^1]: the note at the bottom.",
+        "Press Copy HTML to copy the formatted result, or Download HTML to save it as a page."
       ],
       "content": {
-        "use": "Markdown Previewer turns Markdown text into a formatted preview as you type, so you can see the result before you publish it. A writer checks a blog post with headings, bold words and lists. A student checks homework written in Markdown. A developer checks a readme file before uploading it. A shop owner checks a product note with a link. You type or paste the Markdown and the preview appears below the box at once. Headings, bold, italic, code, lists, links, quotes and rules are shown, and the text is kept safe, because any HTML you paste is shown as text, not run. The text never leaves your browser.",
-        "tip": "Write one blank line between paragraphs, or they will run together in the preview. Start a list with a dash and a space, and keep each item on its own line.",
-        "limit": "Only a subset of Markdown is shown: headings, bold, italic, code, lists, links, quotes and rules. Tables, footnotes and raw HTML are not supported, and any HTML you paste is shown as text, not run.",
-        "example": "Typing '# Hello' on one line and 'This is **bold** text.' on the next shows a big Hello heading and a paragraph with bold in it.",
+        "use": "Markdown Previewer turns Markdown text into a formatted preview as you type, using the marked library for full CommonMark plus GitHub-style tables, task lists and footnotes. A writer checks a blog post with headings, bold words, tables and a footnote before publishing. A student drafts notes with a to-do list and a table of results. The preview shows the word count and reading time, and you can copy or download the formatted HTML.",
+        "tip": "A table needs a header row and a row of dashes under it, or it stays as plain text. Write a footnote as [^1] where you want the number, then add [^1]: the note itself at the bottom of the document. If the preview looks empty, check that the text is in the box and not only in the preview pane.",
+        "limit": "Raw HTML in your text is escaped and shown as text, never run, so no HTML tags, scripts or embedded pages are rendered. Diagrams, maths formulas and raw HTML blocks are not supported. Footnotes always render at the bottom of the preview.",
+        "example": "Typing '| Item | Price |\n| --- | --- |\n| Pen | 50 |' shows a real two-column table, and adding 'See the note[^1]' with '[^1]: Prices include tax.' at the bottom shows a numbered footnote link.",
         "faq": [
           [
-            "Which Markdown features work here?",
-            "Headings, bold, italic, inline code, code blocks, lists, links, quotes and horizontal rules. Tables, footnotes and raw HTML are not supported, and any HTML you paste is shown as plain text."
+            "Does the preview support tables?",
+            "Yes. Write a header row, a row of dashes, then the rows, like | Item | Price | on the first line, | --- | --- | on the second, and | Pen | 50 | on the third. The preview shows a real table."
           ],
           [
-            "Can I paste HTML in the text?",
-            "Yes, but it is shown as text, not run. The tool escapes HTML first, so a tag such as a script tag appears in the preview as plain words. That keeps the preview safe on any page."
+            "How do I add a footnote?",
+            "Put [^1] in the text where you want the number, then add a line [^1]: your note at the bottom of the document. The preview shows a numbered link that jumps to the note."
           ],
           [
-            "Does it support tables?",
-            "No. Tables are not part of the subset this tool shows, so table text appears as plain lines in the preview. If you need a table, write it in a full Markdown editor that supports tables."
+            "What is a task list and how do I make one?",
+            "A task list is a list with checkboxes. Write - [ ] for an open item and - [x] for a done item, one per line. The preview shows real checkboxes you can tick."
           ],
           [
-            "Can I print the preview?",
-            "Yes. Use your browser print command to print the page, and the preview prints as it looks on screen. The Markdown box prints too, so you may want to copy the preview into a document first."
+            "Can I download the formatted preview as HTML?",
+            "Yes. Press Download HTML to save the preview as a page you can open in any browser, or Copy HTML to paste the formatted result into another app."
           ]
         ]
       },
@@ -7135,7 +7145,7 @@
         "en": "JWT Decoder"
       },
       "short": {
-        "en": "Read the header and payload of a JWT."
+        "en": "Decode a JWT and verify its HMAC signature."
       },
       "category": "developer",
       "group": "",
@@ -7155,34 +7165,34 @@
         "global"
       ],
       "lastReviewed": "2026-11-19",
-      "meta_description": "Decode a JWT token to read its header and payload in your browser, free with no sign-up.",
+      "meta_description": "Decode a JWT token to read its header and payload, and verify HS256, HS384 and HS512 signatures with a pasted secret, free in your browser.",
       "steps": [
         "Paste your JWT token in the box.",
         "Press Decode Token.",
-        "Read the header and payload below the button, shown as formatted JSON.",
-        "Check the expiry line if the token has an expiry time."
+        "Read the header and payload below the button, shown as formatted JSON, with the expiry time explained in plain words.",
+        "To check the signature, paste the secret in the secret box and press Verify Signature. The result says VERIFIED, INVALID, or cannot verify."
       ],
       "content": {
-        "use": "JWT Decoder reads a JSON Web Token and shows the header and payload inside it, so you can check what a token holds. A developer checks the user id and roles in a login token. A student learns how a JWT is built by reading a sample token. A tester checks the expiry time of a token before using it. You paste the token, press Decode Token, and the tool shows the header and payload as formatted JSON. The token is decoded in your browser and never sent to a server.",
-        "tip": "Paste the full token with its two dots, because a short or cut token cannot be decoded. The sample token from jwt.io is a good test if you want to see how the tool works.",
-        "limit": "The tool only reads the token, it does not check the signature, so a decoded token is not proof that it is real. Never paste a live token from a real account into a shared screen, and never trust a token that you did not check against its secret.",
-        "example": "Decoding the sample token from jwt.io shows the header {\"alg\": \"HS256\", \"typ\": \"JWT\"} and the payload with the name John Doe.",
+        "use": "JWT Decoder reads a JSON Web Token and shows the header and payload inside it, so you can check what a token holds, and it can also verify the signature for HMAC tokens. A developer checks the user id and roles in a login token, then pastes the secret to confirm the token is real and not edited. A student learns how a JWT is built. Verification uses the WebCrypto API in your browser, and your secret never leaves your device.",
+        "tip": "Verification only works for HMAC tokens (HS256, HS384, HS512) when you paste the exact secret that signed the token. The sample token from jwt.io verifies with the secret 'your-256-bit-secret'. If the token uses RS256 or ES256, the tool says it cannot verify, because those need a public key, not a secret.",
+        "limit": "The tool only verifies HMAC signatures with a secret you paste. RS256 and ES256 tokens cannot be verified here, because they need a public key. A token with alg 'none' has no signature at all, so it is never shown as verified and always carries a warning. Your secret is used only in your browser and is never sent anywhere.",
+        "example": "Decoding the sample token from jwt.io shows the header {\"alg\": \"HS256\", \"typ\": \"JWT\"} and the payload with the name John Doe. Pasting the secret 'your-256-bit-secret' and pressing Verify Signature shows VERIFIED. Pasting a wrong secret shows INVALID.",
         "faq": [
           [
-            "Is my token kept private?",
-            "Yes. The token is decoded in your browser and is not sent to a server. Even so, a live token is like a password, so do not paste a real one on a shared screen."
+            "How do I verify a token's signature?",
+            "Paste the token, press Decode Token, then paste the secret that signed the token in the secret box and press Verify Signature. The tool shows VERIFIED if the signature matches, or INVALID if it does not."
           ],
           [
-            "Does it check the signature?",
-            "No. Reading a token does not check its signature, and the signature needs the secret key. A token that decodes cleanly may still be fake, so check it against the secret on your own server."
+            "Why does my token say cannot verify?",
+            "The tool can only verify HMAC tokens (HS256, HS384, HS512) with a pasted secret. RS256 and ES256 tokens need a public key, so the tool says it cannot verify them instead of guessing."
           ],
           [
-            "Why does the tool reject my token?",
-            "A JWT has three parts joined by two dots. If a part is missing or the text is not valid base64, the tool cannot decode it. Check that you pasted the whole token."
+            "What does alg none mean?",
+            "Alg 'none' means the token has no signature at all, so anyone could have written it. The tool shows a clear warning and never marks such a token as verified."
           ],
           [
-            "What does the expiry time mean?",
-            "The 'exp' value is a time in seconds since 1970. If it is in the past, the token has expired and the app should not accept it. The tool shows the date in plain words."
+            "Is my secret sent anywhere?",
+            "No. Your secret is used only in your browser by the WebCrypto API to check the signature, and it is never sent to any server. Closing the page clears it."
           ]
         ]
       },
