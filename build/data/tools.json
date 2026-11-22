@@ -597,7 +597,7 @@
         "en": "Compress PDF"
       },
       "short": {
-        "en": "Reduce PDF file size (Light, Medium or Strong)."
+        "en": "Reduce PDF size — lossless, balanced or small."
       },
       "category": "pdf",
       "group": "optimize",
@@ -608,8 +608,7 @@
         "make pdf smaller"
       ],
       "libs": [
-        "pdf-lib",
-        "pdfjs"
+        "pdf-lib"
       ],
       "engine": "tool-compress",
       "maxFileMB": 50,
@@ -625,26 +624,26 @@
       ],
       "steps": [
         "Choose a PDF file with the file button.",
-        "Pick a level: Light keeps text selectable, Medium re-encodes pages as images, Strong makes the smallest file but text is not selectable.",
-        "Set the quality if you want, press Compress PDF and download the result."
+        "Pick a level: Lossless only re-saves the file and never touches quality, Balanced shrinks photos to 150 DPI, Small shrinks photos to 96 DPI. Text stays as text on every level.",
+        "Set the JPEG quality if you want, press Compress PDF and download the result."
       ],
       "content": {
-        "use": "A PDF that is too large to email or upload is the usual reason to compress one. Admission forms, job applications and WhatsApp forwards often have a file-size limit, and a compressed copy is what gets through. Compressing also helps when a PDF is stored on a phone with little free space.",
-        "tip": "Start with Light if the PDF is mostly text. Use Medium for a PDF with photos, and Strong only when size matters more than being able to select or search the text.",
-        "limit": "Light re-saves the file and only helps a little on image-heavy PDFs. Medium and Strong turn pages into images, so text on those pages is no longer selectable or searchable. Compression cannot fix a damaged PDF.",
-        "example": "A 12 MB scanned PDF with photos often drops to about 4 MB on Medium and under 2 MB on Strong, depending on the images.",
+        "use": "A PDF that is too large to email or upload is the usual reason to compress one. Admission forms, job applications and WhatsApp forwards often have a file-size limit, and a compressed copy is what gets through. Compressing also helps when a PDF is stored on a phone with little free space. Photos inside the PDF are what make it large, so this tool shrinks the photos and leaves the text alone.",
+        "tip": "Start with Lossless if the PDF is mostly text and you only want a smaller file with no quality change. Use Balanced for a PDF with photos, and Small only when size matters more than photo quality. Lower the JPEG quality slider a little at a time and check the result.",
+        "limit": "Only photos inside the PDF are re-encoded; text, vector drawings and scanned pages are never re-rendered, so the text stays selectable and searchable on every level. Lossless only re-saves the file, so it helps little on image-heavy PDFs. Photos that are already small, masked images and unusual image formats are left unchanged and counted in the result. Compression cannot fix a damaged PDF.",
+        "example": "A 12 MB PDF with photos often drops to about 4 MB on Balanced and under 2 MB on Small, depending on the images. A text-only PDF may shrink by only a few percent on Lossless.",
         "faq": [
           [
+            "Does compression change my text?",
+            "No. Photos inside the PDF are re-encoded at a smaller size, but the text is never turned into an image. It stays selectable, copyable and searchable on every level, including Small."
+          ],
+          [
+            "What is the difference between the three levels?",
+            "Lossless only re-saves the file with tighter object streams and removes unused objects, so nothing changes in quality. Balanced shrinks photos to 150 DPI, which is fine for screens and most printing. Small shrinks photos to 96 DPI for the smallest file. The JPEG quality slider applies to Balanced and Small."
+          ],
+          [
             "Why is my compressed PDF still large?",
-            "Image-heavy PDFs compress by re-encoding the images. If the images are already small or the PDF is mostly vector graphics, there is little left to save, and Light may only remove a few kilobytes."
-          ],
-          [
-            "Does Strong compression change my text?",
-            "Yes. Strong renders each page as an image, so the text becomes part of the picture. You can still read it, but you cannot select, copy or search it. Use Light or Medium if you need selectable text."
-          ],
-          [
-            "What does the Quality slider change?",
-            "It sets the image quality for Medium and Strong, which turn pages into pictures. Light ignores the slider, because it only re-saves the file."
+            "Only photos are shrunk. If the PDF is mostly text or vector graphics, or its photos are already small, there is little left to save. The result line tells you which images were skipped and why."
           ],
           [
             "How do I know how much was saved?",
@@ -652,7 +651,7 @@
           ]
         ]
       },
-      "meta_description": "Compress a PDF and reduce its file size, free in your browser. Best for text PDFs; image-heavy files compress less."
+      "meta_description": "Compress a PDF and reduce its file size, free in your browser. Photos are shrunk, text stays selectable. Lossless, balanced or small."
     },
     {
       "slug": "pdf-to-text",
@@ -1585,7 +1584,7 @@
         "en": "PDF to Excel"
       },
       "short": {
-        "en": "Extracted text into an .xlsx file."
+        "en": "Real tables into an .xlsx file, with merged cells."
       },
       "category": "convert",
       "group": "convert",
@@ -1597,7 +1596,8 @@
       ],
       "libs": [
         "pdfjs",
-        "xlsx"
+        "xlsx",
+        "tesseract"
       ],
       "engine": "tool-pdfexcel",
       "maxFileMB": 50,
@@ -1620,34 +1620,34 @@
       ],
       "steps": [
         "Choose a PDF file with the file button.",
-        "If the PDF is a scan, tick the OCR option first.",
-        "Press Convert and download the .xlsx file, then check a few cells before trusting a total."
+        "Press Find Tables. If the PDF is a scan, tick the OCR option first — it reads the page as text so tables can be found.",
+        "Tick the tables you want, press Download Excel, and check a few cells before trusting a total."
       ],
       "content": {
-        "use": "Converting a PDF to Excel is for getting numbers out of a PDF table: a bank statement, a price list, a stock report or a fee table that needs to be sorted, totalled or charted. Once the numbers are in Excel, formulas can work on them.",
-        "tip": "Tables with clear gaps between columns convert best. If a table has no gaps, the whole line lands in one cell and you can use Text to Columns in Excel to split it.",
-        "limit": "Columns are detected from the gaps between words on each line. Tables with merged cells, no gaps or rotated text may not split cleanly, and numbers are stored as text in some cases, so check a few cells before you trust a total.",
-        "example": "A price list PDF with item, quantity and price columns becomes a spreadsheet with those three columns.",
+        "use": "Converting a PDF to Excel is for getting numbers out of a PDF table: a bank statement, a price list, a stock report or a fee table that needs to be sorted, totalled or charted. Once the numbers are in Excel, formulas can work on them. The tool reads the real table layout from the PDF, so numbers, dates and currency become real Excel values instead of text.",
+        "tip": "Tables with clear gaps between columns convert best. If a table has merged cells, the merged value spans the right number of columns in Excel. Use Find Tables first and tick only the tables you need — each one gets its own sheet.",
+        "limit": "Tables are detected from the positions of words on the page. A table with no gaps between columns, rotated text or a complicated layout may not split cleanly, so check a few cells before you trust a total. OCR is a fallback for scanned pages and can misread faint or handwritten text. A pixel-perfect copy of a PDF table needs a paid desktop tool; this one keeps the values and layout as close as it can in the browser.",
+        "example": "A price list PDF with item, quantity and price columns becomes a spreadsheet with those three columns, the prices stored as numbers so you can total them in Excel.",
         "faq": [
           [
-            "Why did my table land in one column?",
-            "The PDF had no clear gap between its columns, so the tool kept the whole line together. In Excel, select the column, use Data, Text to Columns, and split on spaces or a delimiter."
-          ],
-          [
             "Are the numbers in my Excel file real numbers?",
-            "They are text in most cases, because a PDF does not say whether a word is a number. In Excel, select the column and use Paste Special, Values, or multiply by 1 to turn text numbers into real numbers."
+            "Yes, when the tool recognises them. Amounts, percentages and dates are stored as real Excel values, so you can total or sort them. Anything it cannot read as a number stays as text, so check a few cells first."
           ],
           [
-            "What file do I download?",
-            "A spreadsheet named ak-premium-pdf-to-excel.xlsx. The extracted text goes on a sheet called Extracted Text, with a title row at the top."
+            "What happens with merged cells?",
+            "A value that spans several columns in the PDF is written across the same columns in Excel, using a merged cell range. The sheet keeps the shape of the original table."
           ],
           [
-            "Can I convert two PDFs at once?",
-            "No. Choose one PDF at a time. Convert the first file, download the spreadsheet, then choose the next PDF and convert it the same way."
+            "What if my PDF has several tables?",
+            "Press Find Tables and tick the ones you want. Each ticked table gets its own sheet in the downloaded file, named Table 1, Table 2 and so on."
+          ],
+          [
+            "My PDF is a scan. Can it still work?",
+            "Tick the OCR option before pressing Find Tables. The tool reads the scanned page as text first, then finds the tables in it. OCR needs a clear scan and can misread faint print, so check the result."
           ]
         ]
       },
-      "meta_description": "Turn extracted PDF text into an .xlsx spreadsheet, free in your browser. Text-based conversion, layout is not preserved."
+      "meta_description": "Convert PDF tables to Excel, free in your browser. Numbers, dates and currency become real Excel values, with merged cells and one sheet per table."
     },
     {
       "slug": "pdf-to-word",
@@ -2838,7 +2838,7 @@
         "en": "JSON Formatter"
       },
       "short": {
-        "en": "Format, minify, validate JSON."
+        "en": "Format, repair, validate and query JSON."
       },
       "category": "developer",
       "group": "",
@@ -2849,40 +2849,44 @@
         "validate json",
         "json lint"
       ],
-      "libs": [],
+      "libs": [
+        "jsonrepair",
+        "ajv2020",
+        "jsonpath-plus"
+      ],
       "engine": "tool-json",
       "maxFileMB": null,
       "wave": 1,
       "status": "published",
       "regions": [],
       "lastReviewed": "2026-11-18",
-      "meta_description": "Format, minify and validate JSON, free in your browser. Paste JSON and clean it up instantly.",
+      "meta_description": "Format, minify, repair, sort and validate JSON, free in your browser. JSON Schema validation, JSONPath queries and a tree view included.",
       "steps": [
         "Paste your JSON text in the box.",
-        "Press Format to tidy it, Minify to shrink it, or Validate to check it.",
-        "Press Copy Result to copy the output."
+        "Press Format to tidy it, Minify to shrink it, Repair to fix common mistakes, Sort Keys to order the keys, or Tree View to explore it.",
+        "Paste a JSON Schema and press Validate with Schema to check the data against it, or type a JSONPath query and press Run Query to pull out matching values. Press Copy Result to copy the output."
       ],
       "content": {
-        "use": "JSON Formatter tidies, shrinks or checks JSON text, which is the data format used by most websites and apps. A student formats a messy API response so it is easy to read. A developer minifies a settings file before putting it in a project. An office worker validates a data file before sending it to a colleague. Format adds line breaks and a 2-space indent so the structure is clear. Minify removes all extra spaces so the file is as small as possible. Validate tells you whether the JSON is correct and shows the exact error if it is not.",
-        "tip": "Press Validate first when you get an error from another app. The error message names the problem, such as a missing comma or an extra bracket, so you can fix that exact spot.",
-        "limit": "The tool only works on valid JSON structure. It does not fix broken JSON for you; it shows the error and you correct it yourself. Very large files may be slow, because the whole text is parsed in your browser.",
-        "example": "Pasting {\"name\":\"Ali\",\"age\":25} and pressing Format shows the same data on separate lines with a 2-space indent, easy to read.",
+        "use": "JSON Formatter tidies, shrinks, repairs or checks JSON text, which is the data format used by most websites and apps. A student formats a messy API response so it is easy to read. A developer minifies a settings file before putting it in a project. An office worker validates a data file before sending it to a colleague. Format adds line breaks and a 2-space indent so the structure is clear. Minify removes all extra spaces so the file is as small as possible. Validate tells you whether the JSON is correct and shows the exact error if it is not. Repair fixes common mistakes such as missing quotes or trailing commas. Validate with Schema checks the data against a JSON Schema. Run Query pulls out values with a JSONPath expression, and Tree View shows the structure as a folding list.",
+        "tip": "Press Validate first when you get an error from another app. The error message names the problem, such as a missing comma or an extra bracket, so you can fix that exact spot. If the JSON is almost right but will not parse, try Repair — it fixes missing quotes, trailing commas and single quotes.",
+        "limit": "Repair fixes common mistakes, but it cannot guess what a badly broken file was meant to say — always read the repaired result before you use it. Schema validation follows JSON Schema 2020-12. JSONPath follows the jsonpath-plus syntax. The tool does not run code or call any server; everything happens in your browser, and very large files may be slow.",
+        "example": "Pasting {\"name\":\"Ali\",\"age\":25} and pressing Format shows the same data on separate lines with a 2-space indent, easy to read. Pasting {'name': 'Ali',} and pressing Repair gives back valid JSON with double quotes and no trailing comma.",
         "faq": [
           [
-            "What is the difference between Format and Minify?",
-            "Format adds line breaks and a 2-space indent so the JSON is easy to read. Minify removes all extra spaces and line breaks so the file is as small as possible."
+            "What does Repair fix?",
+            "Common mistakes: single quotes instead of double quotes, missing quotes around keys, trailing commas, and missing commas between values. It does not fix a file that is missing whole parts, and you should always read the repaired result before using it."
           ],
           [
-            "What does Validate do?",
-            "It checks whether the text is valid JSON. If it is, the output says Valid JSON. If not, it shows the exact error, such as a missing comma."
+            "What does Validate with Schema do?",
+            "It checks your JSON against a JSON Schema you paste in, following JSON Schema 2020-12. If the data does not match, it lists each problem, such as a missing required field or a wrong type, with the path to the value."
           ],
           [
-            "Can the tool fix my broken JSON?",
-            "No. It only reports the error. You fix the text yourself, for example by adding a missing comma or closing bracket, then press Validate again."
+            "How do I use Run Query?",
+            "Type a JSONPath expression, for example $.store.book[*].title, and press Run Query. It returns every matching value as a list. The syntax follows jsonpath-plus."
           ],
           [
-            "Is my JSON data uploaded anywhere?",
-            "No. The text is parsed in your browser. Nothing you paste leaves your device."
+            "What does the duplicate keys warning mean?",
+            "The same key appears twice in one object, for example two \"name\" fields. When JSON is read, only the last value is kept, so the first one is lost. The warning shows the key and the line number so you can fix it."
           ]
         ]
       }
@@ -3331,7 +3335,7 @@
         "en": "Loan / EMI Calculator"
       },
       "short": {
-        "en": "Monthly EMI, interest and total."
+        "en": "Monthly EMI, full schedule, extra payments."
       },
       "category": "calculators",
       "group": "",
@@ -3352,13 +3356,14 @@
       "steps": [
         "Type the loan amount in the 'Loan amount' box.",
         "Type the annual interest rate in percent and the loan period in years.",
-        "Press Calculate EMI, or just wait, because the result updates as you type. The result shows the monthly EMI, total payment, total interest and number of months, plus a breakdown table."
+        "Add an extra monthly payment or a one-time lump sum if you plan to pay more than the EMI.",
+        "Press Calculate EMI, or just wait, because the result updates as you type. The result shows the monthly EMI, total payment, total interest and number of months, plus a year-by-year chart, a yearly summary and the full month-by-month schedule. Tick Compare with a second loan to compare two loans side by side, or press Download Schedule (CSV) to save the schedule."
       ],
       "content": {
-        "use": "Loan / EMI Calculator works out the monthly payment on a loan, using the standard EMI formula, so you can plan before you borrow. A family checks the monthly payment on a home loan before talking to a bank. A shop owner checks the EMI on a business loan for new stock. A student checks the EMI on a small loan for a laptop. You type the loan amount, the annual interest rate and the number of years. The tool shows the monthly EMI, the total amount you will pay, the total interest and the number of months, with a breakdown table below.",
-        "tip": "Try a longer loan period to see the EMI fall, and notice that the total interest rises. Compare the total interest, not just the monthly EMI, when you choose between two loans.",
+        "use": "Loan / EMI Calculator works out the monthly payment on a loan, using the standard EMI formula, so you can plan before you borrow. A family checks the monthly payment on a home loan before talking to a bank. A shop owner checks the EMI on a business loan for new stock. A student checks the EMI on a small loan for a laptop. You type the loan amount, the annual interest rate and the number of years. The tool shows the monthly EMI, the total amount you will pay, the total interest and the number of months, with a breakdown table below. Add an extra monthly payment or a lump sum to see how much interest you save and how many months you cut off the loan. The month-by-month schedule shows how much of each payment is interest and how much is principal, and the yearly chart shows the two side by side.",
+        "tip": "Try a longer loan period to see the EMI fall, and notice that the total interest rises. Compare the total interest, not just the monthly EMI, when you choose between two loans. Even a small extra payment each month can cut months off a long loan — try it and watch the interest saved.",
         "limit": "The result is a guide based on a fixed interest rate and equal monthly payments. It does not include bank fees, taxes or changing rates, and it is not financial advice. The rate must be 0 or more, and the loan amount and years must be positive.",
-        "example": "A loan of Rs 1,000,000 at 12 percent for 5 years gives a monthly EMI of Rs 22,244.45, a total payment of Rs 1,334,667 and total interest of Rs 334,667.",
+        "example": "A loan of Rs 1,000,000 at 12 percent for 5 years gives a monthly EMI of Rs 22,244.45, a total payment of Rs 1,334,667 and total interest of Rs 334,667. Paying Rs 5,000 extra a month on that loan saves Rs 82,391.65 in interest and finishes the loan 14 months early.",
         "faq": [
           [
             "What is an EMI?",
@@ -3369,8 +3374,8 @@
             "The tool divides the loan amount by the number of months. A Rs 600,000 loan over 5 years at 0 percent gives an EMI of Rs 10,000 a month."
           ],
           [
-            "Does a longer loan always cost more?",
-            "The monthly EMI falls, but the total interest rises, because you pay interest for more months. Check the total interest in the breakdown table before you choose."
+            "How does the extra payment work?",
+            "An extra monthly payment goes straight to the loan amount, on top of the EMI, and a lump sum is paid in the first month. The schedule is rebuilt with the extra money, and the result shows the interest saved, the months cut and the month you become debt-free."
           ],
           [
             "Is this financial advice?",
@@ -3732,13 +3737,14 @@
       "steps": [
         "Enter your gross monthly salary in rupees.",
         "Pick the tax year. Tax Year 2027 (FY 2026-27) is the current year.",
-        "Press Calculate Tax. The page shows annual tax, monthly tax and take-home pay."
+        "Tick Compare Tax Year 2026 vs 2027 to see both years side by side, or Compare with a second salary to compare two salaries.",
+        "Press Calculate Tax. The page shows a payslip-style result — gross, tax, take-home and effective rate — plus the slab breakdown."
       ],
       "content": {
-        "use": "A Pakistan salary tax calculator is for checking how much income tax is taken from a monthly salary, and what the take-home pay is. It is used before accepting a job offer, at the start of a tax year, and when a salary changes.",
-        "tip": "Enter your gross monthly salary and pick the tax year. The current year is Tax Year 2027 (FY 2026-27). The calculator shows the annual tax, the monthly tax and the take-home pay.",
-        "limit": "This is an estimate only, using FBR slabs for salaried individuals. It does not include rebates, allowances, other income, or tax already deducted. It is not tax advice. Tax Year 2025 is not included because its slabs were not directly verified from an official FBR document.",
-        "example": "A monthly salary of Rs 200,000 is Rs 2,400,000 a year. In Tax Year 2027 the tax is Rs 156,000 a year, about Rs 13,000 a month.",
+        "use": "A Pakistan salary tax calculator is for checking how much income tax is taken from a monthly salary, and what the take-home pay is. It is used before accepting a job offer, at the start of a tax year, and when a salary changes. Comparing two tax years shows whether a new budget raised or lowered your tax; comparing two salaries shows what a raise is really worth after tax.",
+        "tip": "Enter your gross monthly salary and pick the tax year. The current year is Tax Year 2027 (FY 2026-27). Tick the compare boxes before you press Calculate Tax, and the comparison table appears below the result.",
+        "limit": "This is an estimate only, using FBR slabs for salaried individuals. It does not include rebates, allowances, other income, or tax already deducted. It is not tax advice. Tax Year 2025 is not included because its slabs were not directly verified from an official FBR document. For Tax Year 2026, a 9% surcharge applies where annual taxable income is above Rs 10,000,000; it was withdrawn for Tax Year 2027.",
+        "example": "A monthly salary of Rs 200,000 is Rs 2,400,000 a year. In Tax Year 2027 the tax is Rs 156,000 a year, about Rs 13,000 a month. The same salary in Tax Year 2026 gives Rs 162,000 a year, so Tax Year 2027 is Rs 6,000 a year less for this salary.",
         "faq": [
           [
             "Which tax year should I choose?",
@@ -3749,12 +3755,12 @@
             "No. It is an estimate from the FBR slabs only. Your employer may apply rebates and allowances, so check your payslip or ask a tax adviser for the exact figure."
           ],
           [
-            "Does it show the tax for each slab?",
-            "Yes. Below the result there is a breakdown table. It lists each income slab, the rate on that slab, and the tax charged on it."
+            "How does the year comparison work?",
+            "Tick Compare Tax Year 2026 vs 2027 before you press Calculate Tax. The table shows the tax, surcharge, monthly tax, take-home pay and effective rate for both years, side by side, for the same salary."
           ],
           [
-            "Do I enter my gross salary or take-home pay?",
-            "Your gross monthly salary, before any tax is taken off. The calculator works out the tax and the take-home pay from that figure."
+            "What is the surcharge line?",
+            "For Tax Year 2026, a 9% surcharge is charged on the tax where annual taxable income is above Rs 10,000,000. It is shown as its own line in the result and the breakdown when it applies. The surcharge was withdrawn for Tax Year 2027, so it never appears there."
           ]
         ]
       },
@@ -5551,7 +5557,7 @@
         "en": "Mortgage Calculator"
       },
       "short": {
-        "en": "Work out your monthly home loan payment."
+        "en": "Monthly home loan payment, with tax, insurance and HOA."
       },
       "category": "calculators",
       "group": "",
@@ -5571,19 +5577,19 @@
         "global"
       ],
       "lastReviewed": "2026-11-19",
-      "meta_description": "Work out the monthly payment, total paid and total interest on a home loan.",
+      "meta_description": "Work out your monthly home loan payment, free in your browser. Principal and interest plus property tax, insurance and HOA, with a full schedule and a 20-year vs 30-year comparison.",
       "steps": [
         "Type the loan amount in the 'Loan amount' box.",
         "Type the yearly interest rate in the 'Annual interest rate (%)' box.",
         "Type the loan length in years in the 'Loan term (years)' box.",
-        "Press Calculate Monthly Payment, or just wait, because the result updates as you type.",
-        "Read the monthly payment, the total paid and the total interest under the button."
+        "Type your monthly property tax, insurance and HOA, if any — these are added to the monthly payment.",
+        "Add an extra monthly payment or a lump sum if you plan to pay more, and tick Compare 20-year vs 30-year to see both terms side by side. Press Calculate Monthly Payment, or just wait, because the result updates as you type. The full month-by-month schedule appears below, and Download Schedule (CSV) saves it."
       ],
       "content": {
-        "use": "Mortgage Calculator works out the monthly payment on a home loan. A buyer checks whether the monthly payment fits the family budget before choosing a house. A family compares a 20 year loan with a 30 year loan to see the difference in payment and total interest. An owner checks how much of each payment goes to interest in the early years. You type the loan amount, the yearly interest rate and the years, and the tool shows the monthly payment, the total paid and the total interest.",
-        "tip": "A longer loan means a smaller monthly payment but much more total interest, so compare both numbers before you choose. A small rise in the rate can add a lot to the monthly payment on a big loan. The payment here is principal plus interest only; taxes and insurance are not included.",
-        "limit": "The payment shown is principal and interest only. It does not include property tax, insurance or other charges your lender may add. The rate is assumed fixed for the whole loan, so a variable rate loan will differ.",
-        "example": "A loan of 5,000,000 at 12 percent a year for 20 years gives a monthly payment of 55,054.31.",
+        "use": "Mortgage Calculator works out the monthly payment on a home loan. A buyer checks whether the monthly payment fits the family budget before choosing a house. A family compares a 20 year loan with a 30 year loan to see the difference in payment and total interest. An owner checks how much of each payment goes to interest in the early years. You type the loan amount, the yearly interest rate and the years, and the tool shows the monthly payment, the total paid and the total interest. Property tax, insurance and HOA are typed in as monthly amounts and added to the payment, so you see the full monthly cost. The schedule shows how much of each payment is interest in the early years, and the 20-year vs 30-year comparison shows the trade-off between a lower payment and more total interest.",
+        "tip": "A longer loan means a smaller monthly payment but much more total interest, so compare both numbers before you choose. A small rise in the rate can add a lot to the monthly payment on a big loan. Type your real monthly property tax, insurance and HOA so the total monthly payment is the full cost, not just principal and interest.",
+        "limit": "The payment shown is principal and interest, plus the monthly property tax, insurance and HOA amounts you type in. It does not include other charges your lender may add, such as mortgage insurance or a variable rate. The rate is assumed fixed for the whole loan, so a variable rate loan will differ. Property tax, insurance and HOA are your own figures — the tool does not look them up.",
+        "example": "A loan of 5,000,000 at 12 percent a year for 20 years gives a monthly payment of 55,054.31. With property tax 10,000, insurance 3,000 and HOA 2,000 a month, the total monthly payment is 70,054.31.",
         "faq": [
           [
             "How is the monthly payment worked out?",
@@ -5595,7 +5601,7 @@
           ],
           [
             "Does it include property tax?",
-            "No. The payment shown is principal and interest only. Add your property tax and insurance yourself to get the full monthly cost."
+            "Yes, if you type it in. Property tax, insurance and HOA are separate boxes, and the amounts you enter are added to the monthly payment. The tool does not look up your local tax or insurance rates — use the figures from your own bills or lender."
           ],
           [
             "What happens if the rate changes?",
