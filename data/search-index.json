@@ -151,7 +151,7 @@
   {
    "slug": "compress-pdf",
    "title": "Compress PDF",
-   "short": "Reduce PDF file size (Light, Medium or Strong).",
+   "short": "Reduce PDF size — lossless, balanced or small.",
    "category": "pdf",
    "keywords": [
     "reduce pdf size",
@@ -399,7 +399,7 @@
   {
    "slug": "pdf-to-excel",
    "title": "PDF to Excel",
-   "short": "Extracted text into an .xlsx file.",
+   "short": "Real tables into an .xlsx file, with merged cells.",
    "category": "convert",
    "keywords": [
     "pdf to xlsx",
@@ -738,7 +738,7 @@
   {
    "slug": "json-formatter",
    "title": "JSON Formatter",
-   "short": "Format, minify, validate JSON.",
+   "short": "Format, repair, validate and query JSON.",
    "category": "developer",
    "keywords": [
     "format json",
@@ -871,7 +871,7 @@
   {
    "slug": "loan-emi-calculator",
    "title": "Loan / EMI Calculator",
-   "short": "Monthly EMI, interest and total.",
+   "short": "Monthly EMI, full schedule, extra payments.",
    "category": "calculators",
    "keywords": [
     "emi calculator",
@@ -1404,7 +1404,7 @@
   {
    "slug": "mortgage-calculator",
    "title": "Mortgage Calculator",
-   "short": "Work out your monthly home loan payment.",
+   "short": "Monthly home loan payment, with tax, insurance and HOA.",
    "category": "calculators",
    "keywords": [
     "mortgage calculator",

@@ -1,5 +1,25 @@
 # AK Premium — Changelog
 
+## v21 — 22 November 2026 (advanced upgrade plan, batch 1: 6 tools)
+
+### Compress PDF — real levels
+- The old Light/Medium/Strong levels are gone: Medium and Strong re-rendered every page as an image, so the text stopped being selectable. The new levels keep text selectable on every level. Lossless re-saves the file through qpdf (new `optimize` op in the worker) and never touches quality; Balanced shrinks photos to 150 DPI; Small shrinks photos to 96 DPI. JPEG quality is now a choice, and the result says how many photos were shrunk and how many were left alone (masked images and unsupported formats are counted, not silently skipped). The homepage FAQ and Honest limits section no longer mention the old Strong level.
+
+### PDF to Excel — real table detection
+- Tables are now detected from the positions of words on the page (row clustering plus column-edge detection, with merged-cell spans), instead of guessing columns from the gaps between words. Each detected table is offered with its page, row and column count, and you pick which ones to download. Numbers, dates and percents are stored as real Excel values with formats (not text): Rs 1,234 becomes a number, 12/03/2026 a date, 12.5% a percent. A scanned PDF can fall back to OCR words in the same item shape.
+
+### JSON Formatter — repair, schema, JSONPath
+- Three new capabilities, all in the browser: Repair fixes common mistakes with jsonrepair; Validate with Schema checks data against a JSON Schema 2020-12 with Ajv; JSONPath runs queries with jsonpath-plus. The result can also be viewed as a collapsible tree. jsonpath-plus ships no classic UMD build, so it loads as an ESM module script with SRI, plus a small external bridge file (assets/js/jsonpath-bridge.js) that exposes it as window.JSONPath — external, not inline, because the enforced CSP would block an inline module script. Wiring fix found in testing: the Ajv 2020 UMD build exposes window.ajv2020 (lowercase), not window.Ajv2020, so the loader and the schema handler now use the lowercase global; without this, schema validation failed on every click.
+
+### Salary Tax Calculator — year comparison
+- Tick Compare Tax Year 2026 vs 2027 to see both years side by side for the same salary, with a line saying how much less TY2027 is (Rs 200,000/month: TY2027 Rs 156,000 annual, TY2026 Rs 162,000). A second salary can be compared the same way. The 9% surcharge row appears in the breakdown only when it applies (TY2026 income above Rs 10,000,000; withdrawn for TY2027). All figures still come from the verified FBR slabs; nothing was invented.
+
+### Loan EMI & Mortgage — amortisation schedules
+- Both calculators now show a full schedule: a monthly table (EMI, principal, interest, balance), a yearly summary and a principal-vs-interest chart, plus a CSV download of the whole schedule. Extra monthly payments and lump sums show interest saved and months cut (Rs 1,000,000 at 12% for 5 years: EMI Rs 22,244.45; +Rs 5,000/month saves Rs 82,391.65 and cuts 14 months). EMI can compare two loans side by side; Mortgage can compare the 20-year and 30-year terms for the same loan, including the extra interest the longer term costs.
+
+### JavaScript split and testing
+- The per-tool JS split is verified lossless (5,901 code lines, 0 missing/extra). ASSET_V is now "21" (config.js?v=21) and the service-worker cache is "ak-premium-v21". Harness run-v21.js: 373 checks, all passing, including 27 new batch-1 checks (compress levels + qpdf optimize wiring, PDF-to-Excel table detection + real Excel types, JSON repair/schema/JSONPath with the ESM bridge verified, tax comparison + surcharge row, EMI/mortgage schedules with exact known answers).
+
 ## v20 — 20 November 2026 (live-test follow-up: Merge button after reorder)
 
 ### Fix

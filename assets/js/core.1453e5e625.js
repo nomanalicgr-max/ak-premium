@@ -232,7 +232,9 @@ const LIB_URLS = {
   "qrcode": "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
   "jspdf": "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
   "js-yaml": "https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js",
-  "md5": "https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js"
+  "md5": "https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js",
+  "jsonrepair": "https://cdn.jsdelivr.net/npm/jsonrepair@3.11.0/lib/umd/jsonrepair.min.js",
+  "ajv2020": "https://cdnjs.cloudflare.com/ajax/libs/ajv/8.17.1/ajv2020.min.js"
 };
 /* SRI hashes for the pinned libraries above (Phase 4.2); same values as
    build.py. The docx URL was corrected at the same time: docx@8.5.0
@@ -250,11 +252,13 @@ const LIB_SRI = {
   "qrcode": "sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU",
   "jspdf": "sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk",
   "js-yaml": "sha384-+pxiN6T7yvpryuJmE1gM9PX7yQit15auDb+ZwwvJOd/4be2Cie5/IuVXgQb/S9du",
-  "md5": "sha384-WAahC3S+69Co45zyyuhCjvdMwo7a42Yn0mM0IgZIUlYNebG24AVkPUltj3BQnM85"
+  "md5": "sha384-WAahC3S+69Co45zyyuhCjvdMwo7a42Yn0mM0IgZIUlYNebG24AVkPUltj3BQnM85",
+  "jsonrepair": "sha384-2I3jTKkZ/Kqabhjo6l7hVZMJ7CBTAC/T52HC0PCG9iEry5vIS5qUckwnfztzkn/I",
+  "ajv2020": "sha384-vsMiC2R9fcX/SqeA9xJ+Lpbbe1fRi7RDpgHenZH7A8yXAoX+9T4m8MfuwrafZAAL"
 };
 const _libLoaded = {};
 function loadLibrary(name, statusId) {
-  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "qrcode" ? "QRCode" : name === "js-yaml" ? "jsyaml" : name] || _libLoaded[name]) return Promise.resolve(true);
+  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "qrcode" ? "QRCode" : name === "js-yaml" ? "jsyaml" : name === "jsonrepair" ? "JSONRepair" : name] || _libLoaded[name]) return Promise.resolve(true);
   return new Promise((resolve) => {
     const sc = document.createElement("script");
     sc.src = LIB_URLS[name]; sc.async = true;
@@ -896,7 +900,140 @@ let mergeOrder = [];
 function sizeChangeNote(oldSize, newSize) {
   const pct = Math.round((1 - newSize / oldSize) * 100);
   if (pct >= 0) return pct + "% smaller";
-  return (-pct) + "% larger — this file was already small, so re-rendering its pages as images made it bigger";
+  return (-pct) + "% larger — this file was already small, so there was little left to save";
+}
+
+function jpegBytesToCanvas(bytes) {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(new Blob([bytes], { type: "image/jpeg" }));
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const c = document.createElement("canvas");
+      c.width = img.naturalWidth; c.height = img.naturalHeight;
+      c.getContext("2d").drawImage(img, 0, 0);
+      resolve(c);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
+    img.src = url;
+  });
+}
+
+function downscaleCanvas(canvas, maxPx) {
+  if (canvas.width <= maxPx) return canvas;
+  const scale = maxPx / canvas.width;
+  const c = document.createElement("canvas");
+  c.width = maxPx; c.height = Math.max(1, Math.round(canvas.height * scale));
+  c.getContext("2d").drawImage(canvas, 0, 0, c.width, c.height);
+  return c;
+}
+
+function inflateBytes(bytes) {
+  return new Promise((resolve) => {
+    try {
+      const ds = new DecompressionStream("deflate");
+      const src = new Blob([bytes]).stream().pipeThrough(ds);
+      new Response(src).arrayBuffer().then((b) => resolve(new Uint8Array(b))).catch(() => resolve(null));
+    } catch (e) { resolve(null); }
+  });
+}
+
+async function reencodePdfPhoto(bytes, filterName, dict, iw, ih, maxPx, quality) {
+  const L = window.PDFLib;
+  let canvas = null;
+  if (filterName === "DCTDecode") {
+    canvas = await jpegBytesToCanvas(bytes);
+  } else {
+    /* FlateDecode: only plain 8-bit samples with no PNG predictor. */
+    const bpcObj = dict.get(L.PDFName.of("BitsPerComponent"));
+    if (!bpcObj || bpcObj.asNumber() !== 8) return null;
+    const csObj = dict.get(L.PDFName.of("ColorSpace"));
+    const cs = csObj && csObj.decodeText ? csObj.decodeText() : "";
+    if (cs !== "DeviceRGB" && cs !== "DeviceGray") return null;
+    const parms = dict.get(L.PDFName.of("DecodeParms"));
+    const pred = parms && parms.get ? parms.get(L.PDFName.of("Predictor")) : null;
+    if (pred && pred.asNumber() !== 1) return null;
+    const raw = await inflateBytes(bytes);
+    if (!raw) return null;
+    const channels = cs === "DeviceRGB" ? 3 : 1;
+    if (raw.length < iw * ih * channels) return null;
+    canvas = document.createElement("canvas");
+    canvas.width = iw; canvas.height = ih;
+    const ctx = canvas.getContext("2d");
+    const img = ctx.createImageData(iw, ih);
+    for (let p = 0; p < iw * ih; p++) {
+      if (channels === 3) { img.data[p * 4] = raw[p * 3]; img.data[p * 4 + 1] = raw[p * 3 + 1]; img.data[p * 4 + 2] = raw[p * 3 + 2]; }
+      else { img.data[p * 4] = img.data[p * 4 + 1] = img.data[p * 4 + 2] = raw[p]; }
+      img.data[p * 4 + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+  if (!canvas) return null;
+  canvas = downscaleCanvas(canvas, maxPx);
+  const blob = await new Promise((res) => canvas.toBlob(res, "image/jpeg", quality));
+  if (!blob) return null;
+  return new Uint8Array(await blob.arrayBuffer());
+}
+
+async function downsamplePdfImages(doc, targetDpi, quality, statusId) {
+  const L = window.PDFLib;
+  const stats = { images: 0, downsampled: 0, skipped: 0 };
+  const pages = doc.getPages();
+  for (let pi = 0; pi < pages.length; pi++) {
+    const page = pages[pi];
+    setStatus(statusId, "Checking images on page " + (pi + 1) + " of " + pages.length + "...");
+    let xobj = null;
+    try {
+      const res = page.node.Resources();
+      if (res) xobj = res.lookup(L.PDFName.of("XObject"));
+    } catch (e) { continue; }
+    if (!xobj || !xobj.keys) continue;
+    /* Target width in pixels: target DPI times the page width in inches.
+       An image drawn smaller than the full page is kept larger than it
+       needs to be, which is safe — it is never over-compressed. */
+    const maxPx = Math.max(200, Math.round(targetDpi * (page.getWidth() / 72)));
+    for (const key of xobj.keys()) {
+      let ref = null, dict = null;
+      try {
+        ref = xobj.get(key);
+        if (!(ref instanceof L.PDFRef)) continue;
+        dict = doc.context.lookup(ref);
+      } catch (e) { continue; }
+      if (!dict || !dict.get) continue;
+      if (dict.get(L.PDFName.of("Subtype")) !== L.PDFName.of("Image")) continue;
+      stats.images++;
+      try {
+        const wObj = dict.get(L.PDFName.of("Width"));
+        const hObj = dict.get(L.PDFName.of("Height"));
+        const iw = wObj ? wObj.asNumber() : 0;
+        const ih = hObj ? hObj.asNumber() : 0;
+        if (!iw || !ih || iw <= maxPx) continue;
+        /* A photo with a transparency mask is left alone: re-encoding it
+           as plain JPEG would drop the mask and change how it looks. */
+        if (dict.get(L.PDFName.of("SMask")) || dict.get(L.PDFName.of("Mask"))) { stats.skipped++; continue; }
+        const filterObj = dict.get(L.PDFName.of("Filter"));
+        const filterName = filterObj && filterObj.decodeText ? filterObj.decodeText() : "";
+        if (filterName !== "DCTDecode" && filterName !== "FlateDecode") { stats.skipped++; continue; }
+        const stream = doc.context.lookup(ref);
+        const bytes = stream && stream.getContents ? stream.getContents() : null;
+        if (!bytes || !bytes.length) { stats.skipped++; continue; }
+        const newJpeg = await reencodePdfPhoto(bytes, filterName, dict, iw, ih, maxPx, quality);
+        if (!newJpeg) { stats.skipped++; continue; }
+        const newW = maxPx, newH = Math.max(1, Math.round(ih * (maxPx / iw)));
+        const nd = L.PDFDict.withContext(doc.context);
+        nd.set(L.PDFName.of("Type"), L.PDFName.of("XObject"));
+        nd.set(L.PDFName.of("Subtype"), L.PDFName.of("Image"));
+        nd.set(L.PDFName.of("Width"), L.PDFNumber.of(newW));
+        nd.set(L.PDFName.of("Height"), L.PDFNumber.of(newH));
+        nd.set(L.PDFName.of("BitsPerComponent"), L.PDFNumber.of(8));
+        nd.set(L.PDFName.of("ColorSpace"), L.PDFName.of("DeviceRGB"));
+        nd.set(L.PDFName.of("Filter"), L.PDFName.of("DCTDecode"));
+        doc.context.assign(ref, L.PDFRawStream.of(nd, newJpeg));
+        stats.downsampled++;
+      } catch (e) { stats.skipped++; }
+    }
+  }
+  return stats;
 }
 
 /* ---------- New PDF tools: Remove Pages + Add Watermark ---------- */
@@ -1022,7 +1159,158 @@ async function renderPdfPagesToImages(file, format, statusId, outputEl) {
   } catch (e) { if (!setPdfError(statusId, e)) setError(statusId, "Could not render this PDF to images. Please check the file."); }
 }
 
+/* PDF to Excel (advanced): real tables from the pdf.js x/y grid, not word
+   gaps. Rows are clustered by baseline, columns by shared left edges, and
+   a cell that spans several columns becomes a merged cell in Excel.
+   Numbers, dates and currency are stored as real Excel types. A page
+   with several tables becomes one sheet per table, and the user picks
+   which tables to download. Scanned PDFs use an OCR fallback (Tesseract
+   word boxes run through the same grid logic). */
+
 /* ---------- Converters ---------- */
+
+function extractPdfTableItems(file, statusId) {
+  return (async () => {
+    if (!(await ensurePdfJs(statusId))) return null;
+    const bytes = await readAsArrayBuffer(file);
+    const pdf = await window.pdfjsLib.getDocument({ data: bytes }).promise;
+    const pages = [];
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const vp = page.getViewport({ scale: 1 });
+      const content = await page.getTextContent();
+      const items = content.items.filter((it) => (it.str || "").trim()).map((it) => ({
+        str: it.str, x: it.transform[4], y: it.transform[5],
+        w: it.width || 0, h: it.height || Math.abs(it.transform[3]) || 12
+      }));
+      items.sort((a, b) => b.y - a.y || a.x - b.x);
+      pages.push({ page: i, width: vp.width, height: vp.height, items });
+    }
+    return pages;
+  })();
+}
+
+async function ocrPdfWords(file, statusId, onProgress) {
+  /* OCR fallback: same item shape as extractPdfTableItems, from Tesseract
+     word boxes (image pixels at scale 2, converted to PDF points). */
+  if (!(await ensurePdfJs(statusId))) return null;
+  if (!window.Tesseract) { const ok = await loadLibrary("tesseract", statusId); if (!ok) return null; }
+  const bytes = await readAsArrayBuffer(file);
+  const pdf = await window.pdfjsLib.getDocument({ data: bytes }).promise;
+  const pages = [];
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const vp = page.getViewport({ scale: 1 });
+    const viewport = page.getViewport({ scale: 2 });
+    const canvas = document.createElement("canvas");
+    canvas.width = viewport.width; canvas.height = viewport.height;
+    await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+    const res = await window.Tesseract.recognize(canvas, "eng", { logger: (m) => { if (onProgress && m.status === "recognizing text") onProgress((i - 1 + (m.progress || 0)) / pdf.numPages); } });
+    const items = (res.data.words || []).filter((w) => (w.text || "").trim()).map((w) => ({
+      str: w.text, x: w.bbox.x0 / 2, y: vp.height - w.bbox.y1 / 2,
+      w: (w.bbox.x1 - w.bbox.x0) / 2, h: (w.bbox.y1 - w.bbox.y0) / 2
+    }));
+    items.sort((a, b) => b.y - a.y || a.x - b.x);
+    pages.push({ page: i, width: vp.width, height: vp.height, items });
+    if (onProgress) onProgress(i / pdf.numPages);
+  }
+  return pages;
+}
+
+function clusterPdfRows(items) {
+  const rows = [];
+  for (const it of items) {
+    let row = rows.find((r) => Math.abs(r.y - it.y) < 3);
+    if (!row) { row = { y: it.y, items: [] }; rows.push(row); }
+    row.items.push(it);
+  }
+  rows.forEach((r) => { r.items.sort((a, b) => a.x - b.x); r.y = r.items.reduce((s, i) => s + i.y, 0) / r.items.length; });
+  rows.sort((a, b) => b.y - a.y);
+  return rows;
+}
+
+function detectPdfTables(pages) {
+  const tables = [];
+  for (const pg of pages) {
+    if (!pg.items.length) continue;
+    const rows = clusterPdfRows(pg.items);
+    /* Column edges: cluster every item's left edge (within 4pt). */
+    const starts = [];
+    rows.forEach((r) => r.items.forEach((it) => starts.push(it.x)));
+    starts.sort((a, b) => a - b);
+    const edges = [];
+    for (const x of starts) {
+      if (!edges.length || x - edges[edges.length - 1] > 4) edges.push(x);
+      else edges[edges.length - 1] = (edges[edges.length - 1] + x) / 2;
+    }
+    /* Split rows into blocks where the vertical gap is large. */
+    const heights = rows.map((r) => Math.max.apply(null, r.items.map((i) => i.h)));
+    const medH = heights.slice().sort((a, b) => a - b)[Math.floor(heights.length / 2)] || 12;
+    const blocks = [[]];
+    for (let i = 0; i < rows.length; i++) {
+      if (i > 0 && (rows[i - 1].y - rows[i].y) > Math.max(24, 3 * medH)) blocks.push([]);
+      blocks[blocks.length - 1].push(rows[i]);
+    }
+    for (const block of blocks) {
+      if (block.length < 2) continue;
+      const grid = [], merges = [];
+      let maxCols = 0;
+      for (const row of block) {
+        const cells = new Array(edges.length).fill(null);
+        let colsUsed = 0;
+        for (const it of row.items) {
+          let ci = 0;
+          for (let e = 0; e < edges.length; e++) { if (it.x + 2 >= edges[e]) ci = e; }
+          let span = 1;
+          while (ci + span < edges.length && it.x + it.w > edges[ci + span] + 4) span++;
+          const text = (cells[ci] ? cells[ci].text + " " : "") + it.str;
+          if (cells[ci]) { cells[ci].text = text; }
+          else { cells[ci] = { text, span }; colsUsed += span; }
+          if (span > 1) merges.push({ row: grid.length, col: ci, span });
+        }
+        const trimmed = cells.slice(0, Math.max.apply(null, cells.map((c, i) => c ? i + 1 : 0)));
+        grid.push(trimmed);
+        maxCols = Math.max(maxCols, trimmed.length);
+      }
+      if (maxCols < 2) continue;
+      tables.push({ page: pg.page, rows: grid, merges, cols: maxCols });
+    }
+  }
+  return tables;
+}
+
+function excelCellValue(text) {
+  const t = String(text || "").trim();
+  if (!t) return "";
+  /* Dates: 12/03/2026, 12-03-2026, 12 Mar 2026 (day first, as in Pakistan). */
+  let m = t.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+  if (m) {
+    const y = parseInt(m[3], 10) + (m[3].length === 2 ? 2000 : 0);
+    const d = new Date(y, parseInt(m[2], 10) - 1, parseInt(m[1], 10));
+    if (!isNaN(d.getTime()) && d.getDate() === parseInt(m[1], 10)) return { t: "d", v: d, z: "dd/mm/yyyy" };
+  }
+  const months = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+  m = t.match(/^(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})$/);
+  if (m && months[m[2].slice(0, 3).toLowerCase()] !== undefined) {
+    const d = new Date(parseInt(m[3], 10), months[m[2].slice(0, 3).toLowerCase()], parseInt(m[1], 10));
+    if (!isNaN(d.getTime())) return { t: "d", v: d, z: "dd/mm/yyyy" };
+  }
+  /* Numbers: strip currency words/symbols, commas; (1,234) is negative;
+     12.5% becomes 0.125 with a percent format. */
+  let num = t.replace(/^(rs\.?|pkr|usd|\$|€|£)\s*/i, "").replace(/,/g, "").trim();
+  let pct = false;
+  if (/%$/.test(num)) { pct = true; num = num.slice(0, -1); }
+  let neg = false;
+  if (/^\(.*\)$/.test(num)) { neg = true; num = num.slice(1, -1); }
+  if (/^[+-]?(\d+\.?\d*|\.\d+)$/.test(num)) {
+    let v = parseFloat(num);
+    if (neg) v = -v;
+    if (pct) return { t: "n", v: v / 100, z: "0.00%" };
+    return { t: "n", v, z: Math.abs(v % 1) > 0 ? "#,##0.00" : "#,##0" };
+  }
+  return t;
+}
+let pdfExcelDetected = null;
 
 function textToPdf(raw, statusId, outName) {
   const JsPDF = getJsPdf();
@@ -2153,7 +2441,7 @@ async function extractPdfTextWithPassword(file, password, statusId) {
 function runQpdf(op, bytes, password, statusId) {
   return new Promise((resolve) => {
     let worker;
-    try { worker = new Worker("/assets/js/qpdf-worker.js?v=6", { type: "module" }); }
+    try { worker = new Worker("/assets/js/qpdf-worker.js?v=7", { type: "module" }); }
     catch (e) { setError(statusId, "PDF encryption could not start in this browser. Please try Chrome, Edge or Firefox."); resolve(null); return; }
     const timer = setTimeout(() => { try { worker.terminate(); } catch (e) {} setError(statusId, "PDF encryption is taking too long. Please try a smaller file."); resolve(null); }, 120000);
     worker.onmessage = (e) => {
@@ -2163,6 +2451,7 @@ function runQpdf(op, bytes, password, statusId) {
         const code = e.data && e.data.error;
         if (code === "WRONG_PASSWORD") setError(statusId, "Wrong password. Please check the password and try again.");
         else if (code === "NOT_ENCRYPTED") setError(statusId, "This PDF is not password-protected.");
+        else if (op === "optimize") setError(statusId, "Could not compress this PDF (" + code + "). Please check the file.");
         else setError(statusId, "Could not process this PDF (" + code + "). Please check the file and password.");
         resolve(null);
       }
@@ -2363,6 +2652,111 @@ let organizePages = []; /* [{index (0-based), rotation}] */
 
 let qrGenerated = false;
 
+/* ---------- Phase 1 handlers: Developer ---------- */
+
+function findDuplicateKeys(text) {
+  /* Lenient scan of raw JSON text for the same key twice in one object.
+     Returns [{key, path, line}]. Works even when the JSON is broken. */
+  const dups = [];
+  let i = 0, line = 1;
+  const n = text.length;
+  function skipWs() { while (i < n && /\s/.test(text[i])) { if (text[i] === "\n") line++; i++; } }
+  function parseString() {
+    let out = "";
+    i++;
+    while (i < n) {
+      const c = text[i];
+      if (c === "\\") { out += text.slice(i, i + 2); i += 2; continue; }
+      if (c === '"') { i++; return out; }
+      if (c === "\n") line++;
+      out += c; i++;
+    }
+    return out;
+  }
+  function parseValue(path) {
+    skipWs();
+    if (i >= n) return;
+    const c = text[i];
+    if (c === "{") { i++; parseObject(path); }
+    else if (c === "[") { i++; parseArray(path); }
+    else if (c === '"') { parseString(); }
+    else { while (i < n && !/[,\]}]/.test(text[i])) { if (text[i] === "\n") line++; i++; } }
+  }
+  function parseObject(path) {
+    const seen = {};
+    skipWs();
+    if (text[i] === "}") { i++; return; }
+    while (i < n) {
+      skipWs();
+      if (text[i] === "}") { i++; return; }
+      if (text[i] !== '"') { i++; continue; }
+      const keyLine = line;
+      const key = parseString();
+      skipWs();
+      if (text[i] === ":") i++;
+      if (seen[key]) dups.push({ key, path: path ? path + "." + key : key, line: keyLine });
+      else seen[key] = true;
+      parseValue(path ? path + "." + key : key);
+      skipWs();
+      if (text[i] === ",") { i++; continue; }
+      if (text[i] === "}") { i++; return; }
+      if (i >= n) return;
+    }
+  }
+  function parseArray(path) {
+    let idx = 0;
+    skipWs();
+    if (text[i] === "]") { i++; return; }
+    while (i < n) {
+      parseValue(path + "[" + idx + "]");
+      idx++;
+      skipWs();
+      if (text[i] === ",") { i++; continue; }
+      if (text[i] === "]") { i++; return; }
+      if (i >= n) return;
+    }
+  }
+  parseValue("");
+  return dups;
+}
+
+function sortJsonKeys(value) {
+  if (Array.isArray(value)) return value.map(sortJsonKeys);
+  if (value && typeof value === "object") {
+    const out = {};
+    Object.keys(value).sort().forEach((k) => { out[k] = sortJsonKeys(value[k]); });
+    return out;
+  }
+  return value;
+}
+
+function jsonTreeHtml(value, depth) {
+  depth = depth || 0;
+  if (depth > 50) return "<span>…</span>";
+  if (value === null) return "<span>null</span>";
+  if (typeof value === "object") {
+    const isArr = Array.isArray(value);
+    const entries = isArr ? value.map((v, i) => [i, v]) : Object.keys(value).map((k) => [k, value[k]]);
+    if (!entries.length) return escapeHtml(isArr ? "[]" : "{}");
+    const inner = entries.map(([k, v]) => {
+      const label = isArr ? escapeHtml(String(k)) : escapeHtml(JSON.stringify(k));
+      return "<li><strong>" + label + "</strong>: " + jsonTreeHtml(v, depth + 1) + "</li>";
+    }).join("");
+    const head = isArr ? "Array (" + entries.length + ")" : "Object (" + entries.length + ")";
+    return "<details open><summary>" + escapeHtml(head) + "</summary><ul>" + inner + "</ul></details>";
+  }
+  if (typeof value === "string") return "<span>\"" + escapeHtml(value) + "\"</span>";
+  if (typeof value === "number") return "<span>" + value + "</span>";
+  if (typeof value === "boolean") return "<span>" + value + "</span>";
+  return escapeHtml(String(value));
+}
+
+function jsonDupNote(text) {
+  const dups = findDuplicateKeys(text);
+  if (!dups.length) return "";
+  return " Warning: duplicate keys found — " + dups.slice(0, 5).map((d) => d.path + " (line " + d.line + ")").join(", ") + (dups.length > 5 ? " and " + (dups.length - 5) + " more" : "") + ". The last value wins when this is parsed.";
+}
+
 /* ---------- Phase 2 tools: pure logic (testable) ---------- */
 
 function parseInvoiceItems(text) {
@@ -2474,6 +2868,87 @@ function emiCalc(principal, annualRatePct, years) {
   const emi = Math.round(principal * r * factor / (factor - 1) * 100) / 100;
   const total = Math.round(emi * n * 100) / 100;
   return { emi, total, interest: Math.round((total - principal) * 100) / 100, months: n };
+}
+/* Amortisation schedule shared by the loan/EMI and mortgage calculators.
+   extraMonthly is added to the principal part every month; lumpSum is paid
+   in month 1. The base EMI is the same emiCalc() value the old handlers
+   used, so results match the previous calculator. Returns {error} on bad
+   input, otherwise {emi, months, yearly, totalInterest, totalPaid,
+   monthsCount, interestSaved, monthsCut, payoffMonth}. */
+
+function buildAmortisation(principal, annualRatePct, years, extraMonthly, lumpSum) {
+  const base = emiCalc(principal, annualRatePct, years);
+  if (base.error) return { error: base.error };
+  const n = base.months;
+  const r = annualRatePct / 1200;
+  const emi = base.emi;
+  const extra = Math.max(0, extraMonthly || 0);
+  const lump = Math.max(0, lumpSum || 0);
+  let balance = principal;
+  const months = [];
+  let totalInterest = 0, m = 0;
+  while (balance > 0.005 && m < n * 2 + 60) {
+    m++;
+    const interest = Math.round(balance * r * 100) / 100;
+    let principalPart = emi - interest + extra;
+    if (m === 1) principalPart += lump;
+    let paid = emi + extra + (m === 1 ? lump : 0);
+    if (principalPart >= balance) {
+      principalPart = balance;
+      paid = Math.round((balance + interest) * 100) / 100;
+    }
+    if (principalPart <= 0) return { error: "This loan would never be repaid at that rate and payment. Try a higher amount or lower rate." };
+    balance = Math.round((balance - principalPart) * 100) / 100;
+    totalInterest = Math.round((totalInterest + interest) * 100) / 100;
+    months.push({ m, emi: Math.round(paid * 100) / 100, principal: Math.round(principalPart * 100) / 100, interest, balance: Math.max(0, balance) });
+    if (balance <= 0.005) break;
+  }
+  const totalPaid = Math.round(months.reduce((s, x) => s + x.emi, 0) * 100) / 100;
+  const yearly = [];
+  months.forEach((x) => {
+    const y = Math.ceil(x.m / 12);
+    if (!yearly[y - 1]) yearly[y - 1] = { year: y, principal: 0, interest: 0, balance: 0 };
+    yearly[y - 1].principal = Math.round((yearly[y - 1].principal + x.principal) * 100) / 100;
+    yearly[y - 1].interest = Math.round((yearly[y - 1].interest + x.interest) * 100) / 100;
+    yearly[y - 1].balance = x.balance;
+  });
+  const payoff = new Date();
+  payoff.setMonth(payoff.getMonth() + months.length);
+  return {
+    emi, months, yearly, totalInterest, totalPaid, monthsCount: months.length,
+    interestSaved: Math.round((base.interest - totalInterest) * 100) / 100,
+    monthsCut: n - months.length,
+    payoffMonth: payoff.toLocaleDateString("en-GB", { month: "long", year: "numeric" })
+  };
+}
+
+function amortisationCsv(sched) {
+  const lines = ["Month,Payment,Principal,Interest,Balance"];
+  sched.months.forEach((x) => lines.push([x.m, x.emi.toFixed(2), x.principal.toFixed(2), x.interest.toFixed(2), x.balance.toFixed(2)].join(",")));
+  return lines.join("\n");
+}
+
+function amortisationMonthTable(sched) {
+  const rows = sched.months.map((x) => "<tr><td>" + x.m + "</td><td>" + fmtMoney(x.emi, 2) + "</td><td>" + fmtMoney(x.principal, 2) + "</td><td>" + fmtMoney(x.interest, 2) + "</td><td>" + fmtMoney(x.balance, 2) + "</td></tr>").join("");
+  return "<table><thead><tr><th>Month</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody>" + rows + "</tbody></table>";
+}
+
+function amortisationYearlyTable(sched) {
+  const rows = sched.yearly.map((y) => "<tr><td>Year " + y.year + "</td><td>" + fmtMoney(y.principal, 2) + "</td><td>" + fmtMoney(y.interest, 2) + "</td><td>" + fmtMoney(y.balance, 2) + "</td></tr>").join("");
+  return "<table><thead><tr><th>Year</th><th>Principal paid</th><th>Interest paid</th><th>Balance</th></tr></thead><tbody>" + rows + "</tbody></table>";
+}
+
+function amortisationChart(sched) {
+  /* Plain CSS stacked bars, one per year: indigo = principal, amber = interest. */
+  const rows = sched.yearly.map((y) => {
+    const tot = y.principal + y.interest;
+    const pp = tot > 0 ? Math.round(y.principal / tot * 100) : 0;
+    return "<div style=\"margin:6px 0\"><div>Year " + y.year + " — principal " + fmtMoney(y.principal, 2) + ", interest " + fmtMoney(y.interest, 2) + "</div>"
+      + "<div style=\"display:flex;height:18px;border-radius:4px;overflow:hidden\" role=\"img\" aria-label=\"Year " + y.year + ": " + pp + "% principal, " + (100 - pp) + "% interest\">"
+      + "<div style=\"width:" + pp + "%;background:#4f46e5\"></div>"
+      + "<div style=\"width:" + (100 - pp) + "%;background:#f59e0b\"></div></div></div>";
+  }).join("");
+  return "<p>Interest vs principal per year (indigo = principal, amber = interest).</p>" + rows;
 }
 
 function parseCgpa(text) {

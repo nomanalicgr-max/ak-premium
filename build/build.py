@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "20"  # v20 (2026-11-20): live-test follow-up — Merge button stayed disabled after a drag reorder (the generic file-button gate read the cleared file input); the gate now skips Merge PDF and the merge handler enables the button from the real file list.
+ASSET_V = "21"  # v21 (2026-11-22): advanced upgrade plan batch 1 — Compress PDF real levels, PDF to Excel table detection with real Excel types, JSON Formatter repair/schema/JSONPath, tax year comparison, EMI/mortgage amortisation schedules.
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -73,6 +73,7 @@ HASHED = {
     "styles": hashed_asset("assets/css/styles.css", transform=_css_font_urls),
     "common": hashed_asset("assets/js/common.js"),
     "core": hashed_asset("assets/js/core.js"),
+    "jsonpath-bridge": hashed_asset("assets/js/jsonpath-bridge.js"),
 }
 # Per-tool JS hashes are added after ALL_TOOLS is built (below): one
 # tools/<slug>.js per tool, written by split-app.py. The 10 category
@@ -85,6 +86,9 @@ HASHED = {
 SRI = {
  "pdf-lib": "sha384-weMABwrltA6jWR8DDe9Jp5blk+tZQh7ugpCsF3JwSA53WZM9/14PjS5LAJNHNjAI",
  "pdfjs": "sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e",
+ "jsonrepair": "sha384-2I3jTKkZ/Kqabhjo6l7hVZMJ7CBTAC/T52HC0PCG9iEry5vIS5qUckwnfztzkn/I",
+ "ajv2020": "sha384-vsMiC2R9fcX/SqeA9xJ+Lpbbe1fRi7RDpgHenZH7A8yXAoX+9T4m8MfuwrafZAAL",
+ "jsonpath-plus": "sha384-WRNZdkoNW+1xEvqdyoIRVG67lUx2bnGU+UCK7h6NoxSegyWY6t75F/9c7c4h/Tvp",
  "xlsx": "sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw",
  "jszip": "sha384-+mbV2IY1Zk/X1p/nWllGySJSUN8uMs+gUAN10Or95UBH0fpj6GfKgPmgC5EXieXG",
  "mammoth": "sha384-nFoSjZIoH3CCp8W639jJyQkuPHinJ2NHe7on1xvlUA7SuGfJAfvMldrsoAVm6ECz",
@@ -477,11 +481,11 @@ def ws_replace(wid, new_html):
     WORKSPACES[wid] = new_html
 
 ws_replace("tool-compress", '''<div class="workspace-tool" id="tool-compress">
-<h2>Compress PDF</h2><h2>Compress PDF</h2><h2>Compress PDF</h2>
+<h2>Compress PDF</h2>
 <input id="compressInput" type="file" accept="application/pdf">
-<label>Level <select id="compressLevel"><option value="light">Light — re-save, text stays selectable</option><option value="medium" selected>Medium — re-encode pages as images, good size saving</option><option value="strong">Strong — smallest file, text not selectable</option></select></label>
+<label>Level <select id="compressLevel"><option value="lossless">Lossless — shrink the file structure, zero quality loss</option><option value="balanced" selected>Balanced — shrink photos to 150 DPI, text stays selectable</option><option value="small">Small — shrink photos to 96 DPI, text stays selectable</option></select></label>
 <label>Quality <input id="compressQuality" type="range" min="10" max="100" value="70"> <span id="compressQualityLabel">70%</span></label>
-<p class="file-limit-note">Files up to 50 MB. Strong makes text non-selectable.</p>
+<p class="file-limit-note">Files up to 50 MB. Text always stays selectable — pages are never turned into images. Photos already at or below the target size are left alone.</p>
 <button id="compressPdfBtn" type="button" class="btn-primary">Compress PDF</button>
 <p class="status" id="compressPdfStatus" aria-live="polite"></p>
 </div>''')
@@ -693,10 +697,14 @@ PAKISTAN_WS = {
 <h2>Pakistan Salary Tax Calculator</h2>
 <label>Tax year <select id="taxYear"><option>Loading tax slabs...</option></select></label>
 <label>Monthly salary (Rs) <input id="taxMonthly" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 200000"></label>
+<label><input id="taxCompareYears" type="checkbox"> Compare Tax Year 2026 vs 2027</label>
+<label><input id="taxCompareSalary" type="checkbox"> Compare with a second salary</label>
+<label>Second monthly salary (Rs) <input id="taxMonthly2" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 300000"></label>
 <button id="taxBtn" type="button" class="btn-primary">Calculate Tax</button>
 <pre id="taxOutput" class="terminal" aria-live="polite">Your tax estimate will appear here.</pre>
 <p class="tax-source" id="taxSource"></p>
 <div id="taxBreakdown"></div>
+<div id="taxCompare"></div>
 <p class="status" id="taxStatus" aria-live="polite"></p>
 <p class="file-limit-note">Estimate only, using FBR slabs for salaried individuals. Not tax advice.</p>
 </div>''',
@@ -785,6 +793,17 @@ LIB_SCRIPT = {
  "jspdf": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="' + SRI["jspdf"] + '" crossorigin="anonymous"></script>',
  "js-yaml": '<script defer src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js" integrity="' + SRI["js-yaml"] + '" crossorigin="anonymous"></script>',
  "md5": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js" integrity="' + SRI["md5"] + '" crossorigin="anonymous"></script>',
+ "jsonrepair": '<script defer src="https://cdn.jsdelivr.net/npm/jsonrepair@3.11.0/lib/umd/jsonrepair.min.js" integrity="' + SRI["jsonrepair"] + '" crossorigin="anonymous"></script>',
+ "ajv2020": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/ajv/8.17.1/ajv2020.min.js" integrity="' + SRI["ajv2020"] + '" crossorigin="anonymous"></script>',
+ # jsonpath-plus ships no classic-script UMD .js build (only ESM .js and UMD
+ # .cjs, which jsDelivr serves as application/node and browsers refuse).
+ # So it loads as an ESM module script with SRI, plus a tiny bridge module
+ # (assets/js/jsonpath-bridge.js, same-origin and content-hashed) that
+ # imports the same URL (the browser reuses the SRI-verified module fetch)
+ # and exposes it as window.JSONPath. The bridge is an external file, not
+ # an inline script, because the enforced CSP has no 'unsafe-inline' and
+ # would block an inline module script.
+ "jsonpath-plus": '<script type="module" src="https://cdn.jsdelivr.net/npm/jsonpath-plus@10.3.0/dist/index-browser-esm.min.js" integrity="' + SRI["jsonpath-plus"] + '" crossorigin="anonymous"></script><script type="module" src="' + HASHED["jsonpath-bridge"] + '"></script>',
 }
 
 # Preconnect hosts (Phase 4.3): one <link rel="preconnect"> per CDN host a
@@ -796,6 +815,8 @@ LIB_HOST = {
  "jszip": "https://cdnjs.cloudflare.com", "mammoth": "https://cdnjs.cloudflare.com",
  "qrcode": "https://cdnjs.cloudflare.com", "jspdf": "https://cdnjs.cloudflare.com",
  "js-yaml": "https://cdn.jsdelivr.net", "md5": "https://cdnjs.cloudflare.com",
+ "jsonrepair": "https://cdn.jsdelivr.net", "ajv2020": "https://cdnjs.cloudflare.com",
+ "jsonpath-plus": "https://cdn.jsdelivr.net",
 }
 
 def esc(x): return html.escape(str(x), quote=True)
@@ -1143,7 +1164,7 @@ def build_homepage():
         ("Is AK Premium free?", "Yes. The built-in tools on AK Premium are free to use in your browser."),
         ("Do files leave my browser?", "No. Built-in AK Premium tools process files locally in your browser using client-side JavaScript. Files are not uploaded to an AK Premium server."),
         ("Can I preview a file before converting it?", "Yes. When you choose a PDF, the tool page shows its name, size and page count and renders page 1 as a preview under the file chooser before you convert, so you can confirm it is the right document. Images show a thumbnail. Previews are made in your browser and files are not uploaded."),
-        ("What are the limits of AK Premium?", "Each tool page states its own limits honestly. For example, Strong PDF compression turns pages into images so text is no longer selectable, and Word, Excel and PowerPoint to PDF are basic text conversions that do not preserve exact layout, fonts or images. Scanned PDFs without a text layer need OCR first."),
+        ("What are the limits of AK Premium?", "Each tool page states its own limits honestly. For example, PDF compression only re-encodes the photos inside a file, so a text-only PDF shrinks little, and Word, Excel and PowerPoint to PDF are basic text conversions that do not preserve exact layout, fonts or images. Scanned PDFs without a text layer need OCR first."),
         ("How do I find a tool?", "Use the search box at the top of the homepage, browse the category sections, or open a category hub such as PDF Tools or Calculators. Each tool has its own page, so you can bookmark it or share its link."),
         ("What country tools are there?", "Pakistan has a full country pack: salary tax, Zakat, land, amounts in words, Urdu word counting and merit. Tools for India, UAE & Saudi Arabia, the UK and the US are planned for later waves."),
     ]
@@ -1202,7 +1223,7 @@ def build_info_pages():
         '<p>AK Premium is a free, browser-based toolkit for PDF, image, Excel, business, calculator, design and Pakistan tasks. It is run by Mirza Noman Ali, a data analyst from Lahore, Pakistan, who built the site because the everyday tools he needed — merging a PDF, compressing a photo, building an Excel formula, checking salary tax — were either paid, required an account, or sent his files to a server.</p>'
         '<h2>Why this site exists</h2><p>The idea is simple: a tool should do one job well, in your browser, without asking for your files, your email or your money. AK Premium does not have paid features. Every tool on the site is free, and there is no account to create.</p>'
         '<h2>How the tools work</h2><p>Every tool runs in your browser with client-side JavaScript. When you choose a file, it is read by your browser, processed by your browser, and the result is downloaded to your device. AK Premium does not have a server that receives your files, and it does not store them.</p>'
-        '<h2>Honest limits</h2><p>Each tool page states what its tool can and cannot do. Some conversions are basic text conversions, and some tools, such as Strong PDF compression, trade one thing for another. Those limits are stated on the tool page, not hidden.</p>'
+        '<h2>Honest limits</h2><p>Each tool page states what its tool can and cannot do. Some conversions are basic text conversions, and some tools, such as PDF compression, trade one thing for another. Those limits are stated on the tool page, not hidden.</p>'
         '<h2>Contact</h2><p>If a tool does not work, or you have a suggestion, email <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a>. There is no support team; the site is run by one person, and every message is read by him.</p>'
         '<p><a href="/whats-new">See what&rsquo;s new on AK Premium &rarr;</a></p>')
     info_page("privacy", "Privacy Policy | AK Premium", "AK Premium Privacy Policy: files are processed in your browser, cookies, Google AdSense and Analytics, third-party vendors, and how to opt out of personalized ads.",
@@ -1282,6 +1303,9 @@ def build_info_pages():
         '<li>js-yaml (used by JSON to YAML and YAML to JSON) \u2014 MIT License</li>'
         '<li>SparkMD5 (used by Hash Generator for MD5) \u2014 WTFPL Version 2</li>'
         '<li>qpdf-wasm (used by Protect PDF and Unlock PDF) \u2014 wrapper under the MIT License; qpdf itself under the Apache License 2.0</li>'
+        '<li>jsonrepair (used by JSON Formatter to repair broken JSON) \u2014 ISC License</li>'
+        '<li>Ajv (used by JSON Formatter to validate JSON Schema) \u2014 MIT License</li>'
+        '<li>jsonpath-plus (used by JSON Formatter for JSONPath queries) \u2014 MIT License</li>'
         '</ul><h2>Icons and fonts</h2><ul>'
         '<li>Lucide icons \u2014 ISC License</li>'
         '<li>Inter, Plus Jakarta Sans and Noto Nastaliq Urdu fonts \u2014 SIL Open Font License 1.1</li>'
@@ -1487,7 +1511,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v18). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v20";
+const CACHE = "ak-premium-v21";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

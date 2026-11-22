@@ -2,7 +2,7 @@
    Runs in a Web Worker so the wasm work never blocks the page.
    Self-hosted pinned build: /vendor/qpdf (@arshad-shah/qpdf-wasm@0.1.0).
    Passwords live only in this worker for the duration of one call. */
-import { configure, encrypt, decrypt, inspect } from "/vendor/qpdf/index.js";
+import { configure, encrypt, decrypt, inspect, optimize } from "/vendor/qpdf/index.js";
 configure({ wasmUrl: "/vendor/qpdf/qpdf.wasm?v=5" });
 self.onmessage = async (e) => {
   const { op, bytes, password } = e.data || {};
@@ -19,6 +19,12 @@ self.onmessage = async (e) => {
       const info = await inspect(input);
       if (!info.encrypted) { self.postMessage({ ok: false, error: "NOT_ENCRYPTED" }); return; }
       const out = await decrypt(input, password);
+      self.postMessage({ ok: true, bytes: out.bytes }, [out.bytes.buffer]);
+    } else if (op === "optimize") {
+      /* Lossless compression: object streams + flate recompression +
+         removing unreferenced resources. No page is re-rendered, so text
+         stays selectable and nothing loses quality. */
+      const out = await optimize(input);
       self.postMessage({ ok: true, bytes: out.bytes }, [out.bytes.buffer]);
     } else {
       self.postMessage({ ok: false, error: "UNKNOWN_OP" });

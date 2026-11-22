@@ -382,7 +382,10 @@
         <div class="workspace-tool" id="tool-pdfexcel">
           <h2>PDF to Excel</h2>
           <input id="pdfExcelInput" type="file" accept="application/pdf">
-          <button id="pdfExcelBtn" type="button" class="btn-primary">Convert PDF to Excel</button>
+          <label><input id="pdfExcelOcr" type="checkbox"> This PDF is a scan — read it with OCR first (slower, English text only)</label>
+          <button id="pdfExcelBtn" type="button" class="btn-primary">Find Tables</button>
+          <div id="pdfExcelTables"></div>
+          <button id="pdfExcelDownloadBtn" type="button" class="btn-secondary" disabled>Download Excel</button>
           <p class="status" id="pdfExcelStatus"></p>
         </div>
 
@@ -579,9 +582,17 @@
             <button id="jsonFormatBtn" type="button" class="btn-primary">Format</button>
             <button id="jsonMinifyBtn" type="button" class="btn-secondary">Minify</button>
             <button id="jsonValidateBtn" type="button" class="btn-secondary">Validate</button>
+            <button id="jsonRepairBtn" type="button" class="btn-secondary">Repair</button>
+            <button id="jsonSortBtn" type="button" class="btn-secondary">Sort Keys</button>
+            <button id="jsonTreeBtn" type="button" class="btn-secondary">Tree View</button>
           </div>
           <pre id="jsonOutput" class="terminal">Formatted JSON will appear here.</pre>
+          <div id="jsonTreeOutput"></div>
           <button id="jsonCopyBtn" type="button" class="btn-secondary">Copy Result</button>
+          <label>JSON Schema (optional, for Validate with Schema) <textarea id="jsonSchemaInput" rows="4" placeholder='{"type": "object", "required": ["name"], "properties": {"name": {"type": "string"}}}'></textarea></label>
+          <button id="jsonSchemaBtn" type="button" class="btn-secondary">Validate with Schema</button>
+          <label>JSONPath query <input id="jsonPathInput" type="text" autocomplete="off" placeholder="Example: $.store.book[*].title"></label>
+          <button id="jsonPathBtn" type="button" class="btn-secondary">Run Query</button>
           <p class="status" id="jsonStatus"></p>
         </div>
 
@@ -705,8 +716,23 @@
             <label>Annual interest rate (%) <input id="emiRate" type="number" min="0" step="0.01" placeholder="Rate %"></label>
             <label>Years <input id="emiYears" type="number" min="1" placeholder="Years"></label>
           </div>
+          <div class="field-row">
+            <label>Extra payment per month (optional) <input id="emiExtra" type="number" min="0" placeholder="0"></label>
+            <label>One-time lump sum in month 1 (optional) <input id="emiLump" type="number" min="0" placeholder="0"></label>
+          </div>
+          <label><input id="emiCompare" type="checkbox"> Compare with a second loan</label>
+          <div class="field-row">
+            <label>Second loan amount <input id="emiPrincipal2" type="number" min="1" placeholder="Second loan amount"></label>
+            <label>Second rate (%) <input id="emiRate2" type="number" min="0" step="0.01" placeholder="Second rate %"></label>
+            <label>Second years <input id="emiYears2" type="number" min="1" placeholder="Second years"></label>
+          </div>
           <button id="emiBtn" type="button" class="btn-primary">Calculate EMI</button>
           <pre id="emiOutput" class="terminal">EMI result will appear here.</pre>
+          <div id="emiChart"></div>
+          <div id="emiYearly"></div>
+          <div id="emiCompareOut"></div>
+          <div id="emiSchedule"></div>
+          <button id="emiCsvBtn" type="button" class="btn-secondary">Download Schedule (CSV)</button>
           <p class="status" id="emiStatus"></p>
         </div>
 
@@ -764,13 +790,31 @@
           <p class="status" id="ciStatus"></p>
         </div>
 
-        <div class="workspace-tool" id="tool-mortgage">
+                <div class="workspace-tool" id="tool-mortgage">
           <h2>Mortgage Calculator</h2>
           <div class="field-row">
             <label>Loan amount <input id="mortPrincipal" type="number" min="1" placeholder="Loan amount"></label>
             <label>Annual interest rate (%) <input id="mortRate" type="number" min="0" step="0.01" placeholder="Rate %"></label>
             <label>Loan term (years) <input id="mortYears" type="number" min="1" placeholder="Years"></label>
           </div>
+          <div class="field-row">
+            <label>Property tax per month <input id="mortTax" type="number" min="0" placeholder="0"></label>
+            <label>Insurance per month <input id="mortIns" type="number" min="0" placeholder="0"></label>
+            <label>HOA per month <input id="mortHoa" type="number" min="0" placeholder="0"></label>
+          </div>
+          <div class="field-row">
+            <label>Extra payment per month (optional) <input id="mortExtra" type="number" min="0" placeholder="0"></label>
+            <label>One-time lump sum in month 1 (optional) <input id="mortLump" type="number" min="0" placeholder="0"></label>
+          </div>
+          <label><input id="mortCompare" type="checkbox"> Compare 20-year vs 30-year</label>
+          <button id="mortBtn" type="button" class="btn-primary">Calculate Monthly Payment</button>
+          <pre id="mortOutput" class="terminal">Result will appear here.</pre>
+          <div id="mortCompareOut"></div>
+          <div id="mortYearly"></div>
+          <div id="mortSchedule"></div>
+          <button id="mortCsvBtn" type="button" class="btn-secondary">Download Schedule (CSV)</button>
+          <p class="status" id="mortStatus"></p>
+        </div>
           <button id="mortBtn" type="button" class="btn-primary">Calculate Monthly Payment</button>
           <pre id="mortOutput" class="terminal">Result will appear here.</pre>
           <p class="status" id="mortStatus"></p>

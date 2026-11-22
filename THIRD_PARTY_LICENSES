@@ -1,5 +1,5 @@
 AK Premium — Third-party licences
-Last updated: 19 November 2026
+Last updated: 22 November 2026
 
 AK Premium is built with the open-source libraries, icons and fonts listed
 below. Each entry gives the project, its licence and where to find it.
@@ -21,6 +21,9 @@ Libraries (loaded from public CDNs, except qpdf-wasm which is self-hosted):
   License 2.0 — https://github.com/qpdf/qpdf
 - js-yaml — MIT License — https://github.com/nodeca/js-yaml
 - SparkMD5 — WTFPL Version 2 — https://github.com/satazor/js-spark-md5
+- jsonrepair — ISC License — https://github.com/josdejong/jsonrepair
+- Ajv (JSON Schema 2020-12) — MIT License — https://github.com/ajv-validator/ajv
+- jsonpath-plus — MIT License — https://github.com/brettz9/jsonpath-plus
 
 Icons and fonts:
 - Lucide icons — ISC License — https://lucide.dev
