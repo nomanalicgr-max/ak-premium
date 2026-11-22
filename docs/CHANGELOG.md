@@ -1,5 +1,28 @@
 # AK Premium — Changelog
 
+## v24 — 23 November 2026 (advanced upgrade plan, batch 4: 6 tools)
+
+### Organize PDF — thumbnails, duplicate, split, blank, extract
+- Pages now show as pdf.js thumbnails that can be dragged to reorder, with a per-page rotate and delete. New actions: Duplicate a page, Split one page into two (a crop trick that cuts the page into left and right halves), insert a Blank page after any page, and tick Select on pages to Download selected pages as a new file. A pre-existing bug is fixed: edits no longer vanish when the page list re-renders after a delete, duplicate, split or blank insert.
+
+### Remove Pages — visual picker, blank pages, text search
+- A visual page picker with thumbnails: click a page to select it for removal, in sync with the typed page list. "Select blank pages" finds pages with no text and almost no ink, and "Select matching pages" removes every page containing a searched word or phrase (pdf.js text layer). Removals produce a new PDF with only the remaining pages.
+
+### Rotate PDF — per-page rotate, auto-rotate, deskew
+- Each page now has its own rotate angle (90/180/270) with a thumbnail preview, instead of one angle for the whole file. Auto-rotate reads the text direction with Tesseract OSD and turns sideways pages upright. Straighten a tilted scan uses a pure-code projection-profile deskew (tilts up to 6 degrees); it does not use opencv.js, so nothing large is downloaded. Straightened pages become images, and the page says so.
+
+### Edit PDF — wrapping, alignment, font match, white-out
+- Added text now wraps inside the page instead of running off the edge, with left/centre/right alignment and a font matched to the fonts already on the page. A white-out option covers existing text with a rectangle so corrected text can be overlaid. True removal or replacement of text inside the file is not offered: it needs a full PDF engine on a server, and the page says so — white-out covers text visually but does not remove it from the file.
+
+### Crop PDF — per-side margins, ratios, auto-trim, preview
+- Margins can now be set per side (top, bottom, left, right), per page or for a page range, using the PDF CropBox so text stays selectable. Preset ratios (A4, Letter, square) resize the crop box to that shape, and auto-remove white margins trims to the ink bounding box found by rendering the page. A crop preview shows the result before downloading.
+
+### Redact PDF — presets, vector redaction, OCR pass
+- Pattern presets redact emails, phone numbers, CNIC/ID numbers, IBANs and dates in one click, or redact an exact word or phrase. Where possible the text is removed from the content stream itself (vector redaction), so the rest of the page keeps its selectable text layer; pages where that cannot apply fall back to rebuilding the page as an image, and the page says which happened. Scanned pages with no text layer can be redacted after an OCR pass that finds the words on the page first.
+
+### JavaScript split and testing
+- The per-tool JS split is verified lossless (7,756 code lines, 0 missing/extra). ASSET_V is now "24" (config.js?v=24) and the service-worker cache is "ak-premium-v24". No new libraries were added. Harness run-v24.js: 576 checks, all passing.
+
 ## v23 — 23 November 2026 (advanced upgrade plan, batch 3: 6 tools)
 
 ### Merge PDF — page ranges, blank pages, rotate, bookmarks kept
