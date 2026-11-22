@@ -166,7 +166,7 @@
   {
    "slug": "pdf-to-text",
    "title": "PDF to Text",
-   "short": "Extract text as a .txt file.",
+   "short": "Layout-aware text extraction: columns, headings, order.",
    "category": "pdf",
    "keywords": [
     "extract text",
@@ -195,7 +195,7 @@
   {
    "slug": "e-sign",
    "title": "e-Sign",
-   "short": "Draw a signature, download PNG.",
+   "short": "Draw a signature, stamp a PDF, or digitally sign it.",
    "category": "pdf",
    "keywords": [
     "sign pdf",
@@ -633,7 +633,7 @@
   {
    "slug": "image-compressor",
    "title": "Image Compressor",
-   "short": "Shrink photos and images for sharing.",
+   "short": "Batch compress images, ZIP download, AVIF output.",
    "category": "image",
    "keywords": [
     "reduce image size",
@@ -1353,7 +1353,7 @@
   {
    "slug": "unit-converter",
    "title": "Unit Converter",
-   "short": "Convert length, weight, temperature and more.",
+   "short": "Convert length, weight, temperature, pressure and more.",
    "category": "calculators",
    "keywords": [
     "unit converter",
@@ -1597,7 +1597,7 @@
   {
    "slug": "markdown-previewer",
    "title": "Markdown Previewer",
-   "short": "See Markdown formatted as you type.",
+   "short": "Full Markdown preview: tables, task lists, footnotes.",
    "category": "text",
    "keywords": [
     "markdown previewer",
@@ -1789,7 +1789,7 @@
   {
    "slug": "jwt-decoder",
    "title": "JWT Decoder",
-   "short": "Read the header and payload of a JWT.",
+   "short": "Decode a JWT and verify its HMAC signature.",
    "category": "developer",
    "keywords": [
     "jwt decoder",
