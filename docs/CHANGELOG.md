@@ -1,5 +1,28 @@
 # AK Premium — Changelog
 
+## v23 — 23 November 2026 (advanced upgrade plan, batch 3: 6 tools)
+
+### Merge PDF — page ranges, blank pages, rotate, bookmarks kept
+- Each file in the merge now has its own page-range picker (e.g. file A pp.1–3 + file B p.5), a per-file rotate (90/180/270), and 0–5 blank pages can be inserted between files. Bookmarks from the source files are merged into one outline in the result (titles remap to the new page numbers; a bookmark whose page was not picked promotes its children). Files without bookmarks merge exactly as before.
+
+### Split PDF — six modes
+- Besides typed page ranges there are now: extract every page (ZIP), split by bookmarks (one chapter per file, named after the bookmark), every N pages, split into equal parts, and split by file size (max MB per part, checked against the real saved size). A single page larger than the size limit is kept whole and the status says so.
+
+### Add Page Numbers — position, style, roman numerals
+- Position (6 presets), font (6), size, colour, a starting number, "Page X of Y", skip the first N pages, and roman numerals for the first pages of front matter. The "of Y" total is the physical page count, so a document whose numbering starts at 5 can show "Page 7 of 6" — that is the numbering continuing, not a miscount.
+
+### Add Watermark — angle, opacity, tiled, image, page choice
+- Angle, opacity slider, colour and font size for the text watermark, a tiled/repeated mode, an image watermark (PNG/JPG logo, sized as a percentage of the page width), and a choice of all, odd, even or a page range. The watermark is visible only — it does not stop copying.
+
+### Unlock PDF — check protection, batch unlock
+- A new Check Protection button shows the encryption (algorithm, revision, key length), whether a user or owner password is needed, and which permissions were locked, before anything is unlocked. Several files can be unlocked at once with the same password and download as one ZIP. The check reuses its result, so a single-file unlock does not call the worker twice.
+
+### Protect PDF — separate passwords, permission flags
+- Separate user and owner passwords, and permission flags for printing (full/low/none), copying text and images, filling in forms, adding comments, assembling pages and other changes. Copying, editing and forms are off by default; screen-reader access always stays on (qpdf keeps it on, and the page says so). Certificate-based encryption is not offered — it needs a trust service provider, not a browser.
+
+### JavaScript split and testing
+- The per-tool JS split is verified lossless (7,022 code lines, 0 missing/extra). ASSET_V is now "23" (config.js?v=23) and the service-worker cache is "ak-premium-v23". The qpdf worker gained an `info` op (encryption details) and the `protect` op now takes owner password + permissions. Harness run-v23.js: 480 checks, all passing (411 v22 checks plus 69 new batch-3 checks, including a load sweep proving core.js loads alone and with every one of the 117 tool files).
+
 ## v22 — 22 November 2026 (advanced upgrade plan, batch 2: 7 tools)
 
 ### Markdown Previewer — full CommonMark
