@@ -262,7 +262,10 @@
       "keywords": [
         "reorder pages",
         "rearrange pdf",
-        "sort pages"
+        "sort pages",
+        "split pdf page",
+        "duplicate page",
+        "extract pages"
       ],
       "libs": [
         "pdf-lib",
@@ -282,34 +285,34 @@
       ],
       "steps": [
         "Choose a PDF file with the file button.",
-        "Drag the page thumbnails into the order you want. Use Rotate 90 on a sideways page and Delete on a blank page.",
-        "Press Download and save the organised PDF."
+        "Drag the page thumbnails into the order you want. Use Rotate 90 on a sideways page, Duplicate to copy a page, Split in two to cut one page into a left and a right page, Blank after to add an empty page, and Delete to drop a page. Tick Select on pages to save only those.",
+        "Press Reorder PDF to download the organised file, or Download selected pages to save just the ticked pages."
       ],
       "content": {
-        "use": "Organizing a PDF is for fixing page order after scanning or merging: a scanned book with two pages swapped, a report with the appendix in the wrong place, or a set of pages that were merged in the wrong order. It is also how you delete a blank or duplicate page.",
-        "tip": "Drag the page thumbnails into the order you want. Use Rotate 90 on a page that was scanned sideways, and Delete on a blank or duplicate page, before you download.",
-        "limit": "Organizing reorders, rotates and deletes pages. It does not edit the text or images on a page, and it cannot split one page into two.",
-        "example": "Moving page 3 to the front of a 5-page PDF, rotating page 2, and deleting page 5 gives a clean 4-page file.",
+        "use": "Organizing a PDF is for fixing page order after scanning or merging: a scanned book with two pages swapped, a report with the appendix in the wrong place, or a set of pages that were merged in the wrong order. Thumbnails show every page, so you can see what you are moving instead of guessing by number. You can also split one wide page into a left and a right page, add a blank page where a divider belongs, copy a page that is needed twice, or save only the pages you ticked as a separate file. Your original file is never changed; the result downloads as a new PDF.",
+        "tip": "Split in two cuts a page down the middle, which suits a scanned double-page spread. Blank after is handy for a divider page before a new chapter. Tick Select on the pages you need and use Download selected pages when you only want part of the file.",
+        "limit": "Organizing reorders, rotates, duplicates, splits and deletes pages. It does not edit the text or images on a page. Splitting cuts a page into a left and a right half, not into top and bottom, and a split page keeps the same rotation on both halves. Blank pages are plain white with the size of the page before them.",
+        "example": "Moving page 3 to the front of a 5-page PDF, splitting a wide scanned spread on page 2 into two pages, and deleting page 5 gives a clean 6-page file.",
         "faq": [
           [
-            "Can I rotate only one page?",
-            "Yes. Each thumbnail has its own Rotate 90 button, so only that page turns. Press it again to turn the page further."
+            "Can I split one page into two pages?",
+            "Yes. Press Split in two on the page thumbnail. The page is cut down the middle into a left page and a right page. Press it again to undo the split before you download."
           ],
           [
-            "Do I have to type the page order as numbers?",
-            "No. Drag the thumbnails to reorder visually. Typing a number order like 3,1,2 still works if you prefer it."
+            "How do I save only some pages?",
+            "Tick Select on the thumbnails you want, then press Download selected pages. The rest of the file is left out of the download."
           ],
           [
-            "Can I delete a page?",
-            "Yes. Each page thumbnail has a Delete button. The page is left out of the downloaded file, but you must keep at least one page."
+            "Can I add a blank page?",
+            "Yes. Press Blank after on a page thumbnail to add an empty page right after it. The blank page is the same size as the page before it."
           ],
           [
-            "Are my rotations saved in the downloaded file?",
-            "Yes. A page you rotated stays rotated in the new PDF. The rotation is written into the file, so it looks the same in any PDF reader."
+            "Does duplicating a page copy its rotation too?",
+            "Yes. A duplicated page keeps the rotation of the page it was copied from. You can rotate the copy on its own afterwards if you need it the other way up."
           ]
         ]
       },
-      "meta_description": "Reorder PDF pages into a new order, free in your browser. Drag-free, simple page ordering with no upload."
+      "meta_description": "Reorder, split, duplicate and extract PDF pages in your browser. Drag thumbnails, add blank pages and download the organised file."
     },
     {
       "slug": "remove-pages",
@@ -325,10 +328,13 @@
       "icon": "i-file-minus",
       "keywords": [
         "delete pages",
-        "remove pdf pages"
+        "remove pdf pages",
+        "remove blank pages",
+        "delete blank pages"
       ],
       "libs": [
-        "pdf-lib"
+        "pdf-lib",
+        "pdfjs"
       ],
       "engine": "tool-remove",
       "maxFileMB": 50,
@@ -336,36 +342,42 @@
       "status": "published",
       "regions": [],
       "lastReviewed": "2026-11-18",
-      "meta_description": "Delete selected pages from a PDF and keep the rest, free in your browser. Your file never leaves your device.",
+      "meta_description": "Delete pages from a PDF by clicking thumbnails, searching text or finding blank pages. Free in your browser, no upload.",
       "steps": [
         "Choose a PDF file with the file button.",
-        "In 'Pages to remove', type the page numbers, for example 2, 4-5.",
+        "Click the page thumbnails to pick the pages to remove, or type the page numbers in the box, for example 2, 4-5. Use Select blank pages to find empty pages, or Find pages with this text to pick every page that contains a word.",
         "Press Remove Pages and save the downloaded copy."
       ],
       "content": {
-        "use": "Remove Pages deletes pages you do not need from a PDF and downloads the rest as a new file. A student removes blank pages from scanned notes before uploading them. An office worker removes a draft page from a report before sending it to a client. A shop owner removes an old price page from a catalogue. You list the pages by number, using commas and ranges such as 2, 4-5, and the tool checks every number against the real page count before it removes anything. Your original file is never changed; the result is a separate download.",
-        "tip": "Type ranges with a hyphen, such as 4-5, and separate pages with commas, such as 2, 4-5. Count the pages first if you are unsure, because the tool refuses numbers above the real page count.",
-        "limit": "You must keep at least one page; the tool refuses to remove every page. Page numbers that do not exist in the file are rejected with a message. The tool only removes whole pages. It does not delete text inside a page or fix a damaged PDF.",
-        "example": "In a 10-page report, typing 2, 4-5 and pressing Remove Pages downloads a 7-page PDF with pages 2, 4 and 5 gone.",
+        "use": "Remove Pages deletes pages you do not need from a PDF and downloads the rest as a new file. A student removes blank pages from scanned notes before uploading them. An office worker removes a draft page from a report before sending it to a client. You can click the page thumbnails to pick pages by sight, search for every page that contains a word, or ask the tool to find blank pages for you. You can also list pages by number, using commas and ranges such as 2, 4-5, and the tool checks every number against the real page count before it removes anything. Your original file is never changed; the result is a separate download.",
+        "tip": "Click a thumbnail to select a page, and click it again to undo. Select blank pages only picks pages with no text and no ink, so a page with a stamp or a photo is kept. Search is not case sensitive.",
+        "limit": "You must keep at least one page; the tool refuses to remove every page. Page numbers that do not exist in the file are rejected with a message. Blank-page detection looks for text and ink, so a page with a faint mark or a stamp may not count as blank. The tool only removes whole pages. It does not delete text inside a page or fix a damaged PDF.",
+        "example": "In a 10-page report, clicking the thumbnails of pages 2, 4 and 5 and pressing Remove Pages downloads a 7-page PDF with those pages gone.",
         "faq": [
           [
-            "How do I write a page range?",
-            "Type it with a hyphen, such as 4-5, and separate entries with commas, such as 2, 4-5. The tool removes pages 2, 4 and 5 in that example."
+            "How do I pick pages by sight instead of by number?",
+            "Choose the file and click the page thumbnails. A clicked page is marked as selected and its number appears in the page list box. Click it again to undo."
+          ],
+          [
+            "What counts as a blank page?",
+            "A page with no text and no ink at all. A page with a stamp, a photo, a logo or even a faint mark is not counted as blank, so it is kept."
+          ],
+          [
+            "Can I remove every page that contains a word?",
+            "Yes. Type the word in the search box and press Select matching pages. Every page whose text contains that word is selected, and you can remove them all at once."
           ],
           [
             "What happens if I type a page number that does not exist?",
             "The tool checks your list against the real page count and shows an error, such as page 12 being outside 1 to 10. Nothing is removed until the list is valid."
-          ],
-          [
-            "Can I remove all the pages?",
-            "No. The tool refuses to remove every page and asks you to keep at least one page."
-          ],
-          [
-            "Is my original PDF changed?",
-            "No. The tool reads your file and downloads a new copy with the pages removed. Your original file stays untouched."
           ]
         ]
-      }
+      },
+      "related": [
+        "organize-pdf",
+        "split-pdf",
+        "rotate-pdf",
+        "crop-pdf"
+      ]
     },
     {
       "slug": "rotate-pdf",
@@ -381,10 +393,15 @@
       "icon": "i-rotate-cw",
       "keywords": [
         "turn pages",
-        "flip pdf"
+        "flip pdf",
+        "rotate one page",
+        "deskew pdf",
+        "auto rotate pdf"
       ],
       "libs": [
-        "pdf-lib"
+        "pdf-lib",
+        "pdfjs",
+        "tesseract"
       ],
       "engine": "tool-rotate",
       "maxFileMB": 50,
@@ -392,36 +409,42 @@
       "status": "published",
       "regions": [],
       "lastReviewed": "2026-11-18",
-      "meta_description": "Rotate all PDF pages by 90, 180 or 270 degrees, free in your browser. No upload and no account needed.",
+      "meta_description": "Rotate PDF pages one by one, auto-rotate by text direction, or straighten a tilted scan. Free in your browser, no upload.",
       "steps": [
         "Choose a PDF file with the file button.",
-        "Pick an angle in the Angle list: 90, 180 or 270 degrees.",
+        "Pick an angle on each page thumbnail, or leave the Angle list to turn every page the same way. Use Auto-rotate by text direction to let the tool work out which pages are upside down, or Straighten a tilted scan for a crooked page.",
         "Press Rotate PDF and save the downloaded copy."
       ],
       "content": {
-        "use": "Rotate PDF turns every page of a PDF by 90, 180 or 270 degrees, which fixes files that open sideways or upside down. A student rotates scanned notes that were photographed at an angle. An office worker rotates a sideways report so it reads normally on screen. A shop owner rotates a scanned invoice before sending it to a customer. The rotation is added to each page's existing rotation, so a page that was already turned 90 degrees becomes 180 degrees if you rotate it again. The result downloads as a new PDF and your original file stays unchanged.",
-        "tip": "If a page is already rotated, remember the angle adds to it. A page turned 90 degrees once becomes 180 degrees if you rotate it by 90 again. Rotate once, download, and check the result before rotating again.",
-        "limit": "The angle applies to every page at once. You cannot rotate a single page on its own. The tool does not straighten skewed scans; it only turns pages by 90, 180 or 270 degrees.",
-        "example": "A 5-page scan that opens sideways is fixed by choosing 90 degrees and pressing Rotate PDF, which downloads all 5 pages turned the right way up.",
+        "use": "Rotate PDF turns pages of a PDF by 90, 180 or 270 degrees, which fixes files that open sideways or upside down. A student rotates scanned notes that were photographed sideways. You can turn each page on its own using the thumbnails, or turn every page at once with the Angle list. If you are not sure which way a page goes, Auto-rotate checks the text direction and sets the angle for you. A scan that is only slightly tilted can be straightened too. Rotation adds to each page's existing turn, so a page already at 90 degrees becomes 180 if you turn it again. The result downloads as a new PDF and your original file stays unchanged.",
+        "tip": "Use Auto-rotate by text direction when a scan mixes upright and upside-down pages; it sets each page on its own. For a page that is only slightly crooked, use Straighten a tilted scan instead of guessing an angle.",
+        "limit": "Rotation turns pages by 90, 180 or 270 degrees. Straighten a tilted scan only fixes a tilt of up to 6 degrees, and a straightened page is rebuilt as an image, so its text is no longer selectable. Auto-rotate reads the text direction, so it cannot help on a page with no text at all. The tool does not straighten a page tilted more than 6 degrees.",
+        "example": "A 5-page scan with two upside-down pages is fixed by pressing Auto-rotate by text direction and then Rotate PDF, which downloads all 5 pages the right way up.",
         "faq": [
           [
             "Can I rotate just one page?",
-            "No. The angle you pick is applied to every page in the file. To fix one page, split the PDF first, rotate that part, then merge it back."
+            "Yes. Choose the file and set the angle on that page's thumbnail. The other pages keep the angle shown on their own thumbnails."
+          ],
+          [
+            "How does Auto-rotate know which way is up?",
+            "It reads the text on each page and works out whether the letters are upright, sideways or upside down, then sets that page's angle. A page with no text, such as a photo page, is left as it is."
+          ],
+          [
+            "Can Rotate PDF straighten a crooked scan?",
+            "Only a small tilt, up to 6 degrees. Press Straighten a tilted scan. A straightened page is rebuilt as an image, so you can no longer select its text."
           ],
           [
             "Why did my page turn 180 degrees when I chose 90?",
             "The rotation adds to the page's existing rotation. A page already turned 90 degrees becomes 180 degrees when you rotate it by 90 again."
-          ],
-          [
-            "Does Rotate PDF change my original file?",
-            "No. It reads your file and downloads a new copy with the pages turned. Your original file is not changed."
-          ],
-          [
-            "Can Rotate PDF straighten a crooked scan?",
-            "No. It only turns whole pages by 90, 180 or 270 degrees. A scan that is tilted by a few degrees stays tilted."
           ]
         ]
-      }
+      },
+      "related": [
+        "organize-pdf",
+        "remove-pages",
+        "merge-pdf",
+        "crop-pdf"
+      ]
     },
     {
       "slug": "add-page-numbers",
@@ -553,10 +576,13 @@
       "keywords": [
         "write on pdf",
         "annotate pdf",
-        "add text to pdf"
+        "add text to pdf",
+        "white out pdf",
+        "correct pdf text"
       ],
       "libs": [
-        "pdf-lib"
+        "pdf-lib",
+        "pdfjs"
       ],
       "engine": "tool-editpdf",
       "maxFileMB": 50,
@@ -564,36 +590,42 @@
       "status": "published",
       "regions": [],
       "lastReviewed": "2026-11-18",
-      "meta_description": "Add text to a page of your PDF, free in your browser. A simple way to stamp a note without installing software.",
+      "meta_description": "Add wrapped text to a PDF page with font matching and white-out corrections. Free in your browser, no upload.",
       "steps": [
         "Choose a PDF file with the file button.",
-        "Type the text in 'Text to add', then set the Page number, choose a Position and a Font size.",
+        "Type the text in 'Text to add', then set the Page number, choose a Position, a Font and an Alignment, and set the text box width. Tick 'White-out the area behind the new text' to cover what was there first.",
         "Press Add Text to PDF and save the downloaded copy."
       ],
       "content": {
-        "use": "Edit PDF adds a line of text to one page of a PDF, which is handy for small fixes such as a missing heading, a note or a date. A teacher adds a class name to the first page of a handout. An office worker adds 'Approved' to the top of a memo. A student adds a title to the first page of an assignment. You pick the page number and choose where the text goes: top left, top centre, bottom centre or centre of the page. The text is added in a plain dark font, and the rest of the page is left exactly as it was.",
-        "tip": "Check the page count before you type a page number, because the tool refuses a page that does not exist. Keep the added text short, so it fits on one line at the size you choose.",
-        "limit": "The tool adds new text only. It cannot edit or delete text that is already in the PDF, and it cannot move existing content. The added text goes on one page at a time, in a plain font at 12, 18, 24 or 36 points. If the text is too long for the page width, it may run off the edge.",
-        "example": "Adding the text 'Class 10-A' to page 1 at the top centre in size 24 puts a clear heading on the first page of a handout.",
+        "use": "Edit PDF adds text to one page of a PDF, for small fixes such as a missing heading, a note or a date. A teacher adds a class name to a handout, an office worker adds 'Approved' to a memo, and a student adds a title to an assignment. You pick the page, the position, the font and the alignment. Long text wraps inside your box instead of running off the edge, and the font list matches the fonts already on the page. If the old wording is wrong, white-out the area behind the new text first, so the correction sits on a clean patch. The rest of the page is left exactly as it was.",
+        "tip": "Leave the text box width at 0 to use the full page width. Set a narrower width to keep the text in a column. White-out only covers the box your new text sits in, so place the text right over the words you want to hide.",
+        "limit": "The tool adds new text only. It cannot truly edit or delete text that is already in the PDF: white-out paints a white box over the old words, but they are still in the file underneath, so it is not safe for hiding sensitive details. Removing old text from the file itself needs a desktop PDF editor. The added text goes on one page at a time, in a built-in font at 12, 18, 24 or 36 points. A single very long word can still run past the edge of its box.",
+        "example": "Adding the text 'Class 10-A' to page 1 at the top centre in size 24 puts a clear heading on the first page of a handout, and ticking white-out first covers the old heading underneath.",
         "faq": [
           [
             "Can I edit text that is already in the PDF?",
             "No. Edit PDF only adds new text on top of a page. It cannot change or delete existing text, so fix typos in the original document and export a fresh PDF."
           ],
           [
-            "Which positions can I choose?",
-            "Top left, top centre, bottom centre or centre of the page. Pick the position from the Position list before pressing Add Text to PDF."
+            "What does white-out do, exactly?",
+            "It paints a white box over the area your new text sits in, so the old words cannot be seen. The old text is still in the file underneath the box, so do not use it to hide anything sensitive."
           ],
           [
-            "What if the page I type is not in the PDF?",
-            "The tool shows a message telling you how many pages the PDF has and asks you to choose a page inside that range."
+            "Why does my long text wrap onto two lines now?",
+            "The text wraps inside the box width you set, so it no longer runs off the edge of the page. Set a wider box, or a smaller font size, to fit it on one line."
           ],
           [
             "Can I add text to several pages at once?",
             "No. Each run adds text to one page only. Repeat the steps for each page you need to mark."
           ]
         ]
-      }
+      },
+      "related": [
+        "add-page-numbers",
+        "add-watermark",
+        "redact-pdf",
+        "organize-pdf"
+      ]
     },
     {
       "slug": "compress-pdf",
@@ -970,10 +1002,14 @@
       "icon": "i-crop",
       "keywords": [
         "trim pdf",
-        "crop margins"
+        "crop margins",
+        "crop one side",
+        "remove white borders",
+        "crop to a4"
       ],
       "libs": [
-        "pdf-lib"
+        "pdf-lib",
+        "pdfjs"
       ],
       "engine": "tool-crop",
       "maxFileMB": 50,
@@ -981,36 +1017,42 @@
       "status": "published",
       "regions": [],
       "lastReviewed": "2026-11-18",
-      "meta_description": "Crop the margins of every page in a PDF, free in your browser. Tidy page edges without uploading your file.",
+      "meta_description": "Crop PDF margins per side, per page or to A4, Letter or square, with a visual preview. Free in your browser, no upload.",
       "steps": [
         "Choose a PDF file with the file button.",
-        "Type the crop margin in points in the 'Crop margin, points' box. The default is 36.",
-        "Press Crop PDF and save the downloaded copy."
+        "Set the margin for each side, or pick a shape such as A4, Letter or Square. Use Show crop preview to drag the crop box on page 1, or Remove white borders to trim every page to its ink.",
+        "Choose All pages or a Page range, then press Crop PDF and save the downloaded copy."
       ],
       "content": {
-        "use": "Crop PDF trims the same margin off every side of every page, which removes wide white borders from scanned pages. A student crops the empty borders off scanned notes so they read better on a phone. An office worker crops the margins off a scanned form before printing it. A teacher crops a worksheet so the questions fill more of the page. You type the margin in points, and the default of 36 points trims about half an inch from each side. The text in the middle of the page is never touched, and your original file stays unchanged.",
-        "tip": "Start with the default 36 points and check the result before you crop more. A bigger number trims more from every side, so a large margin can cut into the text near the edge of the page.",
-        "limit": "The same margin is cut from all four sides of every page. You cannot crop one page only, or crop the top more than the bottom. The margin must be between 0 and 200 points, and each page keeps at least 10 points of width and height.",
-        "example": "Cropping a scanned worksheet with a 36-point margin trims about half an inch of white border from every side of every page.",
+        "use": "Crop PDF trims the edges off the pages of a PDF, which removes wide white borders from scanned pages. A student crops the borders off scanned notes so they read better on a phone, and a teacher crops a worksheet so the questions fill more of the page. You can set a different margin per side, crop only some pages, or cut every page to A4, Letter or a square. The preview shows page 1 so you can drag the crop box into place, and Remove white borders trims each page to the ink on it. The text in the middle of the page is never touched, and your original file stays unchanged.",
+        "tip": "Use Show crop preview to see the result before you crop; dragging the box fills in the four margin boxes for you. Remove white borders is the quickest fix for a scan with uneven borders.",
+        "limit": "Cropping only hides the trimmed area by moving the crop box; the content outside it stays in the file, so it is not a way to remove sensitive details. Each page keeps at least 10 points of width and height. The preview shows page 1 only, but the crop applies to the pages you chose. A page with no ink is left unchanged by Remove white borders.",
+        "example": "Cropping a scanned worksheet with a 36-point margin on every side trims about half an inch of white border from the pages, and Remove white borders trims a form to the exact edge of its printed text.",
         "faq": [
+          [
+            "Can I crop only the top of the page?",
+            "Yes. Set the Top margin and leave the other three at 0. Each side has its own box."
+          ],
           [
             "What is a point?",
             "A point is a printing unit. 72 points make one inch, so the default 36 points is about half an inch of margin on each side."
           ],
           [
-            "Can I crop only the top of the page?",
-            "No. The same margin is cut from all four sides of every page. To crop one edge only, use a PDF editor that supports free cropping."
-          ],
-          [
-            "Will cropping cut into my text?",
-            "It can, if the margin is larger than the white space around your text. Start with 36 points and check the result; raise it slowly if the borders are still wide."
-          ],
-          [
             "Can I crop a single page?",
-            "No. The margin applies to every page in the file. Split the PDF first if only one page needs cropping."
+            "Yes. Choose Page range and type the page, for example 3. Only that page is cropped."
+          ],
+          [
+            "Does cropping delete the trimmed part for good?",
+            "No. Cropping moves the crop box, so the trimmed area is hidden but still in the file. Do not use it to hide sensitive details."
           ]
         ]
-      }
+      },
+      "related": [
+        "remove-pages",
+        "organize-pdf",
+        "rotate-pdf",
+        "redact-pdf"
+      ]
     },
     {
       "slug": "redact-pdf",
@@ -1027,11 +1069,15 @@
       "keywords": [
         "black out text",
         "hide text",
-        "remove sensitive text"
+        "remove sensitive text",
+        "redact cnic",
+        "redact email",
+        "redact scanned pdf"
       ],
       "libs": [
         "pdf-lib",
-        "pdfjs"
+        "pdfjs",
+        "tesseract"
       ],
       "engine": "tool-redact",
       "maxFileMB": 50,
@@ -1047,34 +1093,34 @@
       ],
       "steps": [
         "Choose a PDF file with the file button.",
-        "Type the exact text to redact, including spaces.",
+        "Pick what to redact: exact text, or a pattern such as email addresses, phone numbers, CNIC numbers, IBAN numbers or dates. Tick 'Also check scanned pages (OCR)' if the PDF is a scan.",
         "Press Redact and download the PDF. Open it in a PDF reader to confirm the covered text cannot be selected."
       ],
       "content": {
-        "use": "Redaction is for removing sensitive details before a document is shared: a CNIC number, a phone number, a bank account number or a name in a report. It is used when a document must be shared but a few details in it must not be seen by anyone.",
-        "tip": "Type the exact text to redact, including spaces. Check the downloaded PDF before you share it, and open it in a PDF reader to confirm the covered text cannot be selected or copied.",
-        "limit": "Redaction works on the text layer of a PDF. Pages that contain a match are rebuilt as images with the black box burned in, so the covered text is gone from those pages. Pages without a match are copied unchanged. A scanned PDF has no text layer, so redact it after OCR, not before.",
-        "example": "Redacting 35202-1234567-1 from a form covers every place that CNIC appears with a black box.",
+        "use": "Redaction is for removing sensitive details before a document is shared: a CNIC number, a phone number, a bank account number or an email address. It is used when a document must be shared but a few details must not be seen. You can type the exact text, or pick a pattern and let the tool find every email address, phone number, CNIC number, IBAN or date. Where the text can be found, it is removed from the text itself and covered with a black box, so the page keeps its text layer. Where that is not possible, the page is rebuilt as an image with the box burned in. Scanned pages can be checked with OCR too.",
+        "tip": "Use a pattern instead of typing each number by hand: CNIC finds every number shaped like 35202-1234567-1 in one pass. Check the downloaded PDF before you share it, and open it in a PDF reader to confirm the covered text cannot be selected or copied.",
+        "limit": "Redaction works best on PDFs with a real text layer. Where the text is stored plainly, it is removed from the file and the page keeps its text layer. Where the text is split across the file or stored in an unusual way, that page is rebuilt as an image with the box burned in, so its text can no longer be selected. Scanned pages need the OCR box ticked, and OCR can miss faint or handwritten text. Always check the result before sharing.",
+        "example": "Picking the CNIC pattern on a form covers every number shaped like 35202-1234567-1 with a black box in one pass, without typing any of them.",
         "faq": [
           [
             "Is the redacted text really gone, or just covered?",
-            "It is really gone from the affected pages. Those pages are rebuilt as images with the box burned into the picture, and the original text layer on those pages is destroyed, so the text cannot be selected or copied out."
+            "Where the tool can find the text in the file, it is removed from the text itself and the page keeps its text layer. Where it cannot, that page is rebuilt as an image with the box burned in, so the text cannot be selected. Check the downloaded file before you share it."
           ],
           [
             "Can I redact a scanned PDF?",
-            "Not directly. A scanned PDF has no text layer to search. Run OCR PDF first to make a text PDF, then redact that copy."
+            "Yes, tick 'Also check scanned pages (OCR)'. The tool reads the pages and covers the matching words. OCR can miss faint or handwritten text, so check every page."
+          ],
+          [
+            "What do the patterns find?",
+            "Email finds addresses like name@example.com. Phone finds Pakistani mobile numbers and international numbers. CNIC finds numbers shaped like 35202-1234567-1. IBAN finds bank account numbers starting with two letters. Date finds dates like 12/03/2026."
           ],
           [
             "Does the search care about capital letters?",
             "No. The match ignores capitals, so typing cnic finds CNIC and Cnic. It matches part of a word too, so check the result before sharing."
-          ],
-          [
-            "What if the text appears on many pages?",
-            "Every page with a match is rebuilt with the black box burned in. Pages without a match are copied unchanged, so the rest of the document stays sharp."
           ]
         ]
       },
-      "meta_description": "Black out matching text in a PDF, free in your browser. Cover sensitive words before you share a document."
+      "meta_description": "Redact emails, phone numbers, CNIC and IBAN in a PDF, with OCR for scanned pages. Free in your browser, no upload."
     },
     {
       "slug": "pdf-to-pdf-a",
