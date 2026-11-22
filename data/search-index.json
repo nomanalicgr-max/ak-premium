@@ -50,7 +50,7 @@
   {
    "slug": "split-pdf",
    "title": "Split PDF",
-   "short": "Extract a page range into a new PDF.",
+   "short": "Split by pages, chapters or size.",
    "category": "pdf",
    "keywords": [
     "extract pages",
@@ -108,7 +108,7 @@
   {
    "slug": "add-page-numbers",
    "title": "Add Page Numbers",
-   "short": "Number every page, bottom centre.",
+   "short": "Number pages your way.",
    "category": "pdf",
    "keywords": [
     "page numbers",
@@ -122,7 +122,7 @@
   {
    "slug": "add-watermark",
    "title": "Add Watermark",
-   "short": "Stamp text diagonally on pages.",
+   "short": "Stamp text or a logo on pages.",
    "category": "pdf",
    "keywords": [
     "stamp pdf",

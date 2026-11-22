@@ -142,7 +142,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-23",
       "related": [
         "split-pdf",
         "organize-pdf",
@@ -151,35 +151,35 @@
       ],
       "steps": [
         "Choose two or more PDF files with the file button. Each one shows a thumbnail of its first page. You can add more files later and they join the list instead of replacing it.",
-        "Drag the thumbnails into the order you want the pages to appear.",
-        "Press Merge PDFs and download the single combined file.",
-        "The merged file downloads as ak-premium-merged.pdf with every page in the order shown."
+        "Drag the thumbnails into the order you want. Under each file, type the pages to take, for example 1-3, 5, or leave it blank for all pages, and pick a rotation if a file is sideways.",
+        "Set Blank pages between files if you want a divider page after each file, then press Merge PDFs.",
+        "Download ak-premium-merged.pdf. Bookmarks from your files are kept and point at the right pages."
       ],
       "content": {
-        "use": "People merge PDFs when a report, invoice set or application form is split across several files and needs to be sent as one document. A teacher merges chapter PDFs into one handout, a shop owner merges daily bills into one monthly file, and a student merges assignment pages before uploading them to a portal.",
-        "tip": "Check the file order in the thumbnail list before you merge. Drag a file up or down if it is in the wrong place, because the merged PDF keeps exactly the order you see.",
-        "limit": "Merged PDFs keep the original pages as they are. The tool does not flatten forms, remove passwords from a protected file, or fix a damaged PDF. A protected PDF must be unlocked first.",
-        "example": "Merging a 3-page invoice, a 2-page delivery note and a 1-page cover letter gives one 6-page PDF in that order.",
+        "use": "People merge PDFs when a report, invoice set or application form is split across several files and needs to be sent as one document. A teacher merges chapter PDFs into one handout, a shop owner merges daily bills into one monthly file, and a student merges assignment pages before uploading them to a portal. With page ranges you can take only the pages you need from each file, rotate a sideways scan upright as it is merged, and add a blank page between files as a divider. Bookmarks from your files are kept, so the merged PDF still has a working contents list.",
+        "tip": "Type the pages under each file before you merge. A file with pages 1-3, 5 gives only those pages, and a sideways scan can be rotated upright in the same step, so check both boxes before pressing Merge PDFs.",
+        "limit": "Merged PDFs keep the original pages as they are. The tool does not flatten forms, remove passwords from a protected file, or fix a damaged PDF. A protected PDF must be unlocked first. Bookmarks are kept only when the source file has them, and a bookmark for a page you did not pick is dropped.",
+        "example": "Merging a 3-page invoice, a 2-page delivery note and a 1-page cover letter gives one 6-page PDF in that order. Taking only pages 1-3, 5 from the invoice instead gives a shorter file.",
         "faq": [
           [
-            "Can I change the order of the PDFs before merging?",
-            "Yes. After you choose the files, each one shows a thumbnail of its first page. Drag the thumbnails into the order you want, then press Merge PDFs."
+            "Can I take only some pages from a file when I merge?",
+            "Yes. Type the pages in the Pages box under that file, for example 1-3, 5. Leave it blank to take all pages."
           ],
           [
-            "Is there a limit on how many PDFs I can merge?",
-            "You can merge as many as your browser can hold in memory. Very large files over 50 MB per file are refused with a friendly message, because the browser would run out of memory."
+            "Can I rotate a file while merging it?",
+            "Yes. Use the Rotate list under a file to turn its pages 90, 180 or 270 degrees as they are merged. Pages that were already rotated keep their rotation plus the extra turn."
           ],
           [
-            "What file do I get after merging?",
-            "You download one PDF named ak-premium-merged.pdf. It keeps every page from your files in the order shown in the thumbnail list, and the original files on your device are not changed."
+            "Are bookmarks kept when I merge PDFs?",
+            "Yes, when the files have them. Bookmarks from each file are kept in the merged PDF and point at the right pages. A file without bookmarks adds none, and a bookmark for a page you did not pick is dropped."
           ],
           [
-            "Can I merge just two PDFs?",
-            "Yes. Two files is the minimum. Choose at least two PDFs and press Merge PDFs, and the tool downloads the combined file."
+            "Can I add a blank page between files when merging?",
+            "Yes. Set Blank pages between files to 1 or more, up to 5. A blank page is added after each file except the last, sized like the page before it."
           ]
         ]
       },
-      "meta_description": "Merge multiple PDF files into one PDF for free, in your browser. Keep your page order and download instantly."
+      "meta_description": "Merge multiple PDF files into one PDF for free, in your browser. Pick pages per file, rotate, add blank pages and keep bookmarks."
     },
     {
       "slug": "split-pdf",
@@ -188,7 +188,7 @@
         "en": "Split PDF"
       },
       "short": {
-        "en": "Extract a page range into a new PDF."
+        "en": "Split by pages, chapters or size."
       },
       "category": "pdf",
       "group": "organize",
@@ -207,7 +207,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-23",
       "related": [
         "merge-pdf",
         "organize-pdf",
@@ -216,34 +216,36 @@
       ],
       "steps": [
         "Choose a PDF file with the file button.",
-        "Pick Page ranges, or Extract every page for one PDF per page.",
-        "Type ranges like 1-3, 5, 8-10, press Split PDF and download the result."
+        "Pick a Mode: Page ranges, Extract every page, Split by bookmarks, Every N pages, Split into equal parts, or Split by file size.",
+        "Fill in the box for your mode: ranges like 1-3, 5, 8-10, the pages per part, the number of parts, or the largest size per part in MB.",
+        "Press Split PDF. Bookmarks mode needs a file with bookmarks; files without them should use Page ranges.",
+        "Download the result: one PDF for Page ranges, or a ZIP file with one PDF per part for the other modes."
       ],
       "content": {
-        "use": "Splitting is for the opposite job: taking only the pages you need out of a long PDF. A student extracts chapters 2 and 3 from a 200-page book, a manager pulls one contract clause out of a full agreement, and a shop owner separates one month's invoices from a yearly file.",
-        "tip": "Use ranges like 1-3, 5, 8-10 to take several separate parts in one go. The tool keeps the pages in the order you list them.",
-        "limit": "Split pages keep their original content and formatting. The tool cannot split a password-protected PDF, and it does not rebuild text from a scanned page.",
-        "example": "Splitting pages 1-3, 5 from a 10-page PDF gives a new PDF with exactly those 4 pages.",
+        "use": "Splitting is for the opposite job: taking only the pages you need out of a long PDF. A student extracts chapters 2 and 3 from a 200-page book, a manager pulls one contract clause out of a full agreement, and a shop owner separates one month’s invoices from a yearly file. You can split at the bookmarks so each chapter becomes its own file, cut the document into equal parts for sharing, take every fifth page for a sample, or split by size so no part is bigger than your email limit. Each part downloads in one ZIP file.",
+        "tip": "Use Split by bookmarks for a book with chapters, and Split by file size when an email or portal refuses a big file. Check the part names in the ZIP before you send them.",
+        "limit": "Split pages keep their original content and formatting. The tool cannot split a password-protected PDF, and it does not rebuild text from a scanned page. Splitting by bookmarks needs a file with bookmarks, and splitting by size keeps a single page whole even when that page alone is over the limit.",
+        "example": "Splitting a 12-chapter book by bookmarks gives 12 PDFs, one per chapter, named after the chapter. Splitting the same file into 3 equal parts gives parts of 4 pages each.",
         "faq": [
           [
-            "Can I split a PDF into single pages?",
-            "Yes. Choose Extract every page and the tool downloads a ZIP file with one PDF per page, named page-1.pdf, page-2.pdf and so on."
+            "How do I split a PDF at its chapters?",
+            "Choose Split by bookmarks. The tool reads the bookmarks in the file and makes one PDF per chapter, named after the bookmark. Files without bookmarks need Page ranges instead."
           ],
           [
-            "What happens if I enter a page that does not exist?",
-            "The tool checks your ranges against the real page count first and tells you which range is outside it, so nothing is downloaded by mistake."
+            "Can I split a PDF into equal parts?",
+            "Yes. Choose Split into equal parts and set the number of parts. A 10-page PDF split into 3 parts gives parts of 4, 3 and 3 pages."
           ],
           [
-            "Can I take out just one page?",
-            "Yes. Enter a single page number, such as 5, in the Page ranges box. The tool downloads a one-page PDF with only that page."
+            "Can I split a PDF so no part is bigger than 5 MB?",
+            "Yes. Choose Split by file size and set the largest size per part. Pages are grouped until the limit is reached. One very large page is kept whole even if it is over the limit."
           ],
           [
-            "What if my ranges overlap?",
-            "Nothing goes wrong. Pages listed twice are kept once, and the result is always in page order, even if you typed the ranges out of order."
+            "What is the difference between Every N pages and Extract every page?",
+            "Extract every page makes one PDF per page. Every N pages groups pages, so every 5 pages gives one PDF with pages 1-5, one with 6-10, and so on."
           ]
         ]
       },
-      "meta_description": "Split a PDF and extract only the page range you need, free in your browser. No upload, no sign-up."
+      "meta_description": "Split a PDF by page range, bookmarks, equal parts or file size, free in your browser. No upload, no sign-up."
     },
     {
       "slug": "organize-pdf",
@@ -428,7 +430,7 @@
         "en": "Add Page Numbers"
       },
       "short": {
-        "en": "Number every page, bottom centre."
+        "en": "Number pages your way."
       },
       "category": "pdf",
       "group": "edit",
@@ -445,34 +447,35 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
-      "meta_description": "Add page numbers to every page of a PDF, free in your browser. Numbers appear at the bottom centre of each page.",
+      "lastReviewed": "2026-11-23",
+      "meta_description": "Add page numbers to a PDF, free in your browser. Choose the position, font, size, colour, format and starting number.",
       "steps": [
         "Choose a PDF file with the file button.",
-        "Press Add Page Numbers.",
-        "Save the downloaded PDF, which has a number at the bottom centre of every page."
+        "Pick the Position, Font, Size and Colour. Choose how the number reads: a plain number, Page 3, or Page 3 of 12.",
+        "Set Start numbering at, Skip first pages for a cover, and First pages in roman numerals for front matter.",
+        "Press Add Page Numbers and save the downloaded copy."
       ],
       "content": {
-        "use": "Add Page Numbers stamps a small number at the bottom centre of every page in a PDF, so long documents are easy to follow and refer to. A teacher numbers a 40-page handout so students can find the right page in class. A student numbers an assignment before uploading it to a portal. An office worker numbers a report so page references in a meeting make sense. The numbers start at 1 on the first page and count up in order. The tool adds numbers to the pages as they are and downloads a new copy, leaving your original file untouched.",
+        "use": "Add Page Numbers stamps a number on every page you choose in a PDF, so long documents are easy to follow and refer to. A teacher numbers a 40-page handout so students can find the right page in class. A student numbers an assignment before uploading it to a portal. An office worker numbers a report so page references in a meeting make sense. You choose where the number sits, the font, size and colour, and whether it reads as a plain number, Page 3, or Page 3 of 12. You can skip a cover page, start at any number, and number the front pages in roman numerals.",
         "tip": "Number the final version of your document. If you edit the PDF afterwards and add or remove pages, the numbers will no longer match, so run the tool again on the edited file.",
-        "limit": "The number is plain text at the bottom centre of each page, in a fixed 11-point font. You cannot change the position, size, colour or starting number, and the tool does not skip a cover page. Numbers are stamped on top of the page, so they may sit over a footer that is already there.",
-        "example": "Adding numbers to a 12-page report downloads a copy with 1 on the first page, 2 on the second, and so on up to 12 on the last page.",
+        "limit": "Numbers are stamped on top of the page, so they may sit over a footer that is already there. The tool numbers pages in order and cannot put two different numbers on one page.",
+        "example": "Numbering a 12-page report with Position set to Bottom right and Format set to Page 3 of 12 puts Page 1 of 12 on the first page and Page 12 of 12 on the last.",
         "faq": [
           [
-            "Where on the page does the number appear?",
-            "At the bottom centre of every page, in a small 11-point font. The position and size are fixed and cannot be changed."
+            "Can I put the number at the top of the page?",
+            "Yes. Choose Top left, Top centre or Top right in the Position list. Bottom centre is the default."
           ],
           [
-            "Can I start numbering from page 5?",
-            "No. Numbering always starts at 1 on the first page and counts up in order."
+            "Can I number pages as Page 3 of 12?",
+            "Yes. Choose Page 1 of 12 in the Number format list. The total is the number of pages in the file."
           ],
           [
-            "Can I skip the cover page?",
-            "No. Every page gets a number, including the cover. If you need a blank first page, remove the number from that page with another editor, or split the PDF first."
+            "How do I number the first pages with roman numerals?",
+            "Set First pages in roman numerals to how many front pages you have, for example 3 for i, ii, iii. The pages after them count in normal numbers from your starting number."
           ],
           [
-            "Does the tool change my original PDF?",
-            "No. It downloads a new copy with the numbers added. Your original file stays as it was."
+            "Can I start numbering at 5 and skip the cover?",
+            "Yes. Set Skip first pages to 1 for the cover and Start numbering at to 5. The cover gets no number and numbering starts at 5 on the next page."
           ]
         ]
       }
@@ -484,7 +487,7 @@
         "en": "Add Watermark"
       },
       "short": {
-        "en": "Stamp text diagonally on pages."
+        "en": "Stamp text or a logo on pages."
       },
       "category": "pdf",
       "group": "edit",
@@ -501,34 +504,36 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
-      "meta_description": "Stamp a diagonal text watermark on PDF pages, free in your browser. Your file stays on your device.",
+      "lastReviewed": "2026-11-23",
+      "meta_description": "Stamp a text or logo watermark on PDF pages, free in your browser. Choose angle, colour, opacity and pages. Your file stays on your device.",
       "steps": [
         "Choose a PDF file with the file button.",
-        "Type the watermark text, for example DRAFT, in the 'Watermark text' box. Keep it under 60 characters.",
-        "Choose an Opacity and a Size, then press Add Watermark and save the downloaded copy."
+        "Pick Text or Image in the Watermark type list. For text, type it in the Watermark text box (under 60 characters). For a logo, choose a PNG or JPG file and its size.",
+        "Set the Angle, Size and Colour, and move the Opacity slider. Tick Repeat the watermark across the page for a tiled text watermark.",
+        "Pick which pages get the mark: All pages, Odd pages only, Even pages only, or a Page range like 1-3, 5.",
+        "Press Add Watermark and save the downloaded copy."
       ],
       "content": {
-        "use": "Add Watermark stamps your text diagonally across every page of a PDF, so readers can see at a glance that a document is a draft, a sample or confidential. A teacher stamps DRAFT on exam papers before sharing them. An office worker stamps CONFIDENTIAL on a report before sending it outside the company. A designer stamps SAMPLE on a portfolio file. You type the text, pick how faint or strong it looks, and choose a size. The watermark is a visible grey mark at a 45-degree angle, and it is stamped on all pages in one step.",
-        "tip": "Use Light opacity for a faint mark that stays out of the way of the text, and Strong when the mark must be obvious. Keep the text short, such as DRAFT or SAMPLE, because long text is harder to read at an angle.",
-        "limit": "The watermark text must be under 60 characters. It is stamped at a fixed 45-degree angle in grey, in the middle of each page, and you cannot move it or change its colour. A watermark is a visible mark only. It does not password-protect the file or stop someone from copying the text.",
-        "example": "Typing CONFIDENTIAL, choosing Medium opacity and pressing Add Watermark stamps CONFIDENTIAL diagonally on every page of a 6-page report.",
+        "use": "Add Watermark stamps your text or logo across the pages of a PDF, so readers can see at a glance that a document is a draft, a sample or confidential. A teacher stamps DRAFT on exam papers before sharing them. An office worker stamps CONFIDENTIAL on a report before sending it outside the company. A designer stamps SAMPLE on a portfolio file. You type the text or pick a logo, choose the angle, size, colour and opacity, and decide whether it repeats across the page or sits once in the middle. You can also stamp only the odd pages, the even pages, or a page range you type.",
+        "tip": "Keep the text short, such as DRAFT or SAMPLE, because long text is harder to read at an angle. Use a low opacity for a faint mark that stays out of the way, and a high opacity when the mark must be obvious.",
+        "limit": "The watermark text must be under 60 characters. A watermark is a visible mark only. It does not password-protect the file or stop someone from copying the text. Tiled repeat works for text watermarks; a logo is stamped once in the middle of each page. A logo keeps its shape, so a very wide logo is scaled to the page width you set.",
+        "example": "Typing CONFIDENTIAL, choosing 35% opacity and pressing Add Watermark stamps CONFIDENTIAL diagonally on every page of a 6-page report. Choosing a logo instead stamps the logo in the middle of each page.",
         "faq": [
           [
-            "Can I move the watermark to a corner?",
-            "No. The watermark is always stamped diagonally across the middle of each page at a 45-degree angle. Only the text, opacity and size can be changed."
+            "Can I use my logo as a watermark instead of text?",
+            "Yes. Choose Image in the Watermark type list and pick a PNG or JPG logo. Set the logo size as a percentage of the page width."
           ],
           [
-            "How long can the watermark text be?",
-            "Under 60 characters. Longer text is refused with a message, so keep it short, such as DRAFT, SAMPLE or CONFIDENTIAL."
+            "Can I change the watermark angle and colour?",
+            "Yes. Set the angle from -90 to 90 degrees and pick any colour. The old fixed 45-degree grey mark is now only the default."
           ],
           [
-            "Does a watermark protect my PDF from copying?",
-            "No. It is only a visible mark on the page. Anyone can still copy the text or take a screenshot. For real protection, use Protect PDF with a password."
+            "Can I watermark only some pages?",
+            "Yes. Choose Odd pages only, Even pages only, or Page range and type the pages, for example 1-3, 5. All pages is the default."
           ],
           [
-            "Will the watermark cover my text?",
-            "It may sit over text because it runs across the middle of the page. Light opacity keeps the page readable, while Strong opacity is more visible but harder to read through."
+            "Can I repeat the watermark across the whole page?",
+            "Yes, for text watermarks. Tick Repeat the watermark across the page and the text is stamped in a grid. A logo is stamped once in the middle of each page."
           ]
         ]
       }
@@ -850,7 +855,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-23",
       "related": [
         "protect-pdf",
         "merge-pdf",
@@ -858,35 +863,36 @@
         "split-pdf"
       ],
       "steps": [
-        "Choose the protected PDF with the file button.",
-        "Type the exact password, including capital letters.",
-        "Press Unlock PDF and download the ordinary PDF that opens without a password."
+        "Choose the protected PDF with the file button. You can choose several files at once if they share one password.",
+        "Press Check Protection to see whether the file is locked, which password it needs and what is locked.",
+        "Type the exact password, including capital letters, then press Unlock PDF.",
+        "Download the ordinary PDF that opens without a password. For several files, the unlocked copies download as one ZIP file."
       ],
       "content": {
-        "use": "Unlocking is for a PDF you own and know the password for, but no longer want to type it every time you open it. It is also the way to get a clean copy of a protected file for printing or for a tool that does not accept protected PDFs.",
-        "tip": "Make sure you type the exact password, including capital letters. A wrong password gives a clear wrong-password message, not a broken file.",
-        "limit": "The tool does real standard PDF decryption and keeps the original pages and layout. It does not guess or crack passwords, and it cannot unlock a file whose password you do not know.",
-        "example": "Unlocking a protected fee receipt gives you an ordinary PDF that opens without a password.",
+        "use": "Unlocking is for a PDF you own and know the password for, but no longer want to type every time you open it. It is also the way to get a clean copy of a protected file for printing or for a tool that does not accept protected PDFs. Before you unlock, Check Protection tells you whether the file is locked at all, whether your password is the user or the owner password, and what the file locks, such as printing or copying. You can unlock several files at once when they share one password, and the unlocked copies download together in one ZIP file.",
+        "tip": "Make sure you type the exact password, including capital letters. A wrong password gives a clear wrong-password message, not a broken file. Press Check Protection first if you want to know which password you typed and what the file locks.",
+        "limit": "The tool does real standard PDF decryption and keeps the original pages and layout. It does not guess or crack passwords, and it cannot unlock a file whose password you do not know. Batch unlocking tries one password for every file, so a file with a different password is skipped.",
+        "example": "Unlocking a protected fee receipt gives you an ordinary PDF that opens without a password. Checking protection first shows it was locked with AES-256 and that copying was not allowed.",
         "faq": [
           [
-            "Does Unlock remove the password or just show me the text?",
-            "It removes the password properly and downloads a normal PDF with the original pages and layout. It is not the old text-only rebuild."
+            "How do I see what a protected PDF locks before I unlock it?",
+            "Press Check Protection. It tells you whether the file is locked, whether your password is the user or owner password, the encryption type, and what is locked, such as printing or copying."
           ],
           [
-            "What if the PDF is not protected?",
-            "The tool checks first and tells you the PDF is not password-protected, so you do not waste time on a file that does not need unlocking."
+            "What is the difference between the user password and the owner password?",
+            "The user password opens the file. The owner password also opens it and can change the permissions. Check Protection tells you which one you typed."
           ],
           [
-            "Can I unlock a PDF if I forgot the password?",
-            "No. The tool needs the exact password you set. It does not guess or crack passwords, so a file with a forgotten password cannot be opened here."
+            "Can I unlock several PDFs at once?",
+            "Yes, if they all share the same password. Choose several files and press Unlock PDF. The unlocked files download as one ZIP. Files with a different password are skipped and named in the message."
           ],
           [
-            "Does unlocking change the file?",
-            "No. The pages, text and layout stay exactly as they were. Only the password is removed, so the file opens without asking for it."
+            "Does unlocking tell me what was locked?",
+            "Yes. If you press Check Protection first, the unlocked message also says which password opened the file and what was locked before, such as copying or editing."
           ]
         ]
       },
-      "meta_description": "Unlock a PDF in your browser with the AK Premium Unlock tool. Rebuilds a readable PDF from the file you provide."
+      "meta_description": "Unlock a PDF in your browser. Check its protection first, then remove the password. Your file stays on your device."
     },
     {
       "slug": "protect-pdf",
@@ -911,7 +917,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-23",
       "related": [
         "unlock-pdf",
         "redact-pdf",
@@ -920,34 +926,35 @@
       ],
       "steps": [
         "Choose a PDF file with the file button.",
-        "Type a password you can remember. There is no way to recover it if you forget it.",
+        "Type a password you can remember. There is no way to recover it if you forget it. Add an owner password if it should be different.",
+        "Choose what readers may do: printing quality, copying text, filling in forms, adding comments, assembling pages and other changes. Copying and editing are off by default.",
         "Press Protect PDF and download the encrypted file. It opens in any PDF reader with the password."
       ],
       "content": {
-        "use": "Protecting a PDF is for files that should only be opened by someone who knows the password: a salary slip, a contract draft, a fee receipt or a report with personal details. The password travels with the file, so it works in Acrobat and Chrome without any account.",
-        "tip": "Use a password you can remember or store safely, because there is no way to recover it. A password of 8 or more characters with letters and numbers is much harder to guess than a short word.",
-        "limit": "The tool uses standard AES-256 PDF encryption (qpdf, revision 6). It does not stop someone from photographing the screen or re-sharing the file once they have opened it, and a forgotten password cannot be recovered by this site.",
-        "example": "Protecting a salary slip with a password means only the person who knows that password can open it in a PDF reader.",
+        "use": "Protecting a PDF is for files that should only be opened by someone who knows the password: a salary slip, a contract draft, a fee receipt or a report with personal details. The password travels with the file, so it works in Acrobat and Chrome without any account. You can set a separate owner password, allow printing at full or low quality, and choose whether readers may copy text, fill in forms, add comments, assemble pages or change anything else. Copying and editing are off by default, so a protected file stays read-only unless you switch a permission on.",
+        "tip": "Use a password you can remember or store safely, because there is no way to recover it. A password of 8 or more characters with letters and numbers is much harder to guess than a short word. Leave copying and editing off unless the reader truly needs them.",
+        "limit": "The tool uses standard AES-256 PDF encryption (qpdf, revision 6). It does not stop someone from photographing the screen or re-sharing the file once they have opened it, and a forgotten password cannot be recovered by this site. Screen-reader access always stays on. Certificate-based encryption for named people is not supported.",
+        "example": "Protecting a salary slip with a password means only the person who knows that password can open it in a PDF reader. Leaving copying off means the reader can print it but cannot copy the text.",
         "faq": [
           [
-            "Is this a real PDF password, or a special file only this site can open?",
-            "It is a real standard PDF password. The file is a normal .pdf, encrypted with AES-256, and it opens in Acrobat, Chrome and other PDF readers with the password."
+            "Can I allow printing but stop copying?",
+            "Yes. Printing is allowed by default and copying is off. Tick Allow copying text and images only if you want copying too."
           ],
           [
-            "What happens if I forget the password?",
-            "The file cannot be opened without it. This site does not store your password and cannot reset it, so keep it somewhere safe before you share the file."
+            "What is the owner password for?",
+            "It opens the file like the user password, and it is the password that controls the permissions. Leave it blank to use the same password for both. Use a different one if someone else should open the file but not change its permissions."
           ],
           [
-            "How short can the password be?",
-            "At least 4 characters. A longer password with letters and numbers is much harder to guess, so use 8 or more characters if you can."
+            "Can I let people fill in forms but not change anything else?",
+            "Yes. Tick Allow filling in forms and leave Allow any other changes unticked. Forms can be filled in, but the rest of the document cannot be changed."
           ],
           [
-            "Can I change the password later?",
-            "Yes, in two steps. Unlock the file with the old password first, then protect it again with the new password. This tool has no direct change-password button."
+            "Does Protect PDF stop screen readers?",
+            "No. Screen-reader access always stays on, so the file remains readable by assistive technology. It is the one permission that cannot be switched off."
           ]
         ]
       },
-      "meta_description": "Protect a PDF with a password in your browser. Files are encrypted locally and only this site&#x27;s Unlock tool can reopen them."
+      "meta_description": "Protect a PDF with a password in your browser. AES-256 encryption, with printing, copying and editing permissions you choose. Files stay on your device."
     },
     {
       "slug": "crop-pdf",
