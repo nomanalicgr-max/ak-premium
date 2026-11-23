@@ -237,7 +237,8 @@ const LIB_URLS = {
   "ajv2020": "https://cdnjs.cloudflare.com/ajax/libs/ajv/8.17.1/ajv2020.min.js",
   "marked": "https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js",
   "marked-footnote": "https://cdn.jsdelivr.net/npm/marked-footnote@1.3.0/dist/index.umd.js",
-  "forge": "https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"
+  "forge": "https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js",
+  "diff-match-patch": "https://cdn.jsdelivr.net/npm/diff-match-patch@1.0.5/index.js"
 };
 /* SRI hashes for the pinned libraries above (Phase 4.2); same values as
    build.py. The docx URL was corrected at the same time: docx@8.5.0
@@ -260,7 +261,8 @@ const LIB_SRI = {
   "ajv2020": "sha384-vsMiC2R9fcX/SqeA9xJ+Lpbbe1fRi7RDpgHenZH7A8yXAoX+9T4m8MfuwrafZAAL",
   "marked": "sha384-948ahk4ZmxYVYOc+rxN1H2gM1EJ2Duhp7uHtZ4WSLkV4Vtx5MUqnV+l7u9B+jFv+",
   "marked-footnote": "sha384-eMG0oh50tjGAfa6zAmiAlwrgAO4MmBKb5wosyU0mpQx80qj0fUYCBt1KwO9e8qxp",
-  "forge": "sha384-xE6n3RBMZWgwAhyzoIMfY7HN3oDBa/+HBwFFNyxsdY8kseup7C4Blx1yDzprEESV"
+  "forge": "sha384-xE6n3RBMZWgwAhyzoIMfY7HN3oDBa/+HBwFFNyxsdY8kseup7C4Blx1yDzprEESV",
+  "diff-match-patch": "sha384-tEDljuMsPeOCXxbbsrmf3+iiytDjHShxwUCWxZqsZc3/jJHz2XQMovzRM+YDuJ0L"
 };
 const _libLoaded = {};
 function loadLibrary(name, statusId) {
@@ -1297,7 +1299,8 @@ async function extractPdfLayout(file, statusId) {
     const content = await page.getTextContent();
     const items = content.items.filter((it) => (it.str || "").trim()).map((it) => ({
       str: it.str, x: it.transform[4], y: it.transform[5],
-      w: it.width || 0, h: it.height || Math.abs(it.transform[3]) || 12, transform: it.transform
+      w: it.width || 0, h: it.height || Math.abs(it.transform[3]) || 12, transform: it.transform,
+      font: it.fontName || ""
     }));
     items.sort((a, b) => b.y - a.y || a.x - b.x);
     const lines = [];
@@ -1666,7 +1669,7 @@ function detectPdfTables(pages) {
         maxCols = Math.max(maxCols, trimmed.length);
       }
       if (maxCols < 2) continue;
-      tables.push({ page: pg.page, rows: grid, merges, cols: maxCols });
+      tables.push({ page: pg.page, rows: grid, merges, cols: maxCols, rowYs: block.map((r) => r.y) });
     }
   }
   return tables;
@@ -3037,6 +3040,61 @@ const REDACT_PATTERNS = {
   date: "(?:\\d{1,2}[/\\-.]\\d{1,2}[/\\-.]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})",
 };
 
+/* Fonts used in a pdf-lib document: [{name, embedded, standard}]. Embedded
+   means the font dictionary has a FontDescriptor with a FontFile, FontFile2
+   or FontFile3 stream. The standard 14 fonts are never embedded and are
+   reported as standard, not as a failure. */
+
+/* ---------- Advanced Batch 5: pdf-a, repair, compare, markdown, scan, ocr ---------- */
+
+async function extractPdfImages(file, statusId) {
+  if (!(await ensurePdfJs(statusId))) return null;
+  const bytes = await readAsArrayBuffer(file);
+  const pdf = await window.pdfjsLib.getDocument({ data: bytes }).promise;
+  const OPS = window.pdfjsLib.OPS;
+  const out = [];
+  for (let p = 1; p <= pdf.numPages; p++) {
+    const page = await pdf.getPage(p);
+    const opList = await page.getOperatorList();
+    const seen = new Set();
+    let n = 0;
+    for (let i = 0; i < opList.fnArray.length; i++) {
+      if (opList.fnArray[i] !== OPS.paintImageXObject) continue;
+      const name = opList.argsArray[i][0];
+      if (!name || seen.has(name)) continue;
+      seen.add(name);
+      n++;
+      const img = await getPdfImageObj(page, name);
+      if (!img) continue;
+      const blob = await pdfImageToBlob(img);
+      if (!blob) continue;
+      out.push({ page: p, name: "image-" + p + "-" + n + ".png", blob });
+    }
+  }
+  return out;
+}
+/* Blob -> data: URL (for jsPDF addImage). */
+
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(fr.result);
+    fr.onerror = () => reject(fr.error || new Error("Could not read image."));
+    fr.readAsDataURL(blob);
+  });
+}
+/* Decode a data URL (image/jpeg or image/png) to raw bytes. */
+
+function dataUrlToBytes(dataUrl) {
+  const b64 = (dataUrl.split(",")[1] || "").replace(/\s/g, "");
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
+}
+/* Render one pdf.js page to a canvas at the given scale. Used by Compare
+   PDF's visual overlay diff. */
+
 const navMore = $("navMore"); const moreBtn = $("moreBtn");
 if (moreBtn && navMore) {
   moreBtn.addEventListener("click", (e) => {
@@ -3227,6 +3285,7 @@ function canvasToBlob(canvas, type, quality) {
 let organizePages = []; /* [{index (0-based), rotation, blank, split}] */
 let organizeSelected = new Set(); /* positions in organizePages, for "Download selected pages" */
 let organizeFileKey = ""; /* rebuild the page list only when a new file is picked */
+let organizePendingStatus = ""; /* a Done message the re-render applies after it finishes, so it is not overwritten by the "loaded" message */
 
 /* ---------- Phase 1 handlers: Image ---------- */
 

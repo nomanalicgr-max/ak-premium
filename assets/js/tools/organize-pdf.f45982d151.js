@@ -60,7 +60,8 @@ if (organizeInput) organizeInput.addEventListener("change", async () => {
     item.addEventListener("drop", (e) => { e.preventDefault(); const from = parseInt(e.dataTransfer.getData("text/plain"), 10); const [m] = organizePages.splice(from, 1); organizePages.splice(k, 0, m); organizeInput.dispatchEvent(new Event("change")); });
     list.appendChild(item);
   }
-  setStatus("organizeStatus", pdf.numPages + " page(s) loaded. Drag to reorder, rotate or delete. Split in two cuts one page into a left and a right page; Blank after adds an empty page; tick Select on pages and use Download selected pages to save only those.");
+  if (organizePendingStatus) { const s = organizePendingStatus; organizePendingStatus = ""; setStatus("organizeStatus", s); }
+  else setStatus("organizeStatus", pdf.numPages + " page(s) loaded. Drag to reorder, rotate or delete. Split in two cuts one page into a left and a right page; Blank after adds an empty page; tick Select on pages and use Download selected pages to save only those.");
 });
 
 const organizeBtn = $("organizeBtn");
@@ -72,6 +73,29 @@ if (organizeBtn) organizeBtn.addEventListener("click", async () => {
     if (!src) return;
     const count = src.getPageCount();
     let order = organizePages.length ? organizePages : null;
+    const typedOrder = ($("organizeOrder") || { value: "" }).value.trim();
+    let usedTypedOrder = false;
+    if (typedOrder) {
+      /* A typed order wins over the thumbnail list: map it onto the current
+         page entries so rotations stay attached to their pages. It only
+         works on a plain list (no duplicates, splits or blank pages added),
+         because the typed order must list every original page exactly once. */
+      if (!order || order.length !== count || order.some((pg) => pg.blank || pg.split)) {
+        setError("organizeStatus", "You changed pages with the thumbnails (duplicate, split or blank), so the typed order cannot be used. Drag the thumbnails to reorder, or start over with a fresh file.");
+        return;
+      }
+      const parsed = parseOrganizeOrder(typedOrder, count);
+      if (parsed.error) { setError("organizeStatus", parsed.error); return; }
+      const used = new Set();
+      const mapped = [];
+      for (const n of parsed.order) {
+        const k = order.findIndex((pg, i) => !used.has(i) && pg.index === n - 1);
+        if (k === -1) { setError("organizeStatus", "The typed order does not match the pages shown. Drag the thumbnails instead, or start over."); return; }
+        used.add(k); mapped.push(order[k]);
+      }
+      order = mapped;
+      usedTypedOrder = true;
+    }
     if (!order) {
       const parsed = parseOrganizeOrder($("organizeOrder").value, count);
       if (parsed.error) { setError("organizeStatus", parsed.error); return; }
@@ -99,7 +123,9 @@ if (organizeBtn) organizeBtn.addEventListener("click", async () => {
     }
     const bytes = await out.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-organized.pdf");
-    setStatus("organizeStatus", "Done. Organized PDF downloaded with " + out.getPageCount() + " page(s).");
+    const doneMsg = "Done. Organized PDF downloaded with " + out.getPageCount() + " page(s)" + (usedTypedOrder ? ", in the order you typed" : "") + ".";
+    if (usedTypedOrder) { organizePages = order; organizePendingStatus = doneMsg; organizeInput.dispatchEvent(new Event("change")); }
+    setStatus("organizeStatus", doneMsg);
   } catch (e) { setError("organizeStatus", "Could not reorder this PDF. Please check the file and order."); }
 });
 /* Extract selected pages: a second download button, added next to Reorder. */

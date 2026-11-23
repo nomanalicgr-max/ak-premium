@@ -1,6 +1,6 @@
 /* AK Premium v12 — pdf-forms (split from app.js). Loads after core.js, only on its own tool page. */
 
-/* ---------- New tools (all in browser) ---------- */
+/* ---------- Advanced Batch 5: pdf-a, repair, compare, markdown, scan, ocr ---------- */
 
 const formsPdfBtn = $("formsPdfBtn");
 if (formsPdfBtn) formsPdfBtn.addEventListener("click", async () => {

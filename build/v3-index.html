@@ -1066,7 +1066,7 @@
         </div>
         <div class="workspace-tool" id="tool-pdfa">
           <h2>PDF to PDF/A</h2>
-          <p>Archive-style copy with title, author and creation metadata set, re-saved in your browser. This is not a certified PDF/A validation.</p>
+          <p>Archive-style copy with title, author and creation metadata set, re-saved in your browser. The checklist shows six local checks on your file — this is not a certified PDF/A validation.</p>
           <input id="pdfaInput" type="file" accept="application/pdf">
           <label>Title <input id="pdfaTitle" type="text"></label>
           <button id="pdfaPdfBtn" type="button" class="btn-primary">Make Archive Copy</button>
@@ -1074,7 +1074,7 @@
         </div>
         <div class="workspace-tool" id="tool-repair">
           <h2>Repair PDF</h2>
-          <p>Best effort only. Tries to re-save the file, then falls back to rebuilding a text PDF from any readable text.</p>
+          <p>Best effort only. First tries to rebuild the file with qpdf, then re-saves it, then falls back to rebuilding a PDF from any readable text and images. The result says what was recovered and what was lost, page by page.</p>
           <input id="repairInput" type="file" accept="application/pdf">
           <button id="repairPdfBtn" type="button" class="btn-primary">Repair PDF</button>
           <p class="status" id="repairPdfStatus"></p>
@@ -1095,14 +1095,14 @@
         </div>
         <div class="workspace-tool" id="tool-scan">
           <h2>Scan to PDF</h2>
-          <p>Use your device camera, or upload a photo. The photo is turned into a PDF in your browser.</p>
-          <input id="scanInput" type="file" accept="image/*" capture="environment">
+          <p>Use your device camera, or upload one or more photos. Each photo becomes one page of a single PDF, in your browser. Tick the fix-up box to straighten a small tilt and trim the page edges, and the OCR box to add a searchable text layer.</p>
+          <input id="scanInput" type="file" accept="image/*" capture="environment" multiple>
           <button id="scanPdfBtn" type="button" class="btn-primary">Make PDF From Photo</button>
           <p class="status" id="scanPdfStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-ocrpdf">
           <h2>OCR PDF</h2>
-          <p>Renders pages to images and reads them with OCR in your browser, then downloads a text PDF. Large PDFs take time. First run downloads OCR language data.</p>
+          <p>Renders pages to images and reads them with OCR in your browser, then downloads a searchable PDF: each page is a picture of the original with a hidden text layer. English, Urdu, Arabic and Hindi are available, or let the tool detect the script. Large PDFs take time. First run downloads OCR language data.</p>
           <input id="ocrpdfInput" type="file" accept="application/pdf">
           <button id="ocrpdfPdfBtn" type="button" class="btn-primary">OCR PDF</button>
           <p class="status" id="ocrpdfPdfStatus"></p>

@@ -86,6 +86,6 @@ if (editPdfBtn) editPdfBtn.addEventListener("click", async () => {
     });
     const bytes = await doc.save();
     downloadBlob(new Blob([bytes], { type: "application/pdf" }), "ak-premium-edited.pdf");
-    setStatus("editPdfStatus", "Done. Edited PDF downloaded (" + lines.length + " line(s) on page " + pageNum + (whiteout ? ", with the area behind the text whited out" : "") + "). The original text is still in the file under the white box — this does not delete it.");
+    setStatus("editPdfStatus", "Done. Edited PDF downloaded (" + lines.length + " line(s) on page " + pageNum + (whiteout ? ", with the area behind the text whited out). The original text is still in the file under the white box — this does not delete it." : ")."));
   } catch (e) { setError("editPdfStatus", "Could not edit this PDF. Please check the file."); }
 });

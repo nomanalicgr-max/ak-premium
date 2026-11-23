@@ -47,6 +47,12 @@ TOOL_NAMES = {
     'wrapTextToWidth': 'edit-pdf',
     'cropBoxFromRatio': 'crop-pdf',
     'rangesFromPages': 'remove-pages',
+    'listPdfFonts': 'pdf-to-pdf-a',
+    'wordLevelDiff': 'compare-pdf',
+    'pixelDiff': 'compare-pdf',
+    'renderPdfPageCanvas': 'compare-pdf',
+    'repairQpdfReport': 'repair-pdf',
+    'pdfLayoutToMarkdown': 'pdf-to-markdown',
 }
 # Load-time const lookups of DYNAMICALLY created controls -> that tool's
 # bundle, not core. The split routes a chunk by the ids it touches, but

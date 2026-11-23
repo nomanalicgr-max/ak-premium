@@ -1,6 +1,6 @@
 /* AK Premium v12 — local-summarizer (split from app.js). Loads after core.js, only on its own tool page. */
 
-/* ---------- New tools (all in browser) ---------- */
+/* ---------- Advanced Batch 5: pdf-a, repair, compare, markdown, scan, ocr ---------- */
 
 const summaryPdfBtn = $("summaryPdfBtn");
 if (summaryPdfBtn) summaryPdfBtn.addEventListener("click", async () => {
