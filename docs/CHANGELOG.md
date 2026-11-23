@@ -1,5 +1,33 @@
 # AK Premium — Changelog
 
+## v25 — 23 November 2026 (advanced upgrade plan, batch 5: 6 tools)
+
+### PDF to PDF/A — honest local checklist
+- The archive-copy mode stays, and the file is now checked against a 6-item local checklist: title, author, creation date, fonts embedded, all pages the same size, and a text layer on every page. Each item reports Pass or Fail, and the status says how many of the 6 passed. This is a local check only, not a certified PDF/A validation — the page says so. Real font embedding, colour conversion and certified validation need a full PDF engine on a server and are not offered.
+
+### Repair PDF — qpdf pass first, images recovered
+- A damaged file now goes through three passes: a qpdf rebuild first (via the existing qpdf tool), then a pdf-lib re-save, then a text-and-images fallback rebuild. The fallback recovers images as well as text, and the report says per page what was recovered and what was lost. A file too broken to repair reports that honestly instead of producing an empty download.
+
+### Compare PDF — word-level diff, visual overlay, diff report
+- Differences are now shown word by word (added words highlighted, removed words struck through) using diff-match-patch 1.0.5 (Apache-2.0, vendored on the site because the published file does not load cleanly in browsers). A visual overlay diff renders both pages and reports the differing area per page, and "Download diff report" saves the comparison as an HTML file.
+
+### PDF to Markdown — headings, tables, images
+- Headings now come from font size and layout, with lists, bold and italic from the font data. Tables become Markdown tables using the same grid inference as PDF to Excel, and images in the file are extracted and linked as `![](image-N.png)`. The download is a single `.md` file, or a ZIP of the Markdown plus its images when images exist.
+
+### Scan to PDF — multi-photo batch, auto-crop, deskew, OCR layer
+- Several photos can now be turned into one PDF in a single run, one photo per page. Page edges are auto-cropped and tilted photos straightened with the same pure-code deskew as Rotate PDF (no opencv.js, so nothing large is downloaded). An optional OCR text layer makes the scan searchable, with a language picker; a Cancel button stops a long run, and per-photo progress and errors name the file.
+
+### OCR PDF — more languages, searchable PDF
+- The language picker now offers English, Urdu, Arabic, Hindi, English+Urdu, English+Arabic and Auto (which detects the script on the first page). The output is now a searchable PDF: the original page picture with an invisible word text layer over it, so the text can be selected and searched. Handwriting recognition is not offered: it needs a cloud OCR model and the page says so.
+
+### Fixes
+- Organize PDF: the "Or type a page order" box now works — a typed order such as 2,1 is applied to the current pages, keeping each page's rotation, blank and split state. Before this fix the typed order was silently ignored whenever thumbnails were shown.
+- Edit PDF: the success message mentions the white box only when white-out was actually checked.
+- Redact PDF: the intro now says text is removed from the text layer and pages keep their text layer; only OCR-only matches rebuild a page as an image.
+
+### JavaScript split and testing
+- The per-tool JS split is verified lossless (8,349 code lines, 0 missing/extra). A split bug found during the build is fixed: the new batch-5 section was titled "helpers", which the splitter treats as a core section, so all six tools' new code landed in core.js and the old tool bundles went stale — the section is renamed and every helper now lives in its own tool's bundle (shared image helpers stay in core). ASSET_V is now "25" (config.js?v=25) and the service-worker cache is "ak-premium-v25". One new library: diff-match-patch 1.0.5 (Apache-2.0, vendored). Harness run-v25.js: 674 checks, all passing.
+
 ## v24 — 23 November 2026 (advanced upgrade plan, batch 4: 6 tools)
 
 ### Organize PDF — thumbnails, duplicate, split, blank, extract
