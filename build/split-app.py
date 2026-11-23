@@ -35,6 +35,7 @@ CORE_NAMES = {
     'pdfFindNamedDest', 'pdfTitleHex', 'parsePageList',
     'wizardField', 'quoteCriteria', 'initWizard',
     'loadTaxData', 'calcSalaryTax', 'numToWordsEn', 'numToWordsUr',
+    'readJpegOrientation',
     'addWrappedTextPaginatedFrom', 'initCategoryFromHash', 'activateToolPageWorkspace',
 }
 # Pure helpers used by exactly ONE tool -> that tool's bundle, not core.
@@ -53,6 +54,12 @@ TOOL_NAMES = {
     'renderPdfPageCanvas': 'compare-pdf',
     'repairQpdfReport': 'repair-pdf',
     'pdfLayoutToMarkdown': 'pdf-to-markdown',
+    'mdInlineRuns': 'create-pdf',
+    'drawStyledRuns': 'create-pdf',
+    'renderMarkdownToPdf': 'create-pdf',
+    'summarizeTextTfIdf': 'local-summarizer',
+    'glossaryTranslate': 'translate-helper',
+    'validateFieldValue': 'pdf-forms',
 }
 # Load-time const lookups of DYNAMICALLY created controls -> that tool's
 # bundle, not core. The split routes a chunk by the ids it touches, but

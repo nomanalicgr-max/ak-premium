@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "25"  # v25 (2026-11-23): advanced upgrade plan batch 5 — PDF/A local checklist, Repair PDF qpdf pass + image recovery, Compare PDF word-level diff (diff-match-patch) + visual overlay + diff report, PDF to Markdown headings/tables/images, Scan to PDF multi-photo batch + auto-crop/deskew + OCR layer, OCR PDF languages (eng/urd/ara/hin/auto) + searchable PDF; Organize PDF typed-order fix, Edit PDF white-out wording fix, Redact PDF copy fix.
+ASSET_V = "26"  # v26 (2026-11-23): advanced upgrade plan batch 6 — Create PDF rich text + Markdown (marked + jspdf-autotable) + images, Images to PDF grid layouts + EXIF auto-rotate, PDF to Images DPI/format/grayscale/single-page, PDF Forms dynamic field builder + fill existing forms, Local Summarizer TF-IDF + key-points mode, Translate Helper EN↔UR glossary; resizeOriginal moved to core.
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -101,6 +101,7 @@ SRI = {
  "tesseract": "sha384-GJqSu7vueQ9qN0E9yLPb3Wtpd7OrgK8KmYzC8T1IysG1bcvxvIO4qtYR/D3A991F",
  "qrcode": "sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU",
  "jspdf": "sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk",
+ "jspdf-autotable": "sha384-btaaVGtvWi0Q6xlr74cOkIWG+SCaiZ9Tfno8uuHjzoekIVV+y5K3dGPEGqqS3ZN0",
  "js-yaml": "sha384-+pxiN6T7yvpryuJmE1gM9PX7yQit15auDb+ZwwvJOd/4be2Cie5/IuVXgQb/S9du",
  "md5": "sha384-WAahC3S+69Co45zyyuhCjvdMwo7a42Yn0mM0IgZIUlYNebG24AVkPUltj3BQnM85",
 }
@@ -699,6 +700,98 @@ ws_replace("tool-resume", '''<div class="workspace-tool" id="tool-resume">
 <p class="status" id="resumeStatus" aria-live="polite"></p>
 </div>''')
 
+# Advanced Batch 6 workspaces
+ws_replace("tool-create", '''<div class="workspace-tool" id="tool-create">
+<h2>Create PDF</h2>
+<p>Type plain text, or write Markdown with headings, bold, lists and tables. Markdown tables are drawn with jspdf-autotable in your browser.</p>
+<label class="sr-only" for="createText">Text for your PDF</label>
+<textarea id="createText" rows="8" placeholder="Type the text for your PDF here, or write Markdown…"></textarea>
+<label>Mode <select id="createMode"><option value="plain" selected>Plain text</option><option value="markdown">Markdown — headings, bold, lists, tables</option></select></label>
+<label>Font <select id="createFont"><option value="helvetica" selected>Helvetica</option><option value="times">Times</option><option value="courier">Courier</option></select></label>
+<label>Font size <select id="createFontSize"><option value="10">10 pt</option><option value="11">11 pt</option><option value="12" selected>12 pt</option><option value="14">14 pt</option><option value="16">16 pt</option></select></label>
+<label>Page size <select id="createPageSize"><option value="a4" selected>A4</option><option value="letter">Letter</option></select></label>
+<label>Margin (mm) <input id="createMargin" type="number" min="5" max="40" value="15"></label>
+<label>Images to add at the end (optional) <input id="createImageInput" type="file" accept="image/jpeg,image/png,image/webp" multiple></label>
+<button id="createPdfBtn" type="button" class="btn-primary">Create &amp; Download PDF</button>
+<p class="status" id="createPdfStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-images", '''<div class="workspace-tool" id="tool-images">
+<h2>Images to PDF</h2>
+<p>Turns JPG, PNG or WebP images into one PDF. Phone photos are rotated upright from their EXIF data when that option is on.</p>
+<input id="imagesInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+<label>Images per page <select id="imagesLayout"><option value="1" selected>1 — one image per page</option><option value="2">2 — two side by side</option><option value="4">4 — two by two grid</option></select></label>
+<label>Page size <select id="imagesPageSize"><option value="a4" selected>A4</option><option value="letter">Letter</option></select></label>
+<label>Margin (mm) <input id="imagesMargin" type="number" min="0" max="30" value="10"></label>
+<label>Fit <select id="imagesFit"><option value="fit" selected>Fit — whole image, no cropping</option><option value="fill">Fill — crop to fill the whole cell</option></select></label>
+<label><input id="imagesRotate" type="checkbox" checked> Auto-rotate photos from EXIF data</label>
+<label>Photo metadata (EXIF) <select id="imagesMeta"><option value="strip" selected>Remove it (images are re-encoded)</option><option value="keep">Keep the original file (no rotation fix)</option></select></label>
+<label>JPEG quality <input id="imagesQuality" type="range" min="50" max="100" value="92"> <span id="imagesQualityLabel">92%</span></label>
+<label>Print DPI <select id="imagesDpi"><option value="72">72 — screen</option><option value="150" selected>150 — good print</option><option value="300">300 — high-quality print</option></select></label>
+<button id="imagesPdfBtn" type="button" class="btn-primary">Convert Images to PDF</button>
+<p class="status" id="imagesPdfStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-pdfimages", '''<div class="workspace-tool" id="tool-pdfimages">
+<h2>PDF to Images</h2>
+<p>Renders each page as an image. Higher DPI means sharper images and bigger files.</p>
+<input id="pdfImagesInput" type="file" accept="application/pdf">
+<label>Resolution <select id="pdfImagesDpi"><option value="72">72 DPI — quick preview</option><option value="96">96 DPI</option><option value="150" selected>150 DPI — good quality</option><option value="200">200 DPI</option><option value="300">300 DPI — print quality</option></select></label>
+<label>Output format <select id="pdfImagesFormat"><option value="png" selected>PNG</option><option value="jpg">JPEG</option><option value="webp">WebP</option></select></label>
+<label>Pages <input id="pdfImagesPages" type="text" placeholder="all, or for example 1-3, 5" value="all"></label>
+<label><input id="pdfImagesGray" type="checkbox"> Grayscale</label>
+<label><input id="pdfImagesTransparent" type="checkbox"> Transparent background (PNG only, where the page has none)</label>
+<button id="pdfImagesBtn" type="button" class="btn-primary">Convert Pages to Images</button>
+<div id="pdfImagesOutput" class="image-output"></div>
+<p class="status" id="pdfImagesStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-forms", '''<div class="workspace-tool" id="tool-forms">
+<h2>PDF Forms</h2>
+<p>Build your own fillable PDF form, or fill in the fields of a PDF form you already have. Everything runs in your browser.</p>
+<h2>Build a form</h2>
+<label>Form title <input id="formsTitle" type="text" value="Application Form"></label>
+<label>Field type <select id="formsFieldType"><option value="text" selected>Text</option><option value="checkbox">Checkbox</option><option value="radio">Radio (one choice)</option><option value="dropdown">Dropdown</option><option value="date">Date</option></select></label>
+<label>Field label <input id="formsFieldLabel" type="text" placeholder="For example: Full name"></label>
+<div id="formsFieldOptionsRow" style="display:none"><label>Options (comma-separated) <input id="formsFieldOptions" type="text" placeholder="Yes, No, Maybe"></label></div>
+<label>Check <select id="formsFieldValidation"><option value="none" selected>No check</option><option value="required">Required</option><option value="email">Must be an email</option><option value="number">Must be a number</option></select></label>
+<div id="formsFieldMinMaxRow" style="display:none"><label>Minimum <input id="formsFieldMin" type="number"></label><label>Maximum <input id="formsFieldMax" type="number"></label></div>
+<button id="formsAddFieldBtn" type="button" class="btn-secondary">Add Field</button>
+<div id="formsFieldList" aria-live="polite"></div>
+<button id="formsPdfBtn" type="button" class="btn-primary">Create Fillable PDF</button>
+<p class="status" id="formsPdfStatus" aria-live="polite"></p>
+<h2>Fill an existing form</h2>
+<p>Choose a fillable PDF, list its fields, fill them in and download the filled copy. Required, email and number checks are applied in this tool before saving; email and number rules are also written next to the field in forms you build here.</p>
+<input id="formsFillInput" type="file" accept="application/pdf">
+<button id="formsListBtn" type="button" class="btn-secondary">List Fields</button>
+<div id="formsFillList" aria-live="polite"></div>
+<button id="formsFillBtn" type="button" class="btn-primary">Download Filled PDF</button>
+<p class="status" id="formsFillStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-summary", '''<div class="workspace-tool" id="tool-summary">
+<h2>Local Summarizer</h2>
+<p>No AI server is used. This picks the most important sentences from the extracted text with TF-IDF scoring, in your browser. It selects sentences, it does not rewrite them.</p>
+<input id="summaryInput" type="file" accept="application/pdf">
+<label>Sentences <input id="summaryCount" type="range" min="1" max="10" value="5"> <span id="summaryCountLabel">5</span></label>
+<label>Style <select id="summaryMode"><option value="points" selected>Key points — bullet list</option><option value="paragraph">Paragraph — sentences in order</option></select></label>
+<button id="summaryPdfBtn" type="button" class="btn-primary">Summarize PDF</button>
+<p class="status" id="summaryPdfStatus" aria-live="polite"></p>
+<pre id="summaryPdfOutput" class="output-box"></pre>
+<button id="summaryDownloadBtn" type="button" class="btn-secondary" style="display:none">Download Summary (.txt)</button>
+</div>''')
+
+ws_replace("tool-translate", '''<div class="workspace-tool" id="tool-translate">
+<h2>Translate Helper</h2>
+<p>Matches common document words (invoice, total, date, payment and similar) against a fixed glossary of 77 English–Urdu terms, in your browser. This is glossary matching only, not full translation: sentences and words outside the list are left as they are, and no text is sent to a translation service.</p>
+<input id="translateInput" type="file" accept="application/pdf">
+<label>Direction <select id="translateDir"><option value="en-ur" selected>English to Urdu</option><option value="ur-en">Urdu to English</option></select></label>
+<button id="translatePdfBtn" type="button" class="btn-primary">Find Glossary Terms</button>
+<div id="translateOutput" aria-live="polite"></div>
+<p class="status" id="translatePdfStatus" aria-live="polite"></p>
+<button id="translateDownloadBtn" type="button" class="btn-secondary" style="display:none">Download Extracted Text (.txt)</button>
+</div>''')
+
 # Excel wizards: replace the shared tool-excel workspace with 5 standalone workspaces
 def wizard_ws(wid, title, task_id, task_options, btn_id, out_id, status_id, fields_hint):
     opts = "".join('<option value="%s">%s</option>' % (v, n) for v, n in task_options)
@@ -867,6 +960,7 @@ LIB_SCRIPT = {
  "marked": '<script defer src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js" integrity="' + SRI["marked"] + '" crossorigin="anonymous"></script>',
  "marked-footnote": '<script defer src="https://cdn.jsdelivr.net/npm/marked-footnote@1.3.0/dist/index.umd.js" integrity="' + SRI["marked-footnote"] + '" crossorigin="anonymous"></script>',
  "forge": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js" integrity="' + SRI["forge"] + '" crossorigin="anonymous"></script>',
+ "jspdf-autotable": '<script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.js" integrity="' + SRI["jspdf-autotable"] + '" crossorigin="anonymous"></script>',
  # diff-match-patch is VENDORED, not CDN: the published npm file ends with
  # five unguarded "module.exports = ..." lines, which throw "ReferenceError:
  # module is not defined" at the end of every browser page load (and trip
@@ -890,6 +984,7 @@ LIB_HOST = {
  "jsonpath-plus": "https://cdn.jsdelivr.net",
  "marked": "https://cdn.jsdelivr.net", "marked-footnote": "https://cdn.jsdelivr.net",
  "forge": "https://cdnjs.cloudflare.com",
+ "jspdf-autotable": "https://cdn.jsdelivr.net",
 }
 
 def esc(x): return html.escape(str(x), quote=True)
@@ -1587,7 +1682,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v18). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v25";
+const CACHE = "ak-premium-v26";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
