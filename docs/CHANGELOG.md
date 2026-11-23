@@ -1,5 +1,31 @@
 # AK Premium — Changelog
 
+## v26 — 23 November 2026 (advanced upgrade plan, batch 6: 6 tools)
+
+### Create PDF — rich text, Markdown, tables, images
+- Typed text now becomes a real document: bold and italic, headings, bullet and numbered lists, and a font and size choice, with text that flows across pages. In Markdown mode, headings, lists and tables are rendered into the PDF (tables drawn with jspdf-autotable), and images can be embedded. Page size and margins are selectable. Pasted HTML formatting, footnotes, embedded links and coloured text are not kept, and images are added one per page at the end — the page says so.
+
+### Images to PDF — grid layouts, EXIF auto-rotate, DPI control
+- One, two or four images per page, A4 or Letter paper, fit or fill per cell, and margins. Phone photos are auto-rotated from their EXIF orientation, and a toggle keeps or strips the original photo metadata (keeping the original file skips the rotation fix). Per-image quality and a 72–300 DPI choice control print size versus file size; fill mode crops image edges to fit the cell.
+
+### PDF to Images — DPI, formats, grayscale, single page
+- Resolution is now a choice from 72 to 300 DPI, with PNG, JPEG or WebP output and a grayscale toggle. Only the pages you need can be exported, and a single page downloads on its own without a ZIP. Transparent-background PNG is offered where the page itself has no background. Each page becomes a separate picture, so a long PDF means many images and a large ZIP.
+
+### PDF Forms — build a form, or fill one you have
+- A dynamic field builder adds text, checkbox, radio, dropdown and date fields anywhere, laid out top to bottom in the order added, with validation rules (required, email pattern, number range) written next to each field. An existing PDF's form fields can also be listed and filled from typed values, with the same checks applied before the filled copy downloads. The rules are checked by this tool only; a PDF reader itself cannot check them.
+
+### Local Summarizer — TF-IDF scoring, key points
+- Sentences are now scored with TF-IDF (words that matter in few sentences count more), with a position boost for earlier sentences and near-duplicate sentences dropped. A length slider picks how many sentences to keep, and the result comes as key points (bullets) or as a flowing paragraph, downloadable as a text file. The summary is extractive — it picks sentences from the document and does not rewrite them in its own words — and it needs a PDF with a text layer, so scanned PDFs give no text to summarise.
+
+### Translate Helper — EN↔UR glossary
+- Common document words in a PDF are now matched against a fixed glossary of 77 English–Urdu terms (invoice, total, date, payment and other everyday words), shown as a table in the order they appear in the document, in either direction, with a text download. This is glossary matching only, not full translation: sentences, grammar and words outside the list are left as they are, and the translated text is not re-laid into a new PDF — both need a translation service on a server and are not offered.
+
+### Fixes
+- Image Resizer: the shared `resizeOriginal` state (the original image size used for the keep-ratio maths) now lives in core.js instead of being declared inside the image-compressor bundle, so the resizer no longer depends on an implicit global.
+
+### JavaScript split and testing
+- The per-tool JS split is verified lossless (8,901 code lines, 0 missing/extra). A build-pipeline fix from this batch: dump-id2slug.py failed silently in the first build (its error was hidden behind a pipe, so the split ran with a stale id map and the new PDF Forms fill handlers and the summarizer download button landed in core.js); the split is now re-run after a successful dump, and every batch-6 helper and binding lives in its own tool's bundle (shared image helpers stay in core). ASSET_V is now "26" (config.js?v=26) and the service-worker cache is "ak-premium-v26". One new library: jspdf-autotable 3.8.4 (MIT). Harness run-v26.js: 780 checks, all passing.
+
 ## v25 — 23 November 2026 (advanced upgrade plan, batch 5: 6 tools)
 
 ### PDF to PDF/A — honest local checklist
