@@ -1,12 +1,12 @@
 AK Premium — Third-party licences
-Last updated: 22 November 2026
+Last updated: 23 November 2026
 
 AK Premium is built with the open-source libraries, icons and fonts listed
 below. Each entry gives the project, its licence and where to find it.
 The full licence text for each project is in that project's own repository.
 The qpdf licence is kept on this site at /vendor/qpdf/LICENSE.
 
-Libraries (loaded from public CDNs, except qpdf-wasm which is self-hosted):
+Libraries (loaded from public CDNs, except qpdf-wasm and diff-match-patch which are self-hosted):
 - pdf-lib — MIT License — https://github.com/Hopding/pdf-lib
 - pdf.js — Apache License 2.0 — https://github.com/mozilla/pdf.js
 - jsPDF — MIT License — https://github.com/parallax/jsPDF
@@ -27,6 +27,7 @@ Libraries (loaded from public CDNs, except qpdf-wasm which is self-hosted):
 - marked — MIT License — https://github.com/markedjs/marked
 - marked-footnote — MIT License — https://github.com/bent10/marked-extensions
 - node-forge — BSD-3-Clause License — https://github.com/digitalbazaar/forge
+- diff-match-patch — Apache License 2.0 — https://github.com/google/diff-match-patch (self-hosted copy in assets/js/diff-match-patch.js; only the Node-only export lines were removed)
 
 Icons and fonts:
 - Lucide icons — ISC License — https://lucide.dev
