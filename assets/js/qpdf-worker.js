@@ -4,8 +4,10 @@
    Passwords live only in this worker for the duration of one call.
    Ops: protect (opts: userPassword, ownerPassword, permissions), unlock,
    optimize, info (returns the qpdf --json encryption details: algorithm,
-   revision, key length, capabilities and which password matched). */
-import { configure, encrypt, decrypt, inspect, optimize } from "/vendor/qpdf/index.js";
+   revision, key length, capabilities and which password matched),
+   flatten (renders annotation appearances into the page content with
+   --flatten-annotations=all; link annotations are kept). */
+import { configure, encrypt, decrypt, inspect, optimize, run } from "/vendor/qpdf/index.js";
 configure({ wasmUrl: "/vendor/qpdf/qpdf.wasm?v=5" });
 self.onmessage = async (e) => {
   const { op, bytes, password } = e.data || {};
@@ -41,6 +43,19 @@ self.onmessage = async (e) => {
          stays selectable and nothing loses quality. */
       const out = await optimize(input);
       self.postMessage({ ok: true, bytes: out.bytes }, [out.bytes.buffer]);
+    } else if (op === "flatten") {
+      /* Render annotation appearances into the page content. Link
+         annotations are kept as links; annotations with no appearance
+         stream have nothing to draw and are left in place by qpdf. */
+      const result = await run(["--flatten-annotations=all", "input.pdf", "output.pdf"], { "input.pdf": input });
+      if (result.exitCode !== 0) {
+        const msg = (result.stderr || "qpdf flatten failed").slice(0, 300);
+        if (/invalid password|incorrect password/i.test(msg)) { self.postMessage({ ok: false, error: "WRONG_PASSWORD" }); return; }
+        throw new Error(msg);
+      }
+      const out = result.files["output.pdf"];
+      if (!out) throw new Error("qpdf did not produce output.pdf");
+      self.postMessage({ ok: true, bytes: out }, [out.buffer]);
     } else {
       self.postMessage({ ok: false, error: "UNKNOWN_OP" });
     }

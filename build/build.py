@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "26"  # v26 (2026-11-23): advanced upgrade plan batch 6 — Create PDF rich text + Markdown (marked + jspdf-autotable) + images, Images to PDF grid layouts + EXIF auto-rotate, PDF to Images DPI/format/grayscale/single-page, PDF Forms dynamic field builder + fill existing forms, Local Summarizer TF-IDF + key-points mode, Translate Helper EN↔UR glossary; resizeOriginal moved to core.
+ASSET_V = "27"  # v27 (2026-11-23): advanced upgrade plan batch 7 — remaining PDF tools: JPG/PNG to PDF (EXIF rotate, grids, flatten, quality), PDF to JPG/PNG (DPI, page-range, single-page, rename pattern), HTML to PDF rendered via html2canvas, Extract Images original-format/JPEG2000/JBIG2, Header/Footer variables + logo, Flatten via qpdf annotations, Metadata editor + XMP packet, Resize page size vector-preserving + fields/links kept.
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -102,6 +102,7 @@ SRI = {
  "qrcode": "sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU",
  "jspdf": "sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk",
  "jspdf-autotable": "sha384-btaaVGtvWi0Q6xlr74cOkIWG+SCaiZ9Tfno8uuHjzoekIVV+y5K3dGPEGqqS3ZN0",
+ "html2canvas": "sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H",
  "js-yaml": "sha384-+pxiN6T7yvpryuJmE1gM9PX7yQit15auDb+ZwwvJOd/4be2Cie5/IuVXgQb/S9du",
  "md5": "sha384-WAahC3S+69Co45zyyuhCjvdMwo7a42Yn0mM0IgZIUlYNebG24AVkPUltj3BQnM85",
 }
@@ -792,6 +793,144 @@ ws_replace("tool-translate", '''<div class="workspace-tool" id="tool-translate">
 <button id="translateDownloadBtn" type="button" class="btn-secondary" style="display:none">Download Extracted Text (.txt)</button>
 </div>''')
 
+ws_replace("tool-jpgtopdf", '''<div class="workspace-tool" id="tool-jpgtopdf">
+<h2>JPG to PDF</h2>
+<p>Turns JPG images into one PDF. Phone photos are rotated upright from their EXIF data when that option is on.</p>
+<input id="jpgToPdfInput" type="file" accept=".jpg,.jpeg" multiple>
+<label>Images per page <select id="jpgLayout"><option value="1" selected>1 — one image per page</option><option value="2">2 — two side by side</option><option value="4">4 — two by two grid</option></select></label>
+<label>Page size <select id="jpgPageSize"><option value="a4" selected>A4</option><option value="letter">Letter</option></select></label>
+<label>Print size <select id="jpgPrintSize"><option value="fit" selected>Fit to page</option><option value="full">Full size — one photo at its natural size</option></select></label>
+<label><input id="jpgRotate" type="checkbox" checked> Auto-rotate photos from EXIF data</label>
+<label><input id="jpgGray" type="checkbox"> Grayscale</label>
+<label>JPEG quality <input id="jpgQuality" type="range" min="50" max="100" value="92"> <span id="jpgQualityLabel">92%</span></label>
+<button id="jpgToPdfBtn" type="button" class="btn-primary">Convert JPG to PDF</button>
+<p class="status" id="jpgToPdfStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-pngtopdf", '''<div class="workspace-tool" id="tool-pngtopdf">
+<h2>PNG to PDF</h2>
+<p>Turns PNG images into one PDF. Transparent areas are kept as they are, or flattened onto white, black or a colour of your choice.</p>
+<input id="pngToPdfInput" type="file" accept=".png" multiple>
+<label>Images per page <select id="pngLayout"><option value="1" selected>1 — one image per page</option><option value="2">2 — two side by side</option><option value="4">4 — two by two grid</option></select></label>
+<label>Page size <select id="pngPageSize"><option value="a4" selected>A4</option><option value="letter">Letter</option></select></label>
+<label>Transparency <select id="pngFlatten"><option value="keep" selected>Keep as-is (transparent stays transparent)</option><option value="#ffffff">Flatten onto white</option><option value="#000000">Flatten onto black</option><option value="custom">Flatten onto a colour…</option></select></label>
+<div id="pngFlattenColorRow" style="display:none"><label>Flatten colour <input id="pngFlattenColor" type="color" value="#ffffff"></label></div>
+<label><input id="pngGray" type="checkbox"> Grayscale</label>
+<label><input id="pngToJpeg" type="checkbox"> Save images as JPEG inside the PDF (smaller file, no transparency)</label>
+<label>JPEG quality <input id="pngQuality" type="range" min="50" max="100" value="92"> <span id="pngQualityLabel">92%</span></label>
+<button id="pngToPdfBtn" type="button" class="btn-primary">Convert PNG to PDF</button>
+<p class="status" id="pngToPdfStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-pdftojpg", '''<div class="workspace-tool" id="tool-pdftojpg">
+<h2>PDF to JPG</h2>
+<p>Renders every page of a PDF as a JPG image. Higher DPI means sharper images and bigger files.</p>
+<input id="pdfToJpgInput" type="file" accept="application/pdf">
+<label>Resolution <select id="jpgOutDpi"><option value="72">72 DPI — quick preview</option><option value="96">96 DPI</option><option value="150" selected>150 DPI — good quality</option><option value="200">200 DPI</option><option value="300">300 DPI — print quality</option></select></label>
+<label>JPEG quality <input id="jpgOutQuality" type="range" min="50" max="100" value="90"> <span id="jpgOutQualityLabel">90%</span></label>
+<label>Pages <input id="jpgOutPages" type="text" placeholder="all, or for example 1-3, 5" value="all"></label>
+<label>Resize to width <select id="jpgOutWidth"><option value="0" selected>Original size</option><option value="800">800 px</option><option value="1200">1200 px</option><option value="1920">1920 px</option></select></label>
+<label><input id="jpgOutGray" type="checkbox"> Grayscale</label>
+<button id="pdfToJpgBtn" type="button" class="btn-primary">Convert PDF to JPG</button>
+<div id="pdfToJpgOutput" class="image-output"></div>
+<p class="status" id="pdfToJpgStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-pdftopng", '''<div class="workspace-tool" id="tool-pdftopng">
+<h2>PDF to PNG</h2>
+<p>Renders every page of a PDF as a PNG image. Higher DPI means sharper images and bigger files.</p>
+<input id="pdfToPngInput" type="file" accept="application/pdf">
+<label>Resolution <select id="pngOutDpi"><option value="72">72 DPI — quick preview</option><option value="96">96 DPI</option><option value="150" selected>150 DPI — good quality</option><option value="200">200 DPI</option><option value="300">300 DPI — print quality</option></select></label>
+<label>Pages <input id="pngOutPages" type="text" placeholder="all, or for example 1-3, 5" value="all"></label>
+<label>Resize to width <select id="pngOutWidth"><option value="0" selected>Original size</option><option value="800">800 px</option><option value="1200">1200 px</option><option value="1920">1920 px</option></select></label>
+<label><input id="pngOutTransparent" type="checkbox"> Transparent background (where the page has none)</label>
+<label>File names <input id="pngOutPattern" type="text" value="report-p{nn}.png" placeholder="For example report-p{nn}.png"></label>
+<button id="pdfToPngBtn" type="button" class="btn-primary">Convert PDF to PNG</button>
+<div id="pdfToPngOutput" class="image-output"></div>
+<p class="status" id="pdfToPngStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-htmltopdf", '''<div class="workspace-tool" id="tool-htmltopdf">
+<h2>HTML to PDF</h2>
+<p>Paste HTML or choose a saved HTML file. The page is rendered as it looks — headings, bold text, tables and embedded pictures — and links stay clickable. Scripts are removed before rendering, and pictures must be embedded in the file to appear.</p>
+<label class="sr-only" for="htmlPaste">Paste HTML</label>
+<textarea id="htmlPaste" rows="8" placeholder="Paste your HTML here, or choose a file below…"></textarea>
+<label>HTML file (optional) <input id="htmlToPdfInput" type="file" accept=".html,.htm"></label>
+<label>Font <select id="htmlFont"><option value="Arial, Helvetica, sans-serif" selected>Arial</option><option value="Georgia, 'Times New Roman', serif">Georgia</option><option value="'Times New Roman', Times, serif">Times New Roman</option><option value="'Courier New', Courier, monospace">Courier New</option></select></label>
+<label>Font size <select id="htmlFontSize"><option value="12">12 px</option><option value="14" selected>14 px</option><option value="16">16 px</option><option value="18">18 px</option></select></label>
+<label>Page size <select id="htmlPageSize"><option value="a4" selected>A4</option><option value="letter">Letter</option></select></label>
+<button id="htmlToPdfBtn" type="button" class="btn-primary">Convert HTML to PDF</button>
+<p class="status" id="htmlToPdfStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-extractimages", '''<div class="workspace-tool" id="tool-extractimages">
+<h2>Extract Images from PDF</h2>
+<p>Saves the images embedded inside a PDF. JPEG, JPEG 2000 and JBIG2 pictures are saved in their original format and size; other pictures are saved as PNG.</p>
+<input id="extractImagesInput" type="file" accept="application/pdf">
+<button id="extractImagesBtn" type="button" class="btn-primary">Extract Images</button>
+<div id="extractImagesResults" class="image-output"></div>
+<p class="status" id="extractImagesStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-headerfooter", '''<div class="workspace-tool" id="tool-headerfooter">
+<h2>Add Header and Footer to PDF</h2>
+<p>Stamps header and footer text on the pages of a PDF. Use {page} for the page number, {total} for the page count and {date} for today's date.</p>
+<input id="headerFooterInput" type="file" accept="application/pdf">
+<label>Header text <input id="headerText" type="text" placeholder="Header text — try Page {page} of {total}"></label>
+<label>Footer text <input id="footerText" type="text" placeholder="Footer text"></label>
+<label>Font <select id="hfFont"><option value="helvetica" selected>Helvetica</option><option value="times">Times</option><option value="courier">Courier</option></select></label>
+<label>Font size <select id="hfSize"><option value="8">8 pt</option><option value="10" selected>10 pt</option><option value="12">12 pt</option><option value="14">14 pt</option><option value="16">16 pt</option></select></label>
+<label>Colour <input id="hfColor" type="color" value="#595959"></label>
+<label>Alignment <select id="hfAlign"><option value="left" selected>Left</option><option value="center">Centre</option><option value="right">Right</option></select></label>
+<label>Pages <select id="hfScope"><option value="all" selected>All pages</option><option value="odd">Odd pages only</option><option value="even">Even pages only</option><option value="notfirst">All except the first page</option><option value="first">First page only</option></select></label>
+<label><input id="hfDiffFirst" type="checkbox"> Different header and footer on the first page</label>
+<div id="hfFirstRow" style="display:none"><label>First-page header <input id="hfFirstHeader" type="text" placeholder="First-page header (blank = none)"></label><label>First-page footer <input id="hfFirstFooter" type="text" placeholder="First-page footer (blank = none)"></label></div>
+<label>Logo in header (optional) <input id="hfLogoInput" type="file" accept="image/*"></label>
+<button id="headerFooterBtn" type="button" class="btn-primary">Add Header &amp; Footer</button>
+<p class="status" id="headerFooterStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-flatten", '''<div class="workspace-tool" id="tool-flatten">
+<h2>Flatten PDF</h2>
+<p>Makes form fields and annotations a permanent part of the page, so they can no longer be changed. Links are kept as links. Flattening cannot be undone, so keep the original file.</p>
+<input id="flattenInput" type="file" accept="application/pdf">
+<label>Flatten <select id="flattenMode"><option value="both" selected>Form fields and annotations</option><option value="fields">Form fields only</option><option value="annotations">Annotations only</option></select></label>
+<button id="flattenBtn" type="button" class="btn-primary">Flatten PDF</button>
+<p class="status" id="flattenStatus" aria-live="polite"></p>
+<pre id="flattenReport" class="output-box"></pre>
+<a id="flattenReportLink" href="#" download="ak-premium-flatten-report.txt" style="display:none">Download field report (.txt)</a>
+</div>''')
+
+ws_replace("tool-metadata", '''<div class="workspace-tool" id="tool-metadata">
+<h2>PDF Metadata Editor</h2>
+<p>Shows and changes a PDF's title, author, subject, keywords, creator and dates. The app that saves the file always writes its own name as Producer and the save time as the Modification Date, so your Producer and Modification Date values are also stored in the XMP packet, where a reader can still see them.</p>
+<input id="metadataInput" type="file" accept="application/pdf">
+<pre id="metadataCurrent" class="output-box"></pre>
+<label>Preset <select id="metaPreset"><option value="edit" selected>Edit the fields below</option><option value="remove">Remove all personal metadata</option></select></label>
+<label>Title <input id="metaTitle" type="text" placeholder="Title"></label>
+<label>Author <input id="metaAuthor" type="text" placeholder="Author"></label>
+<label>Subject <input id="metaSubject" type="text" placeholder="Subject"></label>
+<label>Keywords <input id="metaKeywords" type="text" placeholder="Keywords, separated by commas"></label>
+<label>Creator <input id="metaCreator" type="text" placeholder="Creator"></label>
+<label>Producer <input id="metaProducer" type="text" placeholder="Producer"></label>
+<label>Creation date <input id="metaCreated" type="datetime-local"></label>
+<label>Modification date <input id="metaModified" type="datetime-local"></label>
+<label><input id="metaXmp" type="checkbox" checked> Also write these details into the XMP packet</label>
+<button id="metadataBtn" type="button" class="btn-primary">Update Metadata</button>
+<p class="status" id="metadataStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-resizepage", '''<div class="workspace-tool" id="tool-resizepage">
+<h2>Resize PDF Page Size</h2>
+<p>Scales pages to A4, Letter, Legal or a custom size, without turning them into pictures: text and drawings stay vector, and form fields and links are scaled with their pages.</p>
+<input id="resizePageInput" type="file" accept="application/pdf">
+<label>Page size <select id="pageSizeSelect"><option value="A4" selected>A4</option><option value="Letter">Letter</option><option value="Legal">Legal</option><option value="Custom">Custom size…</option></select></label>
+<div id="resizeCustomRow" style="display:none"><label>Custom width (mm) <input id="resizeCustomW" type="number" min="50" max="1200" placeholder="210"></label><label>Custom height (mm) <input id="resizeCustomH" type="number" min="50" max="1200" placeholder="297"></label></div>
+<label>Pages <input id="resizePages" type="text" placeholder="all, or for example 1-3, 5" value="all"></label>
+<button id="resizePageBtn" type="button" class="btn-primary">Resize Pages</button>
+<p class="status" id="resizePageStatus" aria-live="polite"></p>
+</div>''')
+
 # Excel wizards: replace the shared tool-excel workspace with 5 standalone workspaces
 def wizard_ws(wid, title, task_id, task_options, btn_id, out_id, status_id, fields_hint):
     opts = "".join('<option value="%s">%s</option>' % (v, n) for v, n in task_options)
@@ -961,6 +1100,7 @@ LIB_SCRIPT = {
  "marked-footnote": '<script defer src="https://cdn.jsdelivr.net/npm/marked-footnote@1.3.0/dist/index.umd.js" integrity="' + SRI["marked-footnote"] + '" crossorigin="anonymous"></script>',
  "forge": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js" integrity="' + SRI["forge"] + '" crossorigin="anonymous"></script>',
  "jspdf-autotable": '<script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.js" integrity="' + SRI["jspdf-autotable"] + '" crossorigin="anonymous"></script>',
+ "html2canvas": '<script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="' + SRI["html2canvas"] + '" crossorigin="anonymous"></script>',
  # diff-match-patch is VENDORED, not CDN: the published npm file ends with
  # five unguarded "module.exports = ..." lines, which throw "ReferenceError:
  # module is not defined" at the end of every browser page load (and trip
@@ -985,6 +1125,7 @@ LIB_HOST = {
  "marked": "https://cdn.jsdelivr.net", "marked-footnote": "https://cdn.jsdelivr.net",
  "forge": "https://cdnjs.cloudflare.com",
  "jspdf-autotable": "https://cdn.jsdelivr.net",
+ "html2canvas": "https://cdn.jsdelivr.net",
 }
 
 def esc(x): return html.escape(str(x), quote=True)
@@ -1682,7 +1823,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v18). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v26";
+const CACHE = "ak-premium-v27";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

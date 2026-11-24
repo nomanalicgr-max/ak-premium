@@ -239,7 +239,8 @@ const LIB_URLS = {
   "marked-footnote": "https://cdn.jsdelivr.net/npm/marked-footnote@1.3.0/dist/index.umd.js",
   "forge": "https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js",
   "diff-match-patch": "https://cdn.jsdelivr.net/npm/diff-match-patch@1.0.5/index.js",
-  "jspdf-autotable": "https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.js"
+  "jspdf-autotable": "https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.js",
+  "html2canvas": "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"
 };
 /* SRI hashes for the pinned libraries above (Phase 4.2); same values as
    build.py. The docx URL was corrected at the same time: docx@8.5.0
@@ -264,7 +265,8 @@ const LIB_SRI = {
   "marked-footnote": "sha384-eMG0oh50tjGAfa6zAmiAlwrgAO4MmBKb5wosyU0mpQx80qj0fUYCBt1KwO9e8qxp",
   "forge": "sha384-xE6n3RBMZWgwAhyzoIMfY7HN3oDBa/+HBwFFNyxsdY8kseup7C4Blx1yDzprEESV",
   "diff-match-patch": "sha384-tEDljuMsPeOCXxbbsrmf3+iiytDjHShxwUCWxZqsZc3/jJHz2XQMovzRM+YDuJ0L",
-  "jspdf-autotable": "sha384-btaaVGtvWi0Q6xlr74cOkIWG+SCaiZ9Tfno8uuHjzoekIVV+y5K3dGPEGqqS3ZN0"
+  "jspdf-autotable": "sha384-btaaVGtvWi0Q6xlr74cOkIWG+SCaiZ9Tfno8uuHjzoekIVV+y5K3dGPEGqqS3ZN0",
+  "html2canvas": "sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H"
 };
 const _libLoaded = {};
 function loadLibrary(name, statusId) {
@@ -924,7 +926,9 @@ function orientedImageCanvas(img, orientation) {
 /* Shared engine: images to PDF. Used by Images to PDF and by the JPG to
    PDF and PNG to PDF landing pages. Takes no element ids, so it splits to
    core.js. opts: {layout "1"|"2"|"4", pageSize "a4"|"letter", marginMm,
-   fit "fit"|"fill", autoRotate, keepMeta, quality 0.5-1, dpi 72|150|300}.
+   fit "fit"|"fill", autoRotate, keepMeta, quality 0.5-1, dpi 72|150|300,
+   grayscale, flattenBg (null or a CSS colour to paint behind transparent
+   PNGs), toJpeg (PNGs are saved as JPEG instead of PNG)}.
    Defaults preserve the old behaviour (one image per A4 page, fitted).
    DPI sets the print size: an image prints at (pixels * 72 / dpi) points,
    capped by its grid cell. JPEGs are re-encoded through a canvas, which
@@ -934,7 +938,7 @@ function orientedImageCanvas(img, orientation) {
 async function imagesToPdf(files, statusId, outName, opts) {
   const JsPDF = getJsPdf();
   if (!needLibrary(!!JsPDF, "jsPDF", statusId)) return;
-  const o = Object.assign({ layout: "1", pageSize: "a4", marginMm: 3.5, fit: "fit", autoRotate: true, keepMeta: false, quality: 0.92, dpi: 150 }, opts || {});
+  const o = Object.assign({ layout: "1", pageSize: "a4", marginMm: 3.5, fit: "fit", autoRotate: true, keepMeta: false, quality: 0.92, dpi: 150, grayscale: false, flattenBg: null, toJpeg: false }, opts || {});
   const perPage = o.layout === "4" ? 4 : o.layout === "2" ? 2 : 1;
   const cols = perPage === 4 ? 2 : perPage === 2 ? 2 : 1;
   const rows = perPage === 4 ? 2 : 1;
@@ -972,6 +976,25 @@ async function imagesToPdf(files, statusId, outName, opts) {
         iw = canvas.width; ih = canvas.height;
         if (isJpeg) stripped++;
       }
+      // Grayscale and transparency flatten run on the oriented canvas, so
+      // they apply to every image regardless of its EXIF rotation.
+      if (canvas && (o.grayscale || (o.flattenBg && !isJpeg))) {
+        const proc = document.createElement("canvas");
+        proc.width = canvas.width; proc.height = canvas.height;
+        const pctx = proc.getContext("2d");
+        if (o.flattenBg) { pctx.fillStyle = o.flattenBg; pctx.fillRect(0, 0, proc.width, proc.height); }
+        pctx.drawImage(canvas, 0, 0);
+        if (o.grayscale) {
+          try {
+            const imgData = pctx.getImageData(0, 0, proc.width, proc.height);
+            const dd = imgData.data;
+            for (let p = 0; p < dd.length; p += 4) { const g = Math.round(0.299 * dd[p] + 0.587 * dd[p + 1] + 0.114 * dd[p + 2]); dd[p] = g; dd[p + 1] = g; dd[p + 2] = g; }
+            pctx.putImageData(imgData, 0, 0);
+          } catch (e) { /* grayscale is best-effort on odd canvases */ }
+        }
+        canvas = proc;
+      }
+      const outJpeg = isJpeg || !!o.toJpeg;
       // Print size at the chosen DPI, capped by the grid cell.
       let w = Math.min(cellW, iw * 72 / o.dpi), h = w * ih / iw;
       if (h > cellH) { h = cellH; w = h * iw / ih; }
@@ -988,7 +1011,7 @@ async function imagesToPdf(files, statusId, outName, opts) {
         else { const img2 = new Image(); await new Promise((res, rej) => { img2.onload = res; img2.onerror = rej; img2.src = dataUrl; }); crop.getContext("2d").drawImage(img2, sx, sy, sw, sh, 0, 0, crop.width, crop.height); }
         doc.addImage(crop.toDataURL("image/png"), "PNG", cellX, cellY, cellW, cellH);
       } else if (canvas) {
-        doc.addImage(canvas.toDataURL(isJpeg ? "image/jpeg" : "image/png", o.quality), isJpeg ? "JPEG" : "PNG", x, y, w, h);
+        doc.addImage(canvas.toDataURL(outJpeg ? "image/jpeg" : "image/png", o.quality), outJpeg ? "JPEG" : "PNG", x, y, w, h);
       } else {
         doc.addImage(dataUrl, "JPEG", x, y, w, h);
       }
@@ -1526,11 +1549,27 @@ async function ocrPdfPages(file, lang, statusId, onProgress) {
 }
 
 async function renderPdfPagesToImages(file, format, statusId, outputEl, opts) {
-  const o = Object.assign({ dpi: 108, format: null, grayscale: false, transparent: false, pages: "all" }, opts || {});
+  const o = Object.assign({ dpi: 108, format: null, grayscale: false, transparent: false, pages: "all", quality: 0.92, maxWidth: 0, namePattern: "" }, opts || {});
   const fmt = String(o.format || format || "png").toLowerCase();
   const ext = fmt === "jpg" || fmt === "jpeg" ? "jpg" : fmt === "webp" ? "webp" : "png";
   const mime = ext === "jpg" ? "image/jpeg" : ext === "webp" ? "image/webp" : "image/png";
   const label = ext.toUpperCase();
+  // File name for one page: the pattern may contain {nn} (zero-padded
+  // page number, 01, 02), {n} (plain number, 1, 2) or {page} (older
+  // spelling, same as {nn}). Without a placeholder the number is
+  // appended; without a pattern the old ak-premium-page-N name is used.
+  const pageName = (pageNum, total) => {
+    const pad = String(Math.max(total, 10)).length;
+    const num = String(pageNum).padStart(pad, "0");
+    const pat = String(o.namePattern || "").trim();
+    if (!pat) return "ak-premium-page-" + pageNum + "." + ext;
+    // {nn} first: "{n}" is a substring of "{nn}" and would mangle it.
+    const named = pat.split("{nn}").join(num).split("{n}").join(String(pageNum)).split("{page}").join(num);
+    if (named !== pat) return named.replace(/[^A-Za-z0-9._-]+/g, "-");
+    const dot = pat.lastIndexOf(".");
+    const base = dot > 0 ? pat.slice(0, dot) : pat;
+    return (base + "-" + num + "." + ext).replace(/[^A-Za-z0-9._-]+/g, "-");
+  };
   if (!(await ensurePdfJs(statusId))) return;
   try {
     const bytes = await readAsArrayBuffer(file);
@@ -1562,11 +1601,20 @@ async function renderPdfPagesToImages(file, format, statusId, outputEl, opts) {
           ctx.putImageData(img, 0, 0);
         } catch (e) { /* grayscale is best-effort on odd canvases; the colour image still downloads */ }
       }
-      const blob = await new Promise((res) => canvas.toBlob(res, mime));
+      let outCanvas = canvas;
+      if (o.maxWidth && canvas.width > o.maxWidth) {
+        // Resize-to-width preset for web use: scale the rendered page down,
+        // keeping its shape. Never upscales a smaller page.
+        const small = document.createElement("canvas");
+        small.width = o.maxWidth; small.height = Math.max(1, Math.round(canvas.height * o.maxWidth / canvas.width));
+        small.getContext("2d").drawImage(canvas, 0, 0, small.width, small.height);
+        outCanvas = small;
+      }
+      const blob = await new Promise((res) => outCanvas.toBlob(res, mime, (ext === "jpg" || ext === "webp") ? (o.quality || 0.92) : undefined));
       if (!blob) continue;
-      blobs.push({ name: "ak-premium-page-" + i + "." + ext, blob });
+      blobs.push({ name: pageName(i, pages.length), blob });
       const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob); a.download = "ak-premium-page-" + i + "." + ext; a.textContent = "Download page " + i + " " + label;
+      a.href = URL.createObjectURL(blob); a.download = pageName(i, pages.length); a.textContent = "Download page " + i + " " + label;
       outputEl.appendChild(a); outputEl.appendChild(document.createElement("br"));
     }
     if (blobs.length === 1) {
@@ -1904,6 +1952,31 @@ function getPdfImageObj(page, name) {
     }
   });
 }
+
+/* Read embedded images straight from the PDF's image objects, keeping
+   their original bytes: a DCT (JPEG) image is saved as a .jpg, a JPEG
+   2000 image as a .jp2, a JBIG2 image as a .jb2. Flate and other filters
+   are left for the pdf.js path below, which decodes them to PNG. Returns
+   [{page, name, blob, format, width, height, note}] or null when the
+   file cannot be read as a PDF at all (for example, it is encrypted).
+   A picture with a transparency mask (SMask) keeps its JPEG bytes but
+   the mask is not kept, so the JPEG may show a dark background where
+   the original was transparent. */
+
+function toIsoWithOffset(d) {
+  const p = (n) => String(n).padStart(2, "0");
+  const off = -d.getTimezoneOffset();
+  const sign = off >= 0 ? "+" : "-";
+  const a = Math.abs(off);
+  return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + "T" + p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds()) + sign + p(Math.floor(a / 60)) + ":" + p(a % 60);
+}
+
+/* Build a small, well-formed XMP metadata packet from the same values
+   the Info dictionary holds. Dates are ISO strings (with Z). Values are
+   XML-escaped. Used because the app that saves a PDF always writes its
+   own name as Producer and the save time as Modification Date in the
+   Info dictionary, so the user's Producer and Modification Date are
+   kept here, in the XMP packet, where a reader can still see them. */
 
 /* Convert one loaded image file to another format on a canvas. JPEG output
    is flattened onto white (JPG has no transparency). Returns the blob, or
@@ -3076,7 +3149,7 @@ function runQpdf(op, bytes, password, statusId, extra, silent) {
     _lastQpdfError = null;
     const fail = (code, message) => { _lastQpdfError = code; if (!silent) setError(statusId, message); resolve(null); };
     let worker;
-    try { worker = new Worker("/assets/js/qpdf-worker.js?v=8", { type: "module" }); }
+    try { worker = new Worker("/assets/js/qpdf-worker.js?v=9", { type: "module" }); }
     catch (e) { fail("WORKER_ERROR", "PDF encryption could not start in this browser. Please try Chrome, Edge or Firefox."); return; }
     const timer = setTimeout(() => { try { worker.terminate(); } catch (e) {} fail("TIMEOUT", "PDF encryption is taking too long. Please try a smaller file."); }, 120000);
     worker.onmessage = (e) => {
@@ -4017,7 +4090,9 @@ LIVE_CALCS.forEach((c) => {
     // to the *fill* section, not to the builder: gating their primary buttons
     // on a file would block the no-file flows (create with text only, build
     // a blank form). Both handlers guard their own missing input instead.
-    if (btn.id === "createPdfBtn" || btn.id === "formsPdfBtn") return;
+    // HTML to PDF is the same: pasting HTML needs no file, so its button
+    // must not be gated on the optional file input either.
+    if (btn.id === "createPdfBtn" || btn.id === "formsPdfBtn" || btn.id === "htmlToPdfBtn") return;
     const update = () => { btn.disabled = !(fileInput.files && fileInput.files.length); };
     fileInput.addEventListener("change", update);
     update();
