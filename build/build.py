@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "30"  # v30 (2026-11-24): advanced upgrade plan batch 10 — Image core: image-converter (TIFF/BMP/GIF/ICO in via UTIF.js, AVIF/WebP out, batch + ZIP, EXIF orientation + strip via exifr), image-to-text (OCR pre-processing: EXIF fix, deskew, contrast, greyscale, upscale; word-level output with confidence + low-confidence highlight; auto-detect via Tesseract OSD), image-cropper (aspect lock, rotate while cropping via Cropper.js, straighten + flip), svg-to-png (1x/2x/3x, exact px, icon presets 16-512, transparent/coloured background, JPG/WebP/AVIF out), rotate-flip-image (arbitrary-angle rotate + straighten slider, EXIF auto-rotate, batch + ZIP), image-resizer (social/print presets, quality picker, FaceDetector face-aware crop Chrome-only).
+ASSET_V = "31"  # v31 (2026-11-24): advanced upgrade plan batch 11 — Image converters + design/everyday: png-to-jpg (quality, flatten colour, EXIF), jpg-to-png + webp-to-png (PNG-8 via UPNG.js, exact palette, IEND-validated with plain-PNG fallback, EXIF), webp-to-jpg (quality, flatten, EXIF), jpg-to-webp (quality, Best-quality note, target-size, EXIF), image-compressor (EXIF toggle), passport-photo-maker (NADRA + Punjab driving-licence sizes, guide overlay, print sheets, 60 KB step-down), color-palette (WCAG AA/AAA, harmonies, 50-900 shades/tints, eyedropper via color-thief, CSS/Tailwind/PNG export), qr-code-generator (8 structured types, EC levels, logo, PNG+SVG, jsQR scan test; qrcode-generator replaces qrcodejs), password-generator (passphrase with 1,296-word EFF sample, zxcvbn strength + crack-time, exclude-ambiguous, pronounceable, PIN).
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -99,7 +99,7 @@ SRI = {
  "docx": "sha384-4xaIisuLEy2lo2HkB2C4rEf7v8jbTb2kuogX6TkuEt9feTWKBSFSOzsqNNbV+sKh",
  "pptxgenjs": "sha384-Cck14aA9cifjYolcnjebXRfWGkz5ltHMBiG4px/j8GS+xQcb7OhNQWZYyWjQ+UwQ",
  "tesseract": "sha384-GJqSu7vueQ9qN0E9yLPb3Wtpd7OrgK8KmYzC8T1IysG1bcvxvIO4qtYR/D3A991F",
- "qrcode": "sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU",
+ "qrcode": "sha384-8FWZA6BGMXhsfO+BLtrJK0We6gg5o1JyO8xQm6peWDEUs17ACA5ziE/NIAkl9z2k",
  "jspdf": "sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk",
  "jspdf-autotable": "sha384-btaaVGtvWi0Q6xlr74cOkIWG+SCaiZ9Tfno8uuHjzoekIVV+y5K3dGPEGqqS3ZN0",
  "html2canvas": "sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H",
@@ -117,6 +117,13 @@ SRI = {
  "exifr": "sha384-KrOocIA+lZcNUz2MDavnT/FuX+CbTREJihUi0bp8QUSwhE2AkGTNpv2b7yMbBkx5",
  "cropperjs": "sha384-jrOgQzBlDeUNdmQn3rUt/PZD+pdcRBdWd/HWRqRo+n2OR2QtGyjSaJC0GiCeH+ir",
  "pako": "sha384-rNlaE5fs9dGIjmxWDALQh/RBAaGRYT5ChrzHo6tRfgrZ36iRFAiquP5g41Jsv+0j",
+ # UPNG.js 2.1.0 (MIT) + color-thief 2.4.0 (MIT) + jsQR 1.4.0 (Apache-2.0) +
+ # zxcvbn 4.4.2 (MIT), all pinned files byte-identical to their npm
+ # tarballs (verified 2026-11-24). UPNG needs pako, loaded before it.
+ "upng": "sha384-5zRBkJ6IHy9ezWHX/cBuwC0SnrK23Cfx6G6kIjwR5no9khaSv2md2ZHMXphI3UCB",
+ "colorthief": "sha384-ZkLR4RZXZ2JWJPEflQmS8WA93TozFLyxZwFHAny12Of6jNKBDWeEx8OF7r1Hg51r",
+ "jsqr": "sha384-b5Ya4Bq3qCyz39m2ISh+4DxjAIljdeFwK/BsXLuj9gugaNwAcj/ia15fxNZL9Nlx",
+ "zxcvbn": "sha384-LXuP8lknSGBOLVn4fwVOl+rWR+zOEtZx6CF9ZLaN6gKBgLByU4D79VWWjV4/gefq",
 }
 
 # Valid schema.org applicationCategory values (Phase 4.1). The old code put
@@ -640,12 +647,165 @@ ws_replace("tool-pdfppt", '''<div class="workspace-tool" id="tool-pdfppt">
 ws_replace("tool-imgcompress", '''<div class="workspace-tool" id="tool-imgcompress">
 <h2>Image Compressor</h2>
 <input id="imgCompressInput" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple>
+<label><input id="imgCompressExif" type="checkbox" checked> Fix rotation from photo data (EXIF) before compressing</label>
+<p class="field-hint">Re-saving a photo never keeps its location data, whichever way the box is set.</p>
 <label>Quality <input id="imgCompressQuality" type="range" min="10" max="100" value="80"> <span id="imgCompressQualityLabel">80%</span></label>
 <label>Format <select id="imgCompressFormat"><option value="jpeg">JPEG (smallest for photos)</option><option value="png">PNG (keeps transparency)</option><option value="webp">WebP (small, good quality)</option><option value="avif">AVIF (smallest, Chrome and Edge only)</option></select></label>
 <label>Target size in KB (optional) <input id="imgCompressTargetKB" type="number" min="10" placeholder="Example: 200"></label>
 <button id="imgCompressBtn" type="button" class="btn-primary">Compress Images</button>
 <div id="imgCompressOutput" class="image-output"></div>
 <p class="status" id="imgCompressStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-pngtojpg", '''<div class="workspace-tool" id="tool-pngtojpg">
+<h2>PNG to JPG</h2>
+<p>Turns a PNG image into a JPG file at the same size. Photos are turned the right way up from their photo data, and the see-through parts get the background colour you pick.</p>
+<input id="pngToJpgInput" type="file" accept="image/png">
+<label>Quality <input id="pngToJpgQuality" type="range" min="10" max="100" value="92"> <span id="pngToJpgQualityLabel">92%</span></label>
+<label>Background for see-through parts <input id="pngToJpgBg" type="color" value="#ffffff"></label>
+<button id="pngToJpgBtn" type="button" class="btn-primary">Convert PNG to JPG</button>
+<p class="status" id="pngToJpgStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-jpgtopng", '''<div class="workspace-tool" id="tool-jpgtopng">
+<h2>JPG to PNG</h2>
+<p>Turns a JPG image into a PNG file at the same size. Photos are turned the right way up from their photo data. PNG-8 uses only 256 colours, so the file is much smaller, but a photo with smooth colour blends may show banding.</p>
+<input id="jpgToPngInput" type="file" accept="image/jpeg">
+<label><input id="jpgToPngPng8" type="checkbox"> Save as PNG-8 (256 colours, smaller file)</label>
+<button id="jpgToPngBtn" type="button" class="btn-primary">Convert JPG to PNG</button>
+<p class="status" id="jpgToPngStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-webptojpg", '''<div class="workspace-tool" id="tool-webptojpg">
+<h2>WebP to JPG</h2>
+<p>Turns a WebP image into a JPG file at the same size. Photos are turned the right way up from their photo data, and the see-through parts get the background colour you pick.</p>
+<input id="webpToJpgInput" type="file" accept="image/webp">
+<label>Quality <input id="webpToJpgQuality" type="range" min="10" max="100" value="92"> <span id="webpToJpgQualityLabel">92%</span></label>
+<label>Background for see-through parts <input id="webpToJpgBg" type="color" value="#ffffff"></label>
+<button id="webpToJpgBtn" type="button" class="btn-primary">Convert WebP to JPG</button>
+<p class="status" id="webpToJpgStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-webptopng", '''<div class="workspace-tool" id="tool-webptopng">
+<h2>WebP to PNG</h2>
+<p>Turns a WebP image into a PNG file at the same size. Photos are turned the right way up from their photo data. PNG-8 uses only 256 colours, so the file is much smaller, but a photo with smooth colour blends may show banding.</p>
+<input id="webpToPngInput" type="file" accept="image/webp">
+<label><input id="webpToPngPng8" type="checkbox"> Save as PNG-8 (256 colours, smaller file)</label>
+<button id="webpToPngBtn" type="button" class="btn-primary">Convert WebP to PNG</button>
+<p class="status" id="webpToPngStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-jpgtowebp", '''<div class="workspace-tool" id="tool-jpgtowebp">
+<h2>JPG to WebP</h2>
+<p>Turns a JPG image into a smaller WebP file at the same size. Photos are turned the right way up from their photo data. Browsers cannot save true lossless WebP, so Best quality saves at the highest lossy quality instead.</p>
+<input id="jpgToWebpInput" type="file" accept="image/jpeg">
+<label>Quality <input id="jpgToWebpQuality" type="range" min="10" max="100" value="92"> <span id="jpgToWebpQualityLabel">92%</span></label>
+<label><input id="jpgToWebpLossless" type="checkbox"> Best quality (lossless is not possible in the browser)</label>
+<label>Target size in KB (optional) <input id="jpgToWebpTargetKB" type="number" min="10" placeholder="Example: 200"></label>
+<button id="jpgToWebpBtn" type="button" class="btn-primary">Convert JPG to WebP</button>
+<p class="status" id="jpgToWebpStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-passport", '''<div class="workspace-tool" id="tool-passport">
+<h2>Passport Photo Maker</h2>
+<p>Cuts your photo to the exact passport size for your country. The guide oval shows where your head should sit; it is a preview aid and is never saved into the photo.</p>
+<input id="passportInput" type="file" accept="image/jpeg,image/png,image/webp">
+<label>Country
+<select id="passportCountry">
+<option value="pk">Pakistan — 35 × 45 mm (413 × 531 px)</option>
+<option value="nadra">Pakistan NADRA CNIC / NICOP — 35 × 45 mm, 60 KB or less</option>
+<option value="dl">Pakistan driving licence (DLIMS) — 35 × 45 mm</option>
+<option value="in">India — 2 × 2 in (600 × 600 px)</option>
+<option value="us">USA — 2 × 2 in (600 × 600 px)</option>
+<option value="uk">United Kingdom — 35 × 45 mm (413 × 531 px)</option>
+<option value="eu">Europe / Schengen — 35 × 45 mm (413 × 531 px)</option>
+<option value="ae">UAE — 35 × 45 mm (413 × 531 px)</option>
+<option value="ca">Canada — 50 × 70 mm (591 × 827 px)</option>
+</select>
+</label>
+<label><input id="passportGuide" type="checkbox" checked> Show the framing guide (head oval and shoulder line) on the preview</label>
+<canvas id="passportPreview" style="max-width:100%;height:auto" aria-label="Passport photo preview with framing guide"></canvas>
+<p class="status" id="passportSizeNote">Selected size: 35 × 45 mm (413 × 531 px).</p>
+<button id="passportBtn" type="button" class="btn-primary">Make Passport Photo</button>
+<label>Print sheet <select id="passportSheetCount"><option value="4">4 photos on a 4 × 6 in sheet</option><option value="6" selected>6 photos on a 4 × 6 in sheet</option><option value="8">8 photos on a 6 × 8 in sheet</option></select></label>
+<p class="field-hint">8 photos do not fit on a 4 × 6 in sheet at exact size, so they go on a 6 × 8 in sheet instead.</p>
+<button id="passportSheetBtn" type="button" class="btn-secondary">Download Print Sheet</button>
+<p class="status" id="passportStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-palette", '''<div class="workspace-tool" id="tool-palette">
+<h2>Color Palette</h2>
+<p>Build a palette from one base colour, check its contrast against white and black, or read the main colours out of a photo.</p>
+<label>Base color <input id="paletteBase" type="color" value="#4f46e5"></label>
+<label>Type a colour (optional) <input id="paletteText" type="text" placeholder="Hex, rgb(), hsl() or a colour name, for example teal"></label>
+<label>Harmony <select id="paletteHarmony"><option value="all" selected>All harmonies</option><option value="complementary">Complementary</option><option value="analogous">Analogous</option><option value="triadic">Triadic</option><option value="tetradic">Tetradic</option><option value="split">Split-complementary</option><option value="monochromatic">Monochromatic</option></select></label>
+<button id="paletteBtn" type="button" class="btn-primary">Generate Palette</button>
+<label>Or read colours from a photo <input id="paletteImageInput" type="file" accept="image/jpeg,image/png,image/webp"></label>
+<div id="paletteOutput" class="palette-output"></div>
+<p id="paletteContrast" aria-live="polite"></p>
+<div class="field-row">
+<button id="paletteExportCssBtn" type="button" class="btn-secondary">Download CSS Variables</button>
+<button id="paletteExportTailwindBtn" type="button" class="btn-secondary">Download Tailwind Config</button>
+<button id="paletteExportPngBtn" type="button" class="btn-secondary">Download Palette Image</button>
+</div>
+<p class="status" id="paletteStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-qr", '''<div class="workspace-tool" id="tool-qr">
+<h2>QR Code Generator</h2>
+<p>Make a QR code for a link, a Wi-Fi network, a contact, an email, a text message, a phone number, a place or a payment link. The code is made in your browser and never uploaded.</p>
+<label>QR code type <select id="qrType"><option value="url" selected>Link or text</option><option value="wifi">Wi-Fi network</option><option value="vcard">Contact (vCard)</option><option value="email">Email</option><option value="sms">Text message (SMS)</option><option value="phone">Phone number</option><option value="location">Location</option><option value="payment">Payment link or detail</option></select></label>
+<label id="qrTextRow">Link or text <input id="qrText" type="text" placeholder="https://example.com"></label>
+<div id="qrFields"></div>
+<div class="field-row">
+<label>Size <select id="qrSize"><option value="220">220 px</option><option value="320" selected>320 px</option><option value="480">480 px</option><option value="640">640 px</option></select></label>
+<label>Error correction <select id="qrEc"><option value="L">L — most data</option><option value="M" selected>M — balanced</option><option value="Q">Q — tougher</option><option value="H">H — toughest</option></select></label>
+</div>
+<div class="field-row">
+<label>Dark colour <input id="qrDark" type="color" value="#000000"></label>
+<label>Light colour <input id="qrLight" type="color" value="#ffffff"></label>
+</div>
+<label>Centre logo (optional) <input id="qrLogoInput" type="file" accept="image/jpeg,image/png,image/webp"></label>
+<p class="field-hint">A logo in the middle can make the code harder to scan. Use a higher error-correction level with a logo, and test the code with Scan test before you print it.</p>
+<button id="qrBtn" type="button" class="btn-primary">Generate QR Code</button>
+<div id="qrContainer" aria-label="Generated QR code"></div>
+<div class="field-row">
+<button id="qrDownloadBtn" type="button" class="btn-secondary">Download QR PNG</button>
+<button id="qrDownloadSvgBtn" type="button" class="btn-secondary">Download QR SVG</button>
+<button id="qrScanBtn" type="button" class="btn-secondary">Scan Test</button>
+</div>
+<p class="status" id="qrStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-password", '''<div class="workspace-tool" id="tool-password">
+<h2>Password Generator</h2>
+<p>Make a strong password in your browser. Nothing is uploaded, and the strength meter runs on your device.</p>
+<label>Mode <select id="pwdMode"><option value="random" selected>Random password</option><option value="passphrase">Passphrase (words)</option><option value="pronounceable">Pronounceable</option><option value="pin">PIN (digits only)</option></select></label>
+<div id="pwdLengthRow"><label>Length <input id="pwdLength" type="range" min="8" max="64" value="16"> <span id="pwdLengthLabel">16</span></label></div>
+<div id="pwdCharsetsRow" class="field-row">
+<label><input id="pwdUpper" type="checkbox" checked> Uppercase</label>
+<label><input id="pwdLower" type="checkbox" checked> Lowercase</label>
+<label><input id="pwdNumbers" type="checkbox" checked> Numbers</label>
+<label><input id="pwdSymbols" type="checkbox" checked> Symbols</label>
+<label><input id="pwdExcludeAmbiguous" type="checkbox"> Exclude ambiguous (0, O, 1, l, I)</label>
+</div>
+<div id="pwdPassphraseRow" style="display:none">
+<div class="field-row">
+<label>Words <select id="pwdWordCount"><option value="4">4 words</option><option value="5">5 words</option><option value="6" selected>6 words</option><option value="7">7 words</option><option value="8">8 words</option></select></label>
+<label>Separator <select id="pwdSeparator"><option value="-" selected>Hyphen (-)</option><option value=" ">Space</option><option value="_">Underscore (_)</option><option value=".">Dot (.)</option><option value="none">No separator</option></select></label>
+</div>
+<label><input id="pwdAddDigit" type="checkbox"> Add a 2-digit number at the end</label>
+<p class="field-hint">Words come from a 1,296-word sample of the EFF large wordlist (Creative Commons Attribution licence). 6 words is about 62 bits of entropy.</p>
+</div>
+<div id="pwdPinRow" style="display:none">
+<label>PIN digits <select id="pwdPinDigits"><option value="4">4 digits</option><option value="6" selected>6 digits</option><option value="8">8 digits</option></select></label>
+<p class="field-hint">A PIN is only for places that ask for digits, like a phone lock. Never reuse it as a website password.</p>
+</div>
+<button id="pwdBtn" type="button" class="btn-primary">Generate Password</button>
+<pre id="pwdOutput" class="terminal">Your password will appear here.</pre>
+<p id="pwdStrength" aria-live="polite"></p>
+<button id="pwdCopyBtn" type="button" class="btn-secondary">Copy Password</button>
+<p class="status" id="pwdStatus" aria-live="polite"></p>
 </div>''')
 
 ws_replace("tool-ocr", '''<div class="workspace-tool" id="tool-ocr">
@@ -1241,7 +1401,7 @@ LIB_SCRIPT = {
  "docx": '<script defer src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js" integrity="' + SRI["docx"] + '" crossorigin="anonymous"></script>',
  "pptxgenjs": '<script defer src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js" integrity="' + SRI["pptxgenjs"] + '" crossorigin="anonymous"></script>',
  "tesseract": '<script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" integrity="' + SRI["tesseract"] + '" crossorigin="anonymous"></script>',
- "qrcode": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="' + SRI["qrcode"] + '" crossorigin="anonymous"></script>',
+ "qrcode": '<script defer src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" integrity="' + SRI["qrcode"] + '" crossorigin="anonymous"></script>',
  "jspdf": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="' + SRI["jspdf"] + '" crossorigin="anonymous"></script>',
  "js-yaml": '<script defer src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js" integrity="' + SRI["js-yaml"] + '" crossorigin="anonymous"></script>',
  "md5": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js" integrity="' + SRI["md5"] + '" crossorigin="anonymous"></script>',
@@ -1268,6 +1428,10 @@ LIB_SCRIPT = {
  "exifr": '<script defer src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js" integrity="' + SRI["exifr"] + '" crossorigin="anonymous"></script>',
  "cropperjs": '<script defer src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js" integrity="' + SRI["cropperjs"] + '" crossorigin="anonymous"></script>',
  "pako": '<script defer src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js" integrity="' + SRI["pako"] + '" crossorigin="anonymous"></script>',
+ "upng": '<script defer src="https://cdn.jsdelivr.net/npm/upng-js@2.1.0/UPNG.js" integrity="' + SRI["upng"] + '" crossorigin="anonymous"></script>',
+ "colorthief": '<script defer src="https://cdn.jsdelivr.net/npm/colorthief@2.4.0/dist/color-thief.umd.js" integrity="' + SRI["colorthief"] + '" crossorigin="anonymous"></script>',
+ "jsqr": '<script defer src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" integrity="' + SRI["jsqr"] + '" crossorigin="anonymous"></script>',
+ "zxcvbn": '<script defer src="https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js" integrity="' + SRI["zxcvbn"] + '" crossorigin="anonymous"></script>',
  # diff-match-patch is VENDORED, not CDN: the published npm file ends with
  # five unguarded "module.exports = ..." lines, which throw "ReferenceError:
  # module is not defined" at the end of every browser page load (and trip
@@ -1285,7 +1449,7 @@ LIB_HOST = {
  "docx": "https://cdn.jsdelivr.net", "pptxgenjs": "https://cdn.jsdelivr.net",
  "tesseract": "https://cdn.jsdelivr.net", "pdfjs": "https://cdnjs.cloudflare.com",
  "jszip": "https://cdnjs.cloudflare.com", "mammoth": "https://cdnjs.cloudflare.com",
- "qrcode": "https://cdnjs.cloudflare.com", "jspdf": "https://cdnjs.cloudflare.com",
+ "qrcode": "https://cdn.jsdelivr.net", "jspdf": "https://cdnjs.cloudflare.com",
  "js-yaml": "https://cdn.jsdelivr.net", "md5": "https://cdnjs.cloudflare.com",
  "jsonrepair": "https://cdn.jsdelivr.net", "ajv2020": "https://cdnjs.cloudflare.com",
  "jsonpath-plus": "https://cdn.jsdelivr.net",
@@ -1300,6 +1464,10 @@ LIB_HOST = {
  "exifr": "https://cdn.jsdelivr.net",
  "cropperjs": "https://cdn.jsdelivr.net",
  "pako": "https://cdn.jsdelivr.net",
+ "upng": "https://cdn.jsdelivr.net",
+ "colorthief": "https://cdn.jsdelivr.net",
+ "jsqr": "https://cdn.jsdelivr.net",
+ "zxcvbn": "https://cdn.jsdelivr.net",
 }
 
 def esc(x): return html.escape(str(x), quote=True)
@@ -1997,7 +2165,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v18). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v30";
+const CACHE = "ak-premium-v31";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

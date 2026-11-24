@@ -297,6 +297,9 @@ async function imageFileToCanvas(file, opts) {
   return { canvas: canvas, orientation: orientation, isTiff: false };
 }
 
+/* PNG to JPG: quality slider + a background colour for the see-through
+   parts (JPG has no transparency). EXIF orientation is applied on load. */
+
 /* ---------- Phase 1 handlers: Image ---------- */
 
 const imgConvertBtn = $("imgConvertBtn");

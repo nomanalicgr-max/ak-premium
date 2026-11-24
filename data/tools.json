@@ -2606,45 +2606,53 @@
         "compress png"
       ],
       "libs": [
-        "jszip"
+        "jszip",
+        "exifr"
       ],
       "engine": "tool-imgcompress",
       "maxFileMB": 50,
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "steps": [
-        "Drop one or more images on the file button, or choose them from your device.",
-        "Pick JPEG, PNG, WebP or AVIF as the output format and move the quality slider; each file shows its size before and after.",
-        "If you need a file under a specific size, enter the target size in KB and the tool lowers the quality step by step until it fits.",
-        "Press Compress and download the smaller image, or the ZIP file if there is more than one."
+        "Choose one or more images with the file button.",
+        "Tick Fix rotation from photo data if a phone photo comes out sideways.",
+        "Pick a format and set the quality with the slider.",
+        "Type a target size in KB if the file must fit under a limit.",
+        "Press Compress Images and save the result. Several images download as one ZIP file."
       ],
       "content": {
-        "use": "Image Compressor shrinks photos and images so they are small enough to upload, email or post. A shop owner compresses ten product photos at once and downloads one ZIP. A student shrinks a 4 MB phone photo to under 500 KB for a form. The quality slider shows the size before and after for each file, AVIF gives the smallest files where the browser supports it, and target-size mode tries to get under a size you choose.",
-        "tip": "AVIF usually gives the smallest file at good quality, but older browsers cannot make it; the tool tells you and falls back to WebP or JPEG. For photos, JPEG at 75 to 85 percent is the sweet spot. For a picture with text or a logo, keep PNG or WebP so the edges stay sharp.",
-        "limit": "AVIF output needs a browser that supports it; Safari versions before 16 do not, and the tool says so instead of failing quietly. Target size is best-effort: a photo that is already heavily compressed cannot always be made smaller, and the tool says so. JPEG output flattens transparency, so a PNG with a transparent background becomes a white background.",
-        "example": "Dropping five phone photos totalling 12 MB and choosing JPEG at 75 percent gives a ZIP of about 3 MB, with each file listed as before 2.4 MB, after 600 KB.",
+        "use": "Image Compressor makes JPG, PNG, WebP and AVIF pictures smaller without changing what they show. A shop owner shrinks product photos before uploading them, so the online shop loads faster. A student shrinks a scanned assignment to fit under a portal file size limit. The quality slider trades a little sharpness for a smaller file, and the target size mode lowers the quality step by step until the file fits. Phone photos are turned the right way up from their photo data, and re-saving a photo never keeps its location data. The pictures are compressed in your browser, so your images are never uploaded anywhere and you do not need an account.",
+        "tip": "Use a quality of 80 for photos on a website: the file shrinks a lot and the picture still looks sharp. Use WebP when the other side accepts it, because WebP is smaller than JPG at the same quality. AVIF is smaller still, but it only opens in Chrome and Edge. If a photo comes out sideways, tick Fix rotation from photo data and compress it again.",
+        "limit": "Images up to 50 MB each are accepted. AVIF only saves in Chrome and Edge; other browsers show an honest message and suggest WebP instead. Re-saving a photo strips its location data and other photo details, and a very small file may grow instead of shrinking. The picture keeps its original width and height; this tool does not resize it.",
+        "example": "Compressing a 2 MB phone photo at quality 80 gives a JPG of about 400 KB that looks the same on screen.",
         "faq": [
           [
-            "Can I compress several images at once?",
-            "Yes. Drop or choose as many images as you like, press Compress, and download one ZIP file with all the smaller images inside. Each file shows its own before and after size."
+            "Why did my file get bigger after compressing?",
+            "A very small or already compressed file has little left to throw away, so re-saving it can add a little size instead. This is normal. Try a lower quality, or a different format such as WebP, to get a smaller file."
           ],
           [
-            "What is AVIF and why is it smaller?",
-            "AVIF is a newer image format that keeps the same quality at a much smaller size than JPEG. It needs a modern browser to make; if yours cannot, the tool tells you and uses WebP or JPEG instead."
+            "Does compressing remove location data from photos?",
+            "Yes. Re-saving a photo strips the location data and other details stored inside the file. This happens whether the rotation box is ticked or not, so a compressed photo is safe to share."
           ],
           [
-            "What happens if the target size cannot be reached?",
-            "The tool lowers the quality step by step and stops at the lowest usable quality. If the file still cannot fit under your target, it says so and downloads the smallest version it could make, instead of pretending it fits."
+            "Why is AVIF not offered in my browser?",
+            "AVIF only saves in Chrome and Edge. Safari and Firefox cannot save AVIF from a canvas yet. The tool says so honestly and suggests WebP instead, which is almost as small and opens everywhere."
           ],
           [
-            "Does compression change the picture's dimensions?",
-            "No. Compression only makes the file smaller; the width and height in pixels stay the same. If you need a smaller picture, use Resize Image instead."
+            "How do I compress several images at once?",
+            "Choose more than one image with the file button. Each image gets its own download link and preview, and when there is more than one image they also download together as a single ZIP file."
           ]
         ]
       },
-      "meta_description": "Compress JPG, PNG, WebP and AVIF images in batches in your browser, with a quality slider and a target-size mode. Download one file or a ZIP."
+      "meta_description": "Compress JPG, PNG, WebP and AVIF images in batches in your browser, with a quality slider and a target-size mode. Download one file or a ZIP.",
+      "related": [
+        "image-resizer",
+        "image-converter",
+        "png-to-jpg",
+        "jpg-to-webp"
+      ]
     },
     {
       "slug": "image-resizer",
@@ -2866,14 +2874,15 @@
         "qr maker"
       ],
       "libs": [
-        "qrcode"
+        "qrcode",
+        "jsqr"
       ],
       "engine": "tool-qr",
       "maxFileMB": null,
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "related": [
         "password-generator",
         "word-counter",
@@ -2881,32 +2890,34 @@
         "uuid-generator"
       ],
       "steps": [
-        "Type the text or web address in the 'Text or URL' box.",
-        "Press Generate QR Code. The code appears on the page.",
-        "Press Download QR PNG to save the code as a picture."
+        "Pick what the QR code is for: a link, Wi-Fi, a contact, an email, a message, a phone number, a place or a payment.",
+        "Fill in the fields for that type.",
+        "Pick a size, an error-correction level and colours, and add a logo if you like.",
+        "Press Generate QR Code.",
+        "Download the code as PNG or SVG, and run Scan test to check it reads back."
       ],
       "meta_description": "Generate QR codes from text or a URL, free in your browser. Download your QR code as a PNG instantly.",
       "content": {
-        "use": "QR Code Generator turns any text or web address into a QR code picture, so people can scan it with a phone instead of typing. A shop owner prints a QR code for a payment link on the counter. A teacher prints a QR code for a class form on a handout. A student puts a QR code for a portfolio link on a resume. You type the text or link, press Generate QR Code, and the code appears on the page at 220 pixels wide. Press Download QR PNG to save it as a picture you can print or paste into a document.",
-        "tip": "Test the code with your own phone camera before you print it. Short links make simpler codes that scan more easily, so use a short URL when you can.",
-        "limit": "The code is a picture of the text you typed; it does not check that a link works or that a phone can open it. Very long text can fail to generate, and the tool will ask you to try shorter text. The code is fixed at 220 pixels wide.",
-        "example": "Typing https://example.com and pressing Generate QR Code shows a QR code that opens that page when scanned, ready to download as a PNG.",
+        "use": "QR Code Generator makes a QR code that a phone camera can read, for a link, a Wi-Fi network, a contact, an email, a text message, a phone number, a place or a payment. A shop owner prints a code that joins customers to the shop Wi-Fi. A freelancer puts a code on a business card that saves their contact details. You can pick the size, the error-correction level, the colours and a logo in the middle, and download it as a PNG or a crisp SVG for printing. The Scan test reads the code back to check it works. Everything runs in your browser, so nothing is uploaded and you do not need an account.",
+        "tip": "Use error-correction level H when you add a logo or print the code small, because the code can still be read when part of it is covered or damaged. Test the code with Scan test and with your own phone camera before you print it. Keep the light colour pale and the dark colour dark, or phones will struggle to read it.",
+        "limit": "The code holds the text you type, and very long text makes a denser code that is harder to scan, so keep it short. A logo in the middle can make the code unreadable, even at a high error-correction level, so always test it. Payment QR formats differ by app, so paste the payment link or detail exactly as the app gives it. The scan test reads the code in your browser, which is a check, not a guarantee that every phone will read it.",
+        "example": "A code for https://ak-premium.vercel.app at 320 px with error correction M scans in a second on most phones, and downloads as a PNG or an SVG.",
         "faq": [
           [
-            "What can I put in a QR code?",
-            "Any text or web address, such as a link, a phone number or a short message. Scanning it shows the text or opens the link on the phone."
+            "What error-correction level should I pick?",
+            "M is balanced and suits most codes. L holds the most data but breaks easily. Q and H survive damage and logos better, so pick H when you add a logo or print the code small."
           ],
           [
-            "Why did my QR code fail to generate?",
-            "The text is probably too long. QR codes hold only so much data, so shorten the text or use a shorter link and try again."
+            "Will my QR code work after I print it?",
+            "Yes, if it is printed big enough and sharp. Download the SVG for printing, because it stays crisp at any size. Test the printed code with your phone camera before you hand it out."
           ],
           [
-            "Can I change the size of the QR code?",
-            "No. The code is drawn at 220 pixels wide. Resize the downloaded PNG in an image editor if you need it bigger for printing."
+            "Why does Scan test say it cannot read the code?",
+            "The code may be too dense, too small, or the colours may be too close together. Try a bigger size, a higher error-correction level, darker dark colours and paler light colours, then test it again."
           ],
           [
-            "Does the QR code expire?",
-            "No. The code is just a picture of the text you typed. It keeps working as long as the link or text it holds still works."
+            "Does the QR code expire or track scans?",
+            "No. The code is just the text you typed, drawn as squares. It never expires, it is not stored anywhere, and no one can track who scans it, because nothing is uploaded."
           ]
         ]
       }
@@ -2933,37 +2944,45 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Generate strong random passwords instantly, free in your browser. Passwords are created locally, never sent anywhere.",
       "steps": [
-        "Set the Length with the slider. The default is 16, and the range is 8 to 64.",
-        "Tick the character sets you want: Uppercase, Lowercase, Numbers and Symbols.",
-        "Press Generate Password, then press Copy Password to copy it."
+        "Pick a mode: random password, passphrase, pronounceable or PIN.",
+        "For a random password, set the length and tick the character sets to use.",
+        "For a passphrase, pick how many words and a separator.",
+        "Press Generate Password.",
+        "Copy the password and save it in a password manager. Never share it."
       ],
       "content": {
-        "use": "Password Generator makes a strong random password in your browser, so you do not have to invent one yourself. A student makes a new password for a college portal. An office worker makes a different password for each work account. A shop owner makes a strong password for an online store. You choose the length and which character sets to include, and the tool builds the password with secure random numbers from your browser. Every selected set is guaranteed at least one character in the result, and a strength note tells you whether the password is weak, good or strong.",
-        "tip": "Use 16 or more characters with all four character sets for a strong password. Copy the password with the Copy Password button and save it in a password manager, because you will not remember a random password.",
-        "limit": "The length must be between 8 and 64 characters, and at least one character set must be ticked. The length must also be at least the number of sets you ticked. The tool makes the password; it does not save it anywhere, so copy it before you leave the page.",
-        "example": "Setting the length to 16 with all four character sets ticked and pressing Generate Password gives a random 16-character password with upper and lower case letters, numbers and symbols.",
+        "use": "Password Generator makes a strong password in your browser, so you never have to think one up yourself. A random password mixes letters, numbers and symbols at the length you choose. A passphrase joins plain words, such as correct horse battery staple, which is easy to remember and hard to guess. A pronounceable password is easy to say and type, and a PIN is digits only for a phone lock. Every password comes with a strength meter and a crack-time estimate that run on your device. Nothing is uploaded or stored, so your password never leaves your browser and you do not need an account.",
+        "tip": "Use a random password of 16 characters or more for important accounts, and a different password for every account. A passphrase of 6 words is a good choice for a master password you must remember. Save every password in a password manager, and never reuse a password across accounts, because one leak then opens them all.",
+        "limit": "The generator makes passwords, but it cannot store them, so copy each password into a password manager straight away. The strength meter is an estimate from a well-known library, not a guarantee, and a password is only as safe as the account it protects. A PIN is only for places that ask for digits, and it is far weaker than a password of the same length.",
+        "example": "A 16-character random password with all four character sets scores Very strong, and the meter says an attacker guessing 10,000 passwords a second would need centuries to crack it.",
         "faq": [
           [
-            "How is the password made?",
-            "With secure random numbers from your browser. No password is sent anywhere, and no two generated passwords are the same."
+            "How strong is a passphrase of 6 words?",
+            "About 62 bits of entropy, because each word adds about 10.3 bits. That is far stronger than a short password, and much easier to remember. Use 6 words for a master password you must type yourself."
           ],
           [
-            "What does the strength note mean?",
-            "Strong means 16 or more characters with all four character sets. Good means 12 or more with three sets. Anything shorter or simpler is called weak."
+            "Where do the passphrase words come from?",
+            "From a 1,296-word sample of the EFF large wordlist, which the EFF publishes under a Creative Commons Attribution licence. The words are picked at random in your browser, so no two passphrases are alike."
           ],
           [
-            "Can I make a password with only numbers?",
-            "Yes, if you tick Numbers only. But a numbers-only password is weak, so use letters and symbols too for accounts that matter."
+            "Is my password sent anywhere?",
+            "No. The password is made in your browser with your device random numbers, and it is never uploaded or stored. The strength meter also runs on your device. Close the page and the password is gone."
           ],
           [
-            "Where is my password saved?",
-            "Nowhere. The tool shows the password on the page and does not store it. Copy it with the Copy Password button and save it in a password manager."
+            "What does the crack-time estimate mean?",
+            "It is how long an attacker guessing 10,000 passwords a second would need to find your password. Centuries means the password is strong. Seconds or minutes means you should make a longer one."
           ]
         ]
-      }
+      },
+      "related": [
+        "qr-code-generator",
+        "base64",
+        "uuid-generator",
+        "word-counter"
+      ]
     },
     {
       "slug": "word-counter",
@@ -3760,43 +3779,53 @@
         "colour scheme",
         "palette generator"
       ],
-      "libs": [],
+      "libs": [
+        "colorthief"
+      ],
       "engine": "tool-palette",
       "maxFileMB": null,
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Create a colour palette from one base colour, free in your browser. Complementary, analogous and triadic palettes.",
       "steps": [
-        "Pick a base colour with the colour picker, or type a hex code.",
-        "Press Generate Palette.",
-        "Click any swatch to copy its hex code."
+        "Pick a base colour, or type one as hex, rgb(), hsl() or a colour name.",
+        "Choose a harmony, or leave All harmonies to see every set at once.",
+        "Press Generate Palette and click any swatch to copy its hex code.",
+        "Or choose a photo and read its main colours with the eyedropper.",
+        "Download the palette as CSS variables, a Tailwind config or a PNG image."
       ],
       "content": {
-        "use": "Color Palette builds a matching set of six colours from one base colour, so you can pick colours for a poster, a slide or a website without guessing. A student picks colours for a class presentation. A shop owner picks colours for a price poster. An office worker picks colours for a report cover. You choose a base colour, and the tool works out a complementary colour opposite it, two analogous colours beside it, and two triadic colours spaced around the colour wheel. Each colour is shown as a swatch with its hex code, and clicking a swatch copies the code.",
-        "tip": "Start with your brand or favourite colour as the base. Use the complementary colour for highlights and the analogous colours for backgrounds, so the design stays calm and matching.",
-        "limit": "The palette is worked out from colour-wheel maths only. It does not check contrast or readability, so test the colours together before you use them in a design. The base colour must be a valid 6-digit hex code.",
-        "example": "Picking a teal base colour such as #0F766E and pressing Generate Palette gives six swatches: the base, its complementary colour, two analogous colours and two triadic colours, each with a hex code to copy.",
+        "use": "Color Palette builds a set of colours that go well together from one base colour. A designer picks a brand colour and gets matching colours for buttons, headings and backgrounds. A shop owner picks the shop main colour and gets shades for the website. Each palette comes with a 50 to 900 shade scale, and a contrast check that says whether the colour reads well on white and on black. You can also read the main colours out of a photo, or export the palette as CSS variables, a Tailwind config or a PNG image. Everything runs in your browser, so nothing is uploaded and you do not need an account.",
+        "tip": "Start from the colour you already use, such as your logo or brand colour, and try the monochromatic harmony for a calm look or complementary for a bold one. Use the contrast check before you put text on a colour: AA is the minimum for normal text, and AAA is better. Copy a swatch by clicking it, and export the CSS variables to paste straight into your stylesheet.",
+        "limit": "The palette is built from colour maths, not from a designer, so the sets are a starting point and you should check them by eye. The eyedropper reads the main colours of a photo, but a busy photo may give colours that do not go together. Contrast is checked against plain white and black only, not against other colours in the palette.",
+        "example": "Starting from indigo #4f46e5 gives a complementary palette with a warm orange, a full 50 to 900 shade scale, and a contrast reading that says it passes AA on white.",
         "faq": [
           [
-            "What colours does the palette include?",
-            "Six swatches: the Base colour, its Complementary colour opposite it on the wheel, Analogous -30 and Analogous +30 beside it, and Triadic +120 and Triadic +240 spaced around the wheel."
+            "What do AA and AAA mean for contrast?",
+            "They are WCAG grades for how easy text is to read. AA needs a contrast of 4.5 to 1 for normal text and 3 to 1 for large text. AAA needs 7 to 1 for normal text and 4.5 to 1 for large text."
           ],
           [
-            "How do I copy a hex code?",
-            "Click the swatch. The hex code is copied to your clipboard, ready to paste into your design tool."
+            "Can I type a colour name instead of hex?",
+            "Yes. Type a name such as teal, navy or crimson, or a hex code such as #4f46e5, or rgb() or hsl() values. The tool reads all four, and the colour picker stays as a quick way to choose by eye."
           ],
           [
-            "Does the tool check if the colours are readable together?",
-            "No. The palette is worked out from colour-wheel positions only. Test light text on dark backgrounds, and dark text on light ones, before you publish."
+            "How does the photo eyedropper work?",
+            "Choose a photo and the tool reads its six main colours with a small library called color-thief. The colours appear as a palette you can click to copy. Your photo never leaves your browser."
           ],
           [
-            "What hex code should I type?",
-            "A 6-digit code starting with #, such as #0F766E. The colour picker fills this in for you if you pick a colour with it."
+            "What do I get when I export the palette?",
+            "CSS variables give you a :root block with every colour, the Tailwind config gives you a brand scale from 50 to 900, and the PNG image gives you a swatch sheet you can share or print."
           ]
         ]
-      }
+      },
+      "related": [
+        "image-cropper",
+        "image-resizer",
+        "svg-to-png",
+        "qr-code-generator"
+      ]
     },
     {
       "slug": "land-converter",
@@ -4980,7 +5009,9 @@
         "png se jpg",
         "screenshot to jpg"
       ],
-      "libs": [],
+      "libs": [
+        "exifr"
+      ],
       "engine": "tool-imgconvert",
       "maxFileMB": 50,
       "wave": 1,
@@ -4988,23 +5019,24 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Turn PNG images into JPG in your browser, free and private. Transparent parts become white.",
       "steps": [
         "Choose a PNG image with the file button.",
-        "Check the file name shown under the button is the right image.",
+        "Set the quality with the slider. Lower quality gives a smaller file.",
+        "Pick a background colour for the see-through parts. JPG has no transparency.",
         "Press Convert PNG to JPG.",
         "Save the downloaded JPG, which has the same width and height as the PNG."
       ],
       "content": {
-        "use": "PNG to JPG turns a PNG picture into a JPG file, keeping the same width and height. A student turns a PNG screenshot into a JPG to upload to a portal that only takes JPG files. A shop owner turns product PNGs into JPGs so the online shop loads faster. An office worker turns a PNG chart into a JPG to paste into a report. JPG files are much smaller than PNG files, so they are easier to send and upload. The picture is converted in your browser with the canvas, so your image is never uploaded anywhere and you do not need an account.",
-        "tip": "Use PNG to JPG when you need a smaller file for upload or sharing. If your PNG has transparency, remember the see-through parts become white in JPG, so convert to PNG instead if you need to keep transparency. For the sharpest result, start from a clear PNG; a blurry picture stays blurry after conversion.",
-        "limit": "Only PNG images are accepted, and each file must be under 50 MB. JPG has no transparency, so see-through parts of the PNG become white. The picture keeps its original width and height; this tool does not resize it.",
+        "use": "PNG to JPG turns a PNG picture into a JPG file, keeping the same width and height. A student turns a PNG screenshot into a JPG to upload to a portal that only takes JPG files. A shop owner turns product PNGs into JPGs so the shop loads faster. JPG files are smaller than PNG files, so they are easier to send and upload. The quality slider trades a little sharpness for a smaller file, and the background colour fills the see-through parts, because JPG has no transparency. Photos are turned the right way up from their photo data. The picture is converted in your browser, so your image is never uploaded anywhere and you do not need an account.",
+        "tip": "Use PNG to JPG when you need a smaller file for upload or sharing. If your PNG has transparency, remember the see-through parts become the background colour you pick, so convert to PNG instead if you need to keep transparency. For the sharpest result, start from a clear PNG; a blurry picture stays blurry after conversion.",
+        "limit": "Only PNG images are accepted, and each file must be under 50 MB. JPG has no transparency, so see-through parts of the PNG become the background colour you pick. The picture keeps its original width and height; this tool does not resize it.",
         "example": "Converting a 1200 by 800 PNG screenshot gives a 1200 by 800 JPG file that is much smaller and ready to upload.",
         "faq": [
           [
             "What happens to transparency in JPG?",
-            "It becomes white. JPG has no transparency, so the see-through parts of your PNG become white. Convert to PNG or WebP instead if you need to keep the transparency."
+            "It becomes the background colour you pick. JPG has no transparency, so the see-through parts of your PNG take that colour. White is the default. Convert to PNG or WebP instead if you need to keep the transparency."
           ],
           [
             "Does the JPG keep the same size?",
@@ -5045,7 +5077,11 @@
         "jpg se png",
         "jpeg to png"
       ],
-      "libs": [],
+      "libs": [
+        "pako",
+        "upng",
+        "exifr"
+      ],
       "engine": "tool-imgconvert",
       "maxFileMB": 50,
       "wave": 1,
@@ -5053,31 +5089,31 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Turn JPG images into PNG in your browser, free and private. The picture keeps its size.",
       "steps": [
         "Choose a JPG image with the file button.",
-        "Check the file name shown under the button is the right image.",
+        "Tick Save as PNG-8 if you want a much smaller file with 256 colours.",
         "Press Convert JPG to PNG.",
         "Save the downloaded PNG, which has the same width and height as the JPG."
       ],
       "content": {
-        "use": "JPG to PNG turns a JPG photo into a PNG file, keeping the same width and height. A designer turns a JPG photo into PNG to edit it in a program that needs PNG. A student turns a JPG screenshot into PNG so text in the picture stays sharp. An office worker turns a JPG chart into PNG to print it without JPG smudges. PNG is lossless, so the picture keeps all its detail, though the file is usually larger than the JPG. The conversion runs in your browser with the canvas, so your photo is never uploaded anywhere and you do not need an account.",
-        "tip": "Use JPG to PNG when you need a lossless copy or sharp text. The PNG file is usually larger than the JPG, so keep the JPG if you only need to share the photo. A JPG photo that is already blurry will not become sharp as a PNG.",
-        "limit": "Only JPG and JPEG images are accepted, and each file must be under 50 MB. PNG is lossless, so the file is usually larger than the JPG. The picture keeps its original width and height; this tool does not resize it.",
-        "example": "Converting a 1200 by 800 JPG photo gives a 1200 by 800 PNG file with the same picture and no JPG smudges.",
+        "use": "JPG to PNG turns a JPG picture into a PNG file, keeping the same width and height. A designer turns a JPG logo into a PNG so it can sit on a coloured background without a white box. PNG keeps every pixel exactly, so it is the right choice when you need a clean image for editing or printing. The PNG-8 option uses only 256 colours, which makes the file much smaller, though a photo with smooth colour blends may show banding. Photos are turned the right way up from their photo data. The picture is converted in your browser, so your image is never uploaded anywhere and you do not need an account.",
+        "tip": "Use PNG-8 for logos, icons and simple graphics, where 256 colours are plenty and the file shrinks a lot. For a normal photo, leave PNG-8 unticked, because a photo needs far more than 256 colours to look smooth. If the PNG is bigger than the JPG you started from, that is normal: PNG does not throw away detail the way JPG does.",
+        "limit": "Only JPG images are accepted, and each file must be under 50 MB. A PNG file is usually bigger than the JPG it came from, because PNG keeps every pixel. PNG-8 keeps only 256 colours, so smooth photos may show banding. The picture keeps its original width and height; this tool does not resize it.",
+        "example": "Converting a 1200 by 800 JPG photo gives a 1200 by 800 PNG file with the same picture, ready to edit or print.",
         "faq": [
           [
-            "Will the PNG be better quality than the JPG?",
-            "No. PNG is lossless, but it cannot add detail that the JPG already lost. The PNG keeps exactly the detail in your JPG, without adding new JPG smudges."
+            "Why is the PNG bigger than my JPG?",
+            "PNG keeps every pixel exactly, while JPG throws away detail to save space. A photo converted to PNG is usually bigger than the JPG it came from. Tick PNG-8 if you want a smaller file and 256 colours are enough."
           ],
           [
-            "Why is the PNG file larger?",
-            "PNG is lossless, so it stores every pixel exactly. JPG throws away detail to make a smaller file. The PNG keeps all the detail, so it is usually larger than the same picture as a JPG."
+            "What is PNG-8 and when should I use it?",
+            "PNG-8 uses a palette of 256 colours instead of millions, so the file is much smaller. It suits logos, icons and simple graphics. A normal photo needs more colours, so leave PNG-8 unticked for photos."
           ],
           [
-            "Can I convert several JPG images at once?",
-            "No. This page converts one JPG image at a time. Choose one image, press Convert JPG to PNG, save the result, then choose the next image."
+            "Does the PNG keep the same size?",
+            "Yes. The width and height stay exactly the same as the JPG. Only the file format changes. Use Image Resizer if you also need a different size."
           ],
           [
             "What name does the PNG download with?",
@@ -5109,7 +5145,9 @@
         "convert webp to jpg",
         "webp se jpg"
       ],
-      "libs": [],
+      "libs": [
+        "exifr"
+      ],
       "engine": "tool-imgconvert",
       "maxFileMB": 50,
       "wave": 1,
@@ -5117,35 +5155,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Turn WebP images into JPG in your browser, free and private. Works for photos saved as WebP.",
       "steps": [
         "Choose a WebP image with the file button.",
-        "Check the file name shown under the button is the right image.",
+        "Set the quality with the slider. Lower quality gives a smaller file.",
+        "Pick a background colour for the see-through parts. JPG has no transparency.",
         "Press Convert WebP to JPG.",
         "Save the downloaded JPG, which has the same width and height as the WebP."
       ],
       "content": {
-        "use": "WebP to JPG turns a WebP picture into a JPG file, keeping the same width and height. Many websites and phones save photos as WebP, but some portals, printers and old programs only accept JPG. A student turns a WebP screenshot into a JPG to upload to a portal that only takes JPG. A shop owner turns WebP product photos into JPGs for a marketplace that does not take WebP. The conversion runs in your browser with the canvas, so your image is never uploaded anywhere and you do not need an account.",
-        "tip": "Use WebP to JPG when a site or program refuses WebP files. If your WebP has transparency, the see-through parts become white in JPG, so convert to PNG instead to keep transparency. WebP files are usually small, so the JPG may be larger than the WebP.",
-        "limit": "Only WebP images are accepted, and each file must be under 50 MB. JPG has no transparency, so see-through parts of the WebP become white. The picture keeps its original width and height; this tool does not resize it.",
-        "example": "Converting a 1200 by 800 WebP screenshot gives a 1200 by 800 JPG file that uploads to a portal that only accepts JPG.",
+        "use": "WebP to JPG turns a WebP picture into a JPG file, keeping the same width and height. A shop owner turns WebP product photos into JPGs so they open in an older program that does not know WebP. JPG opens almost everywhere, so it is the safe choice when you are not sure what the other side can read. The quality slider trades a little sharpness for a smaller file, and the background colour fills the see-through parts, because JPG has no transparency. Photos are turned the right way up from their photo data. The picture is converted in your browser, so your image is never uploaded anywhere and you do not need an account.",
+        "tip": "Use WebP to JPG when the place you are sending the picture to does not accept WebP, such as an old portal, a printer or a program that only takes JPG. If the picture must stay small and the other side accepts WebP, keep it as WebP instead, because WebP is smaller than JPG at the same quality.",
+        "limit": "Only WebP images are accepted, and each file must be under 50 MB. JPG has no transparency, so see-through parts of the WebP become the background colour you pick. The picture keeps its original width and height; this tool does not resize it.",
+        "example": "Converting a 1200 by 800 WebP photo gives a 1200 by 800 JPG file that opens in almost any program.",
         "faq": [
           [
-            "Why do some sites not accept WebP?",
-            "WebP is newer than JPG, so some portals, printers and old programs only accept JPG or PNG. Converting to JPG gives you a file those sites accept, with the same picture."
+            "Why turn WebP into JPG at all?",
+            "Some portals, printers and older programs do not accept WebP yet. JPG opens almost everywhere, so converting is the safe choice when you are not sure what the other side can read."
           ],
           [
-            "Does the JPG lose quality?",
-            "A little. JPG throws away some detail to make a smaller file, while WebP keeps more. The picture looks the same at normal size, but fine detail can soften slightly."
+            "What colour fills the see-through parts?",
+            "The background colour you pick fills the see-through parts, because JPG has no transparency. White is the default. Pick a colour that matches the page or document where the JPG will sit."
+          ],
+          [
+            "Will the picture stay the same size?",
+            "Yes. The width and height stay exactly the same as the WebP. Only the file format changes. Use Image Resizer if you also need a different size."
           ],
           [
             "Can I convert several WebP images at once?",
             "No. This page converts one WebP image at a time. Choose one image, press Convert WebP to JPG, save the result, then choose the next image."
-          ],
-          [
-            "Where does the JPG download go?",
-            "To your browser download folder, as ak-premium-webp-to-jpg.jpg. It has the same width and height as your WebP, and your original WebP file is not changed."
           ]
         ]
       },
@@ -5173,7 +5212,11 @@
         "convert webp to png",
         "webp se png"
       ],
-      "libs": [],
+      "libs": [
+        "pako",
+        "upng",
+        "exifr"
+      ],
       "engine": "tool-imgconvert",
       "maxFileMB": 50,
       "wave": 1,
@@ -5181,35 +5224,35 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Turn WebP images into PNG in your browser, free and private. Transparency is kept.",
       "steps": [
         "Choose a WebP image with the file button.",
-        "Check the file name shown under the button is the right image.",
+        "Tick Save as PNG-8 if you want a much smaller file with 256 colours.",
         "Press Convert WebP to PNG.",
         "Save the downloaded PNG, which has the same width and height as the WebP."
       ],
       "content": {
-        "use": "WebP to PNG turns a WebP picture into a PNG file, keeping the same width and height and keeping transparency. A designer turns a WebP logo into PNG to edit it in a program that needs PNG. A student turns a WebP screenshot into PNG so text stays sharp. An office worker turns a WebP chart into PNG to print it without smudges. PNG is lossless, so the picture keeps all its detail, though the file is usually larger than the WebP. The conversion runs in your browser with the canvas, so your image is never uploaded anywhere and you do not need an account.",
-        "tip": "Use WebP to PNG when you need transparency or a lossless copy. The PNG is usually larger than the WebP, so keep the WebP if you only need to share the picture. A WebP that is already blurry will not become sharp as a PNG.",
-        "limit": "Only WebP images are accepted, and each file must be under 50 MB. PNG is lossless, so the file is usually larger than the WebP. The picture keeps its original width and height; this tool does not resize it.",
-        "example": "Converting a 1200 by 800 WebP screenshot gives a 1200 by 800 PNG file with sharp text and no smudges.",
+        "use": "WebP to PNG turns a WebP picture into a PNG file, keeping the same width and height. A designer turns a WebP logo into a PNG so it can sit on a coloured background without a white box. PNG keeps every pixel exactly, so it is the right choice when you need a clean image for editing or printing, and it keeps WebP transparency. The PNG-8 option uses only 256 colours, which makes the file much smaller, though a photo with smooth colour blends may show banding. Photos are turned the right way up from their photo data. The picture is converted in your browser, so your image is never uploaded anywhere and you do not need an account.",
+        "tip": "Use PNG-8 for logos, icons and simple graphics, where 256 colours are plenty and the file shrinks a lot. For a normal photo, leave PNG-8 unticked, because a photo needs far more than 256 colours to look smooth. If the PNG is bigger than the WebP you started from, that is normal: PNG does not throw away detail the way WebP does.",
+        "limit": "Only WebP images are accepted, and each file must be under 50 MB. A PNG file is usually bigger than the WebP it came from, because PNG keeps every pixel. PNG-8 keeps only 256 colours, so smooth photos may show banding. The picture keeps its original width and height; this tool does not resize it.",
+        "example": "Converting a 1200 by 800 WebP photo gives a 1200 by 800 PNG file with the same picture, ready to edit or print.",
         "faq": [
           [
-            "Does the PNG keep the see-through parts?",
-            "Yes. WebP to PNG keeps the see-through parts of your WebP picture. That is the main reason to choose PNG instead of JPG, because JPG has no transparency and turns see-through parts white."
+            "Why is the PNG bigger than my WebP?",
+            "PNG keeps every pixel exactly, while WebP throws away detail to save space. A photo converted to PNG is usually bigger than the WebP it came from. Tick PNG-8 if you want a smaller file and 256 colours are enough."
           ],
           [
-            "Why is the PNG file larger than the WebP?",
-            "PNG is lossless, so it stores every pixel exactly. WebP throws away some detail to make a smaller file. The PNG keeps all the detail, so it is usually larger than the same picture as a WebP."
+            "Does PNG keep the transparency from WebP?",
+            "Yes. WebP can hold transparency, and PNG keeps it. The see-through parts stay see-through in the PNG. Convert to JPG instead only if you want a solid background."
           ],
           [
-            "Which format should I pick, PNG or JPG?",
-            "Pick PNG if you need transparency or sharp text, and JPG if you need the smallest file for upload. WebP to PNG keeps transparency; WebP to JPG gives a smaller file but turns see-through parts white."
+            "When is PNG-8 the right choice?",
+            "PNG-8 suits logos, icons and simple graphics, where 256 colours are plenty and the file shrinks a lot. For a normal photo, leave PNG-8 unticked, because a photo needs far more colours to look smooth."
           ],
           [
-            "Where is the downloaded PNG saved?",
-            "In your browser download folder, as ak-premium-webp-to-png.png. It has the same width and height as your WebP, and your original WebP file is not changed."
+            "Does the PNG match the WebP size?",
+            "Yes. The width and height stay exactly the same as the WebP. Only the file format changes. Use Image Resizer if you also need a different size."
           ]
         ]
       },
@@ -5237,7 +5280,9 @@
         "convert jpg to webp",
         "jpg se webp"
       ],
-      "libs": [],
+      "libs": [
+        "exifr"
+      ],
       "engine": "tool-imgconvert",
       "maxFileMB": 50,
       "wave": 1,
@@ -5245,35 +5290,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Turn JPG images into WebP in your browser, free and private. Smaller files for the web.",
       "steps": [
         "Choose a JPG image with the file button.",
-        "Check the file name shown under the button is the right image.",
+        "Set the quality with the slider, or tick Best quality for the sharpest result.",
+        "Type a target size in KB if the file must fit under a limit.",
         "Press Convert JPG to WebP.",
         "Save the downloaded WebP, which has the same width and height as the JPG."
       ],
       "content": {
-        "use": "JPG to WebP turns a JPG photo into a WebP file, keeping the same width and height. WebP files are much smaller than JPG files, so they load faster on a website. A shop owner turns product JPGs into WebP so the online shop loads faster. A blogger turns JPG photos into WebP so readers on slow connections still see the pictures quickly. A student turns JPG screenshots into WebP to send them in a chat without using much data. The conversion runs in your browser with the canvas, so your photo is never uploaded anywhere and you do not need an account.",
-        "tip": "Use JPG to WebP when you need smaller files for a website or a chat. WebP is supported by all modern browsers, but some old programs do not open it, so keep the JPG too if you are not sure. A JPG that is already blurry will not become sharp as a WebP.",
-        "limit": "Only JPG and JPEG images are accepted, and each file must be under 50 MB. The picture keeps its original width and height; this tool does not resize it. Some old programs cannot open WebP, so keep your JPG if you need to use the picture there.",
-        "example": "Converting a 1200 by 800 JPG photo gives a 1200 by 800 WebP file that is much smaller and loads faster on a website.",
+        "use": "JPG to WebP turns a JPG picture into a WebP file, keeping the same width and height. A shop owner turns JPG product photos into WebP so the online shop loads faster, because WebP is smaller than JPG at the same quality. WebP opens in all modern browsers and most phones, so it is the right choice for the web. The quality slider trades a little sharpness for a smaller file, and the target size mode lowers the quality step by step until the file fits. Photos are turned the right way up from their photo data. The picture is converted in your browser, so your image is never uploaded anywhere and you do not need an account.",
+        "tip": "Use a quality of 80 to 90 for photos on a website: the file shrinks a lot and the picture still looks sharp. If a portal asks for a file under a certain size, type that size in the target size box and let the tool lower the quality until it fits. Best quality is for pictures you want to keep, not for pictures you will upload.",
+        "limit": "Only JPG images are accepted, and each file must be under 50 MB. Browsers cannot save true lossless WebP, so Best quality saves at the highest lossy quality instead. Very old programs may not open WebP; use JPG instead if the other side is old. The picture keeps its original width and height; this tool does not resize it.",
+        "example": "Converting a 1200 by 800 JPG photo at quality 85 gives a 1200 by 800 WebP file that is roughly a third smaller and looks the same.",
         "faq": [
           [
-            "How much smaller is the WebP file?",
-            "Usually much smaller than the JPG, often by a third or more, because WebP compresses photos better. The exact saving depends on the picture; a photo with lots of detail saves less than a plain screenshot."
+            "How much smaller is WebP than JPG?",
+            "At the same quality, WebP is usually 25 to 35 percent smaller than JPG. The exact saving depends on the picture: a photo with lots of detail saves less than a plain one."
           ],
           [
-            "Can old programs open WebP?",
-            "Most modern browsers open WebP, but some old photo programs and printers do not. If you are not sure, keep the JPG as well, or convert back with WebP to JPG."
+            "What does Best quality actually do?",
+            "It saves at quality 100, the highest setting a browser canvas offers. Browsers cannot save true lossless WebP, so Best quality is the sharpest lossy result, not a perfect copy of the JPG."
           ],
           [
-            "Does WebP lose quality?",
-            "A little. WebP at this quality setting keeps the picture looking the same at normal size, but fine detail can soften slightly, just like JPG. The width and height do not change."
+            "What if the file still does not fit my target size?",
+            "The tool lowers the quality step by step down to 10 percent. If the file still does not fit, make the picture smaller with Image Resizer first, then convert it again with the same target size."
           ],
           [
-            "What name does the WebP download with?",
-            "ak-premium-jpg-to-webp.webp. It has the same width and height as your JPG, and your original JPG file is not changed in any way."
+            "Does WebP open everywhere JPG does?",
+            "No. WebP opens in all modern browsers and most phones, but very old programs may not know it. If the other side is old or you are not sure, send a JPG instead."
           ]
         ]
       },
@@ -5512,36 +5558,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Make a passport photo at the right size for Pakistan, India, USA, UK, EU, UAE or Canada, in your browser.",
       "steps": [
-        "Choose a clear front-facing photo with the file button.",
-        "Pick your country in the Country box, such as Pakistan, USA or Canada.",
-        "Check the size shown under the Country box matches your form.",
-        "Press Make Passport Photo.",
-        "Save the downloaded JPG, which has the exact size for that country."
+        "Choose a clear photo of your face with the file button.",
+        "Pick your country, or NADRA CNIC / NICOP, or the Punjab driving licence.",
+        "Line your head up inside the guide oval on the preview.",
+        "Press Make Passport Photo and save the downloaded photo.",
+        "Press Download Print Sheet if you want several copies on one sheet to print."
       ],
       "content": {
-        "use": "Passport Photo Maker cuts your photo to the exact passport size for your country and saves it as a JPG. Pakistan, UK, EU and UAE use 35 by 45 mm, which is 413 by 531 pixels. India and the USA use 2 by 2 inches, which is 600 by 600 pixels. Canada uses 50 by 70 mm, which is 591 by 827 pixels. The tool crops the centre of your photo to the right shape and resizes it to the exact pixels, so you can print it or upload it to a form. The photo is made in your browser, so your picture is never uploaded anywhere and you do not need an account.",
-        "tip": "Use a clear photo taken against a plain light background, with your face in the centre and looking at the camera. The tool crops the centre, so keep your face in the middle of the photo. Check the size on your official form before you print or submit, because rules change.",
-        "limit": "JPG, PNG and WebP photos are accepted, and each file must be under 50 MB. The tool only sets the size and shape; it cannot fix a blurry photo, bad light or a wrong background, and it cannot guarantee a form will accept the photo. Sizes follow the common official rules, but always check your form, because some visas use a different size.",
-        "example": "Choosing a photo and picking Pakistan gives a 413 by 531 pixel JPG, which is 35 by 45 mm, ready to print or upload.",
+        "use": "Passport Photo Maker cuts your photo to the exact size a passport, ID card or driving licence asks for. It makes 35 by 45 mm photos for a Pakistan passport, a NADRA CNIC or a Punjab driving licence. The preview shows a guide oval for your head and a line for your shoulders, so you can see the framing before you save. NADRA photos are saved small enough for Pak-ID online, and a print sheet puts 4 or 6 photos on a 4 by 6 inch sheet, or 8 on a 6 by 8 inch sheet. The photo is cut in your browser, so your picture is never uploaded anywhere and you do not need an account.",
+        "tip": "Take the photo against a plain white wall in daylight, with your face straight at the camera and no glasses on. Keep your head inside the guide oval and your shoulders on the shoulder line. For NADRA, the photo must be taken within the last 6 months, and the file must be 60 KB or smaller, which the tool handles for you.",
+        "limit": "Photos up to 50 MB are accepted. The tool cuts the middle of your photo to the chosen size, so a photo taken too close or too far may cut off part of your head. It cannot fix a blurry or dark photo, and it cannot remove glasses or a background that is not white. A print sheet is only offered for 35 by 45 mm photos, because a bigger photo does not fit a 4 by 6 or 6 by 8 sheet at exact size.",
+        "example": "A 2000 by 1500 photo of your face becomes a 413 by 531 px passport photo, 35 by 45 mm at 300 DPI, ready to print or upload.",
         "faq": [
           [
-            "What size is a Pakistan passport photo?",
-            "35 by 45 mm, which is 413 by 531 pixels. Pick Pakistan in the Country box and the tool makes a JPG at exactly that size."
+            "What size is a NADRA CNIC photo?",
+            "35 by 45 mm, which is 413 by 531 pixels at 300 DPI. The head must be 31.5 to 36 mm high, the background must be plain white, and the photo must be taken within the last 6 months."
           ],
           [
-            "What size is a USA passport photo?",
-            "2 by 2 inches, which is 51 by 51 mm or 600 by 600 pixels. Pick USA in the Country box and the tool makes a square JPG at exactly that size."
+            "Why is my NADRA file saved at lower quality?",
+            "Pak-ID online takes a file of 60 KB or less. The tool lowers the quality step by step until the file fits, and tells you the final size. If it still does not fit at the lowest quality, take a plainer photo with less detail."
           ],
           [
-            "Why is my face cut off?",
-            "The tool crops the centre of your photo to the passport shape. Use a photo with your face in the centre and some space around it, so the crop keeps your whole face."
+            "Does the guide oval appear in the saved photo?",
+            "No. The guide oval and shoulder line are only on the preview, to help you frame your head. The downloaded photo is clean, with no lines or marks on it."
           ],
           [
-            "Will my form accept this photo?",
-            "The tool sets the exact size for the country you pick, but acceptance also depends on light, background, expression and the form rules. Check the official photo rules on your form before you submit."
+            "How many photos fit on one print sheet?",
+            "4 or 6 photos fit on a 4 by 6 inch sheet, and 8 fit on a 6 by 8 inch sheet. 8 photos do not fit on a 4 by 6 sheet at exact size, so the tool uses the bigger sheet for 8."
           ]
         ]
       },

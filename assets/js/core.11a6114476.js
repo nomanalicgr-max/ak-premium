@@ -229,7 +229,7 @@ const LIB_URLS = {
   "docx": "https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js",
   "pptxgenjs": "https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js",
   "tesseract": "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js",
-  "qrcode": "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
+  "qrcode": "https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js",
   "jspdf": "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
   "js-yaml": "https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js",
   "md5": "https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js",
@@ -259,7 +259,20 @@ const LIB_URLS = {
   "utif": "https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.js",
   "exifr": "https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js",
   "cropperjs": "https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js",
-  "pako": "https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"
+  "pako": "https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js",
+  /* UPNG.js 2.1.0 (MIT) encodes PNG-8 (256-colour palette) for JPG to PNG
+     and WebP to PNG; it needs pako, loaded before it. color-thief 2.4.0
+     (MIT) reads dominant colours from an uploaded image for Color Palette.
+     jsQR 1.4.0 (Apache-2.0) decodes a generated QR code back for the scan
+     test. zxcvbn 4.4.2 (MIT) scores password strength with a crack-time
+     estimate. qrcode-generator 1.4.4 (MIT) replaced qrcodejs 1.0.0 for QR
+     Code Generator: it exposes the QR modules, so size, error-correction
+     level, colours and SVG output are all under our control. All five
+     pinned files are byte-identical to their npm tarballs. */
+  "upng": "https://cdn.jsdelivr.net/npm/upng-js@2.1.0/UPNG.js",
+  "colorthief": "https://cdn.jsdelivr.net/npm/colorthief@2.4.0/dist/color-thief.umd.js",
+  "jsqr": "https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js",
+  "zxcvbn": "https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js"
 };
 /* SRI hashes for the pinned libraries above (Phase 4.2); same values as
    build.py. The docx URL was corrected at the same time: docx@8.5.0
@@ -274,7 +287,7 @@ const LIB_SRI = {
   "docx": "sha384-4xaIisuLEy2lo2HkB2C4rEf7v8jbTb2kuogX6TkuEt9feTWKBSFSOzsqNNbV+sKh",
   "pptxgenjs": "sha384-Cck14aA9cifjYolcnjebXRfWGkz5ltHMBiG4px/j8GS+xQcb7OhNQWZYyWjQ+UwQ",
   "tesseract": "sha384-GJqSu7vueQ9qN0E9yLPb3Wtpd7OrgK8KmYzC8T1IysG1bcvxvIO4qtYR/D3A991F",
-  "qrcode": "sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU",
+  "qrcode": "sha384-8FWZA6BGMXhsfO+BLtrJK0We6gg5o1JyO8xQm6peWDEUs17ACA5ziE/NIAkl9z2k",
   "jspdf": "sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk",
   "js-yaml": "sha384-+pxiN6T7yvpryuJmE1gM9PX7yQit15auDb+ZwwvJOd/4be2Cie5/IuVXgQb/S9du",
   "md5": "sha384-WAahC3S+69Co45zyyuhCjvdMwo7a42Yn0mM0IgZIUlYNebG24AVkPUltj3BQnM85",
@@ -292,12 +305,16 @@ const LIB_SRI = {
   "utif": "sha384-RyBmXHdfZ/Uon+ud+/AqSyWpUWnKYt2tkRG/P4gWoRUGDU+qIAV3tGBPNlYTBZEF",
   "exifr": "sha384-KrOocIA+lZcNUz2MDavnT/FuX+CbTREJihUi0bp8QUSwhE2AkGTNpv2b7yMbBkx5",
   "cropperjs": "sha384-jrOgQzBlDeUNdmQn3rUt/PZD+pdcRBdWd/HWRqRo+n2OR2QtGyjSaJC0GiCeH+ir",
-  "pako": "sha384-rNlaE5fs9dGIjmxWDALQh/RBAaGRYT5ChrzHo6tRfgrZ36iRFAiquP5g41Jsv+0j"
+  "pako": "sha384-rNlaE5fs9dGIjmxWDALQh/RBAaGRYT5ChrzHo6tRfgrZ36iRFAiquP5g41Jsv+0j",
+  "upng": "sha384-5zRBkJ6IHy9ezWHX/cBuwC0SnrK23Cfx6G6kIjwR5no9khaSv2md2ZHMXphI3UCB",
+  "colorthief": "sha384-ZkLR4RZXZ2JWJPEflQmS8WA93TozFLyxZwFHAny12Of6jNKBDWeEx8OF7r1Hg51r",
+  "jsqr": "sha384-b5Ya4Bq3qCyz39m2ISh+4DxjAIljdeFwK/BsXLuj9gugaNwAcj/ia15fxNZL9Nlx",
+  "zxcvbn": "sha384-LXuP8lknSGBOLVn4fwVOl+rWR+zOEtZx6CF9ZLaN6gKBgLByU4D79VWWjV4/gefq"
 };
 const _libLoaded = {};
 function loadLibrary(name, statusId) {
   if (name === "jspdf-autotable" && window.jspdf && window.jspdf.jsPDF && window.jspdf.jsPDF.API && window.jspdf.jsPDF.API.autoTable) return Promise.resolve(true);
-  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "qrcode" ? "QRCode" : name === "js-yaml" ? "jsyaml" : name === "jsonrepair" ? "JSONRepair" : name === "marked-footnote" ? "markedFootnote" : name === "chartjs" ? "Chart" : name === "papaparse" ? "Papa" : name === "formula-parser" ? "FormulaParser" : name === "utif" ? "UTIF" : name === "cropperjs" ? "Cropper" : name] || _libLoaded[name]) return Promise.resolve(true);
+  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "js-yaml" ? "jsyaml" : name === "jsonrepair" ? "JSONRepair" : name === "marked-footnote" ? "markedFootnote" : name === "chartjs" ? "Chart" : name === "papaparse" ? "Papa" : name === "formula-parser" ? "FormulaParser" : name === "utif" ? "UTIF" : name === "cropperjs" ? "Cropper" : name === "upng" ? "UPNG" : name === "colorthief" ? "ColorThief" : name === "jsqr" ? "jsQR" : name] || _libLoaded[name]) return Promise.resolve(true);
   return new Promise((resolve) => {
     const sc = document.createElement("script");
     sc.src = LIB_URLS[name]; sc.async = true;
@@ -2119,6 +2136,75 @@ async function convertImageFile(file, mime, quality) {
   return canvasToBlob(canvas, mime, quality);
 }
 
+/* Load an image file onto a canvas with its EXIF orientation applied, so a
+   phone photo never comes out sideways. JPEG, PNG and WebP orientation is
+   read with exifr when it loaded, otherwise with the built-in JPEG parser.
+   Returns {canvas, orientation}. Takes no element ids, so it splits to
+   core.js. */
+
+async function orientedCanvasFromFile(file) {
+  const img = await loadImageFromFile(file);
+  const orientation = await exifOrientationOfFile(file);
+  if (orientation > 1) {
+    return { canvas: orientedImageCanvas(img, orientation), orientation: orientation };
+  }
+  const canvas = document.createElement("canvas");
+  canvas.width = img.naturalWidth || img.width; canvas.height = img.naturalHeight || img.height;
+  canvas.getContext("2d").drawImage(img, 0, 0);
+  return { canvas: canvas, orientation: orientation };
+}
+
+/* Encode a canvas as a 256-colour PNG-8 with UPNG.js (MIT). UPNG needs
+   pako, which the tool page loads before UPNG (registry libs order).
+   Returns a PNG Blob. Shared by JPG to PNG and WebP to PNG, so it lives
+   in core.js (see split-app.py CORE_NAMES). */
+/* PNG-8 via UPNG.js. Returns { blob, png8 }: png8 is true when the file
+   really is a 256-colour palette PNG. Two UPNG.js limits are handled here:
+   (1) its median-cut quantizer collapses a perfectly symmetric colour set
+   (for example red + green + blue on white) to one grey, so images with
+   256 or fewer distinct colours use the exact-palette path instead;
+   (2) it sizes its output buffer from the raw image size, so a very small
+   image with a large palette comes back truncated (no IEND chunk) — that
+   case falls back to a full-colour PNG rather than saving a broken file. */
+
+async function encodePng8FromCanvas(canvas) {
+  if (!window.UPNG || !window.UPNG.encode) throw new Error("The PNG-8 library (UPNG.js) did not load. Check your connection and try again.");
+  if (!window.pako) throw new Error("The PNG-8 helper (pako) did not load. Check your connection and try again.");
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("This browser could not read the image. Please try again.");
+  const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  let unique = 0;
+  const seen = new Set();
+  const d32 = new Uint32Array(img.data.buffer, img.data.byteOffset, img.data.length / 4);
+  for (let i = 0; i < d32.length; i++) {
+    if (!seen.has(d32[i])) { seen.add(d32[i]); if (++unique > 256) break; }
+  }
+  const ab = window.UPNG.encode([img.data.buffer], canvas.width, canvas.height, unique <= 256 ? 0 : 256);
+  const bytes = new Uint8Array(ab);
+  const iend = [0, 0, 0, 0, 0x49, 0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82];
+  const complete = bytes.length >= 12 && iend.every((b, i) => bytes[bytes.length - 12 + i] === b);
+  if (!complete) {
+    const plain = await canvasToBlob(canvas, "image/png");
+    if (!plain) throw new Error("This browser could not encode PNG. Please try again.");
+    return { blob: plain, png8: false };
+  }
+  return { blob: new Blob([ab], { type: "image/png" }), png8: true };
+}
+
+/* Flatten a canvas onto one colour (JPEG has no transparency, so the
+   see-through parts need a background). Returns a new canvas. Shared by
+   the two JPG converters, so it lives in core.js (see split-app.py
+   CORE_NAMES). */
+
+function flattenCanvasOnColour(canvas, colour) {
+  const out = document.createElement("canvas");
+  out.width = canvas.width; out.height = canvas.height;
+  const ctx = out.getContext("2d");
+  ctx.fillStyle = colour || "#ffffff"; ctx.fillRect(0, 0, out.width, out.height);
+  ctx.drawImage(canvas, 0, 0);
+  return out;
+}
+
 /* Render an image at an arbitrary angle (degrees, clockwise) with flips
    onto a fresh canvas sized to the rotated bounding box. Takes no element
    ids; shared by Rotate and Flip Image and by Image to Text (deskew), so
@@ -3796,22 +3882,6 @@ function defaultRandInt(n) {
   throw new Error("Secure random numbers are not available in this browser.");
 }
 
-function generatePassword(length, opts, randInt) {
-  const rand = randInt || defaultRandInt;
-  const sets = [];
-  if (opts.upper) sets.push("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-  if (opts.lower) sets.push("abcdefghijklmnopqrstuvwxyz");
-  if (opts.numbers) sets.push("0123456789");
-  if (opts.symbols) sets.push("!@#$%^&*()-_=+[]{};:,.<>?");
-  if (!sets.length) return { error: "Please select at least one character set." };
-  if (length < sets.length) return { error: "Length must be at least the number of selected character sets." };
-  const all = sets.join("");
-  const chars = sets.map((s) => s[rand(s.length)]);
-  while (chars.length < length) chars.push(all[rand(all.length)]);
-  for (let i = chars.length - 1; i > 0; i--) { const j = rand(i + 1); const tmp = chars[i]; chars[i] = chars[j]; chars[j] = tmp; }
-  return { password: chars.join("") };
-}
-
 function passwordStrengthNote(length, setCount) {
   if (length >= 16 && setCount >= 4) return "Strong: long, with all character types.";
   if (length >= 12 && setCount >= 3) return "Good: use 16+ characters with all types for best strength.";
@@ -3871,7 +3941,11 @@ function canvasSupportsAvif() {
   } catch (e) { return false; }
 }
 
-let qrGenerated = false;
+/* Build the exact text a QR code must hold for its type. Wi-Fi follows
+   the WIFI:T:S:P:H format, vCard is a 3.0 card, email is a mailto link,
+   SMS is SMSTO:number:message, phone is tel:, location is geo:lat,lng,
+   and payment takes the link or detail exactly as typed, because payment
+   QR formats differ by app. Returns {payload} or {error}. */
 
 /* ---------- Phase 1 handlers: Developer ---------- */
 
@@ -4248,6 +4322,8 @@ document.querySelectorAll("[data-case-mode]").forEach((btn) => {
   });
 });
 
+let paletteLast = null;
+
 /* ---------- Phase 3.3: calculators recalculate live while typing ---------- */
 const LIVE_CALCS = [
   { btn: "ageBtn", inputs: ["ageDob"] },
@@ -4459,7 +4535,10 @@ LIVE_CALCS.forEach((c) => {
     // must not be gated on the optional file input either. CSV to Excel is
     // the same again: pasted CSV text needs no file, so its button must not
     // be gated either (the handler guards "no file and no pasted text").
-    if (btn.id === "createPdfBtn" || btn.id === "formsPdfBtn" || btn.id === "htmlToPdfBtn" || btn.id === "csvExcelBtn") return;
+    // QR Code Generator's logo input and Color Palette's image input are
+    // optional too: the code is made from typed text, and a palette from a
+    // picked colour, so their buttons must not wait for a file either.
+    if (btn.id === "createPdfBtn" || btn.id === "formsPdfBtn" || btn.id === "htmlToPdfBtn" || btn.id === "csvExcelBtn" || btn.id === "qrBtn" || btn.id === "paletteBtn") return;
     const update = () => { btn.disabled = !(fileInput.files && fileInput.files.length); };
     fileInput.addEventListener("change", update);
     update();

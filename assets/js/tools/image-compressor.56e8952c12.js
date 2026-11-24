@@ -17,6 +17,10 @@ if (imgCompressBtn) imgCompressBtn.addEventListener("click", async () => {
   let quality = (parseInt(($("imgCompressQuality") || {}).value || "80", 10) || 80) / 100;
   const format = $("imgCompressFormat") ? $("imgCompressFormat").value : "jpeg";
   const targetKB = $("imgCompressTargetKB") ? parseInt($("imgCompressTargetKB").value, 10) : 0;
+  /* EXIF rotation is on by default: a phone photo is turned the right way
+     up before compressing. Unticking the box compresses the photo as it
+     is. Re-saving never keeps location data, whichever way the box is set. */
+  const fixExif = !(($("imgCompressExif") || {}).checked === false);
   if (format === "avif" && !canvasSupportsAvif()) { setError("imgCompressStatus", "This browser cannot save AVIF images. Try WebP instead — it is almost as small and opens everywhere."); return; }
   const mime = format === "png" ? "image/png" : format === "webp" ? "image/webp" : format === "avif" ? "image/avif" : "image/jpeg";
   const ext = format === "png" ? "png" : format === "webp" ? "webp" : format === "avif" ? "avif" : "jpg";
@@ -24,12 +28,12 @@ if (imgCompressBtn) imgCompressBtn.addEventListener("click", async () => {
   setStatus("imgCompressStatus", "Compressing " + files.length + " image(s)...");
   try {
     const blobs = [];
+    let rotatedAny = false;
     for (let i = 0; i < files.length; i++) {
-      const img = await loadImageFromFile(files[i]);
-      const canvas = document.createElement("canvas"); canvas.width = img.naturalWidth || img.width; canvas.height = img.naturalHeight || img.height;
-      const ctx = canvas.getContext("2d");
-      if (format === "jpeg") { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
-      ctx.drawImage(img, 0, 0);
+      let canvas;
+      if (fixExif) { const src = await orientedCanvasFromFile(files[i]); canvas = src.canvas; if (src.orientation > 1) rotatedAny = true; }
+      else { const img = await loadImageFromFile(files[i]); canvas = document.createElement("canvas"); canvas.width = img.naturalWidth || img.width; canvas.height = img.naturalHeight || img.height; canvas.getContext("2d").drawImage(img, 0, 0); }
+      if (format === "jpeg") canvas = flattenCanvasOnColour(canvas, "#ffffff");
       let q = quality, blob = null;
       /* Target size: lower quality in steps until the file fits (JPEG/WebP only). */
       for (let attempt = 0; attempt < 8; attempt++) {
@@ -54,12 +58,15 @@ if (imgCompressBtn) imgCompressBtn.addEventListener("click", async () => {
         out.appendChild(wrap);
       }
     }
+    let doneMsg;
     if (window.JSZip && blobs.length > 1) {
       const zip = new window.JSZip(); blobs.forEach((b) => zip.file(b.name, b.blob));
       downloadBlob(await zip.generateAsync({ type: "blob" }), "ak-premium-compressed.zip");
-      setStatus("imgCompressStatus", "Done. " + blobs.length + " image(s) compressed and downloaded as a ZIP. " + imgCompressFormatNote(format));
+      doneMsg = "Done. " + blobs.length + " image(s) compressed and downloaded as a ZIP. " + imgCompressFormatNote(format);
     } else {
-      setStatus("imgCompressStatus", "Done. " + imgCompressFormatNote(format));
+      doneMsg = "Done. " + imgCompressFormatNote(format);
     }
+    if (rotatedAny) doneMsg += " Rotation was fixed from photo data on at least one photo.";
+    setStatus("imgCompressStatus", doneMsg);
   } catch (e) { setError("imgCompressStatus", "Could not compress these images. Please try JPG or PNG files."); }
 });
