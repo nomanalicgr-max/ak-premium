@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "29"  # v29 (2026-11-24): advanced upgrade plan batch 9 — Excel wizards: formula-generator (9 new intents + fast-formula-parser validation incl. LET), vba-macro-writer (10 new templates + syntax check), regex-creator (7 new PK/Urdu patterns + block builder + live tester + explain mode), dax-query (11 new measures + syntax check), excel-to-csv (sheet picker, delimiter, BOM, visible-rows-only), csv-to-excel (PapaParse auto-detect, type detection, bold header + freeze + AutoFilter). Also fixes the live initWizard bug: VBA/DAX Generate buttons threw TypeError because their explains are plain strings.
+ASSET_V = "30"  # v30 (2026-11-24): advanced upgrade plan batch 10 — Image core: image-converter (TIFF/BMP/GIF/ICO in via UTIF.js, AVIF/WebP out, batch + ZIP, EXIF orientation + strip via exifr), image-to-text (OCR pre-processing: EXIF fix, deskew, contrast, greyscale, upscale; word-level output with confidence + low-confidence highlight; auto-detect via Tesseract OSD), image-cropper (aspect lock, rotate while cropping via Cropper.js, straighten + flip), svg-to-png (1x/2x/3x, exact px, icon presets 16-512, transparent/coloured background, JPG/WebP/AVIF out), rotate-flip-image (arbitrary-angle rotate + straighten slider, EXIF auto-rotate, batch + ZIP), image-resizer (social/print presets, quality picker, FaceDetector face-aware crop Chrome-only).
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -110,6 +110,13 @@ SRI = {
  # files byte-identical to their npm tarballs (verified 2026-11-24).
  "papaparse": "sha384-Jd2/X5FXVKahwaY2nivvw4LfSTg9idSj8yNXWtT4qef0fHSYr6M7M8bJAfbFYoMc",
  "formula-parser": "sha384-qbZbp83iiop9pehvHB2JuzaTMs+iuThw09hlU9pq3v4stgbnqXl/FNaPGkG6+PWg",
+ # UTIF.js 3.1.0 (MIT) + exifr 7.1.3 full (MIT) + Cropper.js 1.6.2 (MIT) +
+ # pako 2.1.0 (MIT AND Zlib), all pinned files byte-identical to their npm
+ # tarballs (verified 2026-11-24). pako inflates deflate TIFF strips only.
+ "utif": "sha384-RyBmXHdfZ/Uon+ud+/AqSyWpUWnKYt2tkRG/P4gWoRUGDU+qIAV3tGBPNlYTBZEF",
+ "exifr": "sha384-KrOocIA+lZcNUz2MDavnT/FuX+CbTREJihUi0bp8QUSwhE2AkGTNpv2b7yMbBkx5",
+ "cropperjs": "sha384-jrOgQzBlDeUNdmQn3rUt/PZD+pdcRBdWd/HWRqRo+n2OR2QtGyjSaJC0GiCeH+ir",
+ "pako": "sha384-rNlaE5fs9dGIjmxWDALQh/RBAaGRYT5ChrzHo6tRfgrZ36iRFAiquP5g41Jsv+0j",
 }
 
 # Valid schema.org applicationCategory values (Phase 4.1). The old code put
@@ -644,11 +651,13 @@ ws_replace("tool-imgcompress", '''<div class="workspace-tool" id="tool-imgcompre
 ws_replace("tool-ocr", '''<div class="workspace-tool" id="tool-ocr">
 <h2>Image to Text</h2>
 <input id="ocrInput" type="file" accept="image/jpeg,image/png,image/webp">
-<label>Language <select id="ocrLang"><option value="eng">English</option><option value="urd">Urdu</option><option value="ara">Arabic</option><option value="hin">Hindi</option><option value="eng+urd">English + Urdu</option></select></label>
+<label>Language <select id="ocrLang"><option value="auto">Auto-detect</option><option value="eng">English</option><option value="urd">Urdu</option><option value="ara">Arabic</option><option value="hin">Hindi</option><option value="eng+urd">English + Urdu</option></select></label>
 <button id="ocrBtn" type="button" class="btn-primary">Read Text from Image</button>
 <div class="progress" aria-hidden="true"><span id="ocrProgress"></span></div>
 <pre id="ocrOutput" class="terminal">Recognized text will appear here.</pre>
+<div id="ocrWords" class="ocr-words" aria-live="polite"></div>
 <button id="ocrCopyBtn" type="button" class="btn-secondary">Copy Text</button>
+<button id="ocrCopyLinesBtn" type="button" class="btn-secondary">Copy with Line Breaks</button>
 <p class="status" id="ocrStatus" aria-live="polite"></p>
 </div>''')
 
@@ -964,6 +973,106 @@ ws_replace("tool-resizepage", '''<div class="workspace-tool" id="tool-resizepage
 <p class="status" id="resizePageStatus" aria-live="polite"></p>
 </div>''')
 
+# v30 workspace overrides (Advanced Batch 10, Image core, 2026-11-24)
+ws_replace("tool-imgresize", '''<div class="workspace-tool" id="tool-imgresize">
+<h2>Image Resizer</h2>
+<input id="imgResizeInput" type="file" accept="image/jpeg,image/png,image/webp">
+<label>Size preset <select id="imgResizePreset"><option value="">Custom size</option><option value="ig-post">Instagram post (1080 x 1080)</option><option value="ig-story">Instagram story (1080 x 1920)</option><option value="fb-post">Facebook post (1200 x 630)</option><option value="yt-thumb">YouTube thumbnail (1280 x 720)</option><option value="li-post">LinkedIn post (1200 x 627)</option><option value="wa-dp">WhatsApp display picture (640 x 640)</option><option value="passport">Passport photo (413 x 531)</option><option value="a4-300">A4 at 300 DPI (2480 x 3508)</option><option value="a4-150">A4 at 150 DPI (1240 x 1754)</option></select></label>
+<div class="field-row">
+<label>Width (px) <input id="imgResizeWidth" type="number" min="1" max="8000" placeholder="Width"></label>
+<label>Height (px) <input id="imgResizeHeight" type="number" min="1" max="8000" placeholder="Height"></label>
+</div>
+<label><input id="imgResizeKeep" type="checkbox" checked> Keep aspect ratio</label>
+<label><input id="imgResizeFaceCrop" type="checkbox"> Face-aware crop (keeps the face in the frame)</label>
+<p class="file-limit-note">Face-aware crop uses the FaceDetector built into Chrome. In other browsers, or when no face is found, the image is cropped from the centre instead.</p>
+<label>Output format
+<select id="imgResizeFormat"><option value="png">PNG</option><option value="jpg">JPG</option><option value="webp">WebP</option><option value="avif">AVIF</option></select>
+</label>
+<label>Quality <select id="imgResizeQuality"><option value="0.92" selected>92% (best)</option><option value="0.85">85%</option><option value="0.75">75% (smallest)</option></select></label>
+<button id="imgResizeBtn" type="button" class="btn-primary">Resize Image</button>
+<p class="status" id="imgResizeStatus"></p>
+</div>''')
+
+ws_replace("tool-imgconvert", '''<div class="workspace-tool" id="tool-imgconvert">
+<h2>Image Converter</h2>
+<input id="imgConvertInput" type="file" multiple accept="image/jpeg,image/png,image/webp,image/avif,image/bmp,image/gif,image/x-icon,.tif,.tiff">
+<label>Output format
+<select id="imgConvertFormat"><option value="jpg">JPG</option><option value="png">PNG</option><option value="webp">WebP</option><option value="avif">AVIF</option><option value="bmp">BMP</option><option value="gif">GIF (still image)</option><option value="ico">ICO (icon)</option></select>
+</label>
+<label>Quality <select id="imgConvertQuality"><option value="0.92" selected>92% (best)</option><option value="0.85">85%</option><option value="0.75">75% (smallest)</option></select></label>
+<label><input id="imgConvertBatch" type="checkbox"> Batch mode (convert several images at once, download as a ZIP)</label>
+<label><input id="imgConvertAutoRotate" type="checkbox" checked> Auto-rotate from EXIF (fix sideways phone photos)</label>
+<label><input id="imgConvertKeepExif" type="checkbox"> Keep EXIF photo details (JPG to JPG only)</label>
+<p class="file-limit-note">TIFF input is supported. GIF output is a still image, not an animation. ICO output holds 16, 32 and 48 pixel sizes.</p>
+<button id="imgConvertBtn" type="button" class="btn-primary">Convert Image</button>
+<p class="status" id="imgConvertStatus"></p>
+</div>''')
+
+ws_replace("tool-svgtopng", '''<div class="workspace-tool" id="tool-svgtopng">
+<h2>SVG to PNG</h2>
+<p>Turns an SVG file into a PNG, JPG, WebP or AVIF image at the size you choose.</p>
+<input id="svgToPngInput" type="file" accept=".svg,image/svg+xml">
+<label>Scale <select id="svgToPngScale"><option value="1" selected>1x (original size)</option><option value="2">2x</option><option value="3">3x</option></select></label>
+<label>Icon size <select id="svgToPngIcon"><option value="" selected>Not an icon</option><option value="16">16 px</option><option value="32">32 px</option><option value="48">48 px</option><option value="64">64 px</option><option value="128">128 px</option><option value="180">180 px</option><option value="192">192 px</option><option value="256">256 px</option><option value="512">512 px</option></select></label>
+<div class="field-row">
+<label>Width (px) <input id="svgToPngWidth" type="number" min="16" max="8000" placeholder="1024"></label>
+<label>Height (px) <input id="svgToPngHeight" type="number" min="16" max="8000" placeholder="auto"></label>
+</div>
+<p class="file-limit-note">Leave width and height empty to use the scale above. Type a width to keep the shape and work out the height for you.</p>
+<label>Background <select id="svgToPngBg"><option value="transparent" selected>Transparent</option><option value="white">White</option><option value="custom">Custom colour</option></select></label>
+<label>Background colour <input id="svgToPngBgColor" type="color" value="#ffffff"></label>
+<label>Output format <select id="svgToPngFormat"><option value="png" selected>PNG</option><option value="jpg">JPG</option><option value="webp">WebP</option><option value="avif">AVIF</option></select></label>
+<button id="svgToPngBtn" type="button" class="btn-primary">Convert SVG to PNG</button>
+<p class="status" id="svgToPngStatus"></p>
+</div>''')
+
+ws_replace("tool-imgcrop", '''<div class="workspace-tool" id="tool-imgcrop">
+<h2>Image Cropper</h2>
+<p>Drag the box on the preview to choose the part to keep, then download it.</p>
+<input id="imgCropInput" type="file" accept="image/jpeg,image/png,image/webp">
+<div class="cropper-wrap"><img id="imgCropImg" alt="Image to crop" style="display:none"></div>
+<div class="field-row">
+<label>X (px) <input id="imgCropX" type="number" min="0" value="0" placeholder="0"></label>
+<label>Y (px) <input id="imgCropY" type="number" min="0" value="0" placeholder="0"></label>
+<label>Width (px) <input id="imgCropW" type="number" min="1" value="0" placeholder="0"></label>
+<label>Height (px) <input id="imgCropH" type="number" min="1" value="0" placeholder="0"></label>
+</div>
+<label>Aspect ratio <select id="imgCropAspect"><option value="free" selected>Free</option><option value="1/1">Square (1 to 1)</option><option value="4/3">4 to 3</option><option value="3/2">3 to 2</option><option value="16/9">16 to 9</option><option value="9/16">9 to 16</option><option value="3/4">3 to 4</option><option value="2/3">2 to 3</option></select></label>
+<label><input id="imgCropLock" type="checkbox"> Lock ratio</label>
+<label>Straighten <input id="imgCropStraighten" type="range" min="-45" max="45" step="1" value="0"> <span>degrees, -45 to 45</span></label>
+<div class="field-row">
+<button id="imgCropRotateLeft" type="button" class="btn-secondary">Rotate Left</button>
+<button id="imgCropRotateRight" type="button" class="btn-secondary">Rotate Right</button>
+<button id="imgCropFlipH" type="button" class="btn-secondary">Flip Horizontal</button>
+<button id="imgCropFlipV" type="button" class="btn-secondary">Flip Vertical</button>
+</div>
+<label>Output format <select id="imgCropFormat"><option value="png" selected>PNG</option><option value="jpg">JPG</option><option value="webp">WebP</option></select></label>
+<label>Quality <select id="imgCropQuality"><option value="0.92" selected>92% (best)</option><option value="0.85">85%</option><option value="0.75">75% (smallest)</option></select></label>
+<button id="imgCropBtn" type="button" class="btn-primary">Crop Image</button>
+<button id="imgCropResetBtn" type="button" class="btn-secondary">Start Over</button>
+<p class="status" id="imgCropStatus"></p>
+</div>''')
+
+ws_replace("tool-imgrotateflip", '''<div class="workspace-tool" id="tool-imgrotateflip">
+<h2>Rotate and Flip Image</h2>
+<p>Turn a picture left or right, or mirror it, then download it.</p>
+<input id="rotateFlipInput" type="file" multiple accept="image/jpeg,image/png,image/webp">
+<canvas id="rotateFlipCanvas" style="max-width:100%"></canvas>
+<div class="field-row">
+<button id="rotateLeftBtn" type="button" class="btn-secondary">Rotate Left</button>
+<button id="rotateRightBtn" type="button" class="btn-secondary">Rotate Right</button>
+<button id="flipHBtn" type="button" class="btn-secondary">Flip Horizontal</button>
+<button id="flipVBtn" type="button" class="btn-secondary">Flip Vertical</button>
+</div>
+<label>Straighten <input id="rotateFlipStraighten" type="range" min="-45" max="45" step="1" value="0"> <span>degrees, -45 to 45</span></label>
+<p class="file-limit-note">Phone photos are turned the right way up from their EXIF details when they load. Choose several images to rotate them all the same way and download them as a ZIP.</p>
+<label>Output format
+<select id="rotateFlipFormat"><option value="png">PNG</option><option value="jpg">JPG</option><option value="webp">WebP</option></select>
+</label>
+<button id="rotateFlipBtn" type="button" class="btn-primary">Download Image</button>
+<p class="status" id="rotateFlipStatus"></p>
+</div>''')
+
 # Excel wizards: replace the shared tool-excel workspace with 5 standalone workspaces
 def wizard_ws(wid, title, task_id, task_options, btn_id, out_id, status_id, fields_hint, extra=""):
     opts = "".join('<option value="%s">%s</option>' % (v, n) for v, n in task_options)
@@ -1155,6 +1264,10 @@ LIB_SCRIPT = {
  "chartjs": '<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.js" integrity="' + SRI["chartjs"] + '" crossorigin="anonymous"></script>',
  "papaparse": '<script defer src="https://cdn.jsdelivr.net/npm/papaparse@5.5.3/papaparse.min.js" integrity="' + SRI["papaparse"] + '" crossorigin="anonymous"></script>',
  "formula-parser": '<script defer src="https://cdn.jsdelivr.net/npm/fast-formula-parser@1.0.19/build/parser.min.js" integrity="' + SRI["formula-parser"] + '" crossorigin="anonymous"></script>',
+ "utif": '<script defer src="https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.js" integrity="' + SRI["utif"] + '" crossorigin="anonymous"></script>',
+ "exifr": '<script defer src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js" integrity="' + SRI["exifr"] + '" crossorigin="anonymous"></script>',
+ "cropperjs": '<script defer src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js" integrity="' + SRI["cropperjs"] + '" crossorigin="anonymous"></script>',
+ "pako": '<script defer src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js" integrity="' + SRI["pako"] + '" crossorigin="anonymous"></script>',
  # diff-match-patch is VENDORED, not CDN: the published npm file ends with
  # five unguarded "module.exports = ..." lines, which throw "ReferenceError:
  # module is not defined" at the end of every browser page load (and trip
@@ -1183,6 +1296,10 @@ LIB_HOST = {
  "chartjs": "https://cdn.jsdelivr.net",
  "papaparse": "https://cdn.jsdelivr.net",
  "formula-parser": "https://cdn.jsdelivr.net",
+ "utif": "https://cdn.jsdelivr.net",
+ "exifr": "https://cdn.jsdelivr.net",
+ "cropperjs": "https://cdn.jsdelivr.net",
+ "pako": "https://cdn.jsdelivr.net",
 }
 
 def esc(x): return html.escape(str(x), quote=True)
@@ -1880,7 +1997,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v18). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v29";
+const CACHE = "ak-premium-v30";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

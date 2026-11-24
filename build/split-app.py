@@ -35,7 +35,8 @@ CORE_NAMES = {
     'pdfFindNamedDest', 'pdfTitleHex', 'parsePageList',
     'wizardField', 'quoteCriteria', 'initWizard',
     'loadTaxData', 'calcSalaryTax', 'numToWordsEn', 'numToWordsUr',
-    'readJpegOrientation',
+    'readJpegOrientation', 'exifOrientationOfFile', 'renderArbitraryRotatedImage',
+    'deskewBestAngle',
     'addWrappedTextPaginatedFrom', 'initCategoryFromHash', 'activateToolPageWorkspace',
     'median', 'drawRichTextRuns', 'imageBlobDimensions',
 }
@@ -44,7 +45,21 @@ CORE_NAMES = {
 # crop-pdf both call them. A helper in a tool bundle is still visible to
 # that tool's page, which loads core.js first and then its own bundle.)
 TOOL_NAMES = {
-    'deskewBestAngle': 'rotate-pdf',
+    'encodeBmpFromCanvas': 'image-converter',
+    'encodeGifFromCanvas': 'image-converter',
+    'packIcoFromPngs': 'image-converter',
+    'extractJpegApp1Exif': 'image-converter',
+    'spliceJpegExif': 'image-converter',
+    'tiffImageToCanvas': 'image-converter',
+    'imageFileToCanvas': 'image-converter',
+    'ocrDarkPixels': 'image-to-text',
+    'osdScriptToLang': 'image-to-text',
+    'ocrPreprocessCanvas': 'image-to-text',
+    'renderOcrWords': 'image-to-text',
+    'ocrWordsToText': 'image-to-text',
+    'imgResizeFaceCropRect': 'image-resizer',
+    'svgIntrinsicSize': 'svg-to-png',
+    'applyCropAspect': 'image-cropper',
     'vectorBlankText': 'redact-pdf',
     'wrapTextToWidth': 'edit-pdf',
     'cropBoxFromRatio': 'crop-pdf',
