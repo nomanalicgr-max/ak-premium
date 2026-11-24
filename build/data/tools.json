@@ -1766,7 +1766,7 @@
         "en": "PDF to Word"
       },
       "short": {
-        "en": "Extracted text into a .docx file."
+        "en": "Headings, tables and images into a .docx file."
       },
       "category": "convert",
       "group": "convert",
@@ -1785,13 +1785,7 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
-      "badges": [
-        {
-          "label": "Text only",
-          "class": "badge--warn"
-        }
-      ],
+      "lastReviewed": "2026-11-24",
       "format": "PDF→DOCX",
       "related": [
         "pdf-to-excel",
@@ -1801,34 +1795,35 @@
       ],
       "steps": [
         "Choose a PDF file with the file button.",
-        "If the PDF is a scan, tick the OCR option first, otherwise the tool finds no text.",
-        "Press Convert and download the .docx file."
+        "If the PDF is a scan with no text, tick the OCR option before converting.",
+        "Press Convert PDF to Word and save the downloaded .docx file.",
+        "Headings in the Word file use the Heading 1, 2 and 3 styles, so the document outline in Word lists the structure."
       ],
       "content": {
-        "use": "Converting a PDF to Word is for editing a document that only exists as a PDF: a letter, a report or a form that needs changes. The Word file can then be edited, spell-checked and printed like any other document.",
-        "tip": "If the PDF is a scan, tick the OCR option before converting. Otherwise the tool will find no text to convert and will tell you so.",
-        "limit": "Paragraphs are rebuilt from the text positions in the PDF, so headings, plain paragraphs and simple tables usually survive. Original fonts, exact spacing, images, charts and complex tables are not preserved. This is a text reconstruction, not a pixel-perfect copy.",
-        "example": "A 2-page letter becomes a Word document with the same paragraphs in the same order, ready to edit.",
+        "use": "PDF to Word is for editing a document that only exists as a PDF: a letter, a report or a form that needs changes. The tool reads the font sizes in the PDF, so large lines become real Word heading styles, bold and italic text is kept, and tables are rebuilt as real Word tables with a bold header row. Pictures from the PDF are placed in the document in the right order. The Word file can then be edited, spell-checked and printed like any other document, and it opens in Word, Google Docs and other word processors. The conversion runs in your browser, so the file is never uploaded.",
+        "tip": "Check the Word file after the conversion, because a table with no clear grid or a heading that is the same size as the body text will come out as plain paragraphs. For a scanned PDF, tick the OCR option first, otherwise the tool finds no text.",
+        "limit": "The conversion rebuilds the document from the text in the PDF, so it is not a pixel-perfect copy. Original fonts, exact spacing, multi-column layouts, charts and complex tables are not preserved. A scanned PDF with no text layer needs the OCR option, and handwriting or blurry scans give poor results.",
+        "example": "A 2-page letter with a bold heading, a price table and a logo becomes a Word file with a real heading, a real table and the logo in place, ready to edit.",
         "faq": [
           [
-            "Will my Word file look exactly like the PDF?",
-            "No. It keeps the text and paragraph order, and short first lines are treated as headings, but fonts, spacing and images are not carried over. For exact appearance, keep the PDF."
+            "Does the Word file keep my headings as real headings?",
+            "Yes. Lines that are clearly larger than the body text become Word heading styles, so you can use Word's navigation pane and build a table of contents from them. Lines the same size as the body text stay as normal paragraphs."
           ],
           [
-            "What if my PDF is a scanned image?",
-            "Tick the OCR option. The tool reads the scanned pages with text recognition first, then builds the Word file from that text. Handwriting and blurry scans give poor results."
+            "Are tables in the PDF rebuilt as Word tables?",
+            "Yes, when the table has a clear grid of rows and columns. The first row becomes a bold header row, and merged cells are kept as merged cells. Tables without clear lines or spacing may come out as plain paragraphs instead."
           ],
           [
-            "Does the Word file keep page breaks from the PDF?",
-            "No. The text flows as one continuous document. The paragraphs stay in order, but the page breaks from the PDF are not carried over."
+            "Do pictures from the PDF appear in the Word file?",
+            "Yes. Pictures are taken from the PDF in their original form and placed in the document in the same order as the pages and paragraphs around them, scaled to fit the page width."
           ],
           [
-            "What Word file do I get?",
-            "A Word document named ak-premium-pdf-to-word.docx. It opens in Microsoft Word, Google Docs and other word processors, and you can edit it like any normal Word file."
+            "What if my PDF has no text at all?",
+            "Tick the OCR option before converting. The tool reads the scanned pages with text recognition first, then builds the Word file from that text. Handwriting and blurry scans give poor results."
           ]
         ]
       },
-      "meta_description": "Turn extracted PDF text into a .docx document, free in your browser. Text-based conversion, layout is not preserved."
+      "meta_description": "Turn a PDF into an editable Word document with real headings, tables and images, free in your browser. No upload."
     },
     {
       "slug": "pdf-to-ppt",
@@ -1837,7 +1832,7 @@
         "en": "PDF to PPT"
       },
       "short": {
-        "en": "Extracted text into a .pptx file."
+        "en": "Each PDF page as a widescreen slide with tables and images."
       },
       "category": "convert",
       "group": "convert",
@@ -1856,44 +1851,45 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
-      "badges": [
-        {
-          "label": "Text only",
-          "class": "badge--warn"
-        }
-      ],
+      "lastReviewed": "2026-11-24",
       "format": "PDF→PPTX",
-      "meta_description": "Turn extracted PDF text into a .pptx presentation, free in your browser. Text-based conversion, layout is not preserved.",
+      "meta_description": "Turn each PDF page into a PowerPoint slide with titles, bullets, tables and images, free in your browser. No upload.",
       "steps": [
         "Choose a PDF file with the file button.",
         "Press Convert PDF to PPT.",
-        "Save the downloaded .pptx file, which has one slide per PDF page."
+        "Save the downloaded .pptx file, which has one widescreen slide per PDF page.",
+        "Text that does not fit on a slide is kept in the speaker notes, and tables and pictures from the PDF are placed on the slide."
       ],
       "content": {
-        "use": "PDF to PPT turns each page of a PDF into a slide in a PowerPoint file, so you can present or edit the words from a document. A teacher turns a handout into slides for a lesson. A student turns a report into slides for a class presentation. An office worker turns a briefing into slides for a meeting. The first line of each page becomes the slide title in large bold text, and the rest of the page becomes the slide body. The file downloads as a .pptx that opens in PowerPoint and other slide apps. The layout, images and charts from the PDF are not kept, only the words.",
-        "tip": "Check the slides after the conversion and tidy the titles, because the first line of a page is not always a real heading. Add your own pictures and charts in PowerPoint afterwards, since the tool only brings the words across.",
-        "limit": "The conversion is text-only. Layout, fonts, tables, images, charts and animations are not preserved. Each PDF page becomes one slide, with the first line as the title and the rest as body text. A scanned PDF with no text layer cannot be converted and the tool says so.",
-        "example": "Converting a 5-page briefing downloads ak-premium-pdf-to-ppt.pptx with 5 slides, one per page, each with a title and body text.",
+        "use": "PDF to PPT turns each page of a PDF into a slide in a PowerPoint file, so you can present or edit the words from a document. A student turns a report into slides for a class presentation. An office worker turns a briefing into slides for a meeting. The largest line on each page becomes the slide title in large bold text, indented lines become real bullet points, and tables and pictures from the page are placed on the slide. Text that does not fit the slide is moved to the speaker notes, so nothing is lost. The file downloads as a .pptx that opens in PowerPoint and other slide apps.",
+        "tip": "Check the slides after the conversion and tidy the titles, because the largest line on a page is not always a real heading. Text that did not fit is in the speaker notes, so open the notes pane to find it.",
+        "limit": "The conversion is a text reconstruction, not a pixel-perfect copy. Fonts, colours, exact positions and animations are not preserved. Each PDF page becomes one widescreen slide, and a scanned PDF with no text layer cannot be converted, so run OCR PDF first to add text.",
+        "example": "Converting a 5-page briefing downloads ak-premium-pdf-to-ppt.pptx with 5 widescreen slides, each with a title, bullet points and the tables and pictures from its page.",
         "faq": [
           [
             "How does the tool choose the slide title?",
-            "It takes the first line of text on each page and makes it the slide title in large bold text. The rest of the page becomes the body text."
+            "It takes the largest line of text on each page and makes it the slide title in large bold text. If no line is clearly larger than the rest, the first line becomes the title."
           ],
           [
-            "Will my images and charts come across?",
-            "No. The conversion is text-only. Images, charts, tables and animations are left behind. Add them to the slides in PowerPoint afterwards."
+            "What happens to text that does not fit on a slide?",
+            "It is moved to the speaker notes for that slide, so nothing is lost. Open the notes pane in PowerPoint or Google Slides to read it and decide what to keep."
+          ],
+          [
+            "Do tables and pictures come across?",
+            "Yes. Tables with a clear grid become real PowerPoint tables, and pictures from the page are placed on the slide. Pictures that would cover the text are moved to the bottom of the slide instead."
           ],
           [
             "What if my PDF is a scan?",
             "The tool will say no readable text was found. Run OCR PDF first to make a text PDF, then convert that file to PPT."
-          ],
-          [
-            "Can I open the file in Google Slides?",
-            "Yes. The .pptx file opens in PowerPoint, Google Slides, LibreOffice Impress and other apps that read PowerPoint files."
           ]
         ]
-      }
+      },
+      "related": [
+        "pdf-to-word",
+        "pdf-to-excel",
+        "ppt-to-pdf",
+        "pdf-to-text"
+      ]
     },
     {
       "slug": "txt-html-to-pdf",
@@ -1902,7 +1898,7 @@
         "en": "TXT / HTML to PDF"
       },
       "short": {
-        "en": "Paste text, download a PDF."
+        "en": "Paste text or Markdown, download a styled PDF."
       },
       "category": "convert",
       "group": "convert",
@@ -1912,45 +1908,54 @@
         "html to pdf"
       ],
       "libs": [
-        "jspdf"
+        "jspdf",
+        "marked",
+        "jspdf-autotable"
       ],
       "engine": "tool-txthtml",
       "maxFileMB": null,
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "format": "TXT→PDF",
-      "meta_description": "Paste text or HTML and download it as a PDF, free in your browser. No upload, no sign-up.",
+      "meta_description": "Paste text or Markdown and download a PDF with headings, tables, headers and page numbers, free in your browser. No upload.",
       "steps": [
-        "Paste your text or simple HTML into the box.",
-        "Press Convert Text to PDF.",
-        "Save the downloaded PDF."
+        "Paste your text into the box and choose Plain text or Markdown.",
+        "Type a header or footer if you want one, and keep page numbers ticked to number the pages.",
+        "Press Convert Text to PDF and save the downloaded PDF.",
+        "For Markdown, use # for a main heading, - for list items, and | pipes | for a table, then convert."
       ],
       "content": {
-        "use": "TXT / HTML to PDF turns pasted text into a PDF file, which is handy when you have words in a message, a note or a web page and need them as a document. A student pastes an essay draft and downloads it as a PDF to submit. An office worker pastes a notice from an email and saves it as a PDF. A shop owner pastes a price list from a chat and sends it as a PDF. Any HTML tags in the pasted text are stripped out, so the result is plain text in a simple 12-point font, flowing across pages as needed. Nothing is uploaded; the PDF is built in your browser.",
-        "tip": "Paste the text, then check it in the box before you convert, because the tool strips HTML tags and extra spaces. For a clean result, paste plain text rather than copied web page formatting.",
-        "limit": "HTML tags are stripped and formatting is not kept. The PDF is plain 12-point text only, with no bold, headings, images or tables. Very long text flows across pages automatically, but you cannot choose the font, size or page layout.",
-        "example": "Pasting a 300-word notice and pressing Convert Text to PDF downloads ak-premium-text-to-pdf.pdf with the notice as plain text on one page.",
+        "use": "TXT / HTML to PDF turns pasted text into a PDF file, which is handy when you have words in a message, a note or a web page and need them as a document. A student pastes an essay draft and downloads it as a PDF to submit. An office worker pastes a notice from an email and saves it as a PDF. A shop owner pastes a price list from a chat and sends it as a PDF. Choose Markdown to keep headings, bold and italic text, lists and tables, or plain text for simple words. You can add a header, a footer and page numbers to every page. Nothing is uploaded; the PDF is built in your browser.",
+        "tip": "Write Markdown with # for a heading, - for a bullet list and | for a table, then check the PDF, because very long tables and code blocks flow across pages.",
+        "limit": "Markdown tables and code blocks are kept, but HTML tags in the pasted text are not rendered, and you cannot choose the font or page size. Very long text flows across pages automatically, with the header and footer on every page.",
+        "example": "Pasting # Price List with a small Markdown table and pressing Convert Text to PDF downloads ak-premium-text-to-pdf.pdf with a heading, the table and page numbers.",
         "faq": [
           [
+            "What Markdown can I use?",
+            "Headings with #, bold with **, italic with *, bullet lists with -, numbered lists, tables with |, code blocks with ``` and quotes with >. Anything else is treated as plain text."
+          ],
+          [
+            "Can I add a header and page numbers?",
+            "Yes. Type the header and footer text in the boxes and they appear on every page. Keep page numbers ticked to add Page 1 of 3 at the bottom of each page."
+          ],
+          [
             "Does the tool keep my HTML formatting?",
-            "No. All HTML tags are stripped out and the text becomes plain 12-point text. Use it for simple text, not for formatted web pages."
-          ],
-          [
-            "What happens to very long text?",
-            "It flows across pages automatically. The tool adds pages as needed, so a long paste becomes a multi-page PDF."
-          ],
-          [
-            "Can I paste from a Word document?",
-            "Yes, but only the words come through. Bold, headings, tables and images from Word are dropped, and the text becomes plain 12-point text."
+            "No. HTML tags in the pasted text are not rendered. Use Markdown mode for headings, bold, lists and tables, or plain text mode for simple words."
           ],
           [
             "Is my pasted text uploaded anywhere?",
-            "No. The PDF is built in your browser with jsPDF. The text never leaves your device."
+            "No. The PDF is built in your browser with jsPDF, so nothing is sent to a server. The text never leaves your device, and closing the tab removes it from the page."
           ]
         ]
-      }
+      },
+      "related": [
+        "create-pdf",
+        "word-to-pdf",
+        "html-to-pdf",
+        "pdf-to-text"
+      ]
     },
     {
       "slug": "excel-to-pdf",
@@ -1959,7 +1964,7 @@
         "en": "Excel to PDF"
       },
       "short": {
-        "en": "First sheet rendered as PDF."
+        "en": "Every sheet as a styled PDF with tables and charts."
       },
       "category": "convert",
       "group": "convert",
@@ -1970,50 +1975,52 @@
       ],
       "libs": [
         "jspdf",
-        "xlsx"
+        "xlsx",
+        "chartjs"
       ],
       "engine": "tool-excelpdf",
       "maxFileMB": 50,
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
-      "badges": [
-        {
-          "label": "Basic",
-          "class": "badge--warn"
-        }
-      ],
+      "lastReviewed": "2026-11-24",
       "format": "XLSX→PDF",
       "content": {
-        "use": "Converting Excel to PDF is for sharing a sheet that must not be changed: a price list, a report, or a table for a client. The PDF shows the numbers as they are, without formulas.",
-        "tip": "Check that the first sheet is the one you want, because only the first sheet is converted. Keep the sheet simple for the best result.",
-        "limit": "This is a basic text conversion. Only the first sheet is rendered, as plain text rows. Cell colours, formulas, charts and multiple sheets are not preserved.",
-        "example": "A price list sheet becomes a PDF with each row on its own line.",
+        "use": "Excel to PDF is for sharing a sheet that must not be changed: a price list, a report or a table for a client. Every sheet in the file becomes pages in the PDF, each with its own sheet-name heading, so nothing is left behind. The cells are drawn as a real table with column widths, cell colours, bold text and number formats kept, and the table header repeats on every page. You can add a bar or line chart drawn from the first numeric column, and choose portrait or landscape with fit-to-page scaling for wide tables. The PDF shows the values, not the formulas, and it opens on any phone or computer.",
+        "tip": "Use landscape and fit to the page width for wide tables, and keep the first numeric column as the one you want charted. Check that the chart matches the numbers before you share the PDF.",
+        "limit": "The PDF shows cell values, not formulas, and charts are drawn from the first numeric column only. Very wide tables are scaled down when fit to the page is on, which can make small text hard to read. Exact Excel fonts and print settings are not preserved.",
+        "example": "A workbook with a Sales sheet and a Stock sheet becomes a PDF with a heading and a table for each sheet, plus a bar chart of the sales figures.",
         "faq": [
           [
-            "Why is only the first sheet converted?",
-            "This basic conversion reads the first sheet only. If you need another sheet, move it to the front in Excel and convert again."
+            "Are all sheets in my workbook converted?",
+            "Yes. Every sheet with data becomes pages in the PDF, each starting with its own sheet-name heading. Empty sheets are skipped."
+          ],
+          [
+            "Does the PDF keep my cell colours and bold text?",
+            "Yes. Cell colours, bold text and number formats are carried into the PDF table, and the header row repeats at the top of every page the table spans."
+          ],
+          [
+            "How does the chart work?",
+            "Pick a bar or line chart and the tool draws it from the first column where most of the values are numbers, using the first column as the labels. If no numeric column is found, no chart is added and the tool says so."
           ],
           [
             "Are the formulas in my Excel file kept?",
-            "No. The PDF shows the values, not the formulas. The numbers are what you see in the sheet."
-          ],
-          [
-            "What Excel files can I upload?",
-            "Both .xlsx and .xls files. Choose the file, press Convert Excel to PDF, and the tool reads the first sheet."
-          ],
-          [
-            "Does the PDF keep the column layout?",
-            "No. Each row becomes a line of plain text, so columns are not lined up like a spreadsheet. Keep the sheet simple for the cleanest result."
+            "No. The PDF shows the values, not the formulas, so the numbers are what you see in the sheet. If you change a value in Excel, convert the file again to update the PDF."
           ]
         ]
       },
-      "meta_description": "Render the first sheet of an Excel file as a PDF, free in your browser. Your spreadsheet never leaves your device.",
+      "meta_description": "Turn every Excel sheet into a styled PDF with tables, colours and charts, free in your browser. No upload.",
       "steps": [
-        "Choose an Excel file (.xlsx or .xls) with the file button.",
-        "Press Convert Excel to PDF.",
-        "Save the downloaded PDF, which holds the first sheet as plain text rows."
+        "Choose an Excel (.xlsx or .xls) file with the file button.",
+        "Pick portrait or landscape, and tick Fit to the page width if the table is wide.",
+        "Choose a bar or line chart if you want one from the first numeric column, then press Convert Excel to PDF.",
+        "Pick Landscape in the Orientation list for wide tables, and keep Fit wide tables to the page width ticked so nothing is cut off."
+      ],
+      "related": [
+        "pdf-to-excel",
+        "csv-to-excel",
+        "excel-to-csv",
+        "invoice-generator"
       ]
     },
     {
@@ -2023,7 +2030,7 @@
         "en": "Word to PDF"
       },
       "short": {
-        "en": "Word text rendered as PDF."
+        "en": "Word document with headings, tables and images as PDF."
       },
       "category": "convert",
       "group": "convert",
@@ -2034,38 +2041,33 @@
       ],
       "libs": [
         "jspdf",
-        "mammoth"
+        "mammoth",
+        "jspdf-autotable"
       ],
       "engine": "tool-wordpdf",
       "maxFileMB": 50,
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
-      "badges": [
-        {
-          "label": "Basic",
-          "class": "badge--warn"
-        }
-      ],
+      "lastReviewed": "2026-11-24",
       "format": "DOCX→PDF",
       "content": {
-        "use": "Converting Word to PDF is for sending a document that must look the same everywhere: a CV, a letter, or a form. A PDF cannot be edited by mistake, and it opens on any phone or computer.",
-        "tip": "Keep the Word file simple. Headings, lists and tables survive, but complex formatting, images and tracked changes do not.",
-        "limit": "This is a basic text conversion. Headings, lists and tables are kept where the structure allows, but fonts, images, headers, footers and exact page layout are not preserved.",
-        "example": "A simple Word letter becomes a PDF with the same paragraphs in the same order.",
+        "use": "Word to PDF is for sending a document that must look the same everywhere: a CV, a letter or a form. A PDF cannot be edited by mistake, and it opens on any phone or computer. The tool reads the document properly, so headings become large bold headings, lists become bullet or numbered lists, tables become real PDF tables and pictures from the document are placed in the PDF. You can add a header and footer, page numbers, and a table of contents built from the headings. The conversion runs in your browser, so the file is never uploaded, and the PDF is ready to send or print.",
+        "tip": "Use the table of contents only when the document has real headings, because it is built from them. Check the PDF after converting, since exact Word spacing and fonts are not kept.",
+        "limit": "This is a browser rendering, not Word itself. Exact Word fonts, page layout, tracked changes and comments are not preserved, and very complex documents may look different. Only .docx files are accepted.",
+        "example": "A Word letter with a heading, a bullet list and a small table becomes a PDF with the same heading, list and table, plus page numbers at the bottom.",
         "faq": [
           [
-            "Is this a full Word to PDF conversion?",
-            "No. It is a basic text conversion. It keeps the text, headings, lists and tables where possible, but not the exact layout, fonts or images."
+            "Are images in my Word file kept in the PDF?",
+            "Yes. Pictures in the document are placed in the PDF in the same order as the text around them, scaled to fit the page width. Very large pictures are scaled down."
           ],
           [
-            "What if my Word file has images?",
-            "Images are not carried into the PDF by this basic conversion. For a document with images, use Word itself to save as PDF."
+            "How does the table of contents work?",
+            "Tick the option and the tool builds a contents page from the headings in the document, with the page number each heading lands on. It only works when the document uses real heading styles."
           ],
           [
-            "Can I convert an old .doc file?",
-            "No. The tool only accepts .docx files. If your file is a .doc, open it in Word and save it as .docx first."
+            "Can I add a header and footer?",
+            "Yes. Type the header and footer text in the boxes and they appear on every page. Tick page numbers to add Page 1 of 3 at the bottom of each page."
           ],
           [
             "Does it keep tracked changes?",
@@ -2073,11 +2075,18 @@
           ]
         ]
       },
-      "meta_description": "Render Word document text as a PDF, free in your browser. Text-based rendering, layout is not preserved.",
+      "meta_description": "Turn a Word document into a PDF with headings, lists, tables and images kept, free in your browser. No upload.",
       "steps": [
         "Choose a Word (.docx) file with the file button.",
-        "Press Convert Word to PDF.",
-        "Save the downloaded PDF, which holds the document text in plain 12-point text."
+        "Type a header or footer if you want one, and tick page numbers or the table of contents.",
+        "Press Convert Word to PDF and save the downloaded PDF.",
+        "If the Word file has tracked changes or comments, accept them in Word first, as they are not shown in the PDF."
+      ],
+      "related": [
+        "pdf-to-word",
+        "create-pdf",
+        "txt-html-to-pdf",
+        "resume-builder"
       ]
     },
     {
@@ -2087,7 +2096,7 @@
         "en": "PPT to PDF"
       },
       "short": {
-        "en": "Basic slide text as PDF."
+        "en": "Each slide as a styled PDF page with images."
       },
       "category": "convert",
       "group": "convert",
@@ -2106,23 +2115,17 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
-      "badges": [
-        {
-          "label": "Basic",
-          "class": "badge--warn"
-        }
-      ],
+      "lastReviewed": "2026-11-24",
       "format": "PPTX→PDF",
       "content": {
-        "use": "Converting PowerPoint to PDF is for sharing slides that must look the same on any device, or for printing a deck without PowerPoint. A PDF is also easier to attach to an email than a large presentation file.",
-        "tip": "Keep the slides simple. The tool reads the text on each slide, one slide per PDF page.",
-        "limit": "This is a basic text conversion. Only the slide text is carried over. Slide designs, images, charts, animations and transitions are not preserved.",
-        "example": "A 5-slide deck becomes a 5-page PDF with the text from each slide.",
+        "use": "PowerPoint to PDF is for sharing slides that must look the same on any device, or for printing a deck without PowerPoint. A PDF is also easier to attach to an email than a large presentation file. The tool reads each slide properly, so text boxes are drawn at their slide positions with their sizes, colours, bold and italic text, and pictures are placed where they are on the slide. Each slide becomes one PDF page at the same size as the deck, so the page count matches the slide count. The conversion runs in your browser, so the file is never uploaded.",
+        "tip": "Check the first page of the PDF after converting, because a text box that runs past the slide edge will run past the page edge too. For the best result, keep the slide text inside the slide.",
+        "limit": "This is a browser rendering, not PowerPoint itself. Slide designs, charts, animations and transitions are not preserved, and text is drawn in a standard font, so the PDF will not look exactly like the slides. Only .pptx files are accepted.",
+        "example": "A 5-slide deck with a title, bullet points and a photo on each slide becomes a 5-page PDF with the text and photos in place.",
         "faq": [
           [
             "Is this a full PowerPoint to PDF conversion?",
-            "No. It is a basic, text-only conversion. Designs, images and animations are not carried over."
+            "No. It keeps the text boxes at their slide positions with their sizes and colours, and the pictures, but slide designs, charts and animations are not carried over."
           ],
           [
             "What if a slide has no text?",
@@ -2134,15 +2137,22 @@
           ],
           [
             "Does each slide become one PDF page?",
-            "Yes. The tool reads the text on each slide and puts it on its own page, so a 5-slide deck becomes a 5-page PDF."
+            "Yes. Each slide becomes one PDF page at the same size as the deck, so a 5-slide deck becomes a 5-page PDF."
           ]
         ]
       },
-      "meta_description": "Turn PowerPoint slide text into a PDF, free in your browser. Basic slide text as PDF, layout is not preserved.",
+      "meta_description": "Turn PowerPoint slides into a PDF with text positions and images kept, free in your browser. No upload.",
       "steps": [
         "Choose a PowerPoint (.pptx) file with the file button.",
         "Press Convert PPT to PDF.",
-        "Save the downloaded PDF, which holds the text from each slide."
+        "Save the downloaded PDF, which has one page per slide.",
+        "Open the downloaded PDF to check each slide, as charts and animations from the presentation are not carried over."
+      ],
+      "related": [
+        "pdf-to-ppt",
+        "pdf-to-word",
+        "create-pdf",
+        "txt-html-to-pdf"
       ]
     },
     {

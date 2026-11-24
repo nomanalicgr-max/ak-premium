@@ -30,6 +30,7 @@ Libraries (loaded from public CDNs, except qpdf-wasm and diff-match-patch which 
 - diff-match-patch — Apache License 2.0 — https://github.com/google/diff-match-patch (self-hosted copy in assets/js/diff-match-patch.js; only the Node-only export lines were removed)
 - jspdf-autotable — MIT License — https://github.com/simonbengtsson/jsPDF-AutoTable
 - html2canvas — MIT License — https://github.com/niklasvh/html2canvas
+- Chart.js — MIT License — https://github.com/chartjs/Chart.js
 
 Icons and fonts:
 - Lucide icons — ISC License — https://lucide.dev

@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "27"  # v27 (2026-11-23): advanced upgrade plan batch 7 — remaining PDF tools: JPG/PNG to PDF (EXIF rotate, grids, flatten, quality), PDF to JPG/PNG (DPI, page-range, single-page, rename pattern), HTML to PDF rendered via html2canvas, Extract Images original-format/JPEG2000/JBIG2, Header/Footer variables + logo, Flatten via qpdf annotations, Metadata editor + XMP packet, Resize page size vector-preserving + fields/links kept.
+ASSET_V = "28"  # v28 (2026-11-24): advanced upgrade plan batch 8 — Office fidelity: PDF to Word (real H1/H2/H3, tables, images), PDF to PPT (font-size titles, bullets, speaker notes, tables, images), Excel to PDF (all sheets, styles, print setup, Chart.js charts), Word to PDF (mammoth headings/lists/tables/images, headers/footers, TOC), PPT to PDF (styled slides from XML, images), TXT/HTML to PDF (headers/footers, Markdown input).
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -105,6 +105,7 @@ SRI = {
  "html2canvas": "sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H",
  "js-yaml": "sha384-+pxiN6T7yvpryuJmE1gM9PX7yQit15auDb+ZwwvJOd/4be2Cie5/IuVXgQb/S9du",
  "md5": "sha384-WAahC3S+69Co45zyyuhCjvdMwo7a42Yn0mM0IgZIUlYNebG24AVkPUltj3BQnM85",
+ "chartjs": "sha384-zYPBGXwO4633CABX/5Spf6emCKUJCfoOkhOMYyxMsatqQZPnDblmmOewfjsIVWCM",
 }
 
 # Valid schema.org applicationCategory values (Phase 4.1). The old code put
@@ -610,11 +611,19 @@ ws_replace("tool-redact", '''<div class="workspace-tool" id="tool-redact">
 
 ws_replace("tool-pdfword", '''<div class="workspace-tool" id="tool-pdfword">
 <h2>PDF to Word</h2>
-<p>Paragraphs are rebuilt from the text positions in the PDF. Original fonts, exact spacing, images and complex tables are not preserved.</p>
+<p>Headings become real Word heading styles, tables become real Word tables, and pictures from the PDF are placed in the document. Exact fonts and spacing are not preserved.</p>
 <input id="pdfWordInput" type="file" accept="application/pdf">
 <label><input id="pdfWordOcr" type="checkbox"> Use OCR if no text is found (for scanned PDFs)</label>
 <button id="pdfWordBtn" type="button" class="btn-primary">Convert PDF to Word</button>
 <p class="status" id="pdfWordStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-pdfppt", '''<div class="workspace-tool" id="tool-pdfppt">
+<h2>PDF to PPT</h2>
+<p>Each PDF page becomes one widescreen slide. The largest line is the slide title, indented lines become bullet points, tables become real PowerPoint tables, and pictures are placed on the slide. Extra text that does not fit goes into the speaker notes.</p>
+<input id="pdfPptInput" type="file" accept="application/pdf">
+<button id="pdfPptBtn" type="button" class="btn-primary">Convert PDF to PPT</button>
+<p class="status" id="pdfPptStatus" aria-live="polite"></p>
 </div>''')
 
 ws_replace("tool-imgcompress", '''<div class="workspace-tool" id="tool-imgcompress">
@@ -640,27 +649,47 @@ ws_replace("tool-ocr", '''<div class="workspace-tool" id="tool-ocr">
 </div>''')
 
 ws_replace("tool-wordpdf", '''<div class="workspace-tool" id="tool-wordpdf">
-<h2>Word to PDF — Basic text conversion</h2>
-<p>Basic text conversion. Headings, lists and tables are kept where the structure allows, but fonts, images, headers, footers and exact page layout are not preserved.</p>
+<h2>Word to PDF</h2>
+<p>Headings, lists, tables, bold and italic text are kept, and pictures from the document are placed in the PDF. You can add a header, a footer, page numbers and a table of contents. Exact Word fonts and page layout are not preserved.</p>
 <input id="wordPdfInput" type="file" accept=".docx">
+<label>Header text (optional) <input id="wordPdfHeader" type="text" placeholder="Header shown on every page"></label>
+<label>Footer text (optional) <input id="wordPdfFooter" type="text" placeholder="Footer shown on every page"></label>
+<label><input id="wordPdfPageNums" type="checkbox" checked> Add page numbers</label>
+<label><input id="wordPdfToc" type="checkbox"> Add a table of contents from the headings</label>
 <button id="wordPdfBtn" type="button" class="btn-primary">Convert Word to PDF</button>
 <p class="status" id="wordPdfStatus" aria-live="polite"></p>
 </div>''')
 
 ws_replace("tool-pptpdf", '''<div class="workspace-tool" id="tool-pptpdf">
-<h2>PPT to PDF — Basic text conversion</h2>
-<p>Basic text conversion. Only the slide text is carried over. Slide designs, images, charts, animations and transitions are not preserved.</p>
+<h2>PPT to PDF</h2>
+<p>Each slide becomes one PDF page, with the text boxes kept at their slide positions, sizes and colours, and pictures placed where they are on the slide. Slide designs, charts, animations and transitions are not preserved.</p>
 <input id="pptPdfInput" type="file" accept=".pptx">
 <button id="pptPdfBtn" type="button" class="btn-primary">Convert PPT to PDF</button>
 <p class="status" id="pptPdfStatus" aria-live="polite"></p>
 </div>''')
 
 ws_replace("tool-excelpdf", '''<div class="workspace-tool" id="tool-excelpdf">
-<h2>Excel to PDF — Basic text conversion</h2>
-<p>Basic text conversion. Only the first sheet is rendered, as plain text rows. Cell colours, formulas, charts and multiple sheets are not preserved.</p>
+<h2>Excel to PDF</h2>
+<p>Every sheet becomes pages in the PDF, with a real table grid, column widths, cell colours, bold text and number formats kept. Choose the page orientation, fit wide tables to the page, and add a bar or line chart from the first numeric column.</p>
 <input id="excelPdfInput" type="file" accept=".xlsx,.xls">
+<label>Orientation <select id="excelOrientation"><option value="portrait" selected>Portrait</option><option value="landscape">Landscape</option></select></label>
+<label><input id="excelFitPage" type="checkbox" checked> Fit wide tables to the page width</label>
+<label>Chart from the first numeric column <select id="excelChart"><option value="none" selected>No chart</option><option value="bar">Bar chart</option><option value="line">Line chart</option></select></label>
 <button id="excelPdfBtn" type="button" class="btn-primary">Convert Excel to PDF</button>
 <p class="status" id="excelPdfStatus" aria-live="polite"></p>
+</div>''')
+
+ws_replace("tool-txthtml", '''<div class="workspace-tool" id="tool-txthtml">
+<h2>TXT / HTML to PDF</h2>
+<p>Type plain text, or write Markdown with headings, bold, lists and tables. You can add a header, a footer and page numbers to every page.</p>
+<label class="sr-only" for="txtHtmlInput">Text for your PDF</label>
+<textarea id="txtHtmlInput" rows="4" placeholder="Paste text or write Markdown here…"></textarea>
+<label>Mode <select id="txtHtmlMode"><option value="text" selected>Plain text</option><option value="markdown">Markdown — headings, bold, lists, tables</option></select></label>
+<label>Header text (optional) <input id="txtHtmlHeader" type="text" placeholder="Header shown on every page"></label>
+<label>Footer text (optional) <input id="txtHtmlFooter" type="text" placeholder="Footer shown on every page"></label>
+<label><input id="txtHtmlPageNums" type="checkbox" checked> Add page numbers</label>
+<button id="txtHtmlPdfBtn" type="button" class="btn-primary">Convert Text to PDF</button>
+<p class="status" id="txtHtmlPdfStatus" aria-live="polite"></p>
 </div>''')
 
 ws_replace("tool-invoice", '''<div class="workspace-tool" id="tool-invoice">
@@ -1101,6 +1130,7 @@ LIB_SCRIPT = {
  "forge": '<script defer src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js" integrity="' + SRI["forge"] + '" crossorigin="anonymous"></script>',
  "jspdf-autotable": '<script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.js" integrity="' + SRI["jspdf-autotable"] + '" crossorigin="anonymous"></script>',
  "html2canvas": '<script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="' + SRI["html2canvas"] + '" crossorigin="anonymous"></script>',
+ "chartjs": '<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.js" integrity="' + SRI["chartjs"] + '" crossorigin="anonymous"></script>',
  # diff-match-patch is VENDORED, not CDN: the published npm file ends with
  # five unguarded "module.exports = ..." lines, which throw "ReferenceError:
  # module is not defined" at the end of every browser page load (and trip
@@ -1126,6 +1156,7 @@ LIB_HOST = {
  "forge": "https://cdnjs.cloudflare.com",
  "jspdf-autotable": "https://cdn.jsdelivr.net",
  "html2canvas": "https://cdn.jsdelivr.net",
+ "chartjs": "https://cdn.jsdelivr.net",
 }
 
 def esc(x): return html.escape(str(x), quote=True)
@@ -1388,7 +1419,7 @@ POPULAR = ["merge-pdf", "compress-pdf", "images-to-pdf", "pdf-to-word", "image-c
 TOP_PDF = ["merge-pdf", "compress-pdf", "split-pdf", "images-to-pdf", "pdf-to-word", "pdf-to-excel", "protect-pdf", "unlock-pdf"]
 # Small pill shown at the top-right of a card (and on the tool page).
 # Badges now live in data/tools.json ("badges").
-BADGES = {e["slug"]: (e["badges"][0]["label"], e["badges"][0]["class"]) for e in REGISTRY if "badges" in e}
+BADGES = {e["slug"]: (e["badges"][0]["label"], e["badges"][0]["class"]) for e in REGISTRY if e.get("badges")}  # v28: e.get guards an empty "badges": [] list (was IndexError at import)
 # Small format pill on Convert cards, so identical icons stay distinguishable.
 # Format badges now live in data/tools.json ("format").
 FORMAT = {e["slug"]: e["format"] for e in REGISTRY if "format" in e}
@@ -1823,7 +1854,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v18). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v27";
+const CACHE = "ak-premium-v28";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

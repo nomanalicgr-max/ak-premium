@@ -435,7 +435,7 @@
   {
    "slug": "pdf-to-word",
    "title": "PDF to Word",
-   "short": "Extracted text into a .docx file.",
+   "short": "Headings, tables and images into a .docx file.",
    "category": "convert",
    "keywords": [
     "pdf to docx",
@@ -443,18 +443,13 @@
    ],
    "icon": "i-file-text",
    "iconClass": "icon-warn",
-   "badges": [
-    {
-     "label": "Text only",
-     "class": "badge--warn"
-    }
-   ],
+   "badges": [],
    "format": "PDF→DOCX"
   },
   {
    "slug": "pdf-to-ppt",
    "title": "PDF to PPT",
-   "short": "Extracted text into a .pptx file.",
+   "short": "Each PDF page as a widescreen slide with tables and images.",
    "category": "convert",
    "keywords": [
     "pdf to pptx",
@@ -463,18 +458,13 @@
    ],
    "icon": "i-presentation",
    "iconClass": "icon-warn",
-   "badges": [
-    {
-     "label": "Text only",
-     "class": "badge--warn"
-    }
-   ],
+   "badges": [],
    "format": "PDF→PPTX"
   },
   {
    "slug": "txt-html-to-pdf",
    "title": "TXT / HTML to PDF",
-   "short": "Paste text, download a PDF.",
+   "short": "Paste text or Markdown, download a styled PDF.",
    "category": "convert",
    "keywords": [
     "text to pdf",
@@ -488,7 +478,7 @@
   {
    "slug": "excel-to-pdf",
    "title": "Excel to PDF",
-   "short": "First sheet rendered as PDF.",
+   "short": "Every sheet as a styled PDF with tables and charts.",
    "category": "convert",
    "keywords": [
     "xlsx to pdf",
@@ -496,18 +486,13 @@
    ],
    "icon": "i-file-spreadsheet",
    "iconClass": "icon-warn",
-   "badges": [
-    {
-     "label": "Basic",
-     "class": "badge--warn"
-    }
-   ],
+   "badges": [],
    "format": "XLSX→PDF"
   },
   {
    "slug": "word-to-pdf",
    "title": "Word to PDF",
-   "short": "Word text rendered as PDF.",
+   "short": "Word document with headings, tables and images as PDF.",
    "category": "convert",
    "keywords": [
     "docx to pdf",
@@ -515,18 +500,13 @@
    ],
    "icon": "i-file-text",
    "iconClass": "icon-warn",
-   "badges": [
-    {
-     "label": "Basic",
-     "class": "badge--warn"
-    }
-   ],
+   "badges": [],
    "format": "DOCX→PDF"
   },
   {
    "slug": "ppt-to-pdf",
    "title": "PPT to PDF",
-   "short": "Basic slide text as PDF.",
+   "short": "Each slide as a styled PDF page with images.",
    "category": "convert",
    "keywords": [
     "pptx to pdf",
@@ -535,12 +515,7 @@
    ],
    "icon": "i-presentation",
    "iconClass": "icon-warn",
-   "badges": [
-    {
-     "label": "Basic",
-     "class": "badge--warn"
-    }
-   ],
+   "badges": [],
    "format": "PPTX→PDF"
   },
   {

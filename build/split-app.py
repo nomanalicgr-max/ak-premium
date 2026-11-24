@@ -37,6 +37,7 @@ CORE_NAMES = {
     'loadTaxData', 'calcSalaryTax', 'numToWordsEn', 'numToWordsUr',
     'readJpegOrientation',
     'addWrappedTextPaginatedFrom', 'initCategoryFromHash', 'activateToolPageWorkspace',
+    'median', 'drawRichTextRuns', 'imageBlobDimensions',
 }
 # Pure helpers used by exactly ONE tool -> that tool's bundle, not core.
 # (countInkPixels / inkBBoxFromImageData stay in core: remove-pages AND
@@ -67,6 +68,17 @@ TOOL_NAMES = {
     'decodeContentStream': 'resize-pdf-page-size',
     'sanitizeHtmlForPdf': 'html-to-pdf',
     'htmlToPdfRendered': 'html-to-pdf',
+    'pdfWordLineRuns': 'pdf-to-word',
+    'docxTableFromGrid': 'pdf-to-word',
+    'excelChartData': 'excel-to-pdf',
+    'wordHtmlRuns': 'word-to-pdf',
+    'parseWordHtml': 'word-to-pdf',
+    'layoutWordBlocks': 'word-to-pdf',
+    'parsePptxSlides': 'ppt-to-pdf',
+    'txtHtmlHeaderFooter': 'txt-html-to-pdf',
+    'txtMdInlineRuns': 'txt-html-to-pdf',
+    'txtHtmlMarkdownToPdf': 'txt-html-to-pdf',
+    'txtHtmlPlainToPdf': 'txt-html-to-pdf',
 }
 # Load-time const lookups of DYNAMICALLY created controls -> that tool's
 # bundle, not core. The split routes a chunk by the ids it touches, but

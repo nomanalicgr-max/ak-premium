@@ -1,5 +1,25 @@
 # AK Premium — Changelog
 
+## v28 — 24 November 2026 (advanced upgrade plan, batch 8: Office fidelity)
+
+### PDF to Word — real headings, tables and images
+- Headings are now real Word Heading 1, 2 and 3 styles taken from the font sizes in the PDF, instead of only the first line becoming a heading. Bold, italic and underline are kept from the font names, tables are rebuilt as real Word tables from the page grid, and images from the PDF are placed where they sit on the page. Exact layout, fonts and charts are not preserved, as that needs a server.
+
+### PDF to PPT — titles, bullets, speaker notes, tables
+- Titles and body text are now split by font size, indented lines become real bullet lists, and text that does not fit on a slide moves to the speaker notes instead of being cut off. Tables become real PowerPoint tables, images are placed at their page positions, and slides use a 16:9 layout. Exact slide designs and animations are not preserved, as that needs a server.
+
+### Excel to PDF — all sheets, styles, print setup, charts
+- Every sheet is now included, each with its own heading, and the grid keeps column widths, cell colours, bold text and number formats. Orientation, fit-to-page scaling, a repeating header row and page numbers can be chosen, and a bar or line chart can be drawn from the first numeric column. Formulas are converted as their current values, and charts inside the spreadsheet itself are not carried over.
+
+### Word to PDF — proper headings, lists, tables, contents page
+- Word files are now read properly (headings, lists, tables, bold and italic text) instead of plain text only, images are embedded, and headers, footers and page numbers can be added. A contents page is built from the headings found in the document. Exact Word layout and fonts are not preserved, as that needs a server.
+
+### PPT to PDF — styled slides from the file itself
+- Each slide is now read from the presentation file (text, positions, sizes and colours) and drawn as a styled PDF page, with embedded images placed where they belong on the slide. Slide designs, charts, animations and transitions are not preserved, as that needs a server.
+
+### TXT / HTML to PDF — headers, footers and Markdown
+- Headers and footers with page numbers can now be added, and Markdown can be pasted as input (headings, lists, tables and bold/italic text are rendered). The rendered HTML output built in v27 is unchanged. Pasting a web address is not supported, as there is no server to fetch it.
+
 ## v27 — 23 November 2026 (advanced upgrade plan, batch 7: last 10 PDF tools)
 
 ### JPG to PDF — EXIF auto-rotate, grids, quality, grayscale

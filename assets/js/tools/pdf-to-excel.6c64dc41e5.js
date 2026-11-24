@@ -65,3 +65,5 @@ if (pdfExcelDownloadBtn) pdfExcelDownloadBtn.addEventListener("click", () => {
     setStatus("pdfExcelStatus", "Done. " + chosen.length + " table" + (chosen.length > 1 ? "s" : "") + " downloaded as ak-premium-pdf-to-excel.xlsx, one sheet per table. Numbers and dates are real Excel values — check a few cells before trusting a total.");
   } catch (e) { setError("pdfExcelStatus", "Could not build the Excel file."); }
 });
+
+/* Median of a list of numbers (0 for an empty list). */

@@ -129,3 +129,8 @@ if (htmlToPdfBtn) htmlToPdfBtn.addEventListener("click", async () => {
     await htmlToPdfRendered(raw, { font, fontSize, pageSize }, "htmlToPdfStatus");
   } catch (e) { setError("htmlToPdfStatus", "Could not read this HTML. Please check the file."); }
 });
+
+/* First numeric column (after the label column) in a sheet's cell grid,
+   for the Excel to PDF chart: the column where at least 80% of the
+   filled data cells are numbers. Returns {labels, values, valueLabel}
+   or null when no numeric column exists. */
