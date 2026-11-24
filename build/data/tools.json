@@ -3904,7 +3904,7 @@
       "regions": [
         "pk"
       ],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "related": [
         "pakistan-salary-tax-calculator",
         "zakat-calculator",
@@ -3912,31 +3912,33 @@
         "amount-to-words"
       ],
       "steps": [
-        "Enter the area in the unit you have.",
-        "Pick the unit you are converting from (Marla, Kanal, Acre, square feet, square yards or square metres).",
-        "Press Convert Land Area. All six units are shown at once."
+        "Enter the area in the 'Area' box.",
+        "Choose the unit it is in, in the 'From' list.",
+        "Pick the marla size: revenue, housing-society, some schemes, or custom.",
+        "Press Convert Land Area to see every unit at once.",
+        "Use length and width for a plot's area, or a rate per marla for a price estimate."
       ],
       "content": {
-        "use": "A land converter is for the units used in Pakistan property deals: Marla, Kanal, Acre, square feet, square yards and square metres. A buyer, a seller, a patwari or a property dealer uses it to check that a 10 Marla plot and a 1 Kanal plot are being compared fairly.",
-        "tip": "Enter the area in the unit you have, and the tool shows all the other units at once. 1 Kanal is 20 Marla, and 1 Acre is 8 Kanal.",
-        "limit": "The tool converts area only. It does not give a price, a location, or legal advice about a plot, and it uses the standard Punjab unit sizes.",
-        "example": "1 Kanal is 20 Marla, 5,445 square feet and 605 square yards.",
+        "use": "Land Converter changes a plot size between marla, kanal, acre, square feet, square yards and square metres, and now covers more units and a price estimate too. A buyer checks whether a 10 marla plot is really 2,250 square feet. A seller lists a kanal plot in square yards. An agent works out the price of a plot from the rate per marla. Pick the marla size your area uses, enter the area, and the tool shows every unit at once. You can also work out a plot from its length and width in feet.",
+        "tip": "The revenue marla is 272.25 square feet and is used in land records. Housing societies such as DHA and Bahria use a 225 square feet marla, so the same 10 marla plot is 2,722.5 square feet in revenue terms but 2,250 in a society. Always ask which marla a listing uses.",
+        "limit": "There is no single provincial marla. The revenue marla is 272.25 square feet, the housing-society marla is 225, and some schemes use 250. Sindh mostly sells land in square yards, not marla. The price estimate uses only the rate you type; it is not a market price and this tool is not legal advice.",
+        "example": "1 kanal is 20 marla, 5,445 square feet and 605 square yards with the revenue marla. A 60 by 90 feet plot is 5,400 square feet, which is 19.83 marla.",
         "faq": [
           [
-            "How many Marla are in 1 Kanal?",
-            "20 Marla. 1 Marla is 272.25 square feet, so 20 Marla is 5,445 square feet."
+            "How many square feet are in one marla?",
+            "It depends on the marla. The revenue marla is 272.25 square feet, the housing-society marla is 225, and some schemes use 250. Pick the right size before you convert."
           ],
           [
-            "How many Kanal are in 1 Acre?",
-            "8 Kanal. 1 Acre is 43,560 square feet."
+            "How many marla are in one kanal?",
+            "One kanal is 20 marla, which is 5,445 square feet with the revenue marla. One acre is 8 kanal, which is 43,560 square feet."
           ],
           [
-            "How many square yards are in 1 Kanal?",
-            "605 square yards. 1 Kanal is 5,445 square feet, and 1 square yard is 9 square feet, so 5,445 divided by 9 is 605."
+            "Does Sindh use marla?",
+            "Mostly no. Sindh sells land in square yards and square feet, not marla. This tool still converts marla for buyers from Punjab and Khyber Pakhtunkhwa who deal there."
           ],
           [
-            "Can I convert from square feet?",
-            "Yes. Choose Square feet in the From list and enter the area. The tool shows the same area in Marla, Kanal, Acre, square yards and square metres."
+            "How do I work out a plot price?",
+            "Convert the area first, then type the rate per marla in the price box. The tool multiplies the marla area by your rate. It uses only the rate you typed, so it is not a market price."
           ]
         ]
       },
@@ -4075,7 +4077,7 @@
       "regions": [
         "pk"
       ],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "related": [
         "pakistan-salary-tax-calculator",
         "amount-to-words",
@@ -4083,31 +4085,33 @@
         "percentage-marks-calculator"
       ],
       "steps": [
-        "Enter your cash and bank balance, and subtract any debts.",
-        "Enter your gold and silver in tola, with the current rate per tola for each.",
-        "Press Calculate Zakat. The page shows net wealth, the nisab and the Zakat due at 2.5%."
+        "Pick your currency, and type an exchange rate if your amounts are in dollars.",
+        "Enter cash, gold, silver, trade goods, shares and foreign currency at current values.",
+        "Enter debts you owe, and loans you gave that you expect back.",
+        "Pick the gold or silver nisab, or type a custom nisab.",
+        "Press Calculate Zakat to see your net wealth, nisab and Zakat due."
       ],
       "content": {
-        "use": "A Zakat calculator is for working out the Zakat due on cash, gold and silver held for one lunar year. It is used in Ramadan and at the end of a lunar year, when a person checks whether their wealth has reached the nisab.",
-        "tip": "Enter the current rate per tola for gold and silver, because the nisab depends on today's prices. The calculator uses the silver nisab (52.5 tola) when you give a silver rate.",
-        "limit": "This is an estimate only, not religious advice. The nisab is 7.5 tola gold or 52.5 tola silver, and Zakat is 2.5% of net zakatable wealth. The government bank-deduction nisab for Ramadan 2026 was reported as Rs 503,529, but that figure was not directly verified from an official source, so it is shown only as reported.",
-        "example": "Cash and gold worth Rs 1,000,000 above the nisab gives Rs 25,000 Zakat at 2.5%.",
+        "use": "Zakat Calculator works out the 2.5 percent due on wealth held for a full lunar year, and now covers more kinds of wealth. A salaried worker adds cash, gold and trade stock. A shop owner adds stock and shares. A family adds foreign currency and money lent to others. Enter each asset at its current value, subtract what you owe, and the tool shows your net wealth, the nisab by gold and by silver, and the Zakat due. You can also pick a currency, choose which nisab to use, and set a date to be reminded when one lunar year has passed.",
+        "tip": "Most scholars use the silver nisab because it is lower, so more people pay Zakat. Gold is 7.5 tola and silver is 52.5 tola. Value gold and silver at today's rate, and count only wealth you have held for one lunar year.",
+        "limit": "This is an estimate, not religious advice. The government bank-deduction nisab for Ramadan 2026 was reported as Rs 503,529, but that figure was not directly verified from an official source, and the government re-notifies it every year. Verify before relying on it, and ask a scholar about anything you are unsure of.",
+        "example": "Cash Rs 600,000, gold 2 tola at Rs 300,000 a tola, and debts Rs 100,000 gives net wealth Rs 1,100,000. With silver at Rs 3,000 a tola, the nisab is Rs 157,500, so Zakat due is Rs 27,500.",
         "faq": [
           [
-            "What is the nisab?",
-            "The nisab is the minimum wealth above which Zakat is due: 7.5 tola of gold or 52.5 tola of silver. If your wealth is below it, no Zakat is due."
-          ],
-          [
             "How much Zakat do I pay?",
-            "2.5% of your net zakatable wealth, after subtracting debts, once it has been held for one lunar year."
+            "You pay 2.5 percent of your net zakatable wealth, once it is above the nisab and you have held it for one lunar year. The tool works out the amount from the assets you enter."
           ],
           [
-            "Can I set my own nisab?",
-            "Yes. Enter it in the Custom nisab box. If you leave it empty, the calculator uses the silver nisab from the silver rate you entered."
+            "What is the nisab in rupees?",
+            "It is 7.5 tola of gold or 52.5 tola of silver, valued at today's rates. Enter the rates and the tool shows both nisabs in rupees, so you can pick the one you follow."
           ],
           [
-            "Does my house or car count?",
-            "No. The calculator only counts cash, gold and silver. Your house, car and other personal items are not entered and are not counted."
+            "Do I pay Zakat on trade stock?",
+            "Yes. Stock held to sell is zakatable at its current market value. Add it under trade goods, along with cash, gold, silver, shares and foreign currency you hold."
+          ],
+          [
+            "What is the lunar year reminder?",
+            "Zakat is due after one lunar year, about 354 days, from when your wealth first reached the nisab. Enter that date and the tool shows when the year ends, with today's Hijri date."
           ]
         ]
       },
@@ -4156,33 +4160,35 @@
       "regions": [
         "pk"
       ],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "steps": [
-        "Type the amount in rupees, with or without commas.",
-        "Press Write in Words.",
-        "Copy the English line, the Urdu line, or both."
+        "Type the amount in the box, with or without commas.",
+        "Pick the currency and how to handle the paise.",
+        "Press Write in Words to see the English and Urdu lines.",
+        "Add a payee name and date for a cheque line.",
+        "Press Copy Both Lines or Copy Cheque Line to use the text."
       ],
       "content": {
-        "use": "Amount to words is for invoices, cheques and receipts, where an amount must be written out in words as well as figures. A shop, a school and a freelancer all use it so the amount cannot be changed by adding a digit.",
-        "tip": "Type the amount with or without commas. The tool shows the amount in English and in Urdu, with the Urdu line reading right to left.",
-        "limit": "The tool handles amounts from 0 to 999,999,999. It writes rupees and paisa only, and it does not handle other currencies.",
-        "example": "125,000 becomes one hundred twenty-five thousand rupees only, and ایک لاکھ پچیس ہزار روپے صرف.",
+        "use": "Amount to Words writes a money amount in words in English and Urdu, and now makes a cheque line too. A shopkeeper writes a cheque and needs the amount in words. A clerk fills in a payment voucher. A student writes a fee receipt. Type the amount, pick the currency and how to handle the paise, and the tool writes both lines for you. Amounts go up to just under ten kharab, so large property and business figures work too. Add a payee name and date to get a cheque line, and copy either line with one tap.",
+        "tip": "Cheques usually write the paise exactly, so keep Exact paise for cheques. Round is handy for invoices where the paise does not matter. Amounts use the Pakistani system, so 100,000 is one lakh and 10,000,000 is one crore.",
+        "limit": "Amounts must be from 0 to just under 10,000,000,000,000. The words are the amount only; they do not check your bank balance or the cheque date. Currencies are names only: the tool does not convert between rupees, dollars, pounds and dirhams.",
+        "example": "125,000.50 in rupees is One hundred twenty-five thousand rupees and fifty paisa only. In Urdu it is ایک لاکھ پچیس ہزار روپے اور پچاس پیسے صرف.",
         "faq": [
           [
-            "Why do I need words on a cheque?",
-            "Words are harder to change than figures. A cheque with the amount in words is harder to alter, which is why banks and businesses ask for both."
+            "How do I write a cheque amount?",
+            "Type the amount, pick the currency, add the payee name and date, then press Write in Words. The cheque line reads Payee, then the amount in words, then the date."
           ],
           [
-            "Does it work for paisa too?",
-            "Yes. An amount such as 1,250.50 becomes one thousand two hundred fifty rupees and fifty paisa only."
+            "What currencies are supported?",
+            "Pakistani rupees, US dollars, British pounds and UAE dirhams. The tool writes the amount in words with the currency name you picked, but it does not convert between currencies."
           ],
           [
-            "Does it write the amount in Urdu too?",
-            "Yes. Every result shows two lines, the amount in English and the same amount in Urdu, written right to left with lakh and crore."
+            "How are paise handled?",
+            "Exact writes the paise in words, Round rounds to the nearest rupee, and Ignore drops the paise. Cheques usually use Exact, while invoices often use Round."
           ],
           [
-            "What is the largest amount it can write?",
-            "999,999,999 rupees. Amounts from 0 up to that limit work. A larger amount gives an error asking for a smaller one."
+            "What is the largest amount supported?",
+            "Just under ten kharab, which is 10,000,000,000,000. Amounts use the Pakistani system, so 100,000 is one lakh, 10,000,000 is one crore, and 1,000,000,000 is one arab."
           ]
         ]
       },
@@ -4203,7 +4209,13 @@
             "جی ہاں، انگریزی اور اردو دونوں لائنیں ایک ساتھ بنتی ہیں۔"
           ]
         ]
-      }
+      },
+      "related": [
+        "land-converter",
+        "zakat-calculator",
+        "percentage-marks-calculator",
+        "invoice-generator"
+      ]
     },
     {
       "slug": "urdu-word-counter",
@@ -4230,33 +4242,35 @@
       "regions": [
         "pk"
       ],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "steps": [
-        "Paste your Urdu text in the box.",
+        "Paste or type your Urdu text in the box.",
         "Press Count Words.",
-        "Read the word count, character counts and reading time."
+        "Read the word, character, sentence and paragraph counts.",
+        "Check the average words per sentence and the reading level.",
+        "Use the reading and speaking times to plan a speech or article."
       ],
       "content": {
-        "use": "An Urdu word counter is for students, writers and teachers who work in Urdu and need to know how long a piece of writing is: an essay, a speech, a social media post, or a homework answer with a word limit.",
-        "tip": "Paste the Urdu text in the box. The counter works with Urdu script and counts words separated by spaces, just like an English counter.",
-        "limit": "The tool counts words, characters and reading time. It does not check spelling, grammar or the meaning of the text.",
-        "example": "A 300-word Urdu essay takes about 2 minutes to read at 200 words per minute.",
+        "use": "Urdu Word Counter counts words, characters, sentences and paragraphs in Urdu text, and now gives reading and speaking times too. A writer checks the length of an article before sending it. A student counts the words in an essay. A teacher checks a speech for a school function. Paste or type your Urdu text and the tool counts words, characters with and without spaces, sentences and paragraphs. It handles Urdu punctuation, Arabic-Indic digits and the zero-width non-joiner correctly, and shows how long the text takes to read and to speak.",
+        "tip": "The counter splits words on spaces, so words joined by a zero-width non-joiner stay as one word, as they should in Urdu. Arabic-Indic digits like ۱۲۳ count as digits, not words. Reading time uses 200 words a minute and speaking time uses 130.",
+        "limit": "The counter splits text on spaces, so a word written without a space after a full stop may be missed as a sentence break. The reading level is only an estimate from average sentence length, not a real grade. Mixed English and Urdu text is counted together.",
+        "example": "The Urdu sentence یہ ایک جملہ ہے has 4 words. A 200-word article takes about 1 minute to read and about 2 minutes to speak.",
         "faq": [
           [
             "Does it count Urdu words correctly?",
-            "Yes. It splits the text on spaces, which works for Urdu script, and it counts characters with and without spaces separately."
+            "Yes. It splits on spaces and handles Urdu punctuation, Arabic-Indic digits and the zero-width non-joiner, so words joined by it stay as one word, as they should in Urdu."
           ],
           [
-            "What reading speed does it use?",
-            "200 words per minute, which is a normal adult reading speed. Your own speed may be faster or slower."
+            "What is the reading time based on?",
+            "Reading time uses 200 words a minute and speaking time uses 130 words a minute. Both are averages, so a slow reader or a fast speaker will take a different time."
           ],
           [
             "Can I paste English text too?",
-            "Yes. The counter splits text on spaces, so English words are counted the same way. The reading time is still worked out at 200 words per minute."
+            "Yes. English words in the text are counted as words and shown separately, so you can see how much of your text is English and how much is Urdu."
           ],
           [
-            "How long will my text take to read?",
-            "The result shows the reading time in minutes, worked out at 200 words per minute. A 300-word essay takes about 2 minutes."
+            "Why do sentences matter here?",
+            "The average words per sentence tells you if your writing is easy to read. Short sentences are easier to follow, so a high average means you may want to break long sentences up."
           ]
         ]
       },
@@ -4277,7 +4291,13 @@
             "جی ہاں، متن آپ کے براؤزر میں ہی رہتا ہے، کہیں اپ لوڈ نہیں ہوتا۔"
           ]
         ]
-      }
+      },
+      "related": [
+        "word-counter",
+        "character-counter",
+        "text-to-speech",
+        "readability-checker"
+      ]
     },
     {
       "slug": "percentage-marks-calculator",
@@ -4306,33 +4326,35 @@
       "regions": [
         "pk"
       ],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "steps": [
-        "Enter obtained marks, total marks and the weight for each part (up to 3 parts).",
-        "Make sure the weights add up to 100%.",
-        "Press Calculate Aggregate. Each part's contribution and the final aggregate are shown."
+        "Enter obtained marks, total marks and weight for each part.",
+        "Make sure the weights add up to 100 percent.",
+        "Press Calculate Aggregate to see each part and the total.",
+        "For the reverse planner, fill in parts 1 to 4, then your target and the last part.",
+        "Use the percentage to GPA box for a common 4.0 conversion."
       ],
       "content": {
-        "use": "A marks and merit calculator is for students applying to college or university in Pakistan, where admission depends on a weighted aggregate: Matric marks, FSc marks and an entry test, each with its own weight. It is also used for any percentage or weighted score.",
-        "tip": "Enter the obtained and total marks for each part, and the weight for that part. The weights must add up to 100%. The tool shows each part's contribution and the final aggregate.",
-        "limit": "The tool uses a generic weighted formula: sum of (obtained / total x 100 x weight / 100). It does not know any university's own formula, so check the official merit formula for the place you are applying to.",
-        "example": "Matric 900/1100 at 10% weight, FSc 950/1100 at 40% weight, and an entry test 150/200 at 50% weight gives an aggregate of about 80.2%.",
+        "use": "Percentage and Merit Calculator turns obtained and total marks into a percentage and a merit aggregate, and now plans backwards too. A student works out a merit aggregate from Matric, FSc and entry test marks. A parent checks a child's percentage in each subject. An applicant checks what marks are needed in the last test to reach a target. Enter up to five parts with their weights, and the tool shows each part and the aggregate. It can also work out the marks you need in the last part, and convert a percentage to a GPA.",
+        "tip": "Weights must add up to 100 percent. Enter the weights your university publishes in its prospectus, because merit formulas change every year. If your weights do not add to 100, the tool will tell you.",
+        "limit": "No university merit presets are built in, because merit formulas change every year and could not be verified from official prospectus pages for this tool. The percentage to GPA conversion is a common 4.0 scale, not an official one: universities set their own grade boundaries.",
+        "example": "Matric 900 out of 1100 at 20 percent, FSc 450 out of 550 at 50 percent, and entry test 250 out of 400 at 30 percent gives an aggregate of 76.02 percent.",
         "faq": [
           [
-            "What is a merit aggregate?",
-            "A merit aggregate combines several scores into one percentage, giving each part a weight. A part with 50% weight matters five times as much as a part with 10% weight."
+            "How is a merit aggregate worked out?",
+            "Each part is turned into a percentage, multiplied by its weight, and added up. The weights must add to 100 percent, or the tool tells you they are wrong."
           ],
           [
-            "What if my weights do not add up to 100%?",
-            "The tool stops and tells you the total, because an aggregate only makes sense when the weights add up to 100%. Fix the weights and try again."
+            "Are university merit presets included?",
+            "No. Merit formulas change every year and could not be verified from official prospectus pages for this tool. Enter the weights from your university's official prospectus instead."
           ],
           [
-            "How many parts can I enter?",
-            "Up to 3 parts. Fill in the obtained marks, total marks and weight for each part you use, and leave the rest blank."
+            "What marks do I need in the last part?",
+            "Fill in parts 1 to 4, enter your target aggregate and the last part's total and weight, then press Work Out the Marks I Need. The tool tells you the percentage and marks required."
           ],
           [
-            "Does it show each part's share?",
-            "Yes. The result lists every part with its percentage and its contribution. Part 1 at 81.82 percent with 10 percent weight gives 8.18."
+            "How does percentage convert to GPA?",
+            "The tool uses a common 4.0 scale, where 90 percent and above is 4.0, 85 to 89 is 3.7, and so on down to 50 percent. It is not an official scale, so check your university's grade boundaries."
           ]
         ]
       },
@@ -4353,7 +4375,13 @@
             "وزن یہ بتاتا ہے کہ ہر حصے کی کل میرٹ میں کتنی اہمیت ہے، مثلاً 50 فیصد۔"
           ]
         ]
-      }
+      },
+      "related": [
+        "percentage-calculator",
+        "cgpa-calculator",
+        "age-calculator",
+        "discount-calculator"
+      ]
     },
     {
       "slug": "jpg-to-pdf",
@@ -6005,20 +6033,20 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Convert a date and time between world time zones, with daylight saving handled.",
       "steps": [
         "Pick the date in the 'Date' box and the time in the 'Time' box.",
         "Choose the zone the time is in, in the 'From time zone' list.",
         "Choose the zone you want in the 'To time zone' list.",
-        "Press Convert Time Zone, or just wait, because the result updates as you type.",
-        "Read the converted date and time under the button."
+        "Press Convert, or just wait, because the result updates as you type.",
+        "Use the meeting planner below for three zones at once, the overlap finder for working hours, or download the calendar file."
       ],
       "content": {
-        "use": "Time Zone Converter changes a time from one part of the world to another. A worker in Lahore joins a call with a team in London and needs the right time. A student applies to a university abroad and must not miss a deadline in another time zone. A family calls relatives overseas and wants to avoid waking them up. You pick the date and time, choose the zone you have and the zone you want, and the tool shows the converted time, with daylight saving handled for you.",
+        "use": "Time Zone Converter changes a time from one part of the world to another, and now helps you plan around it. A worker in Lahore joins a call with a team in London and needs the right time. A student must not miss a deadline at a university abroad. A family calls relatives overseas without waking them up. Pick the date and time and the two zones, and the tool shows the converted time, with daylight saving handled. The meeting planner shows one time in three other zones at once, the overlap finder shows the hours when two zones are both at work, and you can save the converted time as a calendar file.",
         "tip": "Daylight saving changes the gap between zones in summer and winter, so always include the date, not just the time. London is 5 hours behind Lahore in winter but 4 hours behind in summer. If the converted time falls on another day, the tool shows the new date too.",
-        "limit": "The tool uses the time zone rules built into your browser, which are kept up to date by your system. Very old or future dates may use rules that have changed. It converts clock times only; it does not book meetings or send invites.",
-        "example": "12:00 on 15 January 2026 in Lahore is 07:00 on 15 January 2026 in London.",
+        "limit": "The tool uses the time zone rules built into your browser, which are kept up to date by your system. Very old or future dates may use rules that have changed. It converts clock times only; it does not book meetings or send invites. The calendar file opens in Google Calendar, Outlook and Apple Calendar.",
+        "example": "12:00 on 15 January 2026 in Lahore is 07:00 on 15 January 2026 in London, and 15:00 in Lahore is 11:00 in London and 06:00 in New York.",
         "faq": [
           [
             "What is the time difference between Lahore and London?",
@@ -6029,12 +6057,12 @@
             "Yes. The tool uses your browser's time zone rules, so daylight saving is applied for the date you pick, and the gap between two zones can change with the season."
           ],
           [
-            "Can I convert to New York time?",
-            "Yes. Choose America/New_York in the To list. New York is 10 hours behind Lahore in winter and 9 hours behind in summer."
+            "Can I plan a meeting across three zones?",
+            "Yes. Pick a date and time in your home zone, choose three other zones, and press Show Meeting Time in All Zones. Each zone shows its own time and date."
           ],
           [
-            "Why does the date change sometimes?",
-            "When the converted time crosses midnight, the date moves to the next day or the day before. The tool always shows the full date with the time."
+            "How do I save a converted time?",
+            "Convert a time first, type an event title and a length, then press Download Calendar File. The .ics file opens in Google Calendar, Outlook and Apple Calendar."
           ]
         ]
       },
@@ -6071,35 +6099,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Count the days, weeks and months between any two dates in your browser.",
       "steps": [
-        "Pick the first date in the 'From date' box.",
-        "Pick the second date in the 'To date' box.",
-        "Press Calculate Difference, or just wait, because the result updates as you type.",
-        "Read the days, weeks and months under the button."
+        "Pick the start date in the 'From' box and the end date in the 'To' box.",
+        "Press Calculate to see the gap in days, weeks and months.",
+        "Tick the working-days box to skip weekends and Pakistan public holidays for 2026.",
+        "Use Add or Subtract Days to work out a date a number of days away.",
+        "Use the countdown to watch the days, hours and minutes to a date you pick."
       ],
       "content": {
-        "use": "Date Difference Calculator counts the time between two dates. A worker counts the days left before a project deadline. A parent counts the days until a child's birthday. A student counts the weeks between the start and the end of a term. A traveller counts the days of a trip. You pick the two dates and the tool shows the days between them, the weeks and days, and the full months, so you can plan without counting on a calendar.",
-        "tip": "The count is the number of days from the first date to the second date, not including the first date. If you need to include both end days, add 1 to the day count. The order of the two dates does not matter; the tool always counts the gap between them.",
-        "limit": "The tool counts whole days between the dates you pick. It does not count working days or skip weekends and holidays. Very old dates may use calendar rules that differ from today's calendar.",
-        "example": "From 1 January 2025 to 1 January 2026 is 365 days, which is 52 weeks and 1 day.",
+        "use": "Date Difference works out the days, weeks and months between two dates, and now counts working days and runs a countdown too. A teacher counts the days left before an exam. A shop owner checks how many working days are left to deliver an order. A family counts down to a wedding or a flight. Pick the from and to dates and the tool shows the gap in days, weeks and months, and broken down into years, months and days. Tick the working-days box to skip weekends and Pakistan public holidays for 2026, or add days to a date and watch a live countdown.",
+        "tip": "The working-days count skips Saturdays and Sundays and the Pakistan public holidays for 2026, from the Cabinet Division circular of 19 January 2026. Both end dates are counted. The 26 December holiday is for Christians only, so it is not skipped.",
+        "limit": "Public holidays are bundled for 2026 only, from the Cabinet Division circular F.No.10-1/2025-Min-II dated 19 January 2026, with Eid and Ashura dates as later notified. Holidays for 2027 are not published yet, so the working-days count only works for dates in 2026. Moon-sighting dates can change, so check the official notice for Eid and Ashura.",
+        "example": "From 1 January 2026 to 1 February 2026 is 31 days, which is 4 weeks and 3 days, or 1 month. There are 22 working days in that range.",
         "faq": [
           [
-            "How many days are between two dates?",
-            "Pick the two dates and press Calculate Difference. The tool shows the exact number of days, plus the weeks and days and the full months."
+            "How many working days are in January 2026?",
+            "From 1 to 31 January 2026 there are 22 working days, after skipping weekends. The 1 January bank holiday is not skipped, because banks close but government offices stay open."
           ],
           [
-            "Does it count the first date?",
-            "No. The count is the days from the first date to the second date. If you want to include both end days, add 1 to the day count."
+            "Does it skip Pakistan public holidays?",
+            "Yes, for 2026 only. The list comes from the Cabinet Division circular of 19 January 2026, with Eid and Ashura dates as later notified. Holidays for 2027 are not published yet."
           ],
           [
-            "Can I count weeks instead of days?",
-            "Yes. The result shows the weeks and the extra days as well, so 365 days shows as 52 weeks and 1 day."
+            "Can I add days to a date?",
+            "Yes. Enter a start date and a number of days, then press Add Days. Use a minus number to subtract days, and the tool shows the new date with its weekday."
           ],
           [
-            "Does the order of the dates matter?",
-            "No. The tool always counts the gap between the two dates, whichever one you pick first, so you can enter them in any order you like."
+            "How does the countdown work?",
+            "Pick a date and time, press Start Countdown, and the tool updates every second with the days, hours, minutes and seconds left. Press Stop to stop it."
           ]
         ]
       },
@@ -6137,36 +6166,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Estimate your BMR and daily calorie needs (TDEE) from age, height, weight and activity.",
       "steps": [
-        "Type your age in the 'Age (years)' box.",
-        "Choose your sex in the 'Sex' list and type your height and weight.",
-        "Choose your activity level in the 'Activity level' list.",
-        "Press Calculate Calories, or just wait, because the result updates as you type.",
-        "Read your BMR and TDEE in calories a day under the button."
+        "Choose metric or imperial units at the top.",
+        "Enter your age, sex, height and weight.",
+        "Pick your activity level, from sedentary to extra active.",
+        "Pick a goal and a macro split, and add body fat if you know it.",
+        "Press Calculate to see your BMR, TDEE, daily target and macros."
       ],
       "content": {
-        "use": "Calorie and TDEE Calculator estimates how many calories your body uses in a day. A person starting a diet wants a daily target that fits their body and activity. A gym member checks whether they eat enough to build muscle. A student learns the difference between BMR, the calories the body uses at rest, and TDEE, the total with daily activity. You type your age, sex, height and weight, choose your activity level, and the tool shows your BMR and TDEE.",
-        "tip": "TDEE is the number to use for a daily calorie target, not BMR, because BMR leaves out all movement. Choose the activity level that matches a normal week, not your busiest day. A small change in weight or activity changes the result, so update the numbers as they change.",
-        "limit": "These numbers are estimates from the Mifflin-St Jeor formula, not medical advice. They do not fit everyone, including children, pregnant people, and people with some health conditions. For a personal diet or health plan, talk to a doctor or a qualified dietitian.",
-        "example": "A 30-year-old man, 180 cm tall and 80 kg, moderately active, has a BMR of 1780 calories a day and a TDEE of 2759 calories a day.",
+        "use": "Calorie and TDEE Calculator works out how many calories your body burns each day, and now helps you plan what to eat. It starts with your BMR, the calories you burn at rest, from the Mifflin-St Jeor formula, then multiplies it by your activity level to give your TDEE. Pick a goal to lose, gain or stay the same weight and the tool gives a daily calorie target, with a protein, carbs and fat split you can change. You can also enter body fat for the Katch-McArdle formula, use feet and pounds, and see a daily water estimate.",
+        "tip": "A safe weight-loss target is about 500 calories below your TDEE, which is roughly half a kilo a week. The tool never sets a target below 1,200 calories a day, and if it does, it tells you to talk to a doctor first. Small steady changes last longer than crash diets.",
+        "limit": "This is an estimate, not medical advice. BMR formulas are averages and can be off by 10 to 20 percent for one person. The tool does not diagnose illness or prescribe a diet. If you have a health condition, are pregnant, or are under 18, talk to a doctor before changing how you eat.",
+        "example": "A 30-year-old man, 175 cm and 80 kg, lightly active, has a BMR of about 1,749 calories and a TDEE of about 2,405 calories a day.",
         "faq": [
           [
             "What is the difference between BMR and TDEE?",
-            "BMR is the calories your body uses at rest to stay alive. TDEE adds your daily activity and movement, so it is the total calories you use in a day."
+            "BMR is the calories your body burns at rest. TDEE adds your daily activity, so it is the calories you need to stay the same weight. Eat below TDEE to lose weight."
           ],
           [
-            "How many calories do I need to lose weight?",
-            "Most people aim for a TDEE minus about 300 to 500 calories a day. This tool only gives the estimate; a doctor or dietitian can set a safe target for you."
+            "How many calories should I eat to lose weight?",
+            "About 500 calories below your TDEE, which is roughly half a kilo a week. The tool never sets a target below 1,200 calories a day, and it tells you to talk to a doctor first."
           ],
           [
-            "Which activity level should I choose?",
-            "Pick the level that matches a normal week. Desk work with little exercise is sedentary, while a physical job or daily training is very active."
+            "What is the Katch-McArdle formula?",
+            "It works out BMR from your lean body mass instead of your total weight, so it suits people who are very muscular or carry more fat. Enter your body fat percentage to use it."
           ],
           [
-            "Is this medical advice?",
-            "No. The numbers are estimates from a standard formula. They are not a diagnosis or a diet plan, so talk to a doctor for personal advice."
+            "Can I enter feet and pounds?",
+            "Yes. Choose Imperial at the top and enter your height in feet and inches and your weight in pounds. The tool converts them to centimetres and kilograms for the formula."
           ]
         ]
       },
@@ -6203,36 +6232,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "A free scientific calculator with sin, cos, tan, log, square root and powers.",
       "steps": [
-        "Tap the number and operator keys to build your sum in the display.",
-        "Tap a function key such as sin, cos, log or sqrt to add it to the sum.",
-        "Tap the pi or e key when you need those numbers.",
-        "Press = to work out the answer, or C to clear the display.",
-        "Read the result under the display."
+        "Tap the keypad buttons, or click the display and type on your keyboard.",
+        "Use sin, cos, tan, log, ln, powers, roots and brackets as needed.",
+        "Press DEG or RAD to switch between degrees and radians.",
+        "Press equals to see the answer, M+ to store it, or Ans to reuse it.",
+        "Tap any line in the history below to put that sum back on the display."
       ],
       "content": {
-        "use": "Scientific Calculator does the maths a basic calculator cannot. A student works out sin of 30 degrees for a trigonometry problem. An engineer takes the log of a number for a decibel calculation. A shop owner works out a power for a compound growth check. You tap the keys to build the sum, use the function keys for sin, cos, tan, log, square root and powers, and press equals to see the answer. Everything runs in your browser, so there is nothing to install.",
-        "tip": "Trigonometry here uses degrees, so sin(30) is 0.5, the same as a school calculator in degree mode. Use brackets to control the order, such as (2+3) x 4, instead of relying on memory. Tap Back to remove one character instead of clearing the whole sum.",
-        "limit": "Trigonometry uses degrees, not radians. Factorial only works for whole numbers from 0 to 170. Very long sums may be hard to read on a small screen, and the tool does not save your history.",
-        "example": "Typing sin(30) and pressing = gives 0.5.",
+        "use": "Scientific Calculator does trig, logs, powers and roots in your browser, and now keeps a history and a memory. A student checks a sine or a logarithm for homework. An engineer works out a power or a cube root on site. A shopkeeper adds up a bill with percentages and brackets. Type on the keypad or your keyboard, press equals, and the tool shows the answer. Press DEG or RAD to switch angle mode, M+ to store a number in memory, and Ans to reuse the last answer. Your last 10 calculations stay listed below, and you can tap one to use it again.",
+        "tip": "Angles are in degrees by default, so sin(30) is 0.5. Press DEG to switch to RAD before you use sin, cos or tan in radians. Press Escape to clear, Backspace to delete one character, and Enter for equals.",
+        "limit": "The calculator works in degrees or radians only and shows answers rounded to 10 decimal places. Very large factorials and powers can overflow to Infinity. It is a general calculator, not a graphing or symbolic algebra tool, and it cannot solve equations.",
+        "example": "sin(30) is 0.5 in degrees. 2^10 is 1024. cbrt(27) is 3. 5! is 120.",
         "faq": [
           [
-            "Does sin use degrees or radians?",
-            "Degrees. Sin(30) gives 0.5, the same as a school calculator set to degrees. There is no radian mode on this page."
+            "How do I switch between degrees and radians?",
+            "Press the DEG button above the answer box. It changes to RAD, and sin, cos and tan then use radians. Inverse trig answers also change to match the mode you picked."
           ],
           [
-            "How do I work out a square root?",
-            "Tap sqrt, type the number, close the bracket if one opened, then press =. For example, sqrt(16) gives 4, and sqrt(2) gives about 1.4142."
+            "Can I use my keyboard?",
+            "Yes. Click the display, then type digits and operators as normal. Enter works out the sum, Escape clears it, and Backspace deletes one character at a time."
           ],
           [
-            "What does the x squared key do?",
-            "It raises the number before it to the power of 2. Typing 5 then the squared key gives 25, and typing 10 then the squared key gives 100."
+            "What is the Ans button for?",
+            "Ans puts your last answer back on the display, so you can use it in the next sum without typing it again. M+ adds the display number to memory, and MR brings it back."
           ],
           [
-            "Can I use brackets in a sum?",
-            "Yes. Tap the bracket keys to group parts of the sum. For example, (2+3) x 4 gives 20, while 2+3 x 4 gives 14."
+            "Why does my answer show as Infinity?",
+            "The answer is too large for the calculator to hold, for example a very large power or factorial. Try smaller numbers, or split the sum into two steps and work them out one at a time."
           ]
         ]
       },
