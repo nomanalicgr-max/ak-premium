@@ -3395,37 +3395,45 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Calculate exact age in years, months and days, free in your browser. Enter a birth date and get the exact age.",
       "steps": [
         "Pick your date of birth in the 'Date of birth' box.",
+        "Pick an 'Age on a chosen date' too if you want your age on a past or future date, such as a form date.",
         "Press Calculate Age, or just wait, because the result updates as you type.",
-        "Read your exact age in years, months and days."
+        "Read your exact age in years, months and days, plus the total days, weeks and hours you have lived.",
+        "Check the next birthday countdown and the dates of your 18th birthday and retirement at 60."
       ],
       "content": {
-        "use": "Age Calculator works out your exact age in years, months and days from your date of birth, so you do not have to count it yourself. A student checks their age for a form that asks for years and months. A parent checks a child's exact age for a school admission form. An office worker checks an employee's age for a retirement record. You pick the date of birth, and the tool counts the full years, the extra months and the remaining days up to today. The result updates live as soon as you change the date.",
-        "tip": "Use the calendar picker in the date box instead of typing the date, so the format is always right. If the date is in the future, the tool shows an error instead of a negative age.",
-        "limit": "The age is counted up to today, using your device's date. A future date of birth is not accepted. The tool gives years, months and days only; it does not give the age in weeks or total days.",
-        "example": "Picking 1 January 2000 as the date of birth on 18 November 2026 gives an age of 26 years, 10 months and 17 days.",
+        "use": "Age Calculator works out your exact age in years, months and days from your date of birth, so you do not have to count it yourself. A student checks their age for a form that asks for years and months. A parent checks a child's exact age for a school admission form. An office worker checks an employee's age for a retirement record. You pick the date of birth, and the tool counts the full years, the extra months and the remaining days up to today, plus the total days lived and the days left until your next birthday. Pick a chosen date too, and the tool shows your 18th birthday and retirement at 60.",
+        "tip": "Use the calendar picker in the date box instead of typing the date, so the format is always right. If the date is in the future, the tool shows an error instead of a negative age. The 'Age on a chosen date' box is handy for forms that ask how old you were, or will be, on a set date.",
+        "limit": "The age is counted up to today, using your device's date. A future date of birth is not accepted. The 18th birthday and retirement at 60 are counted from your date of birth, and retirement at 60 is a common milestone, not a rule for every job. The tool gives years, months and days only.",
+        "example": "Picking 1 January 2000 as the date of birth on 18 November 2026 gives an age of 26 years, 10 months and 17 days, a total of 9,818 days, and a next birthday on 1 January 2027.",
         "faq": [
           [
             "How is the age worked out?",
             "The tool counts full years from your date of birth to today, then the extra months and the remaining days. The result is exact to the day."
           ],
           [
-            "Can I enter a future date?",
-            "No. A date in the future is not accepted, because an age cannot be negative. Pick a date in the past."
+            "What is the total days figure?",
+            "It is the number of days you have lived, from your date of birth up to today. The tool also shows the same total as weeks and hours, so you can use whichever unit a form asks for."
           ],
           [
-            "Does the result update on its own?",
-            "Yes. The calculator recalculates live as soon as you change the date, so you do not need to press the button again."
+            "Can I find my age on a date?",
+            "Yes. Pick a date in the 'Age on a chosen date' box and the tool shows your age on that date in years, months and days. Use it for a past date, such as a school admission date, or a future one."
           ],
           [
-            "Why does it show months and days too?",
-            "Because many forms ask for an exact age, such as 17 years and 6 months. Years alone would not be enough for those forms."
+            "What milestones does it show?",
+            "It shows the date of your 18th birthday and your retirement at 60, with the days left until each one. If a milestone has already passed, the tool says so instead of counting down."
           ]
         ]
-      }
+      },
+      "related": [
+        "date-difference",
+        "bmi-calculator",
+        "percentage-calculator",
+        "unit-converter"
+      ]
     },
     {
       "slug": "percentage-calculator",
@@ -3450,18 +3458,20 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Calculate percentages, shares and percent change, free in your browser. Quick percent maths with no sign-up.",
       "steps": [
-        "Choose a calculation in the 'Calculation' list: X% of Y, X is what % of Y, or Percentage change from X to Y.",
-        "Type the two numbers in the X and Y boxes.",
-        "Press Calculate, or just wait, because the result updates as you type."
+        "Choose a calculation in the 'Calculation' list: X% of Y, X is what % of Y, Percentage change, Reverse discount, Percentage points, Margin or Markup.",
+        "Type the two numbers in the X and Y boxes. For a reverse discount, X is the discount percent and Y is the sale price. For margin and markup, X is the cost and Y is the selling price.",
+        "Tick 'Round the answer to 2 decimals' if you want a tidy answer instead of a long decimal.",
+        "Press Calculate, or just wait, because the result updates as you type.",
+        "Read the answer as a full sentence, such as '20% of 500 = 100'."
       ],
       "content": {
-        "use": "Percentage Calculator answers the three percentage questions people ask most often: what is a percent of a number, what percent one number is of another, and how much a number changed in percent. A shop owner works out a 10 percent discount on a price. A student works out what percent 45 marks is of 60. An office worker works out the percent rise in sales from last month to this month. You pick the calculation, type X and Y, and the tool shows the answer in a full sentence, such as '20% of 500 = 100'. The result updates live as you type.",
-        "tip": "For a discount, use 'X% of Y' to find the amount to take off, then subtract it from the price yourself. For a rise or fall, use 'Percentage change from X to Y', where X is the old number and Y is the new one.",
-        "limit": "The tool needs two numbers for every calculation. For 'X is what % of Y', Y cannot be zero. For percentage change, X cannot be zero. The answer is shown as plain text; it is not saved or rounded to a fixed number of decimals.",
-        "example": "Choosing 'X% of Y' with X as 20 and Y as 500 shows '20% of 500 = 100'.",
+        "use": "Percentage Calculator answers the percentage questions people ask most often: what is a percent of a number, what percent one number is of another, and how much a number changed in percent. It also works out the original price before a discount, the gap between two percents, and the margin or markup on a cost and price. A shop owner works out a 10 percent discount on a price. A student works out what percent 45 marks is of 60. An office worker works out the percent rise in sales from last month. You pick the calculation, type X and Y, and the tool shows the answer in a full sentence. The result updates live as you type.",
+        "tip": "For a discount, use 'X% of Y' to find the amount to take off, then subtract it from the price yourself. For a rise or fall, use 'Percentage change from X to Y', where X is the old number and Y is the new one. For margin and markup, X is always the cost and Y is always the selling price.",
+        "limit": "The tool needs two numbers for every calculation. For 'X is what % of Y', Y cannot be zero. For percentage change, X cannot be zero. For a reverse discount, the discount must be under 100 percent. The answer is shown as plain text, and the rounding box only changes how the answer is shown, not the maths behind it.",
+        "example": "Choosing 'X% of Y' with X as 20 and Y as 500 shows '20% of 500 = 100'. Choosing 'Reverse discount' with X as 20 and Y as 800 shows an original price of 1000.",
         "faq": [
           [
             "How do I work out a 10 percent discount?",
@@ -3472,15 +3482,21 @@
             "It tells you what share X is of Y. With X as 45 and Y as 60, the answer is 75%, because 45 is three quarters of 60."
           ],
           [
-            "How do I work out a price rise in percent?",
-            "Choose 'Percentage change from X to Y'. Put the old price in X and the new price in Y. A rise shows as a positive percent and a fall as a negative one."
+            "How do I find the original price?",
+            "Choose 'Reverse discount', put the discount percent in X and the sale price in Y. The tool divides the sale price by what is left after the discount, which gives the price before the discount was taken off."
           ],
           [
-            "Why does it say Y cannot be zero?",
-            "Dividing by zero is not possible. For 'X is what % of Y', Y is the whole you compare against, so it must not be zero."
+            "What is the difference between margin and markup?",
+            "Margin is profit as a share of the selling price, while markup is profit as a share of the cost. The same sale can show a 20 percent margin and a 25 percent markup, so check which one your shop or report asks for."
           ]
         ]
-      }
+      },
+      "related": [
+        "discount-calculator",
+        "tip-calculator",
+        "compound-interest",
+        "unit-converter"
+      ]
     },
     {
       "slug": "bmi-calculator",
@@ -3504,18 +3520,20 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Calculate BMI and its category from height and weight, free in your browser. Instant, private, no sign-up.",
       "steps": [
-        "Type your height in centimetres in the 'Height (cm)' box.",
-        "Type your weight in kilograms in the 'Weight (kg)' box.",
-        "Press Calculate BMI, or just wait, because the result updates as you type."
+        "Choose 'Adult' or 'Child, age 5 to 19' in the 'Who is this for' list. For a child, pick Girl or Boy and type the age in years.",
+        "Choose 'cm and kg' or 'feet, inches and pounds' in the Units list, then type your height and weight.",
+        "Type your waist in centimetres too if you want the waist-to-height ratio as well.",
+        "Press Calculate BMI, or just wait, because the result updates as you type.",
+        "Read your BMI and category, the healthy weight range for your height, your BMI Prime, and the WHO percentile for a child."
       ],
       "content": {
-        "use": "BMI Calculator works out your Body Mass Index from your height and weight, and tells you which category it falls in. A student checks their BMI for a health assignment. A parent checks a teenager's BMI before a doctor's visit. An office worker checks their own BMI as part of a fitness plan. You type your height in centimetres and your weight in kilograms, and the tool divides the weight by the height in metres squared, then rounds the answer to one decimal. The categories are Underweight below 18.5, Normal below 25, Overweight below 30, and Obese at 30 and above.",
-        "tip": "Measure your height and weight on the same day for a fair result. BMI is a rough guide, not a diagnosis; it does not account for muscle, age or body shape, so ask a doctor if you are worried about the result.",
-        "limit": "BMI needs a positive height and weight; anything else shows an error. The result is a general guide only. It does not measure body fat, muscle or health, and it is not medical advice. The calculator uses centimetres and kilograms only.",
-        "example": "A height of 170 cm and a weight of 65 kg gives a BMI of 22.5, which falls in the Normal category.",
+        "use": "BMI Calculator works out your Body Mass Index from your height and weight, and tells you which category it falls in. A student checks their BMI for a health assignment. A parent checks a child's BMI against the WHO growth reference. An office worker checks their own BMI for a fitness plan, in metric or imperial units. You type your height and weight, and the tool divides the weight by the height in metres squared, then rounds the answer to one decimal. It also shows the healthy weight range, your BMI Prime, and your waist-to-height ratio. The categories are Underweight below 18.5, Normal below 25, Overweight below 30, and Obese at 30 and above.",
+        "tip": "Measure your height and weight on the same day for a fair result. BMI is a rough guide, not a diagnosis; it does not account for muscle, age or body shape, so ask a doctor if you are worried about the result. For a child, the percentile matters more than the adult category, because a healthy BMI changes with age.",
+        "limit": "BMI needs a positive height and weight; anything else shows an error. The result is a general guide only. It does not measure body fat, muscle or health, and it is not medical advice. The child percentile uses the WHO Growth Reference 2007 for ages 5 to 19, with values interpolated between birthdays, so it is a guide and not a clinical reading.",
+        "example": "A height of 170 cm and a weight of 65 kg gives a BMI of 22.5, which falls in the Normal category, with a healthy range of 53.5 to 72.0 kg and a BMI Prime of 0.9. A 12-year-old girl who is 152 cm tall and weighs 42 kg has a BMI of 18.2, near the 53rd WHO percentile.",
         "faq": [
           [
             "How is BMI worked out?",
@@ -3526,15 +3544,21 @@
             "Underweight is below 18.5, Normal is 18.5 to under 25, Overweight is 25 to under 30, and Obese is 30 and above. These are general ranges, not a diagnosis."
           ],
           [
-            "Is BMI the same as body fat?",
-            "No. BMI only uses height and weight. It does not measure fat, muscle or fitness, so a muscular person can have a high BMI and still be healthy."
+            "Can I use feet and pounds?",
+            "Yes. Choose 'feet, inches and pounds' in the Units list, then type your height in feet and inches and your weight in pounds. The tool converts them to centimetres and kilograms before working out your BMI."
           ],
           [
-            "Can I use feet and pounds?",
-            "No. This calculator takes height in centimetres and weight in kilograms only. Convert your measurements first if you use feet and pounds."
+            "What is the child percentile?",
+            "It places a child's BMI on the WHO Growth Reference 2007 for their exact age and sex. Below the 3rd percentile is thinness, the 3rd to the 85th is a healthy weight, above the 85th is overweight, and above the 97th is obesity."
           ]
         ]
-      }
+      },
+      "related": [
+        "calorie-tdee-calculator",
+        "age-calculator",
+        "unit-converter",
+        "percentage-calculator"
+      ]
     },
     {
       "slug": "loan-emi-calculator",
@@ -3614,37 +3638,45 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Calculate weighted CGPA from course grades and credits, free in your browser. Enter courses, get your CGPA.",
       "steps": [
-        "Type one course per line in the box, as: Course, credit hours, grade point. For example: Math, 3, 3.7",
-        "Press Calculate CGPA, or just wait, because the result updates as you type.",
-        "Read your CGPA to 2 decimals and your total credit hours."
+        "Choose the 4.0 scale or the 10.0 scale in the 'Grade scale' list.",
+        "Type one course per line in the box, as: Course, credit hours, grade point or letter grade. For example: Math, 3, 3.7 or Math, 3, A-.",
+        "Add a semester name as a fourth part, such as Math, 3, A-, Fall 2025, to see a CGPA for each semester.",
+        "Type a Target CGPA and the remaining credit hours to see the average grade you still need, then press Calculate CGPA.",
+        "Use 'Plan ahead' with your current CGPA, credit hours and future courses to see what your CGPA becomes."
       ],
       "content": {
-        "use": "CGPA Calculator works out your weighted CGPA from your courses, so you can check your result without a spreadsheet. A student checks their CGPA at the end of a semester. A job applicant checks their CGPA before writing it on a resume. A parent checks a child's CGPA for a scholarship form. You type one course per line, with the course name, the credit hours and the grade point, separated by commas. The tool multiplies each grade point by its credit hours, adds them up and divides by the total credit hours, then shows the CGPA to 2 decimals.",
-        "tip": "Type the grade point exactly as your university gives it, such as 3.7 for an A-. If a line is wrong, the tool names it in the error, so fix that line and press Calculate CGPA again.",
-        "limit": "The tool uses the grade points you type; it does not convert letter grades for you. Each line must have exactly three parts: course name, credit hours and grade point. Credit hours must be above zero and grade points cannot be negative.",
-        "example": "Typing 'Math, 3, 3.7' and 'English, 3, 3.3' gives a CGPA of 3.50 across 6 credit hours.",
+        "use": "CGPA Calculator works out your weighted CGPA from your courses, so you can check your result without a spreadsheet. A student checks their CGPA at the end of a semester. A job applicant checks their CGPA before writing it on a resume. A parent checks a child's CGPA for a scholarship form. You type one course per line: course name, credit hours and grade point or letter grade. The tool multiplies each grade point by its credit hours, adds them up and divides by the total credit hours, then shows the CGPA to 2 decimals, the matching percent, and a CGPA per semester. You can also set a target CGPA and plan future grades to reach it.",
+        "tip": "Type the grade point exactly as your university gives it, such as 3.7 for an A-. Letter grades A+ to F work on the 4.0 scale, using the common mapping where A is 4.0, B is 3.0, C is 2.0 and D is 1.0. If a line is wrong, the tool names it in the error, so fix that line and press Calculate CGPA again.",
+        "limit": "The tool uses the grade points or letter grades you type, on the scale you choose. Letter grades work on the 4.0 scale only; on the 10.0 scale, type a number from 0 to 10. Each line must have three parts, or four with a semester name. Credit hours must be above zero. The percent shown is the CGPA divided by the scale, times 100, which is a common conversion, not an official one.",
+        "example": "Typing 'Math, 3, A-' and 'English, 3, B+' on the 4.0 scale gives a CGPA of 3.50 across 6 credit hours. Adding a target of 3.70 with 6 credits left shows you need an average of 3.90.",
         "faq": [
           [
             "How do I write a course line?",
-            "One course per line as: Course, credit hours, grade point. For example: Math, 3, 3.7. The course name can be anything; the numbers must be in the right order."
+            "One course per line as: Course, credit hours, grade point or letter grade. For example: Math, 3, 3.7 or Math, 3, A-. The course name can be anything; the grade must come last."
           ],
           [
-            "Does the tool convert A, B and C grades?",
-            "No. It uses the grade points you type. Convert your letter grades to grade points first, using your university's scale, then enter the numbers."
+            "Which letter grades can I type?",
+            "On the 4.0 scale you can type A+, A, A-, B+, B, B-, C+, C, C-, D+, D or F. The tool uses the common mapping where A is 4.0, A- is 3.7, B+ is 3.3, B is 3.0, C is 2.0, D is 1.0 and F is 0."
           ],
           [
             "What if one of my lines is wrong?",
             "The tool shows an error naming the exact line, such as 'Invalid course line: Math, 3'. Fix that line and press Calculate CGPA again."
           ],
           [
-            "Why is the CGPA weighted?",
-            "Because a 3-credit course counts more than a 1-credit course. Each grade point is multiplied by its credit hours before the average is worked out."
+            "How does the target planner work?",
+            "Type a target CGPA and how many credit hours you still have, then press Calculate CGPA. The tool works out the average grade point you need in those credits, and says if the target is out of reach on your scale."
           ]
         ]
-      }
+      },
+      "related": [
+        "percentage-marks-calculator",
+        "age-calculator",
+        "percentage-calculator",
+        "unit-converter"
+      ]
     },
     {
       "slug": "invoice-generator",
@@ -3664,23 +3696,24 @@
         "receipt maker"
       ],
       "libs": [
-        "jspdf"
+        "jspdf",
+        "xlsx"
       ],
       "engine": "tool-invoice",
       "maxFileMB": null,
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "content": {
-        "use": "An invoice generator is for freelancers, shops and small businesses that need a clean bill for a client: the work done, the quantity, the price, the tax and the total, as a PDF that can be sent on WhatsApp or email.",
-        "tip": "Enter one item per line as item, quantity, price. Choose a template before you download. Template 2 has a coloured header and a notes line, Template 1 is plain and simple.",
-        "limit": "The invoice is a simple formatted PDF, not a Word template or an accounting file. It does not store your invoices, and it does not calculate GST rules for you.",
-        "example": "Design work, 2, 5000 with 0% tax gives a subtotal of 10,000 and a total of 10,000.",
+        "use": "Invoice Generator is for freelancers, shops and small businesses that need a clean bill for a client: the work done, the quantity, the price, the tax and the total, as a PDF that can be sent on WhatsApp or email. You type the names, the invoice number and dates, and one line per item, and the tool works out the subtotal, the tax and the total. Each line can carry its own discount and tax, and the PDF can carry your logo, bank details and NTN or GST number. You can also download it as Excel or CSV, and save it as JSON to load it back later. Nothing is stored on a server; the invoice stays in your browser.",
+        "tip": "Enter one item per line as item, quantity, price. Add a fourth number for a per-line discount percent and a fifth for a per-line tax percent. Choose a template before you download. Template 2 has a coloured header and a notes line, Template 1 is plain and simple. Leave the invoice number empty and the tool numbers it for you, starting a fresh sequence in your browser.",
+        "limit": "The invoice is a simple formatted PDF, not a Word template or an accounting file. It does not store your invoices on a server, and it does not calculate GST rules for you; you type the tax percent yourself. The logo must be a PNG or JPG image. The auto invoice number counts up in this browser only, so it starts again on a new device.",
+        "example": "Design work, 2, 5000 with 0% tax gives a subtotal of 10,000 and a total of 10,000. Adding a 10 percent discount on one line, such as Design work, 2, 5000, 10, gives a line total of 9,000 and a subtotal of 9,000.",
         "faq": [
           [
             "Can I add tax to my invoice?",
-            "Yes. Enter the tax percentage and the tool adds it to the subtotal before showing the total."
+            "Yes. Enter the tax percentage and the tool adds it to the subtotal before showing the total. You can also add a tax percent to a single line, and the tool adds the line tax to the total as well."
           ],
           [
             "Are there different invoice templates?",
@@ -3691,17 +3724,24 @@
             "Yes. Press Calculate Summary first. The summary box shows each item, the subtotal, the tax and the total, so you can check the numbers."
           ],
           [
-            "Does it work out GST for me?",
-            "No. You enter the tax percentage yourself, and the tool adds it to the subtotal. It does not know the GST rules for your business."
+            "Can I download the invoice as Excel?",
+            "Yes. Press Download Excel for a spreadsheet with the items, the subtotal, the tax and the total, or Download CSV for the same figures as a plain text file. Save JSON keeps the whole invoice so you can load it back later."
           ]
         ]
       },
       "meta_description": "Generate a bill with items, tax and total as a PDF, free in your browser. A clean invoice for your business.",
       "steps": [
-        "Type the Business name, Client name and Invoice date.",
+        "Type the Business name, Client name, Invoice date and Due date. Leave the Invoice number empty and the tool makes one for you, or type your own.",
         "Choose Template 1 (plain and simple) or Template 2 (coloured header, with a Notes field) in the Template list.",
-        "List the items, one per line, as: Item name, quantity, price.",
-        "Type the Tax percent, press Calculate Summary to check the totals, then press Download Invoice PDF."
+        "List the items, one per line, as: Item name, quantity, price. Add a discount percent and a tax percent per line if you need them, such as: Design work, 2, 5000, 10, 5.",
+        "Type the Tax percent, add a logo, bank details and an NTN or GST number if you have them, then press Calculate Summary to check the totals.",
+        "Press Download Invoice PDF for an A4 invoice, Download Excel or Download CSV for the same invoice as a spreadsheet, or Save JSON to keep it and load it back later."
+      ],
+      "related": [
+        "resume-builder",
+        "percentage-calculator",
+        "discount-calculator",
+        "unit-converter"
       ]
     },
     {
@@ -3722,44 +3762,52 @@
         "cv builder"
       ],
       "libs": [
-        "jspdf"
+        "jspdf",
+        "docx"
       ],
       "engine": "tool-resume",
       "maxFileMB": null,
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "content": {
-        "use": "A resume builder is for a job seeker who needs a clean, one-page resume quickly: name, job title, contact details, skills and experience, as a PDF that can be attached to an application.",
-        "tip": "Keep the experience short and specific, with numbers where you can: how many records, how many reports, how much time saved. Choose a template before you download.",
-        "limit": "The resume is a simple formatted PDF, not a Word template. It does not store your resume, and it does not write the content for you.",
-        "example": "A data analyst resume with a name, title, email, phone, skills and two jobs becomes a clean PDF in one click.",
+        "use": "Resume Builder is for a job seeker who needs a clean resume quickly: name, job title, contact details, skills, experience and education, as a PDF that can be attached to an application. You type your details, pick one of three templates and an accent colour, and the tool shows a live preview as you type. The PDF stays on one page unless you allow a second page, and you can also download the same resume as an editable Word file. Paste a job description to check which keywords from the job are missing from your resume, and save the resume as JSON to load it back later. Nothing is stored on a server; the resume stays in your browser.",
+        "tip": "Keep the experience short and specific, with numbers where you can: how many records, how many reports, how much time saved. Choose a template before you download. The keyword check compares the words in the job description with your resume, so add any missing skill that you truly have before you apply.",
+        "limit": "The resume is a simple formatted PDF, not a Word template. The Word file is an editable document, not a pixel-perfect copy of the PDF. The keyword check counts single words only, so it does not judge how well a skill is written. The tool does not store your resume, and it does not write the content for you. There is no photo field.",
+        "example": "A data analyst resume with a name, title, email, phone, skills and two jobs becomes a clean PDF in one click. Pasting a job description that asks for Excel, reporting and dashboards shows which of those words are already in your resume, and which are missing.",
         "faq": [
           [
             "Are there different resume templates?",
-            "Yes, two. Template 1 is a classic single-column resume. Template 2 has a coloured header and a different skills layout."
+            "Yes, three. Template 1 is a classic single-column resume. Template 2 has a coloured header and skills as bullets. Template 3 is minimal, with a thin rule and no colour."
           ],
           [
             "Can I edit the resume after downloading it?",
-            "The PDF is not editable. If you need changes, edit the fields on this page and download it again."
+            "Yes, if you download the Word file. The .docx file opens in Word or Google Docs and you can edit every line. The PDF is not editable, so edit the fields on this page and download it again."
           ],
           [
             "What do I put in the skills box?",
             "Your skills separated by commas, such as Excel, Power BI, Reporting. The template lays them out for you in the downloaded PDF."
           ],
           [
-            "Can I add a photo to my resume?",
-            "No. There is no photo field. The resume has your name, job title, contact details, skills and experience only, with nothing else on the page."
+            "How does the keyword check work?",
+            "Paste a job description and press Check Keyword Match. The tool lists the words from the job that appear in your resume, the ones that are missing, and any empty sections, so you can fix the gaps before you apply."
           ]
         ]
       },
       "meta_description": "Build a clean PDF resume quickly, free in your browser. Add your name, skills and experience, then download.",
       "steps": [
         "Type your Full name, Job title, Email, Phone and Skills (comma-separated).",
-        "Choose Template 1 (classic single column) or Template 2 (coloured header, skills as bullets) in the Template list.",
-        "Write your experience in the Experience box.",
-        "Press Download Resume PDF and save the file."
+        "Choose Template 1 (classic single column), Template 2 (coloured header, skills as bullets) or Template 3 (minimal, thin rule) in the Template list, and pick an accent colour.",
+        "Write your experience in the Experience box and your degrees in the Education box, one per line. Tick 'Allow a second page' if your resume needs two pages.",
+        "Check the live preview under the form, then press Download Resume PDF, or Download Word (.docx) for a file you can edit.",
+        "Paste a job description and press Check Keyword Match to see which words from the job are missing from your resume, or Save JSON to keep it and load it back later."
+      ],
+      "related": [
+        "invoice-generator",
+        "percentage-calculator",
+        "discount-calculator",
+        "unit-converter"
       ]
     },
     {
@@ -5693,19 +5741,20 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Work out the discount amount and the final sale price from any price and percent.",
       "steps": [
-        "Type the original price in the 'Original price' box.",
-        "Type the discount percent in the 'Discount (%)' box.",
+        "Choose 'Price after discount' or 'Original price before a discount' in the list at the top.",
+        "For a price after discount, type the original price and the discount percent. For the original price, type the sale price and the discount percent instead.",
+        "Add a second discount percent, a sales tax percent, a delivery charge, or tick 'Buy 2 get 1 free' if they apply.",
         "Press Calculate Discount, or just wait, because the result updates as you type.",
-        "Read the discount amount and the final price under the button."
+        "Read the discount amount, the price after discounts, the price per item, and the final price with tax and delivery."
       ],
       "content": {
-        "use": "Discount Calculator works out how much you save in a sale and what you actually pay. A shopper sees a shirt marked 20 percent off and wants the real price before buying. A shop owner sets a sale price that still leaves a profit. A student checks whether a 50 percent off deal is really half price. You type the original price and the discount percent, and the tool shows the discount amount and the price you pay. It works for any currency, because it only uses the numbers you type.",
-        "tip": "A 20 percent discount means you pay 80 percent of the price, so you can check the answer by working out 80 percent of the price. For two discounts in a row, apply the first discount, then apply the second discount to the new price, not to the original price. Round the final price to your local currency before you pay.",
-        "limit": "The discount percent must be between 0 and 100. The tool does not add tax or delivery charges, so the price it shows is before tax. It only uses the numbers you type, so check that the original price is right.",
-        "example": "A price of 1000 with a 20 percent discount gives a discount of 200 and a final price of 800.",
+        "use": "Discount Calculator works out how much you save in a sale and what you actually pay. A shopper sees a shirt marked 20 percent off and wants the real price. A shop owner sets a sale price that still leaves profit. A student checks whether a 50 percent off deal is really half price. You type the price and the discount percent, and the tool shows the discount amount, the price after discounts, the price per item, and the final price with tax and delivery. It also stacks a second discount, finds the original price from a sale price, and applies a buy 2 get 1 free deal. It works for any currency, using only the numbers you type.",
+        "tip": "A 20 percent discount means you pay 80 percent of the price, so you can check the answer by working out 80 percent of the price. For two discounts in a row, the second discount applies to the new price, not to the original price, which is how shops work it out. Round the final price to your local currency before you pay.",
+        "limit": "The discount percent must be between 0 and 100. The second discount applies to the price after the first discount, and tax applies to the price after all discounts. The buy 2 get 1 free deal treats every third item as free, so the price per item is the discounted price divided by 3. Delivery is added after tax. The tool only uses the numbers you type, so check that the original price is right.",
+        "example": "A price of 1000 with a 20 percent discount gives a discount of 200 and a final price of 800. Adding a second discount of 10 percent gives a final price of 720, and a sale price of 720 after a 20 percent discount means the original price was 900.",
         "faq": [
           [
             "How do I find the price after discount?",
@@ -5716,12 +5765,12 @@
             "The discount is 100 and the final price is 300. Type 400 as the price and 25 as the discount percent to see it."
           ],
           [
-            "Can the discount be more than 100 percent?",
-            "No. A discount above 100 percent would make the price negative, so the tool only accepts 0 to 100 percent."
+            "How do stacked discounts work?",
+            "The second discount applies to the price after the first discount, not to the original price. A 20 percent discount followed by 10 percent off 1000 gives 720, not 700, because the second discount is taken off 800."
           ],
           [
-            "Does it add tax to the price?",
-            "No. The tool shows the price before tax. Add your local tax to the final price yourself if you need the total you will pay."
+            "Does it add tax and delivery?",
+            "Yes, if you type them. The tax percent applies to the price after all discounts, and the delivery charge is added after tax. Leave both empty and the final price is just the discounted price."
           ]
         ]
       },
@@ -5758,20 +5807,20 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "See how savings grow with compound interest over years, with any compounding frequency.",
       "steps": [
         "Type the starting amount in the 'Principal amount' box.",
-        "Type the yearly interest rate in the 'Annual interest rate (%)' box.",
-        "Type the number of years and choose how often interest is added in the 'Compounding' list.",
-        "Press Calculate Compound Interest, or just wait, because the result updates as you type.",
-        "Read the maturity amount and the interest earned under the button."
+        "Type the yearly interest rate in the 'Annual interest rate (%)' box, and the number of years.",
+        "Choose how often interest is added in the 'Compounding' list, and type a monthly deposit or an inflation rate if you have one.",
+        "Tick 'Compare with a second rate' and type the second rate to see two plans side by side.",
+        "Press Calculate Compound Interest, or just wait, because the result updates as you type, then read the maturity amount, the interest earned, and the year-by-year table."
       ],
       "content": {
-        "use": "Compound Interest Calculator shows how savings grow when the interest itself earns interest. A saver puts money in a bank account and wants to know what it becomes in 5 years. A parent plans a fund for a child and compares yearly and monthly compounding. A student learns why starting early matters more than saving more later. You type the starting amount, the yearly rate, the years, and how often interest is added, and the tool shows the final amount and the interest earned.",
-        "tip": "Monthly compounding grows slightly faster than yearly compounding at the same rate, because interest starts earning interest sooner. The rate you type should be the yearly rate the bank quotes. This tool assumes you add no more money and take nothing out during the years.",
-        "limit": "The tool assumes a fixed rate and no deposits or withdrawals after the start. Real bank rates change, and tax or fees are not included, so the result is an estimate. The rate must be 0 or more and the years must be more than 0.",
-        "example": "100,000 at 10 percent a year for 5 years, compounded yearly, grows to 161,051, with 61,051 interest earned.",
+        "use": "Compound Interest Calculator shows how savings grow when the interest itself earns interest. A saver puts money in a bank account and wants to know what it becomes in 5 years. A parent plans a fund for a child and compares yearly and monthly compounding. A student learns why starting early matters more than saving more later. You type the starting amount, the yearly rate, the years, and how often interest is added, and the tool shows the final amount and the interest earned, plus a year-by-year table. You can add a monthly deposit, see the value in today's money after inflation, and compare two rates side by side.",
+        "tip": "Monthly compounding grows slightly faster than yearly compounding at the same rate, because interest starts earning interest sooner. The rate you type should be the yearly rate the bank quotes. A monthly deposit grows the fund much faster than the starting amount alone, because every deposit also starts earning interest.",
+        "limit": "The tool assumes a fixed rate for the whole period. Real bank rates change, and tax or fees are not included, so the result is an estimate. Monthly deposits are added at the end of each month and compound monthly. The inflation-adjusted value divides the final amount by the inflation you type, so it is only as good as that rate. The rate must be 0 or more and the years must be more than 0.",
+        "example": "100,000 at 10 percent a year for 5 years, compounded yearly, grows to 161,051, with 61,051 interest earned. Adding 5,000 a month grows it to 551,716, with 151,716 interest earned on 300,000 of deposits.",
         "faq": [
           [
             "What is compound interest?",
@@ -5786,8 +5835,8 @@
             "No. The tool shows the amount before tax. Your bank or tax office may take tax from the interest, so the money you keep can be less."
           ],
           [
-            "Can I add monthly deposits with this tool?",
-            "No. This tool works out growth on one starting amount only. It does not add regular deposits or withdrawals, so use a savings plan calculator if you add money every month."
+            "What does the inflation figure do?",
+            "It shows what the final amount is worth in today's money. The tool divides the maturity amount by the inflation rate over the years, so a high inflation rate makes the real value much lower than the headline amount."
           ]
         ]
       },
@@ -5890,20 +5939,20 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Work out the tip, the total bill and the amount each person pays when you split it.",
       "steps": [
-        "Type the bill amount in the 'Bill amount' box.",
-        "Type the tip percent in the 'Tip (%)' box.",
-        "Type the number of people in the 'Split between (people)' box.",
-        "Press Calculate Tip, or just wait, because the result updates as you type.",
-        "Read the tip, the total and the amount per person under the button."
+        "Type the bill amount in the 'Bill amount' box, the tip percent, and the number of people.",
+        "Press one of the service buttons, Poor 5%, OK 10%, Good 15% or Great 20%, to set the tip percent for you.",
+        "Type a tax amount and a service charge if they apply, and tick 'Work the tip out on the bill after tax' if your tip is on the taxed bill.",
+        "Choose a round-up option if each person should pay a whole amount, and list what each person ordered for an itemised split.",
+        "Press Calculate Tip, or just wait, because the result updates as you type, then read the tip, the total and the amount per person."
       ],
       "content": {
-        "use": "Tip Calculator works out the tip on a restaurant bill and splits the total fairly. Friends share a dinner bill and want to know what each person pays with the tip included. A traveller in another country wants to leave the right tip without doing the maths by hand. A family checks the total before paying by card. You type the bill, the tip percent and the number of people, and the tool shows the tip, the total and the amount per person.",
-        "tip": "A 10 percent tip is easy to check: move the decimal point one place left on the bill. If the service was poor, you can set the tip to 0 and just split the bill. In some countries a service charge is already added to the bill, so check before you tip on top of it.",
-        "limit": "The tip percent must be 0 or more and the number of people must be at least 1. The tool does not add tax, so use the bill amount before or after tax as you prefer. Amounts are rounded to 2 decimal places, so a few cents may differ when you split.",
-        "example": "A bill of 2000 with a 15 percent tip and 4 people gives a tip of 300, a total of 2300, and 575 per person.",
+        "use": "Tip Calculator works out the tip on a restaurant bill and splits the total fairly. Friends share a dinner bill and want to know what each person pays with the tip included. A traveller in another country wants to leave the right tip without doing the maths by hand. A family checks the total before paying by card. You type the bill, the tip percent and the number of people, and the tool shows the tip, the total and the amount per person. You can add tax and a service charge, choose whether the tip is before or after tax, round each share up, and split the bill by what each person ordered.",
+        "tip": "A 10 percent tip is easy to check: move the decimal point one place left on the bill. The service buttons set a common tip for you: 5 percent for poor service, 10 for OK, 15 for good and 20 for great. In some countries a service charge is already added to the bill, so check before you tip on top of it.",
+        "limit": "The tip percent must be 0 or more and the number of people must be at least 1. Tax and the service charge are added to the bill, and the tip is worked out on the bill before tax unless you tick the box. Rounding up makes each person pay a whole amount, so the total can be a little more than the bill plus the tip. For an itemised split, the item amounts must add up to the bill. Amounts are rounded to 2 decimal places.",
+        "example": "A bill of 2000 with a 15 percent tip and 4 people gives a tip of 300, a total of 2300, and 575 per person. Rounding up to the nearest 100 makes each person pay 600, for a total of 2400.",
         "faq": [
           [
             "How much should I tip at a restaurant?",
@@ -5914,12 +5963,12 @@
             "Type the bill, the tip percent and the number of people. The tool shows the amount each person pays, including the tip."
           ],
           [
-            "Does the tip include tax?",
-            "No. The tool works out the tip on the bill amount you type. If you want the tip on the amount before tax, type the bill before tax."
+            "Should I tip on the bill before tax?",
+            "In most places, yes. The tool works the tip out on the bill before tax unless you tick the box for after tax. If the restaurant already added a service charge, check whether the tip should be on top of it."
           ],
           [
-            "Can I tip 0 percent?",
-            "Yes. Set the tip to 0 and the tool splits just the bill. The tip amount shows as 0 and the total is the same as the bill."
+            "How does the itemised split work?",
+            "List what each person ordered, one per line as Name, amount. The tool splits the tip, tax and service charge in the same share as each person's items, so someone who ordered more pays more of the tip."
           ]
         ]
       },
@@ -6220,20 +6269,20 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Add, subtract, multiply and divide fractions, simplified, with the decimal value.",
       "steps": [
-        "Type the first fraction as a top number and a bottom number.",
+        "Type the first fraction as a whole part, a top number and a bottom number. Leave the whole part empty for a simple fraction.",
         "Choose add, subtract, multiply or divide in the 'Operation' list.",
-        "Type the second fraction the same way.",
+        "Type the second fraction the same way, and a third fraction too if you want a sum of three.",
         "Press Calculate Fraction, or just wait, because the result updates as you type.",
-        "Read the simplified fraction and its decimal value under the button."
+        "Read the simplified fraction, its mixed number form, its decimal value and its percent, then check the step-by-step working under the answer."
       ],
       "content": {
-        "use": "Fraction Calculator adds, subtracts, multiplies and divides fractions and simplifies the answer. A student checks homework on adding halves and thirds. A cook halves a recipe that uses fractions of a cup. A worker splits a length into equal parts for a job. A teacher makes quick fraction questions for a class test without working them out by hand. You type the two fractions, choose the operation, and the tool shows the simplified fraction and its decimal value, so you can check your own working in seconds.",
-        "tip": "The answer is always simplified, so 2/4 shows as 1/2. A whole number answer shows as a whole number, such as 2, not 2/1. For a mixed number, divide the top by the bottom yourself; for example 5/2 is 2 and 1/2.",
-        "limit": "Only whole numbers are accepted in the top and bottom boxes. The bottom number cannot be zero, and dividing by a fraction of zero is not allowed. The decimal is rounded to 4 places.",
-        "example": "1/2 plus 1/3 equals 5/6, which is about 0.8333.",
+        "use": "Fraction Calculator adds, subtracts, multiplies and divides fractions and simplifies the answer. A student checks homework on adding halves and thirds. A cook halves a recipe that uses fractions of a cup. A worker splits a length into equal parts for a job. A teacher makes quick fraction questions for a class test without working them out by hand. You type the fractions, choose the operation, and the tool shows the simplified fraction, its mixed number form, its decimal value and its percent, plus the step-by-step working, so you can check your own working in seconds.",
+        "tip": "The answer is always simplified, so 2/4 shows as 1/2. A whole number answer shows as a whole number, such as 2, not 2/1. A mixed number such as 1 1/2 means one whole and one half. For a sum of three fractions, fill in the third fraction boxes and the tool works left to right.",
+        "limit": "Only whole numbers are accepted in the top, bottom and whole-part boxes. The bottom number cannot be zero, and dividing by a fraction of zero is not allowed. A whole part needs a positive top number, such as 1 1/2. The decimal is rounded to 4 places and the percent to 2 places.",
+        "example": "1/2 plus 1/3 equals 5/6, which is about 0.8333 and 83.33 percent. 1 1/2 plus 1/2 equals 2, and 1/2 plus 1/3 plus 1/6 equals 1.",
         "faq": [
           [
             "How do I add 1/2 and 1/3?",
@@ -6244,12 +6293,12 @@
             "The tool divides the top and bottom by their largest shared factor. That gives the simplest form, such as 1/2 instead of 2/4."
           ],
           [
-            "Can the bottom number be zero?",
-            "No. A fraction with zero on the bottom has no value, so the tool asks for a different number before it can work out the answer."
+            "How do I type a mixed number?",
+            "Type the whole part in the first box, then the top and bottom numbers. For 1 1/2, type 1 as the whole part, 1 as the top and 2 as the bottom. The answer also shows as a mixed number when it is more than one whole."
           ],
           [
-            "What does the decimal value mean?",
-            "It is the fraction as a decimal number. For 5/6 it is about 0.8333, rounded to 4 decimal places, which is easier to use on a calculator or a measuring tape."
+            "Can I add three fractions at once?",
+            "Yes. Fill in the third fraction boxes and the tool works left to right with the same operation. For example, 1/2 plus 1/3 plus 1/6 equals 1, and the working shows each step in order."
           ]
         ]
       },
