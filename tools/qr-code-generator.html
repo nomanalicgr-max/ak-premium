@@ -30,9 +30,9 @@
 <link rel="preload" href="/assets/fonts/inter-var.2c295d99e2.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/plus-jakarta-var.153fc85b70.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/styles.1026ec2fe8.css">
-<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "QR Code Generator", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Web browser", "inLanguage": "en", "description": "Generate QR codes from text or a URL, free in your browser. Download your QR code as a PNG instantly. Free, in your browser. No sign-up.", "url": "https://ak-premium.vercel.app/tools/qr-code-generator", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "AK Premium", "url": "https://ak-premium.vercel.app/"}}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What can I put in a QR code?", "acceptedAnswer": {"@type": "Answer", "text": "Any text or web address, such as a link, a phone number or a short message. Scanning it shows the text or opens the link on the phone."}}, {"@type": "Question", "name": "Why did my QR code fail to generate?", "acceptedAnswer": {"@type": "Answer", "text": "The text is probably too long. QR codes hold only so much data, so shorten the text or use a shorter link and try again."}}, {"@type": "Question", "name": "Can I change the size of the QR code?", "acceptedAnswer": {"@type": "Answer", "text": "No. The code is drawn at 220 pixels wide. Resize the downloaded PNG in an image editor if you need it bigger for printing."}}, {"@type": "Question", "name": "Does the QR code expire?", "acceptedAnswer": {"@type": "Answer", "text": "No. The code is just a picture of the text you typed. It keeps working as long as the link or text it holds still works."}}, {"@type": "Question", "name": "Is QR Code Generator free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. QR Code Generator on AK Premium is free to use in your browser, with no sign-up and no account."}}, {"@type": "Question", "name": "Do my files leave my browser when I use QR Code Generator?", "acceptedAnswer": {"@type": "Answer", "text": "No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What error-correction level should I pick?", "acceptedAnswer": {"@type": "Answer", "text": "M is balanced and suits most codes. L holds the most data but breaks easily. Q and H survive damage and logos better, so pick H when you add a logo or print the code small."}}, {"@type": "Question", "name": "Will my QR code work after I print it?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, if it is printed big enough and sharp. Download the SVG for printing, because it stays crisp at any size. Test the printed code with your phone camera before you hand it out."}}, {"@type": "Question", "name": "Why does Scan test say it cannot read the code?", "acceptedAnswer": {"@type": "Answer", "text": "The code may be too dense, too small, or the colours may be too close together. Try a bigger size, a higher error-correction level, darker dark colours and paler light colours, then test it again."}}, {"@type": "Question", "name": "Does the QR code expire or track scans?", "acceptedAnswer": {"@type": "Answer", "text": "No. The code is just the text you typed, drawn as squares. It never expires, it is not stored anywhere, and no one can track who scans it, because nothing is uploaded."}}, {"@type": "Question", "name": "Is QR Code Generator free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. QR Code Generator on AK Premium is free to use in your browser, with no sign-up and no account."}}, {"@type": "Question", "name": "Do my files leave my browser when I use QR Code Generator?", "acceptedAnswer": {"@type": "Answer", "text": "No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device."}}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ak-premium.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Everyday Tools", "item": "https://ak-premium.vercel.app/tools"}, {"@type": "ListItem", "position": 3, "name": "QR Code Generator", "item": "https://ak-premium.vercel.app/tools/qr-code-generator"}]}</script>
 </head>
 <body class="tool-page" data-tool="qr-code-generator">
@@ -326,29 +326,46 @@
 <p><strong>Text or URL as QR code.</strong></p>
 <section class="workspace" aria-label="QR Code Generator tool">
 <div class="workspace-tool" id="tool-qr">
-          <h2>QR Code Generator</h2>
-          <label>Text or URL <input id="qrText" type="text" placeholder="https://example.com"></label>
-          <button id="qrBtn" type="button" class="btn-primary">Generate QR Code</button>
-          <div id="qrContainer" aria-label="Generated QR code"></div>
-          <button id="qrDownloadBtn" type="button" class="btn-secondary">Download QR PNG</button>
-          <p class="status" id="qrStatus"></p>
-        </div>
+<h2>QR Code Generator</h2>
+<p>Make a QR code for a link, a Wi-Fi network, a contact, an email, a text message, a phone number, a place or a payment link. The code is made in your browser and never uploaded.</p>
+<label>QR code type <select id="qrType"><option value="url" selected>Link or text</option><option value="wifi">Wi-Fi network</option><option value="vcard">Contact (vCard)</option><option value="email">Email</option><option value="sms">Text message (SMS)</option><option value="phone">Phone number</option><option value="location">Location</option><option value="payment">Payment link or detail</option></select></label>
+<label id="qrTextRow">Link or text <input id="qrText" type="text" placeholder="https://example.com"></label>
+<div id="qrFields"></div>
+<div class="field-row">
+<label>Size <select id="qrSize"><option value="220">220 px</option><option value="320" selected>320 px</option><option value="480">480 px</option><option value="640">640 px</option></select></label>
+<label>Error correction <select id="qrEc"><option value="L">L — most data</option><option value="M" selected>M — balanced</option><option value="Q">Q — tougher</option><option value="H">H — toughest</option></select></label>
+</div>
+<div class="field-row">
+<label>Dark colour <input id="qrDark" type="color" value="#000000"></label>
+<label>Light colour <input id="qrLight" type="color" value="#ffffff"></label>
+</div>
+<label>Centre logo (optional) <input id="qrLogoInput" type="file" accept="image/jpeg,image/png,image/webp"></label>
+<p class="field-hint">A logo in the middle can make the code harder to scan. Use a higher error-correction level with a logo, and test the code with Scan test before you print it.</p>
+<button id="qrBtn" type="button" class="btn-primary">Generate QR Code</button>
+<div id="qrContainer" aria-label="Generated QR code"></div>
+<div class="field-row">
+<button id="qrDownloadBtn" type="button" class="btn-secondary">Download QR PNG</button>
+<button id="qrDownloadSvgBtn" type="button" class="btn-secondary">Download QR SVG</button>
+<button id="qrScanBtn" type="button" class="btn-secondary">Scan Test</button>
+</div>
+<p class="status" id="qrStatus" aria-live="polite"></p>
+</div>
 </section>
 <div class="ad-slot ad-slot-incontent" data-ad-slot="incontent" role="complementary" aria-label="Advertisement"></div><h2>What QR Code Generator does</h2>
-<p>QR Code Generator turns any text or web address into a QR code picture, so people can scan it with a phone instead of typing. A shop owner prints a QR code for a payment link on the counter. A teacher prints a QR code for a class form on a handout. A student puts a QR code for a portfolio link on a resume. You type the text or link, press Generate QR Code, and the code appears on the page at 220 pixels wide. Press Download QR PNG to save it as a picture you can print or paste into a document.</p>
+<p>QR Code Generator makes a QR code that a phone camera can read, for a link, a Wi-Fi network, a contact, an email, a text message, a phone number, a place or a payment. A shop owner prints a code that joins customers to the shop Wi-Fi. A freelancer puts a code on a business card that saves their contact details. You can pick the size, the error-correction level, the colours and a logo in the middle, and download it as a PNG or a crisp SVG for printing. The Scan test reads the code back to check it works. Everything runs in your browser, so nothing is uploaded and you do not need an account.</p>
 <h2>How to use QR Code Generator</h2>
-<ol><li>Type the text or web address in the &#x27;Text or URL&#x27; box.</li><li>Press Generate QR Code. The code appears on the page.</li><li>Press Download QR PNG to save the code as a picture.</li></ol>
+<ol><li>Pick what the QR code is for: a link, Wi-Fi, a contact, an email, a message, a phone number, a place or a payment.</li><li>Fill in the fields for that type.</li><li>Pick a size, an error-correction level and colours, and add a logo if you like.</li><li>Press Generate QR Code.</li><li>Download the code as PNG or SVG, and run Scan test to check it reads back.</li></ol>
 <h2>Tips for a good result</h2>
-<p>Test the code with your own phone camera before you print it. Short links make simpler codes that scan more easily, so use a short URL when you can.</p>
-<div class="callout callout--limits"><p><strong>Limits to know about.</strong> The code is a picture of the text you typed; it does not check that a link works or that a phone can open it. Very long text can fail to generate, and the tool will ask you to try shorter text. The code is fixed at 220 pixels wide.</p></div>
+<p>Use error-correction level H when you add a logo or print the code small, because the code can still be read when part of it is covered or damaged. Test the code with Scan test and with your own phone camera before you print it. Keep the light colour pale and the dark colour dark, or phones will struggle to read it.</p>
+<div class="callout callout--limits"><p><strong>Limits to know about.</strong> The code holds the text you type, and very long text makes a denser code that is harder to scan, so keep it short. A logo in the middle can make the code unreadable, even at a high error-correction level, so always test it. Payment QR formats differ by app, so paste the payment link or detail exactly as the app gives it. The scan test reads the code in your browser, which is a check, not a guarantee that every phone will read it.</p></div>
 <h2>Example</h2>
-<p>Typing https://example.com and pressing Generate QR Code shows a QR code that opens that page when scanned, ready to download as a PNG.</p>
+<p>A code for https://ak-premium.vercel.app at 320 px with error correction M scans in a second on most phones, and downloads as a PNG or an SVG.</p>
 <h2>Frequently asked questions</h2>
-<details><summary>What can I put in a QR code?</summary>
-<p>Any text or web address, such as a link, a phone number or a short message. Scanning it shows the text or opens the link on the phone.</p></details><details><summary>Why did my QR code fail to generate?</summary>
-<p>The text is probably too long. QR codes hold only so much data, so shorten the text or use a shorter link and try again.</p></details><details><summary>Can I change the size of the QR code?</summary>
-<p>No. The code is drawn at 220 pixels wide. Resize the downloaded PNG in an image editor if you need it bigger for printing.</p></details><details><summary>Does the QR code expire?</summary>
-<p>No. The code is just a picture of the text you typed. It keeps working as long as the link or text it holds still works.</p></details><details><summary>Is QR Code Generator free?</summary>
+<details><summary>What error-correction level should I pick?</summary>
+<p>M is balanced and suits most codes. L holds the most data but breaks easily. Q and H survive damage and logos better, so pick H when you add a logo or print the code small.</p></details><details><summary>Will my QR code work after I print it?</summary>
+<p>Yes, if it is printed big enough and sharp. Download the SVG for printing, because it stays crisp at any size. Test the printed code with your phone camera before you hand it out.</p></details><details><summary>Why does Scan test say it cannot read the code?</summary>
+<p>The code may be too dense, too small, or the colours may be too close together. Try a bigger size, a higher error-correction level, darker dark colours and paler light colours, then test it again.</p></details><details><summary>Does the QR code expire or track scans?</summary>
+<p>No. The code is just the text you typed, drawn as squares. It never expires, it is not stored anywhere, and no one can track who scans it, because nothing is uploaded.</p></details><details><summary>Is QR Code Generator free?</summary>
 <p>Yes. QR Code Generator on AK Premium is free to use in your browser, with no sign-up and no account.</p></details><details><summary>Do my files leave my browser when I use QR Code Generator?</summary>
 <p>No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device.</p></details><div class="related">
 <h2>Related tools</h2>
@@ -358,9 +375,9 @@
 <div class="callout callout--privacy"><p>Your files are processed in your browser by QR Code Generator. They are not uploaded to an AK Premium server, and you do not need an account. <a href="/privacy">Privacy Policy</a>.</p></div>
 <div class="ad-slot ad-slot-bottom" data-ad-slot="bottom" role="complementary" aria-label="Advertisement"></div></main>
 <footer class="site-footer"><div class="footer-inner"><div class="footer-col"><h3>Tools</h3><ul><li><a href="/pdf-tools">PDF Tools</a></li><li><a href="/image-tools">Image Tools</a></li><li><a href="/convert-tools">Convert</a></li><li><a href="/calculators">Calculators</a></li><li><a href="/developer-tools">Developer Tools</a></li><li><a href="/excel-tools">Excel Tools</a></li><li><a href="/business-tools">Business Tools</a></li><li><a href="/tools">All tools</a></li></ul></div><div class="footer-col"><h3>Country tools</h3><ul><li><a href="/country/pakistan">Pakistan tools</a></li><li><a href="/#section-country">India tools</a></li><li><a href="/#section-country">UAE &amp; Saudi tools</a></li><li><a href="/#section-country">UK tools</a></li><li><a href="/#section-country">US tools</a></li></ul></div><div class="footer-col"><h3>Company</h3><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/whats-new">What&rsquo;s new</a></li></ul></div><div class="footer-col"><h3>Legal</h3><ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/cookies">Cookie Policy</a></li><li><a href="/terms">Terms of Service</a></li><li><a href="/disclaimer">Disclaimer</a></li><li><a href="/dmca">DMCA</a></li><li><a href="/licenses">Licenses</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 AK Premium. Free tools, private by design. Files are processed in your browser and are not uploaded to an AK Premium server.</p></div></footer><div class="consent-banner" id="consentBanner" hidden><p>AK Premium uses cookies for ads and analytics only if you accept. Your files are processed in your browser and are never uploaded. <a href="/privacy">Read the Privacy Policy</a>.</p><button type="button" class="btn-primary" id="consentAccept">Accept</button><button type="button" class="btn-secondary" id="consentReject">Reject</button></div><script defer src="/assets/js/strings.924d7477b1.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU" crossorigin="anonymous"></script><script defer src="/config.js?v=30"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" integrity="sha384-8FWZA6BGMXhsfO+BLtrJK0We6gg5o1JyO8xQm6peWDEUs17ACA5ziE/NIAkl9z2k" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" integrity="sha384-b5Ya4Bq3qCyz39m2ISh+4DxjAIljdeFwK/BsXLuj9gugaNwAcj/ia15fxNZL9Nlx" crossorigin="anonymous"></script><script defer src="/config.js?v=31"></script>
 <script defer src="/assets/js/common.bd66a64512.js"></script>
-<script defer src="/assets/js/core.e5e232c6b7.js"></script>
-<script defer src="/assets/js/tools/qr-code-generator.ce4c0b6877.js"></script>
+<script defer src="/assets/js/core.11a6114476.js"></script>
+<script defer src="/assets/js/tools/qr-code-generator.511faa83fa.js"></script>
 </body>
 </html>
