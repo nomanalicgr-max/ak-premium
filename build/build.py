@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "28"  # v28 (2026-11-24): advanced upgrade plan batch 8 — Office fidelity: PDF to Word (real H1/H2/H3, tables, images), PDF to PPT (font-size titles, bullets, speaker notes, tables, images), Excel to PDF (all sheets, styles, print setup, Chart.js charts), Word to PDF (mammoth headings/lists/tables/images, headers/footers, TOC), PPT to PDF (styled slides from XML, images), TXT/HTML to PDF (headers/footers, Markdown input).
+ASSET_V = "29"  # v29 (2026-11-24): advanced upgrade plan batch 9 — Excel wizards: formula-generator (9 new intents + fast-formula-parser validation incl. LET), vba-macro-writer (10 new templates + syntax check), regex-creator (7 new PK/Urdu patterns + block builder + live tester + explain mode), dax-query (11 new measures + syntax check), excel-to-csv (sheet picker, delimiter, BOM, visible-rows-only), csv-to-excel (PapaParse auto-detect, type detection, bold header + freeze + AutoFilter). Also fixes the live initWizard bug: VBA/DAX Generate buttons threw TypeError because their explains are plain strings.
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -106,6 +106,10 @@ SRI = {
  "js-yaml": "sha384-+pxiN6T7yvpryuJmE1gM9PX7yQit15auDb+ZwwvJOd/4be2Cie5/IuVXgQb/S9du",
  "md5": "sha384-WAahC3S+69Co45zyyuhCjvdMwo7a42Yn0mM0IgZIUlYNebG24AVkPUltj3BQnM85",
  "chartjs": "sha384-zYPBGXwO4633CABX/5Spf6emCKUJCfoOkhOMYyxMsatqQZPnDblmmOewfjsIVWCM",
+ # PapaParse 5.5.3 (MIT) + fast-formula-parser 1.0.19 (MIT), both pinned
+ # files byte-identical to their npm tarballs (verified 2026-11-24).
+ "papaparse": "sha384-Jd2/X5FXVKahwaY2nivvw4LfSTg9idSj8yNXWtT4qef0fHSYr6M7M8bJAfbFYoMc",
+ "formula-parser": "sha384-qbZbp83iiop9pehvHB2JuzaTMs+iuThw09hlU9pq3v4stgbnqXl/FNaPGkG6+PWg",
 }
 
 # Valid schema.org applicationCategory values (Phase 4.1). The old code put
@@ -961,7 +965,7 @@ ws_replace("tool-resizepage", '''<div class="workspace-tool" id="tool-resizepage
 </div>''')
 
 # Excel wizards: replace the shared tool-excel workspace with 5 standalone workspaces
-def wizard_ws(wid, title, task_id, task_options, btn_id, out_id, status_id, fields_hint):
+def wizard_ws(wid, title, task_id, task_options, btn_id, out_id, status_id, fields_hint, extra=""):
     opts = "".join('<option value="%s">%s</option>' % (v, n) for v, n in task_options)
     return ('<div class="workspace-tool" id="%s">\n<h2>%s</h2>\n'
             '<label>Task <select id="%s">%s</select></label>\n'
@@ -969,14 +973,15 @@ def wizard_ws(wid, title, task_id, task_options, btn_id, out_id, status_id, fiel
             '<p class="file-limit-note">%s</p>\n'
             '<button id="%s" type="button" class="btn-primary">Generate</button>\n'
             '<pre id="%s" class="terminal" aria-live="polite">Your result will appear here.</pre>\n'
-            '<p class="status" id="%s" aria-live="polite"></p>\n</div>' % (
-        wid, title, task_id, opts, task_id.replace("Task", "Fields"), fields_hint, btn_id, out_id, status_id))
+            '<p class="status" id="%s" aria-live="polite"></p>\n%s</div>' % (
+        wid, title, task_id, opts, task_id.replace("Task", "Fields"), fields_hint, btn_id, out_id, status_id, extra))
 
 EXCEL_WS = {
 "tool-excel-formula": wizard_ws("tool-excel-formula", "Excel Formula Generator",
-    "formulaTask", [("sumif","SUMIF"),("sumifs","SUMIFS"),("countifs","COUNTIFS"),("vlookup","VLOOKUP"),("xlookup","XLOOKUP"),("indexmatch","INDEX + MATCH"),("ifformula","IF"),("nestedif","Nested IF"),("textformula","TEXT"),("datedif","DATEDIF"),("unique","UNIQUE (remove duplicates)")],
+    "formulaTask", [("sumif","SUMIF"),("sumifs","SUMIFS"),("countifs","COUNTIFS"),("vlookup","VLOOKUP"),("xlookup","XLOOKUP"),("indexmatch","INDEX + MATCH"),("ifformula","IF"),("nestedif","Nested IF"),("textformula","TEXT"),("datedif","DATEDIF"),("unique","UNIQUE (remove duplicates)"),("averageif","AVERAGEIF"),("eomonth","EOMONTH"),("rank","RANK"),("large","LARGE"),("small","SMALL"),("round","ROUND"),("vlookupIferror","VLOOKUP + IFERROR"),("xlookupMulti","XLOOKUP with several criteria"),("letformula","LET")],
     "formulaBtn", "formulaOutput", "formulaStatus",
-    "Pick a task, fill in the labelled fields, and get the exact formula with a plain-language explanation and an example. This is a template builder, not AI."),
+    "Pick a task, fill in the labelled fields, and get the exact formula with a plain-language explanation and an example. This is a template builder, not AI. Every generated formula is checked: brackets, function names, and the formula parser.",
+    '\n<h2>Check a formula</h2>\n<label>Formula to check <textarea id="formulaCheckInput" rows="3" placeholder="Paste a formula here, for example: =SUMIF(A2:A20, &quot;Lahore&quot;, B2:B20)"></textarea></label>\n<button id="formulaCheckBtn" type="button" class="btn-secondary">Check Formula</button>\n<pre id="formulaCheckOutput" class="terminal" aria-live="polite">The check result will appear here.</pre>'),
 "tool-excel-explainer": '''<div class="workspace-tool" id="tool-excel-explainer">
 <h2>Formula Explainer</h2>
 <label>Formula <textarea id="explainerInput" rows="4" placeholder="Paste a formula here, for example: =VLOOKUP(A2, Sheet2!A:B, 2, FALSE)"></textarea></label>
@@ -985,21 +990,38 @@ EXCEL_WS = {
 <p class="status" id="explainerStatus" aria-live="polite"></p>
 </div>''',
 "tool-excel-vba": wizard_ws("tool-excel-vba", "VBA Macro Writer",
-    "vbaTask", [("looprows","Loop through rows"),("copydata","Copy data to another sheet"),("autofilter","AutoFilter a table"),("sortdata","Sort a table"),("hidesheet","Hide a sheet (very hidden)")],
+    "vbaTask", [("looprows","Loop through rows"),("copydata","Copy data to another sheet"),("autofilter","AutoFilter a table"),("sortdata","Sort a table"),("hidesheet","Hide a sheet (very hidden)"),("copyfilter","Copy rows that meet a condition"),("importcsv","Import a CSV file"),("pivottable","Create a PivotTable"),("outlookmail","Send an Outlook email with attachment"),("protectsheet","Protect sheets with a password"),("unprotectsheet","Unprotect sheets with a password"),("datavalidation","Add a dropdown list (data validation)"),("findreplace","Find and replace across the workbook"),("splitworkbook","Split the workbook: one file per sheet"),("mergeworkbooks","Merge workbooks from a folder")],
     "vbaBtn", "vbaOutput", "vbaStatus",
-    "Pick a task, fill in the labelled fields, and get VBA code built from a fixed template. Test it on a copy of your workbook first."),
+    "Pick a task, fill in the labelled fields, and get VBA code built from a fixed template. Test it on a copy of your workbook first.",
+    '\n<h2>Check my VBA code</h2>\n<label>VBA code to check <textarea id="vbaCheckInput" rows="6" placeholder="Paste your VBA code here..."></textarea></label>\n<button id="vbaCheckBtn" type="button" class="btn-secondary">Check Syntax</button>\n<pre id="vbaCheckOutput" class="terminal" aria-live="polite">The check result will appear here.</pre>'),
 "tool-excel-regex": '''<div class="workspace-tool" id="tool-excel-regex">
 <h2>Regex Creator</h2>
-<label>Pattern for <select id="regexTask"><option value="email">Email address</option><option value="phonepk">Pakistan mobile number</option><option value="date">Date (DD/MM/YYYY)</option><option value="url">Web link</option><option value="numbers">Numbers in text</option><option value="cnic">Pakistan CNIC</option></select></label>
+<label>Pattern for <select id="regexTask"><option value="email">Email address</option><option value="phonepk">Pakistan mobile number</option><option value="date">Date (DD/MM/YYYY)</option><option value="url">Web link</option><option value="numbers">Numbers in text</option><option value="cnic">Pakistan CNIC</option><option value="ntn">Pakistan NTN</option><option value="ibanpk">Pakistan IBAN</option><option value="passport">Pakistan passport</option><option value="postalcode">Pakistan postal code</option><option value="amounts">Amount with commas</option><option value="time">Time (24-hour)</option><option value="urdu">Urdu text</option></select></label>
 <label>Test text (optional) <textarea id="regexTest" rows="4" placeholder="Paste some text to test the pattern on..."></textarea></label>
 <button id="regexBtn" type="button" class="btn-primary">Generate Pattern</button>
 <pre id="regexOutput" class="terminal" aria-live="polite">Your pattern will appear here.</pre>
+<div id="regexHighlight" class="terminal" aria-live="polite"></div>
+<pre id="regexGroups" class="terminal" aria-live="polite"></pre>
+<h2>Build a pattern from blocks</h2>
+<p class="file-limit-note">Pick a block, add it, and the pattern is assembled in order. Use the count box for a fixed number of repeats, or leave it empty.</p>
+<label>Block <select id="regexBlockType"><option value="digits">Digits</option><option value="letters">Letters</option><option value="word">Word characters</option><option value="spaces">Spaces</option><option value="any">Any character</option><option value="dash">Dash (-)</option><option value="dot">Dot (.)</option><option value="literal">Literal text</option></select></label>
+<label>Count or literal text <input id="regexBlockValue" type="text" placeholder="Example: 5, or the text itself"></label>
+<button id="regexBlockAdd" type="button" class="btn-secondary">Add Block</button>
+<button id="regexBlockClear" type="button" class="btn-secondary">Clear Blocks</button>
+<p class="file-limit-note" id="regexBlockList">No blocks yet. Add a block below.</p>
+<label>Built pattern <input id="regexBuiltPattern" type="text" readonly placeholder="Your built pattern will appear here"></label>
+<button id="regexBlockUse" type="button" class="btn-primary">Test Built Pattern</button>
+<h2>Explain a pattern</h2>
+<label>Regex pattern to explain <textarea id="regexExplainInput" rows="3" placeholder="Paste a regex here, for example: \\d{5}-\\d{7}-\\d"></textarea></label>
+<button id="regexExplainBtn" type="button" class="btn-secondary">Explain Pattern</button>
+<pre id="regexExplainOutput" class="terminal" aria-live="polite">The explanation will appear here.</pre>
 <p class="status" id="regexStatus" aria-live="polite"></p>
 </div>''',
 "tool-excel-dax": wizard_ws("tool-excel-dax", "DAX Query",
-    "daxTask", [("totalsales","Total Sales"),("average","Average"),("ytd","Year to Date"),("pcttotal","Percent of Total"),("countrows","Count Rows")],
+    "daxTask", [("totalsales","Total Sales"),("average","Average"),("ytd","Year to Date"),("pcttotal","Percent of Total"),("countrows","Count Rows"),("mom","Month on Month growth"),("yoy","Year on Year growth"),("runningtotal","Running Total"),("movingavg","Moving Average (3 months)"),("previousmonth","Previous Month"),("mtd","Month to Date"),("qtd","Quarter to Date"),("rankx","RANKX"),("topn","Top N total"),("switchmeasure","SWITCH dynamic measure"),("datetable","Date Table (Calendar)")],
     "daxBtn", "daxOutput", "daxStatus",
-    "Pick a measure, fill in your table and column names, and get a DAX measure with an explanation. Paste it into Power BI or Excel Power Pivot."),
+    "Pick a measure, fill in your table and column names, and get a DAX measure with an explanation. Paste it into Power BI or Excel Power Pivot.",
+    '\n<h2>Check my DAX measure</h2>\n<label>DAX measure to check <textarea id="daxCheckInput" rows="4" placeholder="Paste your DAX measure here, for example: Total Sales = SUM(Sales[Amount])"></textarea></label>\n<button id="daxCheckBtn" type="button" class="btn-secondary">Check Syntax</button>\n<pre id="daxCheckOutput" class="terminal" aria-live="polite">The check result will appear here.</pre>'),
 }
 
 # New Pakistan tools: workspaces + tool entries
@@ -1131,6 +1153,8 @@ LIB_SCRIPT = {
  "jspdf-autotable": '<script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.js" integrity="' + SRI["jspdf-autotable"] + '" crossorigin="anonymous"></script>',
  "html2canvas": '<script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="' + SRI["html2canvas"] + '" crossorigin="anonymous"></script>',
  "chartjs": '<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.js" integrity="' + SRI["chartjs"] + '" crossorigin="anonymous"></script>',
+ "papaparse": '<script defer src="https://cdn.jsdelivr.net/npm/papaparse@5.5.3/papaparse.min.js" integrity="' + SRI["papaparse"] + '" crossorigin="anonymous"></script>',
+ "formula-parser": '<script defer src="https://cdn.jsdelivr.net/npm/fast-formula-parser@1.0.19/build/parser.min.js" integrity="' + SRI["formula-parser"] + '" crossorigin="anonymous"></script>',
  # diff-match-patch is VENDORED, not CDN: the published npm file ends with
  # five unguarded "module.exports = ..." lines, which throw "ReferenceError:
  # module is not defined" at the end of every browser page load (and trip
@@ -1157,6 +1181,8 @@ LIB_HOST = {
  "jspdf-autotable": "https://cdn.jsdelivr.net",
  "html2canvas": "https://cdn.jsdelivr.net",
  "chartjs": "https://cdn.jsdelivr.net",
+ "papaparse": "https://cdn.jsdelivr.net",
+ "formula-parser": "https://cdn.jsdelivr.net",
 }
 
 def esc(x): return html.escape(str(x), quote=True)
@@ -1854,7 +1880,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v18). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v28";
+const CACHE = "ak-premium-v29";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

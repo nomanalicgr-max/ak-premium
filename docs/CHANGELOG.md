@@ -1,5 +1,28 @@
 # AK Premium — Changelog
 
+## v29 — 24 November 2026 (advanced upgrade plan, batch 9: Excel wizards)
+
+### Formula Generator — 9 new formulas, validation with a check box
+- New formulas: AVERAGEIF, EOMONTH, RANK, LARGE and SMALL, ROUND, VLOOKUP with IFERROR, multi-criteria XLOOKUP and LET. Every generated formula can now be checked, including a standalone "Check a formula" box, and the check uses a real parser (fast-formula-parser) that reports the first error it finds. LET is recognised but its calculation is not run in the browser, which the check says honestly.
+
+### VBA Macro Writer — 10 new templates, syntax check
+- New macros: copy or filter by condition, import a CSV file, build a PivotTable, send Outlook mail with an attachment, protect and unprotect sheets, data validation, find and replace across the whole workbook, and split or merge workbooks. A syntax check box now flags missing End Sub, unbalanced brackets and unclosed strings before the code is copied.
+
+### Regex Creator — Pakistan patterns, block builder, live tester, explain mode
+- New ready-made patterns: NTN, Pakistan IBAN, passport number, postal code, amounts with commas, time and Urdu text ranges. A block builder assembles a pattern piece by piece, the live tester highlights matches in the sample text and lists the capture groups, and the explain mode turns a pattern into plain words, token by token.
+
+### DAX Query — 11 new measures, Date table, syntax check
+- New measures: month-on-month and year-on-year, running total, moving average, PREVIOUSMONTH, month-to-date and quarter-to-date, RANKX, top N and SWITCH, plus a ready-made Date table snippet. A syntax check box flags unbalanced brackets and missing measure names.
+
+### Excel to CSV — sheet picker, delimiter, BOM, visible rows only
+- Pick one sheet or convert all sheets into a ZIP, choose the delimiter (comma, semicolon, tab or pipe), add a UTF-8 byte-order mark for Excel, keep display formats, convert visible rows only (hidden rows are now read from the file itself), and skip empty rows.
+
+### CSV to Excel — auto-detect, typed cells, bold header, freeze panes
+- Delimiter and encoding are now detected automatically with a preview before converting, cell types are detected (numbers, dates and true/false values, while phone numbers with leading zeros stay text), the header row is bold with frozen panes and an AutoFilter, column widths fit the content, and several CSV files can go into one workbook as separate sheets.
+
+### Fixed — VBA and DAX Generate buttons were broken
+- The Generate buttons on the VBA Macro Writer and DAX Query pages did nothing at all: the shared wizard code called the explanation as a function, but these two tools store it as plain text, so every click failed silently. The wizard now handles both kinds of explanation, and both buttons produce their output again.
+
 ## v28 — 24 November 2026 (advanced upgrade plan, batch 8: Office fidelity)
 
 ### PDF to Word — real headings, tables and images

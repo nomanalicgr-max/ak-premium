@@ -463,15 +463,29 @@
         <div class="workspace-tool" id="tool-excelcsv">
           <h2>Excel to CSV</h2>
           <input id="excelCsvInput" type="file" accept=".xlsx,.xls">
+          <label>Sheet <select id="excelCsvSheet"><option value="">Choose a file first</option></select></label>
+          <label>Export <select id="excelCsvScope"><option value="one" selected>Selected sheet only</option><option value="all">All sheets (one CSV each, in a ZIP)</option></select></label>
+          <label>Delimiter <select id="excelCsvDelimiter"><option value="," selected>Comma (,)</option><option value=";">Semicolon (;)</option><option value="&#9;">Tab</option><option value="|">Pipe (|)</option></select></label>
+          <label><input id="excelCsvBom" type="checkbox" checked> Add UTF-8 BOM (helps Excel open Urdu and special characters)</label>
+          <label><input id="excelCsvVisibleOnly" type="checkbox"> Visible rows only (skip hidden rows)</label>
+          <label><input id="excelCsvSkipEmpty" type="checkbox" checked> Skip empty rows</label>
           <button id="excelCsvBtn" type="button" class="btn-primary">Convert Excel to CSV</button>
           <p class="status" id="excelCsvStatus"></p>
         </div>
 
         <div class="workspace-tool" id="tool-csvxcel">
           <h2>CSV to Excel</h2>
-          <input id="csvExcelInput" type="file" accept=".csv,text/csv">
+          <input id="csvExcelInput" type="file" accept=".csv,text/csv" multiple>
           <label class="sr-only" for="csvExcelText">Paste CSV text</label>
           <textarea id="csvExcelText" rows="4" placeholder="Or paste CSV text here…"></textarea>
+          <label>Delimiter <select id="csvExcelDelimiter"><option value="auto" selected>Auto-detect</option><option value=",">Comma (,)</option><option value=";">Semicolon (;)</option><option value="&#9;">Tab</option><option value="|">Pipe (|)</option></select></label>
+          <button id="csvExcelPreviewBtn" type="button" class="btn-secondary">Preview First Rows</button>
+          <p class="file-limit-note" id="csvExcelDetectNote"></p>
+          <div id="csvExcelPreview" aria-live="polite"></div>
+          <label><input id="csvExcelHeader" type="checkbox" checked> First row is the header (bold, frozen, with filter)</label>
+          <label><input id="csvExcelFreeze" type="checkbox" checked> Freeze the header row</label>
+          <label><input id="csvExcelFilter" type="checkbox" checked> Add AutoFilter to the header</label>
+          <label><input id="csvExcelAutofit" type="checkbox" checked> Auto-fit column widths</label>
           <button id="csvExcelBtn" type="button" class="btn-primary">Convert CSV to Excel</button>
           <p class="status" id="csvExcelStatus"></p>
         </div>
