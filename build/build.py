@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "31"  # v31 (2026-11-24): advanced upgrade plan batch 11 — Image converters + design/everyday: png-to-jpg (quality, flatten colour, EXIF), jpg-to-png + webp-to-png (PNG-8 via UPNG.js, exact palette, IEND-validated with plain-PNG fallback, EXIF), webp-to-jpg (quality, flatten, EXIF), jpg-to-webp (quality, Best-quality note, target-size, EXIF), image-compressor (EXIF toggle), passport-photo-maker (NADRA + Punjab driving-licence sizes, guide overlay, print sheets, 60 KB step-down), color-palette (WCAG AA/AAA, harmonies, 50-900 shades/tints, eyedropper via color-thief, CSS/Tailwind/PNG export), qr-code-generator (8 structured types, EC levels, logo, PNG+SVG, jsQR scan test; qrcode-generator replaces qrcodejs), password-generator (passphrase with 1,296-word EFF sample, zxcvbn strength + crack-time, exclude-ambiguous, pronounceable, PIN).
+ASSET_V = "32"  # v32 (2026-11-24): advanced upgrade plan batch 12 — Calculators 1 + business: age-calculator (exact age, countdown, milestones), percentage-calculator (reverse, margin, markup, percentage points), bmi-calculator (adult + WHO Growth Reference 2007 child percentiles 5-19y), cgpa-calculator (4.0/10.0, what-if planner), discount-calculator (stacked, reverse, BOGO, tax + delivery), compound-interest (monthly deposits, year-by-year table, inflation-adjusted, two-plan compare), tip-calculator (tax/service, round-up per person, itemised split), fraction-calculator (mixed numbers, chained third fraction, step-by-step working), invoice-generator (line discount/tax, auto number, logo, PDF + Excel + CSV + JSON), resume-builder (3 templates, live preview, PDF + DOCX, ATS keyword check).
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -495,7 +495,7 @@ for _e in REGISTRY:
 # Phase 3.3: calculator numeric inputs use a text keyboard with decimal
 # inputmode (mobile keyboards show a decimal point; type=number spinners
 # and locale quirks go away). Handlers already parseFloat the value.
-for _wid in ("tool-percent", "tool-bmi", "tool-emi", "tool-unit", "tool-discount", "tool-compound", "tool-mortgage", "tool-tip", "tool-timezone", "tool-datediff", "tool-tdee", "tool-scientific", "tool-fraction"):
+for _wid in ("tool-percent", "tool-bmi", "tool-cgpa", "tool-emi", "tool-unit", "tool-discount", "tool-compound", "tool-mortgage", "tool-tip", "tool-timezone", "tool-datediff", "tool-tdee", "tool-scientific", "tool-fraction"):
     WORKSPACES[_wid] = WORKSPACES[_wid].replace('type="number"', 'type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"')
 WORKSPACES["tool-emi"] = WORKSPACES["tool-emi"].replace(
     '<pre id="emiOutput" class="terminal">EMI result will appear here.</pre>',
@@ -872,14 +872,30 @@ ws_replace("tool-invoice", '''<div class="workspace-tool" id="tool-invoice">
 <label>Business name <input id="invoiceBusiness" type="text" placeholder="Your business name"></label>
 <label>Client name <input id="invoiceClient" type="text" placeholder="Client name"></label>
 </div>
+<div class="field-row">
+<label>Invoice number <input id="invoiceNumber" type="text" placeholder="Leave empty for an auto number"></label>
+<label>PO number <input id="invoicePo" type="text" placeholder="Client PO number (optional)"></label>
+</div>
+<div class="field-row">
 <label>Invoice date <input id="invoiceDate" type="date"></label>
-<label>Items (one per line: Item name, quantity, price)</label>
+<label>Due date <input id="invoiceDue" type="date"></label>
+</div>
+<label>Logo (PNG or JPG, optional) <input id="invoiceLogo" type="file" accept="image/png,image/jpeg"></label>
+<label>Items (one per line: Item name, quantity, price, discount % optional, tax % optional)</label>
 <textarea id="invoiceItems" rows="4" placeholder="Design work, 2, 5000"></textarea>
 <label>Tax (%) <input id="invoiceTax" type="number" min="0" value="0"></label>
+<label>Bank details (optional) <input id="invoiceBank" type="text" placeholder="Bank name, account number"></label>
+<label>NTN / GST number (optional) <input id="invoiceNtn" type="text" placeholder="NTN or GST number"></label>
 <label>Notes (Template 2 only) <input id="invoiceNotes" type="text" placeholder="Payment details, thank you note"></label>
 <div class="field-row">
 <button id="invoiceCalcBtn" type="button" class="btn-secondary">Calculate Summary</button>
 <button id="invoicePdfBtn" type="button" class="btn-primary">Download Invoice PDF</button>
+</div>
+<div class="field-row">
+<button id="invoiceXlsxBtn" type="button" class="btn-secondary">Download Excel</button>
+<button id="invoiceCsvBtn" type="button" class="btn-secondary">Download CSV</button>
+<button id="invoiceSaveBtn" type="button" class="btn-secondary">Save JSON</button>
+<label>Load JSON <input id="invoiceLoadFile" type="file" accept="application/json,.json"></label>
 </div>
 <pre id="invoiceSummary" class="terminal">Invoice summary will appear here.</pre>
 <p class="status" id="invoiceStatus" aria-live="polite"></p>
@@ -887,7 +903,11 @@ ws_replace("tool-invoice", '''<div class="workspace-tool" id="tool-invoice">
 
 ws_replace("tool-resume", '''<div class="workspace-tool" id="tool-resume">
 <h2>Resume Builder</h2>
-<label>Template <select id="resumeTemplate"><option value="1">Template 1 — classic single column</option><option value="2">Template 2 — coloured header, skills as bullets</option></select></label>
+<label>Template <select id="resumeTemplate"><option value="1">Template 1 — classic single column</option><option value="2">Template 2 — coloured header, skills as bullets</option><option value="3">Template 3 — minimal, thin rule</option></select></label>
+<div class="field-row">
+<label>Accent colour <input id="resumeAccent" type="color" value="#4f46e5"></label>
+<label><input id="resumeTwoPage" type="checkbox"> Allow a second page</label>
+</div>
 <div class="field-row">
 <label>Full name <input id="resumeName" type="text" placeholder="Full name"></label>
 <label>Job title <input id="resumeTitle" type="text" placeholder="Job title"></label>
@@ -899,7 +919,21 @@ ws_replace("tool-resume", '''<div class="workspace-tool" id="tool-resume">
 <label>Skills (comma-separated) <input id="resumeSkills" type="text" placeholder="Excel, Power BI, Reporting"></label>
 <label>Experience</label>
 <textarea id="resumeExperience" rows="5" placeholder="Write your experience here…"></textarea>
+<label>Education (one per line: Degree, school, year)</label>
+<textarea id="resumeEducation" rows="3" placeholder="BSc Computer Science, GC University Faisalabad, 2024"></textarea>
+<div id="resumePreview"></div>
+<div class="field-row">
 <button id="resumeBtn" type="button" class="btn-primary">Download Resume PDF</button>
+<button id="resumeDocxBtn" type="button" class="btn-secondary">Download Word (.docx)</button>
+</div>
+<label>Job description (paste it to check keyword match)</label>
+<textarea id="resumeJobDesc" rows="4" placeholder="Paste the job description here…"></textarea>
+<button id="resumeAtsBtn" type="button" class="btn-secondary">Check Keyword Match</button>
+<div id="resumeAtsOut"></div>
+<div class="field-row">
+<button id="resumeSaveBtn" type="button" class="btn-secondary">Save JSON</button>
+<label>Load JSON <input id="resumeLoadFile" type="file" accept="application/json,.json"></label>
+</div>
 <p class="status" id="resumeStatus" aria-live="polite"></p>
 </div>''')
 
@@ -2165,7 +2199,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v18). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v31";
+const CACHE = "ak-premium-v32";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

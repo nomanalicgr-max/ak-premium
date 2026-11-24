@@ -660,6 +660,7 @@
         <div class="workspace-tool" id="tool-age">
           <h2>Age Calculator</h2>
           <label>Date of birth <input id="ageDob" type="date"></label>
+          <label>Age on a chosen date (optional) <input id="ageOnDate" type="date"></label>
           <button id="ageBtn" type="button" class="btn-primary">Calculate Age</button>
           <pre id="ageOutput" class="terminal">Your exact age will appear here.</pre>
           <p class="status" id="ageStatus"></p>
@@ -668,12 +669,13 @@
         <div class="workspace-tool" id="tool-percent">
           <h2>Percentage Calculator</h2>
           <label>Calculation
-            <select id="percentMode"><option value="of">X% of Y</option><option value="share">X is what % of Y</option><option value="change">Percentage change from X to Y</option></select>
+            <select id="percentMode"><option value="of">X% of Y</option><option value="share">X is what % of Y</option><option value="change">Percentage change from X to Y</option><option value="reverse">Original price before a discount (reverse)</option><option value="points">Percentage points between two percents</option><option value="margin">Margin on cost and selling price</option><option value="markup">Markup on cost and selling price</option></select>
           </label>
           <div class="field-row">
             <label>X <input id="percentX" type="number" placeholder="X"></label>
             <label>Y <input id="percentY" type="number" placeholder="Y"></label>
           </div>
+          <label><input id="percentRound" type="checkbox"> Round the answer to 2 decimals</label>
           <button id="percentBtn" type="button" class="btn-primary">Calculate</button>
           <pre id="percentOutput" class="terminal">Result will appear here.</pre>
           <p class="status" id="percentStatus"></p>
@@ -682,9 +684,29 @@
         <div class="workspace-tool" id="tool-bmi">
           <h2>BMI Calculator</h2>
           <div class="field-row">
+            <label>Who is this for
+              <select id="bmiMode"><option value="adult" selected>Adult</option><option value="child">Child, age 5 to 19 (WHO percentile)</option></select>
+            </label>
+            <label>Units
+              <select id="bmiUnit"><option value="metric" selected>cm and kg</option><option value="imperial">feet, inches and pounds</option></select>
+            </label>
+          </div>
+          <div class="field-row" id="bmiMetricRow">
             <label>Height (cm) <input id="bmiHeight" type="number" min="1" placeholder="Height in cm"></label>
             <label>Weight (kg) <input id="bmiWeight" type="number" min="1" placeholder="Weight in kg"></label>
           </div>
+          <div class="field-row" id="bmiImperialRow" style="display:none">
+            <label>Height, feet <input id="bmiFeet" type="number" min="0" placeholder="Feet"></label>
+            <label>Height, inches <input id="bmiInches" type="number" min="0" max="11" placeholder="Inches"></label>
+            <label>Weight (lb) <input id="bmiLb" type="number" min="1" placeholder="Weight in lb"></label>
+          </div>
+          <div class="field-row" id="bmiChildRow" style="display:none">
+            <label>Child's sex
+              <select id="bmiSex"><option value="female" selected>Girl</option><option value="male">Boy</option></select>
+            </label>
+            <label>Child's age (years, 5 to 19) <input id="bmiAge" type="number" min="5" max="19" step="0.5" placeholder="Age in years"></label>
+          </div>
+          <label>Waist (cm, optional) <input id="bmiWaist" type="number" min="1" placeholder="Waist in cm"></label>
           <button id="bmiBtn" type="button" class="btn-primary">Calculate BMI</button>
           <pre id="bmiOutput" class="terminal">Your BMI and category will appear here.</pre>
           <p class="status" id="bmiStatus"></p>
@@ -787,10 +809,26 @@
 
         <div class="workspace-tool" id="tool-cgpa">
           <h2>CGPA Calculator</h2>
-          <label>Courses (one per line: Course, credit hours, grade point)</label>
+          <label>Grade scale
+            <select id="cgpaScale"><option value="4" selected>4.0 scale</option><option value="10">10.0 scale</option></select>
+          </label>
+          <label>Courses (one per line: Course, credit hours, grade point or letter grade)</label>
           <textarea id="cgpaInput" rows="4" placeholder="Math, 3, 3.7"></textarea>
+          <div class="field-row">
+            <label>Target CGPA (optional) <input id="cgpaTarget" type="number" min="0" step="0.01" placeholder="Target CGPA"></label>
+            <label>Remaining credit hours <input id="cgpaRemaining" type="number" min="0" placeholder="Credits left"></label>
+          </div>
           <button id="cgpaBtn" type="button" class="btn-primary">Calculate CGPA</button>
           <pre id="cgpaOutput" class="terminal">CGPA result will appear here.</pre>
+          <p><strong>Plan ahead (what-if grades)</strong></p>
+          <div class="field-row">
+            <label>Current CGPA <input id="cgpaCurrent" type="number" min="0" step="0.01" placeholder="Current CGPA"></label>
+            <label>Current credit hours <input id="cgpaCurrentCredits" type="number" min="0" placeholder="Credits done"></label>
+          </div>
+          <label>Future courses (one per line: Course, credit hours, grade point or letter grade)</label>
+          <textarea id="cgpaFuture" rows="3" placeholder="Physics, 3, A-"></textarea>
+          <button id="cgpaPlanBtn" type="button" class="btn-secondary">Plan What-If</button>
+          <pre id="cgpaPlanOutput" class="terminal">Your future CGPA will appear here.</pre>
           <p class="status" id="cgpaStatus"></p>
         </div>
 
@@ -829,9 +867,24 @@
 
         <div class="workspace-tool" id="tool-discount">
           <h2>Discount Calculator</h2>
-          <div class="field-row">
+          <label>What do you want to work out?
+            <select id="discMode"><option value="discount" selected>Price after discount</option><option value="reverse">Original price before a discount</option></select>
+          </label>
+          <div class="field-row" id="discPriceRow">
             <label>Original price <input id="discPrice" type="number" min="0" placeholder="Original price"></label>
             <label>Discount (%) <input id="discPct" type="number" min="0" max="100" placeholder="Discount %"></label>
+          </div>
+          <div class="field-row" id="discSaleRow" style="display:none">
+            <label>Sale price <input id="discSalePrice" type="number" min="0" placeholder="Price after discount"></label>
+            <label>Discount (%) <input id="discPctRev" type="number" min="0" max="100" placeholder="Discount %"></label>
+          </div>
+          <div id="discExtraRow">
+            <div class="field-row">
+              <label>Second discount % (optional) <input id="discPct2" type="number" min="0" max="100" placeholder="Second discount %"></label>
+              <label>Sales tax % (optional) <input id="discTaxRate" type="number" min="0" placeholder="Tax %"></label>
+              <label>Delivery charge (optional) <input id="discDelivery" type="number" min="0" placeholder="Delivery charge"></label>
+            </div>
+            <label><input id="discBogo" type="checkbox"> Buy 2 get 1 free (third item free)</label>
           </div>
           <button id="discBtn" type="button" class="btn-primary">Calculate Discount</button>
           <pre id="discOutput" class="terminal">Result will appear here.</pre>
@@ -848,8 +901,18 @@
           <label>Compounding
             <select id="ciFreq"><option value="1" selected>Yearly</option><option value="2">Half-yearly</option><option value="4">Quarterly</option><option value="12">Monthly</option><option value="365">Daily</option></select>
           </label>
+          <div class="field-row">
+            <label>Monthly deposit (optional) <input id="ciDeposit" type="number" min="0" placeholder="Deposit every month"></label>
+            <label>Inflation rate % (optional) <input id="ciInflation" type="number" min="0" placeholder="Inflation %"></label>
+          </div>
+          <label><input id="ciCompare" type="checkbox"> Compare with a second rate</label>
+          <div class="field-row" id="ciCompareRow" style="display:none">
+            <label>Second yearly rate (%) <input id="ciRate2" type="number" min="0" placeholder="Second rate %"></label>
+          </div>
           <button id="ciBtn" type="button" class="btn-primary">Calculate Compound Interest</button>
           <pre id="ciOutput" class="terminal">Result will appear here.</pre>
+          <div id="ciTable"></div>
+          <div id="ciCompareOut"></div>
           <p class="status" id="ciStatus"></p>
         </div>
 
@@ -890,8 +953,27 @@
             <label>Tip (%) <input id="tipPct" type="number" min="0" placeholder="Tip %"></label>
             <label>Split between (people) <input id="tipPeople" type="number" min="1" value="1" placeholder="People"></label>
           </div>
+          <div class="field-row">
+            <button type="button" class="btn-secondary" data-tip-preset="5">Poor service 5%</button>
+            <button type="button" class="btn-secondary" data-tip-preset="10">OK service 10%</button>
+            <button type="button" class="btn-secondary" data-tip-preset="15">Good service 15%</button>
+            <button type="button" class="btn-secondary" data-tip-preset="20">Great service 20%</button>
+          </div>
+          <div class="field-row">
+            <label>Tax amount (optional) <input id="tipTax" type="number" min="0" placeholder="Tax amount"></label>
+            <label>Service charge (optional) <input id="tipService" type="number" min="0" placeholder="Service charge"></label>
+          </div>
+          <div class="field-row">
+            <label><input id="tipOnTax" type="checkbox"> Work the tip out on the bill after tax</label>
+            <label>Round up each person's share
+              <select id="tipRound"><option value="0" selected>No rounding</option><option value="1">Up to the nearest rupee</option><option value="10">Up to the nearest 10</option><option value="50">Up to the nearest 50</option><option value="100">Up to the nearest 100</option></select>
+            </label>
+          </div>
+          <label>Itemised split (optional, one per line: Name, amount)</label>
+          <textarea id="tipItems" rows="3" placeholder="Ali, 1200"></textarea>
           <button id="tipBtn" type="button" class="btn-primary">Calculate Tip</button>
           <pre id="tipOutput" class="terminal">Result will appear here.</pre>
+          <div id="tipItemsOut"></div>
           <p class="status" id="tipStatus"></p>
         </div>
 
@@ -1001,6 +1083,7 @@
         <div class="workspace-tool" id="tool-fraction">
           <h2>Fraction Calculator</h2>
           <div class="field-row">
+            <label>First fraction, whole part <input id="frWhole1" type="number" placeholder="Whole"></label>
             <label>First fraction, top number <input id="frNum1" type="number" placeholder="Top"></label>
             <label>First fraction, bottom number <input id="frDen1" type="number" placeholder="Bottom"></label>
           </div>
@@ -1008,11 +1091,19 @@
             <select id="frOp"><option value="add" selected>Add (+)</option><option value="sub">Subtract (−)</option><option value="mul">Multiply (×)</option><option value="div">Divide (÷)</option></select>
           </label>
           <div class="field-row">
+            <label>Second fraction, whole part <input id="frWhole2" type="number" placeholder="Whole"></label>
             <label>Second fraction, top number <input id="frNum2" type="number" placeholder="Top"></label>
             <label>Second fraction, bottom number <input id="frDen2" type="number" placeholder="Bottom"></label>
           </div>
+          <p><strong>Third fraction (optional, uses the same operation)</strong></p>
+          <div class="field-row">
+            <label>Third fraction, whole part <input id="frWhole3" type="number" placeholder="Whole"></label>
+            <label>Third fraction, top number <input id="frNum3" type="number" placeholder="Top"></label>
+            <label>Third fraction, bottom number <input id="frDen3" type="number" placeholder="Bottom"></label>
+          </div>
           <button id="frBtn" type="button" class="btn-primary">Calculate Fraction</button>
           <pre id="frOutput" class="terminal">Result will appear here.</pre>
+          <div id="frSteps"></div>
           <p class="status" id="frStatus"></p>
         </div>
 
