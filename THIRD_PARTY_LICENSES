@@ -33,6 +33,10 @@ Libraries (loaded from public CDNs, except qpdf-wasm and diff-match-patch which 
 - Chart.js — MIT License — https://github.com/chartjs/Chart.js
 - PapaParse — MIT License — https://github.com/mholt/PapaParse
 - fast-formula-parser — MIT License — https://github.com/LesterLyu/fast-formula-parser
+- UTIF.js — MIT License — https://github.com/photopea/UTIF.js
+- exifr — MIT License — https://github.com/MikeKovarik/exifr
+- Cropper.js — MIT License — https://github.com/fengyuanchen/cropperjs
+- pako — MIT License — https://github.com/nodeca/pako
 
 Icons and fonts:
 - Lucide icons — ISC License — https://lucide.dev
