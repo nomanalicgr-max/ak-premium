@@ -63,5 +63,3 @@ if (imgCompressBtn) imgCompressBtn.addEventListener("click", async () => {
     }
   } catch (e) { setError("imgCompressStatus", "Could not compress these images. Please try JPG or PNG files."); }
 });
-
-let resizeOriginal = null;

@@ -28,6 +28,7 @@ Libraries (loaded from public CDNs, except qpdf-wasm and diff-match-patch which 
 - marked-footnote — MIT License — https://github.com/bent10/marked-extensions
 - node-forge — BSD-3-Clause License — https://github.com/digitalbazaar/forge
 - diff-match-patch — Apache License 2.0 — https://github.com/google/diff-match-patch (self-hosted copy in assets/js/diff-match-patch.js; only the Node-only export lines were removed)
+- jspdf-autotable — MIT License — https://github.com/simonbengtsson/jsPDF-AutoTable
 
 Icons and fonts:
 - Lucide icons — ISC License — https://lucide.dev

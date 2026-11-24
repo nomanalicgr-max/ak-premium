@@ -63,3 +63,5 @@ if (ocrpdfPdfBtn) ocrpdfPdfBtn.addEventListener("click", async () => {
     setStatus("ocrpdfPdfStatus", "Done. Searchable PDF downloaded: each page is a picture of the original with a hidden text layer (" + totalWords + " word(s), language " + langNote + "). Text is found by searching, but it is not typed text — handwriting is not recognised.");
   } catch (e) { if (!setPdfError("ocrpdfPdfStatus", e)) setError("ocrpdfPdfStatus", "Could not OCR this PDF."); }
 });
+/* Validate one filled value against a rule {kind, min, max}. Returns an
+   error message or "" when the value passes. Pure, used by Fill a Form. */

@@ -46,3 +46,8 @@ if (pdfTextBtn) pdfTextBtn.addEventListener("click", async () => {
    1.5x scale, with a per-page link and one ZIP file). Used by PDF to
    Images and by the PDF to JPG and PDF to PNG landing pages. Takes no
    element ids, so it splits to core.js. */
+/* Render PDF pages to images. opts: {dpi 72-300 (default 108 = the old
+   1.5 scale), format "png"|"jpg"|"webp", grayscale, transparent (PNG only:
+   the page is rendered without the usual white background, so pages with
+   no background stay transparent), pages: "all" or a range like "1-3, 5"}.
+   A single selected page downloads as one image link only, no ZIP. */

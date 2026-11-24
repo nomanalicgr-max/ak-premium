@@ -19,7 +19,9 @@
         "new pdf"
       ],
       "libs": [
-        "jspdf"
+        "jspdf",
+        "marked",
+        "jspdf-autotable"
       ],
       "engine": "tool-create",
       "maxFileMB": null,
@@ -29,31 +31,31 @@
       "lastReviewed": "2026-11-18",
       "meta_description": "Create a PDF from your own text, free in your browser. Type or paste, then download a clean PDF with no sign-up.",
       "steps": [
-        "Type or paste your text in the 'Text for your PDF' box.",
-        "Press Create & Download PDF.",
-        "Save the downloaded PDF, named ak-premium-created.pdf, to your device."
+        "Type your text in the box, then choose Plain text or Markdown from the Mode list.",
+        "Pick a font, a font size, a page size and a margin; in Markdown mode, use # for headings, **bold**, - for lists and | tables |.",
+        "Optionally choose images to add at the end, then press Create & Download PDF and save ak-premium-created.pdf."
       ],
       "content": {
-        "use": "Create PDF turns plain typed text into a PDF file without any word processor or sign-up. A teacher types a short notice and downloads it as a PDF to share in a class group. A shop owner types a price list and sends it to customers. A student types an assignment cover note and attaches the PDF to an email. The text is set in a simple 12-point font and flows across pages, so long text becomes a multi-page PDF automatically. Everything happens in your browser, so the text you type never leaves your device. It is the fastest way to make a basic PDF when you only have words and no document software.",
-        "tip": "Keep paragraphs short and press Enter twice between them so the PDF stays easy to read. If the text is very long, check the downloaded PDF once before you share it, because the tool wraps text automatically and does not show a preview first.",
-        "limit": "The PDF contains plain text only, in one font and one size. It does not keep bold, italics, headings, images or tables, and it does not accept pasted HTML formatting. The text is set at 12 points and flows across pages automatically.",
-        "example": "Typing a 3-paragraph shop notice of about 400 words and pressing Create & Download PDF gives a one-page PDF with the full notice in plain 12-point text.",
+        "use": "Create PDF turns typed text into a PDF file without any word processor or sign-up. A teacher types a short notice and downloads it as a PDF to share in a class group. A shop owner types a price list and sends it to customers. In plain-text mode the text flows across pages. In Markdown mode you can add headings, bold and italic words, bullet and numbered lists, and tables, which are drawn as real PDF tables. You can also attach images, which are added one per page at the end, and pick A4 or Letter paper with your own margin. Everything happens in your browser, so the text you type never leaves your device.",
+        "tip": "Write Markdown with a blank line between blocks, and put tables in the | Header | Row | style with a | --- | --- | line under the header. Check the downloaded PDF once before sharing, because the tool does not show a preview first.",
+        "limit": "Markdown rendering covers headings, paragraphs, bold, italic, code, lists, tables, quotes and horizontal rules. It does not keep pasted HTML formatting, footnotes, embedded links or coloured text, and tables with very long cells may wrap awkwardly. Images are added one per page at the end, not inside the text.",
+        "example": "Typing '# Shop Notice', a short paragraph and a 2-column price table in Markdown mode and pressing Create & Download PDF gives a PDF with a large heading, the paragraph and a real table.",
         "faq": [
           [
-            "Can I paste text with bold or headings into Create PDF?",
-            "No. The tool takes plain text only and sets it in one 12-point font. Bold, headings, images and tables are dropped, so use it for simple notices and letters."
+            "Can I use headings and tables in Create PDF?",
+            "Yes, in Markdown mode. Use # for a heading, **bold** for bold words, - for a bullet list and a | table | with a | --- | line for tables. Plain-text mode sets everything in one font with no formatting."
           ],
           [
-            "What happens if my text is longer than one page?",
-            "The text flows onto extra pages automatically. The tool adds pages as needed and downloads one PDF with all of your text."
+            "Which Markdown is supported?",
+            "Headings, paragraphs, bold, italic, code, bullet and numbered lists, tables, blockquotes, code blocks and horizontal rules. Footnotes, HTML and coloured text are not supported."
           ],
           [
-            "Does Create PDF keep my text private?",
-            "Yes. The PDF is built in your browser with jsPDF. Nothing you type is uploaded to a server."
+            "Where do my images go in the PDF?",
+            "Images you choose are added one per page at the end of the document, fitted to the page with your margin. They cannot be placed inside the text."
           ],
           [
-            "What file name does the PDF download with?",
-            "The file downloads as ak-premium-created.pdf. You can rename it after it downloads."
+            "What page sizes can I choose?",
+            "A4 or Letter. The margin can be set from 5 to 40 mm, and the font size from 8 to 20 points."
           ]
         ]
       }
@@ -87,30 +89,30 @@
       "meta_description": "Turn JPG, PNG and WebP images into one PDF for free, in your browser. No upload and no sign-up needed.",
       "steps": [
         "Choose one or more JPG, PNG or WebP images with the file button.",
-        "Press Convert Images to PDF.",
-        "Save the downloaded PDF, which has one image per page."
+        "Pick how many images go on each page, the page size, margin, fit or fill, and the print DPI.",
+        "Leave auto-rotate on for phone photos, choose whether to keep or remove photo metadata, then press Convert Images to PDF."
       ],
       "content": {
-        "use": "Images to PDF turns photos and scans into a single PDF file, one image per page. A student photographs handwritten notes and sends them as one PDF to a teacher. A shop owner photographs receipts and keeps them as one monthly PDF. A job applicant photographs certificates and attaches one PDF to an application. Each image is fitted to an A4 page with a small margin, so nothing is cropped. The images stay in the order you selected them. The PDF is built in your browser, so your photos are never uploaded anywhere.",
-        "tip": "Choose the images in the order you want them to appear, because each image becomes one page in that order. For the sharpest result, use clear photos; a blurry photo stays blurry in the PDF.",
-        "limit": "Only JPG, PNG and WebP images are accepted, and each file must be under 50 MB. Each image is placed on its own page, so you cannot put two images side by side on one page. Very large images are fitted to the page, not kept at full size.",
-        "example": "Choosing 4 photos of handwritten notes and pressing Convert Images to PDF gives one 4-page PDF, with each photo on its own A4 page.",
+        "use": "Images to PDF turns photos and scans into a single PDF file. A student photographs handwritten notes and sends them as one PDF to a teacher. A shop owner photographs receipts and keeps them as one monthly PDF. A job applicant photographs certificates and attaches one PDF to an application. You can put one, two or four images on each page, pick A4 or Letter paper, and choose whether each image is fitted whole or cropped to fill its cell. Phone photos are rotated upright from their EXIF data, and you can set the print DPI and JPEG quality. The PDF is built in your browser, so your photos are never uploaded anywhere.",
+        "tip": "For a print-ready result, pick 300 DPI and 95% JPEG quality. For a small file to send in a chat, pick 72 DPI and 70% quality. Leave auto-rotate on, or sideways phone photos stay sideways.",
+        "limit": "Only JPG, PNG and WebP images are accepted, and each file must be under 50 MB. Re-encoding through the browser strips photo metadata; keeping the original file skips the rotation fix. Fill mode crops the edges of images to fit the cell. Very large batches may run slowly.",
+        "example": "Choosing 4 photos, picking 4 per page and 150 DPI, and pressing Convert Images to PDF gives one 1-page PDF with the four photos in a two-by-two grid.",
         "faq": [
           [
-            "Which image formats can I use?",
-            "JPG, PNG and WebP. Other formats, such as GIF or BMP, are not accepted by the file picker."
+            "How do 2 or 4 images per page work?",
+            "With 2 per page the images sit side by side; with 4 they form a two-by-two grid. Each image gets its own cell, and Fit shows the whole image while Fill crops it to cover the cell."
           ],
           [
-            "Can I change the order of the images?",
-            "No. The images are placed in the order you selected them, one per page. Choose them in the order you want the pages to appear."
+            "Why are my phone photos sideways, and how do I fix it?",
+            "Phone photos store their rotation in EXIF data. Leave 'Auto-rotate photos from EXIF data' ticked and the tool turns them upright. If you choose to keep the original file, the rotation fix is skipped."
           ],
           [
-            "Does the PDF keep my photos at full quality?",
-            "No. Each image is fitted to an A4 page, so a very large photo is scaled down. The result is a clean, readable PDF, not a full-resolution archive."
+            "What does the print DPI setting do?",
+            "It sets how large each image prints: an image prints at its pixels divided by the DPI in inches. 300 DPI is sharp print quality, 150 is good, and 72 is for screens."
           ],
           [
-            "How many images can I convert at once?",
-            "There is no fixed count. Each image must be under 50 MB, and very large batches may run slowly because the work happens in your browser."
+            "Does the PDF keep my photo metadata?",
+            "No, unless you choose 'Keep the original file'. Re-encoding removes EXIF data such as the camera, date and location. Keeping the original keeps the metadata but skips auto-rotate."
           ]
         ]
       }
@@ -777,30 +779,30 @@
       "meta_description": "Render PDF pages as PNG images and download them, free in your browser. No upload, no sign-up.",
       "steps": [
         "Choose a PDF file with the file button.",
-        "Press Convert Pages to Images.",
-        "Download each page PNG from the links shown, or download the whole set as one ZIP file."
+        "Pick a resolution from 72 to 300 DPI, a format (PNG, JPEG or WebP), and the pages you want, or leave it as all.",
+        "Tick Grayscale or Transparent background if you need them, press Convert Pages to Images, then download each page or the whole set as one ZIP."
       ],
       "content": {
-        "use": "PDF to Images turns every page of a PDF into a PNG picture, so you can share a single page in a chat, add it to a slide or post it online. A teacher turns one page of a worksheet into a PNG to share in a class group. A student turns a diagram page into a PNG to paste into an assignment. A shop owner turns a price page into a PNG for a social media post. Each page is rendered at one and a half times its normal size for a sharp picture. After the conversion, you get a download link for each page and one ZIP file with all the pages together.",
-        "tip": "If you only need one page, download just that page's PNG link instead of the whole ZIP. Large PDFs take a while because every page is rendered in your browser, so wait for the status message to say it is done.",
-        "limit": "Each page becomes a separate PNG, so a 50-page PDF gives 50 pictures and one ZIP. The PNGs are pictures of the pages, not editable text. A scanned PDF renders as a picture of the scan, which is fine, but a very large PDF may be slow or run out of browser memory.",
-        "example": "Converting a 3-page worksheet gives three PNG links, page 1, page 2 and page 3, plus a ZIP file with all three PNGs inside.",
+        "use": "PDF to Images turns pages of a PDF into pictures, so you can share a single page in a chat, add it to a slide or post it online. A teacher turns one page of a worksheet into a PNG to share in a class group. A student turns a diagram page into a PNG to paste into an assignment. You can pick the resolution from 72 to 300 DPI, choose PNG, JPEG or WebP, export only the pages you need, and make grayscale images or PNGs with a transparent background. A single page downloads as one image with no ZIP. The work happens in your browser.",
+        "tip": "For a sharp image to print, pick 300 DPI PNG. For a small image to send in a chat, pick 150 DPI JPEG. If you only need one page, type its number in the Pages box instead of converting the whole file.",
+        "limit": "Each page becomes a separate picture, so a 50-page PDF gives 50 images and one ZIP. The pictures show the page, not editable text. Transparent background only works for PNG, and only where the page itself has no background. A very large PDF at 300 DPI may be slow or run out of browser memory.",
+        "example": "Converting pages 1-2 of a 5-page worksheet at 150 DPI as PNG gives two image links, one per page, and no ZIP, because only two pages were chosen.",
         "faq": [
           [
-            "How do I download only one page?",
-            "After the conversion, each page has its own link, such as 'Download page 2 PNG'. Press the link for the page you need. The ZIP is only for downloading all pages at once."
+            "What DPI should I pick?",
+            "72 DPI is a quick preview, 150 DPI is good for sharing and slides, and 300 DPI is print quality. Higher DPI means sharper images but bigger files and a slower conversion."
           ],
           [
-            "What size are the PNG images?",
-            "Each page is rendered at one and a half times its normal size, so the pictures are sharp enough to share or print. They are not full-resolution scans."
+            "Can I export only some pages?",
+            "Yes. Type the pages in the Pages box, for example 1-3, 5, or leave it as all. If you pick exactly one page, you get a single image link and no ZIP file."
           ],
           [
-            "Can I get JPG images instead of PNG?",
-            "No. This tool only makes PNG images. Use Image Converter afterwards if you need a JPG version of a PNG."
+            "How does the transparent background work?",
+            "Tick 'Transparent background' with PNG output and the page is rendered without its usual white background, so parts of the page with no content stay transparent. It only works for PNG."
           ],
           [
-            "Why does a large PDF take so long?",
-            "Every page is drawn in your browser one by one. A long PDF with many pages takes longer, and a very large file may run out of memory. Try a smaller file if it stops."
+            "Can I make WebP or grayscale images?",
+            "Yes. Pick WebP in the format list for small files, and tick Grayscale to turn every page into shades of grey. Grayscale works with PNG, JPEG and WebP."
           ]
         ]
       }
@@ -1543,31 +1545,31 @@
       "lastReviewed": "2026-11-18",
       "meta_description": "Make a fillable form PDF with text fields and checkboxes, free in your browser. No sign-up needed.",
       "steps": [
-        "Type a title for your form in the 'Form title' box, or leave it blank.",
-        "Press Create Fillable PDF.",
-        "Save the downloaded PDF, then open it in a PDF reader and fill in the fields."
+        "Type a form title, then add fields one by one: pick a type, type a label, add options for radio or dropdown fields, and pick a check.",
+        "Press Create Fillable PDF to download the form, or leave the builder empty for the standard name, email, agree and category form.",
+        "To fill a form, choose a fillable PDF, press List Fields, fill in the values and press Download Filled PDF."
       ],
       "content": {
-        "use": "PDF Forms creates a one-page fillable PDF with fields people can type into, so you can collect the same information from everyone in the same format. A teacher makes a simple application form for students. A shop owner makes a feedback form for customers. An office worker makes a request form for staff. The form has a name field, an email field, a checkbox and a dropdown, all on one A4 page with your title at the top. Anyone can open the PDF in a reader, type into the fields, tick the box and pick from the dropdown, then save or print it.",
-        "tip": "Keep the form title short and clear, such as 'Job Application Form', because it is printed large at the top of the page. Test the downloaded PDF in your own PDF reader before you share it, to make sure the fields work there.",
-        "limit": "The form is always the same one-page layout: a name field, an email field, one checkbox and one dropdown. You cannot add, remove or rename fields, and the dropdown choices are fixed. The PDF must be opened in a reader that supports fillable forms.",
-        "example": "Typing 'Customer Feedback Form' and pressing Create Fillable PDF downloads a one-page PDF with that title and four fillable fields ready to use.",
+        "use": "PDF Forms builds a fillable PDF form you can share, or fills in a form you already have. A teacher builds an application form with a name field, an email field and a class dropdown. A shop owner builds a feedback form with a rating dropdown and a comments box. An office worker fills in a form from head office and downloads the filled copy. You can add text, checkbox, radio, dropdown and date fields, mark fields required, and add email or number checks. Required fields are marked with a red star in the PDF. Everything runs in your browser.",
+        "tip": "Add fields in the order you want them to appear, because the form is laid out top to bottom in that order. Test the downloaded form in your own PDF reader before you share it, and check that required fields really block an empty submit there.",
+        "limit": "Forms are built with standard PDF form fields, so they need a reader that supports fillable forms. Email and number rules are written next to the field and checked by this tool when you fill a form here; a PDF reader itself cannot check them. Very long forms flow onto extra pages automatically.",
+        "example": "Adding a Full name text field marked Required, an Email field with the email check, and a Category dropdown, then pressing Create Fillable PDF, downloads a one-page form with those three fields.",
         "faq": [
           [
-            "What fields does the form have?",
-            "A name field, an email field, a checkbox labelled Agree, and a dropdown labelled Category. The layout is fixed and always on one A4 page."
+            "What field types can I add?",
+            "Text, checkbox, radio (one choice from a list), dropdown and date. Radio and dropdown fields need at least two options, typed as a comma-separated list."
           ],
           [
-            "Can I add more fields to the form?",
-            "No. The form always has the same four fields. If you need a custom form, build it in a full PDF editor and use this tool for simple forms only."
+            "How do the email and number checks work?",
+            "When you build a form, the rule is written next to the field and required fields are marked with a red star. When you fill a form with this tool, it checks each value before saving and lists any field that fails."
           ],
           [
-            "What title is used if I leave the box blank?",
-            "The tool uses 'Application Form' as the title. Type your own title if you want the form to say what it is for."
+            "Can I fill in a PDF form I already have?",
+            "Yes. Choose the PDF, press List Fields, fill in each field shown, pick a check per field if you want one, and press Download Filled PDF. Fields the tool does not recognise are skipped."
           ],
           [
-            "Will the form work in any PDF reader?",
-            "It works in readers that support fillable forms, such as Adobe Reader and most modern browsers. Very old readers may show the fields but not let you type in them."
+            "What happens if I add no fields?",
+            "You get the standard one-page form with a name field, an email field, an Agree checkbox and a Category dropdown, under the title you typed."
           ]
         ]
       }
@@ -1601,30 +1603,30 @@
       "meta_description": "Summarize a PDF in your browser with key sentences picked locally. No file is sent to an external AI service.",
       "steps": [
         "Choose a PDF file with the file button.",
-        "Set the number of sentences you want in the 'Sentences' box. The default is 5.",
-        "Press Summarize PDF and read the key sentences shown on the page."
+        "Move the Sentences slider to set how many key sentences you want, and pick Key points or Paragraph style.",
+        "Press Summarize PDF, read the summary, and press Download Summary (.txt) to keep it."
       ],
       "content": {
-        "use": "Local Summarizer picks the most important sentences from a PDF and shows them as a short list, so you can grasp a long document in a minute. A student reads the key sentences of a chapter before an exam. An office worker skims a long report to find what matters. A researcher checks whether a paper is worth reading in full. The tool counts which words appear most often in the document and ranks the sentences by those words, then shows the top sentences in order of importance. No AI server is used, and the text never leaves your browser.",
-        "tip": "Start with 5 sentences for a quick overview, and raise the number to 10 for a longer document. The summary is a list of the document's own sentences, so read it as a guide and open the full PDF for the details.",
-        "limit": "The summary is picked by word frequency, not by understanding. It only uses sentences longer than 30 characters, and it works on PDFs with a text layer only; scanned PDFs give no text to summarise. The summary is shown on the page and is not downloaded as a file.",
-        "example": "Summarising a 20-page report with 5 sentences shows the 5 most important sentences from the whole document, ranked by the words that appear most often.",
+        "use": "Local Summarizer picks the most important sentences from a PDF and shows them as a short summary, so you can grasp a long document in a minute. A student reads the key sentences of a chapter before an exam. An office worker skims a long report to find what matters. A researcher checks whether a paper is worth reading in full. The tool scores sentences with TF-IDF, which favours words that matter in this document, gives earlier sentences a small boost, and drops near-duplicates. No AI server is used, and the text never leaves your browser.",
+        "tip": "Start with 5 sentences for a quick overview, and raise the slider to 10 for a longer document. Use Key points to scan quickly, or Paragraph to read the summary as flowing text. The summary is a guide; open the full PDF for the details.",
+        "limit": "The summary is extractive: it picks sentences from your document, it does not rewrite them in its own words. It only uses sentences longer than 30 characters, and it works on PDFs with a text layer only; scanned PDFs give no text to summarise. Very short documents may give fewer sentences than the slider asks for.",
+        "example": "Summarising a 20-page report with the slider at 5 in Key points style shows the 5 most important sentences as bullets, with near-duplicates removed.",
         "faq": [
           [
             "Is this an AI summary?",
-            "No. No AI server is used. The tool counts the most frequent words in the document and picks the sentences that contain them most, all in your browser."
+            "No. No AI server is used. The tool scores sentences with TF-IDF, which counts how distinctive each word is in this document, and picks the highest-scoring sentences, all in your browser."
           ],
           [
-            "Why does it only show 5 sentences?",
-            "The Sentences box defaults to 5. You can set any number from 1 to 10 before you press Summarize PDF."
+            "What is the difference between Key points and Paragraph?",
+            "Key points shows the top sentences as a bullet list in order of importance. Paragraph shows the same sentences in the order they appear in the document, joined as one paragraph."
           ],
           [
-            "Can I summarise a scanned PDF?",
-            "No. A scanned PDF has no text layer, so the tool finds nothing to summarise. Run OCR PDF on it first, then summarise the new text PDF."
+            "Why did I get fewer sentences than I asked for?",
+            "Near-duplicate sentences are dropped, and very short documents may not have enough long sentences. The tool shows what it found rather than repeating the same sentence twice."
           ],
           [
-            "Is the summary downloaded as a file?",
-            "No. The key sentences are shown on the page as a list. Copy them into your notes if you want to keep them."
+            "Can I download the summary?",
+            "Yes. After the summary appears, press Download Summary (.txt) to save it as ak-premium-summary.txt."
           ]
         ]
       }
@@ -1657,30 +1659,30 @@
       "meta_description": "Extract PDF text ready to translate, free in your browser. It prepares the text; translation itself happens elsewhere.",
       "steps": [
         "Choose a PDF file with the file button.",
-        "Press Extract Text for Translation.",
-        "Save the downloaded .txt file and translate it in a service of your choice."
+        "Pick English to Urdu or Urdu to English, then press Find Glossary Terms.",
+        "Read the matched terms in the table, or press Download Extracted Text (.txt) to translate the full text elsewhere."
       ],
       "content": {
-        "use": "Translate Helper pulls the text out of a PDF into a plain .txt file, ready for you to translate in a service you choose. A student extracts a chapter to translate it into Urdu. An office worker extracts a notice to translate it for staff. A shop owner extracts a price list to translate it for customers. The tool does not translate anything itself, because automatic translation would need to send your text to an outside service. Instead it gives you clean text, grouped by page, that you can paste into any translation app you trust.",
-        "tip": "Translate the .txt file in small parts, because translation apps handle short passages better than a whole book at once. Keep the page markers in the text so you can match the translation back to the original pages.",
-        "limit": "The tool extracts text only; it does not translate. It only reads PDFs with a text layer, so scanned PDFs give no text. The text comes out as plain lines, so tables and layout are not kept.",
-        "example": "Extracting a 2-page notice downloads ak-premium-for-translation.txt with the notice text, grouped by page, ready to paste into a translation app.",
+        "use": "Translate Helper matches common document words in a PDF against a fixed glossary of 77 English-Urdu terms, in your browser. A student checks the Urdu words for invoice, total, date and payment in a bill. An office worker checks the English words for a Urdu notice. A shop owner looks up the Urdu for discount, tax and balance on a receipt. The matched terms appear in a table in the order they appear in the document. You can also download the full extracted text to translate elsewhere. No text is sent to a translation service.",
+        "tip": "The glossary covers everyday document words such as invoice, bill, receipt, total, tax, amount, customer and delivery. For words outside the list, download the extracted text and translate it in a service you trust.",
+        "limit": "This is glossary matching only, not full translation. Sentences, grammar and words outside the 77-term list are left as they are, and the tool cannot re-lay the translated text into a new PDF. It only reads PDFs with a text layer; scanned PDFs give no text.",
+        "example": "Running Find Glossary Terms on a 1-page bill finds invoice, total, payment and due, and shows each with its Urdu translation in a table.",
         "faq": [
           [
-            "Does this tool translate my PDF?",
-            "No. It extracts the text into a .txt file. You translate that text in a service you choose, such as Google Translate or DeepL."
+            "Does this tool translate my whole PDF?",
+            "No. It matches common document words against a fixed glossary of 77 English-Urdu terms and shows the ones found. For a full translation, download the extracted text and use a translation service."
           ],
           [
-            "Why does the tool not translate directly?",
-            "Automatic translation needs an outside service, which would send your text off your browser. To keep your files local, this tool only extracts the text."
+            "Which words are in the glossary?",
+            "Everyday document words: invoice, bill, receipt, total, subtotal, discount, tax, amount, price, quantity, date, name, address, phone, email, customer, order, delivery, payment, balance, signature and similar."
           ],
           [
-            "Can I extract text from a scanned PDF?",
-            "No. A scanned PDF has no text layer. Use OCR PDF first to make a text PDF, then run Translate Helper on the new file."
+            "Can I translate from Urdu to English?",
+            "Yes. Pick Urdu to English in the Direction list and the tool finds Urdu glossary words in the PDF and shows their English meanings."
           ],
           [
-            "What does the .txt file look like?",
-            "Plain text grouped by page, with a '--- Page N ---' marker before each page. The layout, images and tables are not kept."
+            "Can I use it on a scanned PDF?",
+            "No. A scanned PDF has no text layer, so the tool finds nothing to match. Use OCR PDF first to make a text PDF, then run Translate Helper on the new file."
           ]
         ]
       }

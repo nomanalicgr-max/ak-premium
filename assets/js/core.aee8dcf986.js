@@ -238,7 +238,8 @@ const LIB_URLS = {
   "marked": "https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js",
   "marked-footnote": "https://cdn.jsdelivr.net/npm/marked-footnote@1.3.0/dist/index.umd.js",
   "forge": "https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js",
-  "diff-match-patch": "https://cdn.jsdelivr.net/npm/diff-match-patch@1.0.5/index.js"
+  "diff-match-patch": "https://cdn.jsdelivr.net/npm/diff-match-patch@1.0.5/index.js",
+  "jspdf-autotable": "https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.js"
 };
 /* SRI hashes for the pinned libraries above (Phase 4.2); same values as
    build.py. The docx URL was corrected at the same time: docx@8.5.0
@@ -262,10 +263,12 @@ const LIB_SRI = {
   "marked": "sha384-948ahk4ZmxYVYOc+rxN1H2gM1EJ2Duhp7uHtZ4WSLkV4Vtx5MUqnV+l7u9B+jFv+",
   "marked-footnote": "sha384-eMG0oh50tjGAfa6zAmiAlwrgAO4MmBKb5wosyU0mpQx80qj0fUYCBt1KwO9e8qxp",
   "forge": "sha384-xE6n3RBMZWgwAhyzoIMfY7HN3oDBa/+HBwFFNyxsdY8kseup7C4Blx1yDzprEESV",
-  "diff-match-patch": "sha384-tEDljuMsPeOCXxbbsrmf3+iiytDjHShxwUCWxZqsZc3/jJHz2XQMovzRM+YDuJ0L"
+  "diff-match-patch": "sha384-tEDljuMsPeOCXxbbsrmf3+iiytDjHShxwUCWxZqsZc3/jJHz2XQMovzRM+YDuJ0L",
+  "jspdf-autotable": "sha384-btaaVGtvWi0Q6xlr74cOkIWG+SCaiZ9Tfno8uuHjzoekIVV+y5K3dGPEGqqS3ZN0"
 };
 const _libLoaded = {};
 function loadLibrary(name, statusId) {
+  if (name === "jspdf-autotable" && window.jspdf && window.jspdf.jsPDF && window.jspdf.jsPDF.API && window.jspdf.jsPDF.API.autoTable) return Promise.resolve(true);
   if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "qrcode" ? "QRCode" : name === "js-yaml" ? "jsyaml" : name === "jsonrepair" ? "JSONRepair" : name === "marked-footnote" ? "markedFootnote" : name] || _libLoaded[name]) return Promise.resolve(true);
   return new Promise((resolve) => {
     const sc = document.createElement("script");
@@ -866,35 +869,132 @@ function getPrefs() {
   }));
 })();
 
+/* Flatten marked inline tokens into styled runs {text, bold, italic,
+   code}. Used only by Create PDF (Markdown mode). */
+
 /* ---------- PDF Studio ---------- */
 
-async function imagesToPdf(files, statusId, outName) {
+function readJpegOrientation(buf) {
+  try {
+    const d = new DataView(buf);
+    if (d.getUint16(0) !== 0xFFD8) return 1;
+    let off = 2;
+    while (off + 4 <= d.byteLength) {
+      if (d.getUint8(off) !== 0xFF) return 1;
+      const marker = d.getUint8(off + 1);
+      const len = d.getUint16(off + 2);
+      if (marker === 0xE1 && len > 8) {
+        if (d.getUint32(off + 4) !== 0x45786966 || d.getUint16(off + 8) !== 0) return 1;
+        const tiff = off + 10;
+        const le = d.getUint16(tiff) === 0x4949;
+        const ifd = tiff + d.getUint32(tiff + 4, le);
+        const n = d.getUint16(ifd, le);
+        for (let i = 0; i < n; i++) {
+          const e = ifd + 2 + i * 12;
+          if (d.getUint16(e, le) === 0x0112) return d.getUint16(e + 8, le) || 1;
+        }
+        return 1;
+      }
+      if (marker === 0xDA || marker === 0xD9) return 1;
+      off += 2 + len;
+    }
+  } catch (e) { /* fall through */ }
+  return 1;
+}
+/* Draw an image onto a fresh canvas with its EXIF orientation applied
+   (rotate / mirror for values 2-8). Returns the canvas. */
+
+function orientedImageCanvas(img, orientation) {
+  const swap = orientation >= 5 && orientation <= 8;
+  const canvas = document.createElement("canvas");
+  canvas.width = swap ? img.height : img.width;
+  canvas.height = swap ? img.width : img.height;
+  const ctx = canvas.getContext("2d");
+  const w = img.width, h = img.height;
+  if (orientation === 2) { ctx.translate(w, 0); ctx.scale(-1, 1); }
+  else if (orientation === 3) { ctx.translate(w, h); ctx.rotate(Math.PI); }
+  else if (orientation === 4) { ctx.translate(0, h); ctx.scale(1, -1); }
+  else if (orientation === 5) { ctx.rotate(0.5 * Math.PI); ctx.scale(1, -1); }
+  else if (orientation === 6) { ctx.translate(canvas.width, 0); ctx.rotate(0.5 * Math.PI); }
+  else if (orientation === 7) { ctx.translate(canvas.width, canvas.height); ctx.rotate(0.5 * Math.PI); ctx.scale(-1, 1); }
+  else if (orientation === 8) { ctx.translate(0, canvas.height); ctx.rotate(-0.5 * Math.PI); }
+  ctx.drawImage(img, 0, 0);
+  return canvas;
+}
+/* Shared engine: images to PDF. Used by Images to PDF and by the JPG to
+   PDF and PNG to PDF landing pages. Takes no element ids, so it splits to
+   core.js. opts: {layout "1"|"2"|"4", pageSize "a4"|"letter", marginMm,
+   fit "fit"|"fill", autoRotate, keepMeta, quality 0.5-1, dpi 72|150|300}.
+   Defaults preserve the old behaviour (one image per A4 page, fitted).
+   DPI sets the print size: an image prints at (pixels * 72 / dpi) points,
+   capped by its grid cell. JPEGs are re-encoded through a canvas, which
+   strips EXIF metadata; keepMeta embeds the original JPEG bytes instead
+   (no rotation correction and no re-encode in that case). */
+
+async function imagesToPdf(files, statusId, outName, opts) {
   const JsPDF = getJsPdf();
   if (!needLibrary(!!JsPDF, "jsPDF", statusId)) return;
+  const o = Object.assign({ layout: "1", pageSize: "a4", marginMm: 3.5, fit: "fit", autoRotate: true, keepMeta: false, quality: 0.92, dpi: 150 }, opts || {});
+  const perPage = o.layout === "4" ? 4 : o.layout === "2" ? 2 : 1;
+  const cols = perPage === 4 ? 2 : perPage === 2 ? 2 : 1;
+  const rows = perPage === 4 ? 2 : 1;
   setStatus(statusId, "Converting " + files.length + " image(s)…");
   try {
-    const doc = new JsPDF();
+    const doc = new JsPDF({ unit: "pt", format: o.pageSize });
+    const pageW = doc.internal.pageSize.getWidth(), pageH = doc.internal.pageSize.getHeight();
+    const m = o.marginMm * 72 / 25.4;
+    const cellW = (pageW - m * 2) / cols, cellH = (pageH - m * 2) / rows;
+    let rotated = 0, stripped = 0;
     for (let i = 0; i < files.length; i++) {
-      const dataUrl = await new Promise((resolve, reject) => {
-        const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = reject; r.readAsDataURL(files[i]);
-      });
-      const img = new Image();
-      await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = dataUrl; });
-      if (i > 0) doc.addPage();
-      const pageW = doc.internal.pageSize.getWidth();
-      const pageH = doc.internal.pageSize.getHeight();
-      const ratio = Math.min((pageW - 20) / img.width, (pageH - 20) / img.height);
-      const w = img.width * ratio, h = img.height * ratio;
-      // Re-encode through a canvas as PNG: jsPDF cannot reliably add WebP
-      // (or some PNG variants) directly, which previously failed silently
-      // for WebP uploads even though WebP is listed as accepted.
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width; canvas.height = img.height;
-      canvas.getContext("2d").drawImage(img, 0, 0);
-      doc.addImage(canvas.toDataURL("image/png"), "PNG", (pageW - w) / 2, (pageH - h) / 2, w, h);
+      const slot = i % perPage;
+      if (i > 0 && slot === 0) doc.addPage(o.pageSize);
+      const col = slot % cols, row = Math.floor(slot / cols);
+      const cellX = m + col * cellW, cellY = m + row * cellH;
+      const isJpeg = /jpe?g/i.test(files[i].type || "") || /\.jpe?g$/i.test(files[i].name || "");
+      let dataUrl = null, canvas = null, iw = 0, ih = 0;
+      if (isJpeg && o.keepMeta && !o.autoRotate) {
+        dataUrl = await new Promise((resolve, reject) => {
+          const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = reject; r.readAsDataURL(files[i]);
+        });
+        const img = new Image();
+        await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = dataUrl; });
+        iw = img.width; ih = img.height;
+      } else {
+        const buf = await readAsArrayBuffer(files[i]);
+        const orientation = (isJpeg && o.autoRotate) ? readJpegOrientation(buf) : 1;
+        const srcUrl = await new Promise((resolve, reject) => {
+          const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = reject; r.readAsDataURL(files[i]);
+        });
+        const img = new Image();
+        await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = srcUrl; });
+        if (orientation !== 1) rotated++;
+        canvas = orientedImageCanvas(img, orientation);
+        iw = canvas.width; ih = canvas.height;
+        if (isJpeg) stripped++;
+      }
+      // Print size at the chosen DPI, capped by the grid cell.
+      let w = Math.min(cellW, iw * 72 / o.dpi), h = w * ih / iw;
+      if (h > cellH) { h = cellH; w = h * iw / ih; }
+      const x = cellX + (cellW - w) / 2, y = cellY + (cellH - h) / 2;
+      if (o.fit === "fill") {
+        // Cover-crop through a canvas to the cell aspect, then fill the cell.
+        const crop = document.createElement("canvas");
+        const targetRatio = cellW / cellH, srcRatio = iw / ih;
+        let sw, sh, sx, sy;
+        if (srcRatio > targetRatio) { sh = ih; sw = ih * targetRatio; sx = (iw - sw) / 2; sy = 0; }
+        else { sw = iw; sh = iw / targetRatio; sx = 0; sy = (ih - sh) / 2; }
+        crop.width = Math.round(sw); crop.height = Math.round(sh);
+        if (canvas) crop.getContext("2d").drawImage(canvas, sx, sy, sw, sh, 0, 0, crop.width, crop.height);
+        else { const img2 = new Image(); await new Promise((res, rej) => { img2.onload = res; img2.onerror = rej; img2.src = dataUrl; }); crop.getContext("2d").drawImage(img2, sx, sy, sw, sh, 0, 0, crop.width, crop.height); }
+        doc.addImage(crop.toDataURL("image/png"), "PNG", cellX, cellY, cellW, cellH);
+      } else if (canvas) {
+        doc.addImage(canvas.toDataURL(isJpeg ? "image/jpeg" : "image/png", o.quality), isJpeg ? "JPEG" : "PNG", x, y, w, h);
+      } else {
+        doc.addImage(dataUrl, "JPEG", x, y, w, h);
+      }
     }
     doc.save(outName);
-    setStatus(statusId, "Done. PDF downloaded.");
+    setStatus(statusId, "Done. PDF downloaded (" + files.length + " image(s), " + perPage + " per page" + (rotated ? ", " + rotated + " rotated from EXIF" : "") + (stripped ? ", metadata stripped by re-encoding" : "") + ").");
   } catch (e) { if (!setPdfError(statusId, e)) setError(statusId, "Could not convert these images. Please try JPG or PNG files and try again."); }
 }
 
@@ -1425,22 +1525,43 @@ async function ocrPdfPages(file, lang, statusId, onProgress) {
   return out.join("\n");
 }
 
-async function renderPdfPagesToImages(file, format, statusId, outputEl) {
-  const ext = String(format).toLowerCase() === "jpg" ? "jpg" : "png";
-  const mime = ext === "jpg" ? "image/jpeg" : "image/png";
+async function renderPdfPagesToImages(file, format, statusId, outputEl, opts) {
+  const o = Object.assign({ dpi: 108, format: null, grayscale: false, transparent: false, pages: "all" }, opts || {});
+  const fmt = String(o.format || format || "png").toLowerCase();
+  const ext = fmt === "jpg" || fmt === "jpeg" ? "jpg" : fmt === "webp" ? "webp" : "png";
+  const mime = ext === "jpg" ? "image/jpeg" : ext === "webp" ? "image/webp" : "image/png";
   const label = ext.toUpperCase();
   if (!(await ensurePdfJs(statusId))) return;
   try {
     const bytes = await readAsArrayBuffer(file);
     const pdf = await window.pdfjsLib.getDocument({ data: bytes }).promise;
+    let pages;
+    if (!o.pages || String(o.pages).trim().toLowerCase() === "all" || !String(o.pages).trim()) pages = Array.from({ length: pdf.numPages }, (_, i) => i + 1);
+    else {
+      const parsed = parsePageList(String(o.pages), pdf.numPages);
+      if (parsed.error) { setError(statusId, parsed.error); return; }
+      pages = parsed.pages.map((p) => p + 1);
+    }
     outputEl.innerHTML = "";
     const blobs = [];
-    for (let i = 1; i <= pdf.numPages; i++) {
+    const scale = Math.min(300, Math.max(72, o.dpi || 108)) / 72;
+    for (const i of pages) {
       const page = await pdf.getPage(i);
-      const viewport = page.getViewport({ scale: 1.5 });
+      const viewport = page.getViewport({ scale });
       const canvas = document.createElement("canvas");
-      canvas.width = viewport.width; canvas.height = viewport.height;
-      await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+      canvas.width = Math.round(viewport.width); canvas.height = Math.round(viewport.height);
+      const renderOpts = { canvasContext: canvas.getContext("2d"), viewport };
+      if (o.transparent && ext === "png") renderOpts.background = "rgba(0,0,0,0)";
+      await page.render(renderOpts).promise;
+      if (o.grayscale) {
+        try {
+          const ctx = canvas.getContext("2d");
+          const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const d = img.data;
+          for (let p = 0; p < d.length; p += 4) { const g = Math.round(0.299 * d[p] + 0.587 * d[p + 1] + 0.114 * d[p + 2]); d[p] = g; d[p + 1] = g; d[p + 2] = g; }
+          ctx.putImageData(img, 0, 0);
+        } catch (e) { /* grayscale is best-effort on odd canvases; the colour image still downloads */ }
+      }
       const blob = await new Promise((res) => canvas.toBlob(res, mime));
       if (!blob) continue;
       blobs.push({ name: "ak-premium-page-" + i + "." + ext, blob });
@@ -1448,12 +1569,14 @@ async function renderPdfPagesToImages(file, format, statusId, outputEl) {
       a.href = URL.createObjectURL(blob); a.download = "ak-premium-page-" + i + "." + ext; a.textContent = "Download page " + i + " " + label;
       outputEl.appendChild(a); outputEl.appendChild(document.createElement("br"));
     }
-    if (window.JSZip && blobs.length) {
+    if (blobs.length === 1) {
+      setStatus(statusId, "Done. One " + label + " image link is above (single page, no ZIP needed)" + (o.grayscale ? ", grayscale applied" : "") + (o.transparent && ext === "png" ? ", transparent background" : "") + ".");
+    } else if (window.JSZip && blobs.length) {
       const zip = new window.JSZip();
       blobs.forEach((b) => zip.file(b.name, b.blob));
       const zipBlob = await zip.generateAsync({ type: "blob" });
       downloadBlob(zipBlob, "ak-premium-pages.zip");
-      setStatus(statusId, "Done. " + label + " links are above; ZIP download also started.");
+      setStatus(statusId, "Done. " + blobs.length + " " + label + " links are above (" + (o.dpi || 108) + " DPI" + (o.grayscale ? ", grayscale" : "") + (o.transparent && ext === "png" ? ", transparent background" : "") + "); ZIP download also started.");
     } else {
       setStatus(statusId, "Done. " + label + " links are above. ZIP needs JSZip, which did not load.");
     }
@@ -3287,6 +3410,13 @@ let organizeSelected = new Set(); /* positions in organizePages, for "Download s
 let organizeFileKey = ""; /* rebuild the page list only when a new file is picked */
 let organizePendingStatus = ""; /* a Done message the re-render applies after it finishes, so it is not overwritten by the "loaded" message */
 
+/* resizeOriginal is shared state for the image-resizer handlers below.
+   It lives here in the section preamble (which splits to core.js) rather
+   than next to the resizer code: the resizer chunk on its own page would
+   otherwise have no declaration and the assignment would silently create
+   an implicit global. */
+let resizeOriginal = null;
+
 /* ---------- Phase 1 handlers: Image ---------- */
 
 function imgCompressFormatNote(format) {
@@ -3883,6 +4013,11 @@ LIVE_CALCS.forEach((c) => {
     // merge handler manages the button from mergeOrder instead, and the
     // merge click handler already guards "at least two files".
     if (btn.id === "mergePdfBtn") return;
+    // Create PDF's image input is optional and PDF Forms' file input belongs
+    // to the *fill* section, not to the builder: gating their primary buttons
+    // on a file would block the no-file flows (create with text only, build
+    // a blank form). Both handlers guard their own missing input instead.
+    if (btn.id === "createPdfBtn" || btn.id === "formsPdfBtn") return;
     const update = () => { btn.disabled = !(fileInput.files && fileInput.files.length); };
     fileInput.addEventListener("change", update);
     update();
