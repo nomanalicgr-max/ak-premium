@@ -60,6 +60,13 @@ TOOL_NAMES = {
     'summarizeTextTfIdf': 'local-summarizer',
     'glossaryTranslate': 'translate-helper',
     'validateFieldValue': 'pdf-forms',
+    'extractPdfRawImages': 'extract-images-from-pdf',
+    'buildXmpPacket': 'pdf-metadata-editor',
+    'formatDateTimeLocal': 'pdf-metadata-editor',
+    'resizePdfPageInPlace': 'resize-pdf-page-size',
+    'decodeContentStream': 'resize-pdf-page-size',
+    'sanitizeHtmlForPdf': 'html-to-pdf',
+    'htmlToPdfRendered': 'html-to-pdf',
 }
 # Load-time const lookups of DYNAMICALLY created controls -> that tool's
 # bundle, not core. The split routes a chunk by the ids it touches, but
