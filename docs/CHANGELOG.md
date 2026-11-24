@@ -1,5 +1,44 @@
 # AK Premium — Changelog
 
+## v27 — 23 November 2026 (advanced upgrade plan, batch 7: last 10 PDF tools)
+
+### JPG to PDF — EXIF auto-rotate, grids, quality, grayscale
+- Phone photos are now auto-rotated from their EXIF orientation before the PDF is built, with one, two or four images per page, full-size or grid layout, a quality choice and a grayscale toggle. Pages stay vector, and the file downloads with the images in the order picked.
+
+### PNG to PDF — transparency control, grids, JPEG toggle
+- Transparency can now be kept (where the PDF allows it) or flattened onto white, black or a colour of your choice, handy when the PDF will be printed. One, two or four images per page, A4 or Letter paper, and a PNG to JPEG toggle for smaller files. PNG files with no transparency are converted as before.
+
+### PDF to JPG — DPI, quality, page range, single page
+- Resolution is now a choice from 72 to 300 DPI, with a quality slider, a grayscale toggle and a resize-to-width preset for smaller images. Only the pages you need can be exported, and a single page downloads on its own without a ZIP. Each page becomes a separate picture, so a long PDF means many images and a large ZIP.
+
+### PDF to PNG — DPI, transparency, rename pattern
+- Resolution is now a choice from 72 to 300 DPI, with transparent-background PNG where the page itself has no background colour (a page with a white background stays white). Page-range export, single-page download without a ZIP, and a file-name pattern that names every image for you: report-p{nn}.png becomes report-p01.png, report-p02.png and so on.
+
+### HTML to PDF — real rendered pages via html2canvas
+- Pasted or uploaded HTML is now rendered as it looks in a browser (html2canvas), not converted to plain text: headings, lists, tables, colours and layout are kept, links stay clickable, and a font, size and page-size choice is offered. Scripts, event handlers and javascript: links are stripped before rendering, and head style blocks are kept. If the page cannot be rendered, the tool falls back to an honest plain-text PDF and says so. Pasting a web address is not supported, as there is no server to fetch it.
+
+### Extract Images from PDF — original format and bytes
+- Images are now saved in the exact format and bytes stored in the PDF (JPEG, JPEG2000 and JBIG2), byte-identical to the original, with no duplicate listing and a download link per image plus one ZIP for all of them. Vector drawings (lines and shapes drawn by the PDF itself) are not pictures and are not extracted; use PDF to Images for a picture of the whole page.
+
+### Add Header and Footer to PDF — variables, scope, logo
+- Header and footer text now support {page}, {total} and {date} variables, a font, size, colour and alignment choice, and a page scope: all pages, odd or even pages only, all except the first, or the first page only. A different first page is supported, and a logo image (PNG or JPG) can be placed in the header or footer. The stamp is drawn as text on each page, so it stays selectable.
+
+### Flatten PDF — qpdf annotation flattening, field report
+- Flattening now uses qpdf, so form fields and annotations (comments, highlights, stamps) are rendered into the page itself, with links kept working. Three modes: fields only, annotations only, or both, plus a field report listing what was flattened and a downloadable text copy of the report. Flattening cannot be undone, so keep the original file. Annotations with no appearance to draw are left in place by qpdf, and the report says how many are left.
+
+### PDF Metadata Editor — XMP packet, remove-all preset
+- Title, author, subject and keywords can now be edited together with creator, producer, creation date and modification date, written into an XMP packet inside the file, and a "remove all personal metadata" preset clears title, author, subject, keywords, creator and producer in one click. One honest limit: the PDF library always writes its own name as the Producer in the file properties and stamps the save time as the Modification Date, so those two typed values can only be kept in the XMP packet, not in the file properties.
+
+### Resize PDF Page Size — in-place vector resize
+- Pages are now resized in place, so text stays selectable and drawings stay vector, with nothing re-rendered or blurred. Form fields and links are scaled with their pages, including link rectangles and highlight areas. A4, Letter and Legal presets, a custom size in millimetres, and a per-page choice (all pages, or a list like 2-3, 5) so only the pages that need it are resized and the cover page can keep its size.
+
+### Fixes
+- Metadata dates: the XMP packet used to be written with the date converted to UTC, so a typed local date could land on the wrong day in the packet (a Karachi evening date became the previous day). Dates are now written with their local offset, so the typed date is the date in the packet.
+- Registry wording: the em-dashes in the ten reworked tools' content are removed, in line with the house style and the FAQ quality rule, and one short flatten-pdf answer is lengthened to meet the 20-word minimum. The ten tools' last-reviewed date is now 23 November 2026, and the html-to-pdf and extract-images entries now list their new libraries (html2canvas, pdf-lib).
+
+### JavaScript split and testing
+- The per-tool JS split is verified lossless (9,441 code lines, 0 missing/extra), deterministic across two consecutive splits, with all 177 button bindings exactly once and the seven new batch-7 helpers in their own tool bundles, not in core.js. The v13 resize check now asserts the in-place vector resize instead of the old embedPdf approach, which re-rendered each page as an image and dropped form fields and links. ASSET_V is now "27" (config.js?v=27) and the service-worker cache is "ak-premium-v27". One new library: html2canvas 1.4.1 (MIT). The qpdf worker URL is now ?v=9 for the new flatten operation. Harness run-v27.js: 946 checks, all passing; the batch-7 probe verify-b7-jsdom.js: 104 of 104, in both PKT and UTC timezones.
+
 ## v26 — 23 November 2026 (advanced upgrade plan, batch 6: 6 tools)
 
 ### Create PDF — rich text, Markdown, tables, images
