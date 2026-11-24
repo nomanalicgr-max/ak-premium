@@ -2406,35 +2406,6 @@ function unitSaveRecent(entry) {
   } catch (e) { /* private mode: recents stay off */ }
 }
 
-function discountCalc(price, pct) {
-  if (isNaN(price) || price < 0) return { error: "Please enter an original price of 0 or more." };
-  if (isNaN(pct) || pct < 0 || pct > 100) return { error: "Please enter a discount between 0 and 100 percent." };
-  const discount = Math.round(price * pct) / 100;
-  const final = Math.round((price - discount) * 100) / 100;
-  return { discount, final };
-}
-
-function compoundCalc(principal, rate, years, freq) {
-  if (isNaN(principal) || principal <= 0) return { error: "Please enter a principal amount more than 0." };
-  if (isNaN(rate) || rate < 0) return { error: "Please enter an interest rate of 0 or more." };
-  if (isNaN(years) || years <= 0) return { error: "Please enter a number of years more than 0." };
-  if (!freq || freq <= 0) return { error: "Please choose how often interest is added." };
-  const amount = principal * Math.pow(1 + rate / 100 / freq, freq * years);
-  const rounded = Math.round(amount * 100) / 100;
-  return { amount: rounded, interest: Math.round((rounded - principal) * 100) / 100 };
-}
-
-function tipCalc(bill, pct, people) {
-  if (isNaN(bill) || bill < 0) return { error: "Please enter a bill amount of 0 or more." };
-  if (isNaN(pct) || pct < 0) return { error: "Please enter a tip percent of 0 or more." };
-  if (!people || people < 1 || Math.floor(people) !== people) return { error: "Please enter a whole number of people, at least 1." };
-  const tip = Math.round(bill * pct) / 100;
-  const total = Math.round((bill + tip) * 100) / 100;
-  const perPerson = Math.round(total / people * 100) / 100;
-  return { tip, total, perPerson };
-}
-// Offset (ms) of a time zone at a given instant, via Intl formatToParts.
-
 function zoneOffsetMs(zone, date) {
   const dtf = new Intl.DateTimeFormat("en-US", { timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
   const parts = {};
@@ -2606,23 +2577,6 @@ function evaluateScientific(expr) {
   const v = st[0];
   if (!isFinite(v)) return { error: "The answer is too large to show." };
   return { value: v };
-}
-
-function fractionCalc(n1, d1, op, n2, d2) {
-  if (!Number.isInteger(n1) || !Number.isInteger(d1) || !Number.isInteger(n2) || !Number.isInteger(d2)) return { error: "Please enter whole numbers only." };
-  if (d1 === 0 || d2 === 0) return { error: "The bottom number cannot be zero." };
-  let num, den;
-  if (op === "add") { num = n1 * d2 + n2 * d1; den = d1 * d2; }
-  else if (op === "sub") { num = n1 * d2 - n2 * d1; den = d1 * d2; }
-  else if (op === "mul") { num = n1 * n2; den = d1 * d2; }
-  else if (op === "div") {
-    if (n2 === 0) return { error: "Cannot divide by a fraction of zero." };
-    num = n1 * d2; den = d1 * n2;
-  } else return { error: "Please choose an operation." };
-  if (den < 0) { num = -num; den = -den; }
-  const g = gcdCalc(num, den);
-  num /= g; den /= g;
-  return { num, den, decimal: Math.round(num / den * 10000) / 10000 };
 }
 
 // Lorem ipsum sentence pool (classic placeholder text, public domain).
@@ -3830,51 +3784,6 @@ function base64DecodeText(text) {
   return new TextDecoder().decode(bytes);
 }
 
-function calculateAge(dobStr, todayStr) {
-  const dob = new Date(dobStr + "T00:00:00");
-  if (isNaN(dob.getTime())) return { error: "Please choose a valid date of birth." };
-  const today = todayStr ? new Date(todayStr + "T00:00:00") : new Date();
-  today.setHours(0, 0, 0, 0);
-  if (dob > today) return { error: "Date of birth cannot be in the future." };
-  let years = today.getFullYear() - dob.getFullYear();
-  let months = today.getMonth() - dob.getMonth();
-  let days = today.getDate() - dob.getDate();
-  if (days < 0) {
-    months -= 1;
-    const prevMonthLast = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
-    days += prevMonthLast;
-  }
-  if (months < 0) { years -= 1; months += 12; }
-  return { years, months, days };
-}
-
-function percentageCalc(mode, x, y) {
-  if (isNaN(x) || isNaN(y)) return { error: "Please enter numbers for both X and Y." };
-  if (mode === "of") return { value: (x / 100) * y, text: x + "% of " + y + " = " + ((x / 100) * y) };
-  if (mode === "share") {
-    if (y === 0) return { error: "Y cannot be zero for this calculation." };
-    return { value: (x / y) * 100, text: x + " is " + ((x / y) * 100) + "% of " + y };
-  }
-  if (mode === "change") {
-    if (x === 0) return { error: "X cannot be zero for a percentage change." };
-    const v = ((y - x) / Math.abs(x)) * 100;
-    return { value: v, text: "Percentage change from " + x + " to " + y + " = " + v + "%" };
-  }
-  return { error: "Please choose a calculation type." };
-}
-
-function bmiCalc(heightCm, weightKg) {
-  if (!heightCm || heightCm <= 0 || !weightKg || weightKg <= 0) return { error: "Please enter a positive height and weight." };
-  const m = heightCm / 100;
-  const bmi = weightKg / (m * m);
-  const rounded = Math.round(bmi * 10) / 10;
-  let category = "Obese";
-  if (rounded < 18.5) category = "Underweight";
-  else if (rounded < 25) category = "Normal";
-  else if (rounded < 30) category = "Overweight";
-  return { bmi: rounded, category };
-}
-
 function defaultRandInt(n) {
   if (typeof crypto !== "undefined" && crypto.getRandomValues) {
     const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n;
@@ -4054,28 +3963,6 @@ function jsonDupNote(text) {
 
 /* ---------- Phase 2 tools: pure logic (testable) ---------- */
 
-function parseInvoiceItems(text) {
-  const lines = String(text || "").split("\n").map((s) => s.trim()).filter(Boolean);
-  if (!lines.length) return { error: "Please add at least one item, one per line as: Item name, quantity, price." };
-  const items = [];
-  for (const line of lines) {
-    const parts = line.split(",").map((s) => s.trim());
-    if (parts.length !== 3 || !parts[0]) return { error: "Invalid item line: \"" + line + "\". Use: Item name, quantity, price." };
-    const qty = parseFloat(parts[1]);
-    const price = parseFloat(parts[2]);
-    if (isNaN(qty) || qty <= 0 || isNaN(price) || price < 0) return { error: "Invalid quantity or price in line: \"" + line + "\"." };
-    items.push({ name: parts[0], qty, price, amount: Math.round(qty * price * 100) / 100 });
-  }
-  return { items };
-}
-
-function invoiceTotals(items, taxPct) {
-  const subtotal = Math.round(items.reduce((sum, it) => sum + it.amount, 0) * 100) / 100;
-  const tax = Math.round(subtotal * (taxPct / 100) * 100) / 100;
-  const total = Math.round((subtotal + tax) * 100) / 100;
-  return { subtotal, tax, total };
-}
-
 function toTitleCase(text) {
   return String(text || "").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 }
@@ -4246,22 +4133,6 @@ function amortisationChart(sched) {
   return "<p>Interest vs principal per year (indigo = principal, amber = interest).</p>" + rows;
 }
 
-function parseCgpa(text) {
-  const lines = String(text || "").split("\n").map((s) => s.trim()).filter(Boolean);
-  if (!lines.length) return { error: "Please add at least one course, one per line as: Course, credit hours, grade point." };
-  let creditSum = 0, weighted = 0;
-  for (const line of lines) {
-    const parts = line.split(",").map((s) => s.trim());
-    if (parts.length !== 3 || !parts[0]) return { error: "Invalid course line: \"" + line + "\". Use: Course, credit hours, grade point." };
-    const credits = parseFloat(parts[1]);
-    const grade = parseFloat(parts[2]);
-    if (isNaN(credits) || credits <= 0 || isNaN(grade) || grade < 0) return { error: "Invalid credit hours or grade point in line: \"" + line + "\"." };
-    creditSum += credits; weighted += credits * grade;
-  }
-  if (!creditSum) return { error: "Total credit hours cannot be zero." };
-  return { cgpa: Math.round((weighted / creditSum) * 100) / 100, credits: creditSum };
-}
-
 function parseCsvLine(line) {
   const fields = [];
   let current = "", inQuotes = false;
@@ -4327,8 +4198,8 @@ let paletteLast = null;
 /* ---------- Phase 3.3: calculators recalculate live while typing ---------- */
 const LIVE_CALCS = [
   { btn: "ageBtn", inputs: ["ageDob"] },
-  { btn: "percentBtn", inputs: ["percentX", "percentY"] },
-  { btn: "bmiBtn", inputs: ["bmiHeight", "bmiWeight"] },
+  { btn: "percentBtn", inputs: ["percentX", "percentY"], selects: ["percentMode"] },
+  { btn: "bmiBtn", inputs: ["bmiHeight", "bmiWeight", "bmiFeet", "bmiInches", "bmiLb", "bmiWaist", "bmiAge"], selects: ["bmiMode", "bmiUnit", "bmiSex"], bmi: true },
   { btn: "emiBtn", inputs: ["emiPrincipal", "emiRate", "emiYears"] },
   { btn: "cgpaBtn", inputs: ["cgpaInput"], cgpa: true },
   { btn: "landBtn", inputs: ["landValue"], selects: ["landFrom"] },
@@ -4371,7 +4242,16 @@ LIVE_CALCS.forEach((c) => {
     }
     if (c.cgpa) {
       const lines = String(($(c.inputs[0]) || {}).value || "").split("\n").map((s) => s.trim()).filter(Boolean);
-      return lines.length > 0 && lines.every((l) => l.split(",").length === 3);
+      return lines.length > 0 && lines.every((l) => l.split(",").length === 3 || l.split(",").length === 4);
+    }
+    if (c.bmi) {
+      const mode = ($("bmiMode") || {}).value || "adult";
+      const unit = ($("bmiUnit") || {}).value || "metric";
+      const metricOk = num("bmiHeight") > 0 && num("bmiWeight") > 0;
+      const imperialOk = num("bmiLb") > 0 && (num("bmiFeet") > 0 || num("bmiInches") > 0);
+      const sizeOk = unit === "imperial" ? imperialOk : metricOk;
+      if (mode === "child") return sizeOk && num("bmiAge") >= 5 && num("bmiAge") <= 19;
+      return sizeOk;
     }
     return fields.every((f) => (f.value || "").trim() !== "");
   };
@@ -4386,11 +4266,11 @@ LIVE_CALCS.forEach((c) => {
 /* ---------- Phase 3.3: copy result / share link / print under calculator outputs ---------- */
 (function initCalcActions() {
   const CALC_OUTPUTS = [
-    { out: "ageOutput", inputs: ["ageDob"] },
+    { out: "ageOutput", inputs: ["ageDob", "ageOnDate"] },
     { out: "percentOutput", inputs: ["percentX", "percentY"], selects: ["percentMode"] },
-    { out: "bmiOutput", inputs: ["bmiHeight", "bmiWeight"] },
+    { out: "bmiOutput", inputs: ["bmiHeight", "bmiWeight", "bmiFeet", "bmiInches", "bmiLb", "bmiWaist", "bmiAge"], selects: ["bmiMode", "bmiUnit", "bmiSex"] },
     { out: "emiOutput", inputs: ["emiPrincipal", "emiRate", "emiYears"] },
-    { out: "cgpaOutput", inputs: ["cgpaInput"] },
+    { out: "cgpaOutput", inputs: ["cgpaInput", "cgpaTarget", "cgpaRemaining"], selects: ["cgpaScale"] },
     { out: "landOutput", inputs: ["landValue"], selects: ["landFrom"] },
     { out: "taxOutput", inputs: ["taxMonthly"], selects: ["taxYear"] },
     { out: "zakatOutput", inputs: ["zakatCash", "zakatDebts", "zakatGold", "zakatGoldRate", "zakatSilver", "zakatSilverRate", "zakatNisab"] },
@@ -4398,15 +4278,15 @@ LIVE_CALCS.forEach((c) => {
     { out: "urduCounterOutput", inputs: ["urduCounterInput"] },
     { out: "meritOutput", inputs: ["meritObtained1", "meritTotal1", "meritWeight1", "meritObtained2", "meritTotal2", "meritWeight2", "meritObtained3", "meritTotal3", "meritWeight3"] },
     { out: "unitOutput", inputs: ["unitValue"], selects: ["unitType", "unitFrom", "unitTo"] },
-    { out: "discOutput", inputs: ["discPrice", "discPct"] },
-    { out: "ciOutput", inputs: ["ciPrincipal", "ciRate", "ciYears"], selects: ["ciFreq"] },
+    { out: "discOutput", inputs: ["discPrice", "discPct", "discPct2", "discTaxRate", "discDelivery", "discSalePrice"], selects: ["discMode"] },
+    { out: "ciOutput", inputs: ["ciPrincipal", "ciRate", "ciYears", "ciDeposit", "ciInflation", "ciRate2"], selects: ["ciFreq"] },
     { out: "mortOutput", inputs: ["mortPrincipal", "mortRate", "mortYears"] },
-    { out: "tipOutput", inputs: ["tipBill", "tipPct", "tipPeople"] },
+    { out: "tipOutput", inputs: ["tipBill", "tipPct", "tipPeople", "tipTax", "tipService", "tipItems"], selects: ["tipRound"] },
     { out: "tzOutput", inputs: ["tzDate", "tzTime"], selects: ["tzFrom", "tzTo"] },
     { out: "ddOutput", inputs: ["ddFrom", "ddTo"] },
     { out: "tdeeOutput", inputs: ["tdeeAge", "tdeeHeight", "tdeeWeight"], selects: ["tdeeSex", "tdeeActivity"] },
     { out: "sciOutput", inputs: ["sciDisplay"] },
-    { out: "frOutput", inputs: ["frNum1", "frDen1", "frNum2", "frDen2"], selects: ["frOp"] }
+    { out: "frOutput", inputs: ["frNum1", "frDen1", "frNum2", "frDen2", "frWhole1", "frWhole2", "frNum3", "frDen3", "frWhole3"], selects: ["frOp"] }
   ];
   CALC_OUTPUTS.forEach((c) => {
     const out = $(c.out); if (!out) return;
@@ -4455,7 +4335,7 @@ LIVE_CALCS.forEach((c) => {
     let filled = false;
     CALC_OUTPUTS.forEach((c) => {
       (c.inputs || []).forEach((id) => { const el = $(id); if (el && params.has(id)) { el.value = params.get(id); filled = true; } });
-      (c.selects || []).forEach((id) => { const el = $(id); if (el && params.has(id)) { el.value = params.get(id); filled = true; } });
+      (c.selects || []).forEach((id) => { const el = $(id); if (el && params.has(id)) { el.value = params.get(id); filled = true; el.dispatchEvent(new Event("change")); } });
     });
     if (filled) {
       setTimeout(() => {
@@ -4538,7 +4418,13 @@ LIVE_CALCS.forEach((c) => {
     // QR Code Generator's logo input and Color Palette's image input are
     // optional too: the code is made from typed text, and a palette from a
     // picked colour, so their buttons must not wait for a file either.
-    if (btn.id === "createPdfBtn" || btn.id === "formsPdfBtn" || btn.id === "htmlToPdfBtn" || btn.id === "csvExcelBtn" || btn.id === "qrBtn" || btn.id === "paletteBtn") return;
+    // Invoice Generator's logo input and JSON load file are optional too:
+    // the invoice is built from typed fields, so its PDF button must not
+    // wait for a file either. Resume Builder's JSON load file is the same:
+    // the resume is built from typed fields, so its PDF button must not
+    // wait for a file either. Both handlers guard their own required
+    // fields instead.
+    if (btn.id === "createPdfBtn" || btn.id === "formsPdfBtn" || btn.id === "htmlToPdfBtn" || btn.id === "csvExcelBtn" || btn.id === "qrBtn" || btn.id === "paletteBtn" || btn.id === "invoicePdfBtn" || btn.id === "resumeBtn") return;
     const update = () => { btn.disabled = !(fileInput.files && fileInput.files.length); };
     fileInput.addEventListener("change", update);
     update();

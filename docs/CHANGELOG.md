@@ -1,5 +1,37 @@
 # AK Premium — Changelog
 
+## v32 — 24 November 2026 (advanced upgrade plan, batch 12: Calculators 1 + business)
+
+### Age Calculator — exact age, countdown, milestones
+- Exact age in years, months and days plus total days, weeks and hours, a countdown to the next birthday, the age on any chosen date, and milestone dates such as the 18th birthday and retirement at 60.
+
+### Percentage Calculator — reverse, margin, markup, percentage points
+- Percentage of a number, what percentage one number is of another, and percentage increase or decrease, plus reverse percentage (find the original price), percentage points, margin and markup.
+
+### BMI Calculator — adult categories and child percentiles
+- BMI with the adult category, a healthy-weight range, BMI Prime and waist-to-height ratio, in metric or imperial units. For children aged 5 to 19 the result uses the WHO Growth Reference 2007 BMI-for-age percentiles, which matter more than the adult category.
+
+### CGPA Calculator — semester GPA, CGPA, what-if planner
+- Semester GPA and cumulative CGPA on the 4.0 or 10.0 scale, with per-semester subtotals, the average still needed to reach a target CGPA, and a what-if planner for planned grades.
+
+### Discount Calculator — stacked discounts, reverse, BOGO
+- Final price and savings from one or two stacked discounts, the original price from a discounted price, buy-2-get-1-free pricing, tax and delivery, per-item price and the effective discount percentage.
+
+### Compound Interest Calculator — deposits, table, inflation, compare
+- Future value and interest earned with monthly deposits, a year-by-year table, the inflation-adjusted real value, and a side-by-side comparison of two plans.
+
+### Tip Calculator — tax, service charges, itemised split
+- Tip by percentage before or after tax, with service charges, round-up per person, preset tip buttons, and an itemised split so each person pays for their own items.
+
+### Fraction Calculator — mixed numbers, step-by-step working
+- Add, subtract, multiply and divide fractions, including mixed numbers and a chained third fraction, with step-by-step working shown and the answer as a decimal and a percentage.
+
+### Invoice Generator — line discounts and tax, PDF, Excel, CSV
+- Line items with per-line discount and tax, automatic invoice numbering, a logo upload, bank details, NTN and PO numbers, and downloads as PDF, Excel spreadsheet, CSV or a saved JSON file.
+
+### Resume Builder — three templates, live preview, ATS check
+- Build a resume with three templates, an accent colour and a live preview, check it against job keywords, and download it as a PDF or a Word document, or save it as JSON to continue later.
+
 ## v31 — 24 November 2026 (advanced upgrade plan, batch 11: Image converters + design/everyday)
 
 ### PNG to JPG — quality, background colour, EXIF orientation
