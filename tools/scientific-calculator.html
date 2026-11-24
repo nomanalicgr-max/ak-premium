@@ -31,7 +31,7 @@
 <link rel="preload" href="/assets/fonts/plus-jakarta-var.153fc85b70.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/styles.1026ec2fe8.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Scientific Calculator", "applicationCategory": "BusinessApplication", "operatingSystem": "Web browser", "inLanguage": "en", "description": "A free scientific calculator with sin, cos, tan, log, square root and powers. Free, in your browser. No sign-up.", "url": "https://ak-premium.vercel.app/tools/scientific-calculator", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "AK Premium", "url": "https://ak-premium.vercel.app/"}}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Does sin use degrees or radians?", "acceptedAnswer": {"@type": "Answer", "text": "Degrees. Sin(30) gives 0.5, the same as a school calculator set to degrees. There is no radian mode on this page."}}, {"@type": "Question", "name": "How do I work out a square root?", "acceptedAnswer": {"@type": "Answer", "text": "Tap sqrt, type the number, close the bracket if one opened, then press =. For example, sqrt(16) gives 4, and sqrt(2) gives about 1.4142."}}, {"@type": "Question", "name": "What does the x squared key do?", "acceptedAnswer": {"@type": "Answer", "text": "It raises the number before it to the power of 2. Typing 5 then the squared key gives 25, and typing 10 then the squared key gives 100."}}, {"@type": "Question", "name": "Can I use brackets in a sum?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Tap the bracket keys to group parts of the sum. For example, (2+3) x 4 gives 20, while 2+3 x 4 gives 14."}}, {"@type": "Question", "name": "Is Scientific Calculator free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Scientific Calculator on AK Premium is free to use in your browser, with no sign-up and no account."}}, {"@type": "Question", "name": "Do my files leave my browser when I use Scientific Calculator?", "acceptedAnswer": {"@type": "Answer", "text": "No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I switch between degrees and radians?", "acceptedAnswer": {"@type": "Answer", "text": "Press the DEG button above the answer box. It changes to RAD, and sin, cos and tan then use radians. Inverse trig answers also change to match the mode you picked."}}, {"@type": "Question", "name": "Can I use my keyboard?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Click the display, then type digits and operators as normal. Enter works out the sum, Escape clears it, and Backspace deletes one character at a time."}}, {"@type": "Question", "name": "What is the Ans button for?", "acceptedAnswer": {"@type": "Answer", "text": "Ans puts your last answer back on the display, so you can use it in the next sum without typing it again. M+ adds the display number to memory, and MR brings it back."}}, {"@type": "Question", "name": "Why does my answer show as Infinity?", "acceptedAnswer": {"@type": "Answer", "text": "The answer is too large for the calculator to hold, for example a very large power or factorial. Try smaller numbers, or split the sum into two steps and work them out one at a time."}}, {"@type": "Question", "name": "Is Scientific Calculator free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Scientific Calculator on AK Premium is free to use in your browser, with no sign-up and no account."}}, {"@type": "Question", "name": "Do my files leave my browser when I use Scientific Calculator?", "acceptedAnswer": {"@type": "Answer", "text": "No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device."}}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ak-premium.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://ak-premium.vercel.app/tools"}, {"@type": "ListItem", "position": 3, "name": "Scientific Calculator", "item": "https://ak-premium.vercel.app/tools/scientific-calculator"}]}</script>
 </head>
 <body class="tool-page" data-tool="scientific-calculator">
@@ -325,73 +325,95 @@
 <p><strong>Sin, cos, log, powers and more.</strong></p>
 <section class="workspace" aria-label="Scientific Calculator tool">
 <div class="workspace-tool" id="tool-scientific">
-          <h2>Scientific Calculator</h2>
-          <label>Display <input id="sciDisplay" type="text" readonly value="0" aria-label="Calculator display"></label>
-          <div class="field-row">
-            <button type="button" class="btn-secondary" data-sci-key="sin(">sin</button>
-            <button type="button" class="btn-secondary" data-sci-key="cos(">cos</button>
-            <button type="button" class="btn-secondary" data-sci-key="tan(">tan</button>
-            <button type="button" class="btn-secondary" data-sci-key="log(">log</button>
-            <button type="button" class="btn-secondary" data-sci-key="ln(">ln</button>
-          </div>
-          <div class="field-row">
-            <button type="button" class="btn-secondary" data-sci-key="sqrt(">sqrt</button>
-            <button type="button" class="btn-secondary" data-sci-key="^2">x²</button>
-            <button type="button" class="btn-secondary" data-sci-key="^">^</button>
-            <button type="button" class="btn-secondary" data-sci-key="pi">π</button>
-            <button type="button" class="btn-secondary" data-sci-key="e">e</button>
-          </div>
-          <div class="field-row">
-            <button type="button" class="btn-secondary" data-sci-key="7">7</button>
-            <button type="button" class="btn-secondary" data-sci-key="8">8</button>
-            <button type="button" class="btn-secondary" data-sci-key="9">9</button>
-            <button type="button" class="btn-secondary" data-sci-key="/">÷</button>
-            <button type="button" class="btn-secondary" data-sci-key="(">(</button>
-          </div>
-          <div class="field-row">
-            <button type="button" class="btn-secondary" data-sci-key="4">4</button>
-            <button type="button" class="btn-secondary" data-sci-key="5">5</button>
-            <button type="button" class="btn-secondary" data-sci-key="6">6</button>
-            <button type="button" class="btn-secondary" data-sci-key="*">×</button>
-            <button type="button" class="btn-secondary" data-sci-key=")">)</button>
-          </div>
-          <div class="field-row">
-            <button type="button" class="btn-secondary" data-sci-key="1">1</button>
-            <button type="button" class="btn-secondary" data-sci-key="2">2</button>
-            <button type="button" class="btn-secondary" data-sci-key="3">3</button>
-            <button type="button" class="btn-secondary" data-sci-key="-">−</button>
-            <button type="button" class="btn-secondary" data-sci-key="!">!</button>
-          </div>
-          <div class="field-row">
-            <button type="button" class="btn-secondary" data-sci-key="0">0</button>
-            <button type="button" class="btn-secondary" data-sci-key=".">.</button>
-            <button type="button" class="btn-secondary" data-sci-key="%">%</button>
-            <button type="button" class="btn-secondary" data-sci-key="+">+</button>
-            <button type="button" class="btn-secondary" id="sciBack">Back</button>
-          </div>
-          <div class="field-row">
-            <button id="sciClear" type="button" class="btn-secondary">C</button>
-            <button id="sciEquals" type="button" class="btn-primary">=</button>
-          </div>
-          <pre id="sciOutput" class="terminal">Result will appear here.</pre>
-          <p class="status" id="sciStatus"></p>
-        </div>
+<h2>Scientific Calculator</h2>
+<label>Display <input id="sciDisplay" type="text" readonly value="0" aria-label="Calculator display"></label>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="sin(">sin</button>
+<button type="button" class="btn-secondary" data-sci-key="cos(">cos</button>
+<button type="button" class="btn-secondary" data-sci-key="tan(">tan</button>
+<button type="button" class="btn-secondary" data-sci-key="log(">log</button>
+<button type="button" class="btn-secondary" data-sci-key="ln(">ln</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="asin(">sin-1</button>
+<button type="button" class="btn-secondary" data-sci-key="acos(">cos-1</button>
+<button type="button" class="btn-secondary" data-sci-key="atan(">tan-1</button>
+<button type="button" class="btn-secondary" data-sci-key="exp(">exp</button>
+<button type="button" class="btn-secondary" data-sci-key="pow10(">10^x</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="sinh(">sinh</button>
+<button type="button" class="btn-secondary" data-sci-key="cosh(">cosh</button>
+<button type="button" class="btn-secondary" data-sci-key="tanh(">tanh</button>
+<button type="button" class="btn-secondary" data-sci-key="cbrt(">cube root</button>
+<button type="button" class="btn-secondary" data-sci-key="inv(">1/x</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="sqrt(">sqrt</button>
+<button type="button" class="btn-secondary" data-sci-key="^2">x²</button>
+<button type="button" class="btn-secondary" data-sci-key="^">^</button>
+<button type="button" class="btn-secondary" data-sci-key="pi">π</button>
+<button type="button" class="btn-secondary" data-sci-key="e">e</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="7">7</button>
+<button type="button" class="btn-secondary" data-sci-key="8">8</button>
+<button type="button" class="btn-secondary" data-sci-key="9">9</button>
+<button type="button" class="btn-secondary" data-sci-key="/">÷</button>
+<button type="button" class="btn-secondary" data-sci-key="(">(</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="4">4</button>
+<button type="button" class="btn-secondary" data-sci-key="5">5</button>
+<button type="button" class="btn-secondary" data-sci-key="6">6</button>
+<button type="button" class="btn-secondary" data-sci-key="*">×</button>
+<button type="button" class="btn-secondary" data-sci-key=")">)</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="1">1</button>
+<button type="button" class="btn-secondary" data-sci-key="2">2</button>
+<button type="button" class="btn-secondary" data-sci-key="3">3</button>
+<button type="button" class="btn-secondary" data-sci-key="-">−</button>
+<button type="button" class="btn-secondary" data-sci-key="!">!</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="0">0</button>
+<button type="button" class="btn-secondary" data-sci-key=".">.</button>
+<button type="button" class="btn-secondary" data-sci-key="%">%</button>
+<button type="button" class="btn-secondary" data-sci-key="+">+</button>
+<button type="button" class="btn-secondary" id="sciBack">Back</button>
+</div>
+<div class="field-row">
+<button id="sciClear" type="button" class="btn-secondary">C</button>
+<button id="sciEquals" type="button" class="btn-primary">=</button>
+<button id="sciAngleBtn" type="button" class="btn-secondary">DEG</button>
+<button id="sciMPlus" type="button" class="btn-secondary">M+</button>
+<button id="sciMR" type="button" class="btn-secondary">MR</button>
+<button id="sciMC" type="button" class="btn-secondary">MC</button>
+<button id="sciAns" type="button" class="btn-secondary">Ans</button>
+</div>
+<pre id="sciOutput" class="terminal">Result will appear here.</pre>
+<p class="status" id="sciStatus"></p>
+<h2>History</h2>
+<p class="tool-note">Tap a past calculation to use it again. The last 10 are kept.</p>
+<div id="sciHistory" class="field-row" aria-live="polite">No calculations yet.</div>
+</div>
 </section>
 <div class="ad-slot ad-slot-incontent" data-ad-slot="incontent" role="complementary" aria-label="Advertisement"></div><h2>What Scientific Calculator does</h2>
-<p>Scientific Calculator does the maths a basic calculator cannot. A student works out sin of 30 degrees for a trigonometry problem. An engineer takes the log of a number for a decibel calculation. A shop owner works out a power for a compound growth check. You tap the keys to build the sum, use the function keys for sin, cos, tan, log, square root and powers, and press equals to see the answer. Everything runs in your browser, so there is nothing to install.</p>
+<p>Scientific Calculator does trig, logs, powers and roots in your browser, and now keeps a history and a memory. A student checks a sine or a logarithm for homework. An engineer works out a power or a cube root on site. A shopkeeper adds up a bill with percentages and brackets. Type on the keypad or your keyboard, press equals, and the tool shows the answer. Press DEG or RAD to switch angle mode, M+ to store a number in memory, and Ans to reuse the last answer. Your last 10 calculations stay listed below, and you can tap one to use it again.</p>
 <h2>How to use Scientific Calculator</h2>
-<ol><li>Tap the number and operator keys to build your sum in the display.</li><li>Tap a function key such as sin, cos, log or sqrt to add it to the sum.</li><li>Tap the pi or e key when you need those numbers.</li><li>Press = to work out the answer, or C to clear the display.</li><li>Read the result under the display.</li></ol>
+<ol><li>Tap the keypad buttons, or click the display and type on your keyboard.</li><li>Use sin, cos, tan, log, ln, powers, roots and brackets as needed.</li><li>Press DEG or RAD to switch between degrees and radians.</li><li>Press equals to see the answer, M+ to store it, or Ans to reuse it.</li><li>Tap any line in the history below to put that sum back on the display.</li></ol>
 <h2>Tips for a good result</h2>
-<p>Trigonometry here uses degrees, so sin(30) is 0.5, the same as a school calculator in degree mode. Use brackets to control the order, such as (2+3) x 4, instead of relying on memory. Tap Back to remove one character instead of clearing the whole sum.</p>
-<div class="callout callout--limits"><p><strong>Limits to know about.</strong> Trigonometry uses degrees, not radians. Factorial only works for whole numbers from 0 to 170. Very long sums may be hard to read on a small screen, and the tool does not save your history.</p></div>
+<p>Angles are in degrees by default, so sin(30) is 0.5. Press DEG to switch to RAD before you use sin, cos or tan in radians. Press Escape to clear, Backspace to delete one character, and Enter for equals.</p>
+<div class="callout callout--limits"><p><strong>Limits to know about.</strong> The calculator works in degrees or radians only and shows answers rounded to 10 decimal places. Very large factorials and powers can overflow to Infinity. It is a general calculator, not a graphing or symbolic algebra tool, and it cannot solve equations.</p></div>
 <h2>Example</h2>
-<p>Typing sin(30) and pressing = gives 0.5.</p>
+<p>sin(30) is 0.5 in degrees. 2^10 is 1024. cbrt(27) is 3. 5! is 120.</p>
 <h2>Frequently asked questions</h2>
-<details><summary>Does sin use degrees or radians?</summary>
-<p>Degrees. Sin(30) gives 0.5, the same as a school calculator set to degrees. There is no radian mode on this page.</p></details><details><summary>How do I work out a square root?</summary>
-<p>Tap sqrt, type the number, close the bracket if one opened, then press =. For example, sqrt(16) gives 4, and sqrt(2) gives about 1.4142.</p></details><details><summary>What does the x squared key do?</summary>
-<p>It raises the number before it to the power of 2. Typing 5 then the squared key gives 25, and typing 10 then the squared key gives 100.</p></details><details><summary>Can I use brackets in a sum?</summary>
-<p>Yes. Tap the bracket keys to group parts of the sum. For example, (2+3) x 4 gives 20, while 2+3 x 4 gives 14.</p></details><details><summary>Is Scientific Calculator free?</summary>
+<details><summary>How do I switch between degrees and radians?</summary>
+<p>Press the DEG button above the answer box. It changes to RAD, and sin, cos and tan then use radians. Inverse trig answers also change to match the mode you picked.</p></details><details><summary>Can I use my keyboard?</summary>
+<p>Yes. Click the display, then type digits and operators as normal. Enter works out the sum, Escape clears it, and Backspace deletes one character at a time.</p></details><details><summary>What is the Ans button for?</summary>
+<p>Ans puts your last answer back on the display, so you can use it in the next sum without typing it again. M+ adds the display number to memory, and MR brings it back.</p></details><details><summary>Why does my answer show as Infinity?</summary>
+<p>The answer is too large for the calculator to hold, for example a very large power or factorial. Try smaller numbers, or split the sum into two steps and work them out one at a time.</p></details><details><summary>Is Scientific Calculator free?</summary>
 <p>Yes. Scientific Calculator on AK Premium is free to use in your browser, with no sign-up and no account.</p></details><details><summary>Do my files leave my browser when I use Scientific Calculator?</summary>
 <p>No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device.</p></details><div class="related">
 <h2>Related tools</h2>
@@ -401,9 +423,9 @@
 <div class="callout callout--privacy"><p>Your files are processed in your browser by Scientific Calculator. They are not uploaded to an AK Premium server, and you do not need an account. <a href="/privacy">Privacy Policy</a>.</p></div>
 <div class="ad-slot ad-slot-bottom" data-ad-slot="bottom" role="complementary" aria-label="Advertisement"></div></main>
 <footer class="site-footer"><div class="footer-inner"><div class="footer-col"><h3>Tools</h3><ul><li><a href="/pdf-tools">PDF Tools</a></li><li><a href="/image-tools">Image Tools</a></li><li><a href="/convert-tools">Convert</a></li><li><a href="/calculators">Calculators</a></li><li><a href="/developer-tools">Developer Tools</a></li><li><a href="/excel-tools">Excel Tools</a></li><li><a href="/business-tools">Business Tools</a></li><li><a href="/tools">All tools</a></li></ul></div><div class="footer-col"><h3>Country tools</h3><ul><li><a href="/country/pakistan">Pakistan tools</a></li><li><a href="/#section-country">India tools</a></li><li><a href="/#section-country">UAE &amp; Saudi tools</a></li><li><a href="/#section-country">UK tools</a></li><li><a href="/#section-country">US tools</a></li></ul></div><div class="footer-col"><h3>Company</h3><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/whats-new">What&rsquo;s new</a></li></ul></div><div class="footer-col"><h3>Legal</h3><ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/cookies">Cookie Policy</a></li><li><a href="/terms">Terms of Service</a></li><li><a href="/disclaimer">Disclaimer</a></li><li><a href="/dmca">DMCA</a></li><li><a href="/licenses">Licenses</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 AK Premium. Free tools, private by design. Files are processed in your browser and are not uploaded to an AK Premium server.</p></div></footer><div class="consent-banner" id="consentBanner" hidden><p>AK Premium uses cookies for ads and analytics only if you accept. Your files are processed in your browser and are never uploaded. <a href="/privacy">Read the Privacy Policy</a>.</p><button type="button" class="btn-primary" id="consentAccept">Accept</button><button type="button" class="btn-secondary" id="consentReject">Reject</button></div><script defer src="/assets/js/strings.924d7477b1.js"></script>
-<script defer src="/config.js?v=32"></script>
+<script defer src="/config.js?v=33"></script>
 <script defer src="/assets/js/common.bd66a64512.js"></script>
-<script defer src="/assets/js/core.c19e819a2f.js"></script>
-<script defer src="/assets/js/tools/scientific-calculator.e07da401ff.js"></script>
+<script defer src="/assets/js/core.03d66fb7d8.js"></script>
+<script defer src="/assets/js/tools/scientific-calculator.06dd00e042.js"></script>
 </body>
 </html>
