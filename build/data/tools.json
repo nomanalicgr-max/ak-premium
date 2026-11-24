@@ -2173,13 +2173,15 @@
         "vlookup",
         "xlookup"
       ],
-      "libs": [],
+      "libs": [
+        "formula-parser"
+      ],
       "engine": "tool-excel-formula",
       "maxFileMB": null,
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "related": [
         "formula-explainer",
         "vba-macro-writer",
@@ -2187,18 +2189,19 @@
         "excel-to-csv"
       ],
       "steps": [
-        "Pick the task from the list, for example SUMIF or VLOOKUP.",
+        "Pick the task from the list, for example AVERAGEIF, EOMONTH, RANK, LARGE, ROUND, VLOOKUP with IFERROR, multi-criteria XLOOKUP, or LET.",
         "Fill in the labelled fields with your own ranges and values.",
-        "Press Generate, copy the formula and paste it into Excel, then test it on a copy of your data."
+        "Press Generate, copy the formula and paste it into Excel, then read the validation line. To check any formula, paste it in the Check a formula box and press Check Formula.",
+        "Test the formula on a copy of your data first, so a mistake cannot change your real workbook."
       ],
       "content": {
-        "use": "An Excel formula generator is for the everyday spreadsheet jobs that are easy to describe but hard to write from memory: adding up sales for one city, counting approved orders, or looking up a price from another sheet. It turns a plain description into a formula you can paste.",
-        "tip": "Pick the task first, then fill in the labelled fields with your own ranges. The formula is built from exactly what you typed, so double-check the ranges before you paste it into Excel.",
-        "limit": "The tool builds formulas from fixed templates, not from AI. It does not read your workbook and cannot guess your cell addresses. Always test a formula on a copy of your data first.",
-        "example": "Choosing SUMIF, entering B2:B20 as the range to add, A2:A20 as the range to check, and Lahore as the condition gives =SUMIF(A2:A20, \"Lahore\", B2:B20).",
+        "use": "An Excel formula generator is for the spreadsheet jobs that are easy to describe but hard to write from memory: averaging sales for one city, finding the last day of a month, ranking a list, rounding a price, or looking up a price with a blank cell when there is no match. Pick the task, fill in the labelled fields, and the tool builds the exact formula with a plain-language explanation and an example. Every generated formula is checked before it is shown: brackets must balance, every function name must be a real Excel function, and a formula parser runs over it when it loads.",
+        "tip": "Fill in the fields with your own ranges and values, then read the validation line under the example. If it says a function is not implemented in the in-browser parser, the formula can still be right: LET, XLOOKUP and RANK are real Excel functions that the parser does not run.",
+        "limit": "The tool builds formulas from fixed templates, not from AI. It does not read your workbook and cannot guess your cell addresses. Validation checks brackets, function names and parser errors; it cannot tell whether your ranges hold the data you expect. Always test a formula on a copy of your data first.",
+        "example": "Choosing VLOOKUP with IFERROR, entering A2 as the value, Sheet2!A:B as the table and 2 as the column gives =IFERROR(VLOOKUP(A2, Sheet2!A:B, 2, FALSE), \"\") which shows a blank cell instead of #N/A when there is no match.",
         "faq": [
           [
-            "Is this AI?",
+            "Does it write formulas by itself?",
             "No. The tool uses fixed, parameterized templates. You pick the task and fill in the fields, and it builds the exact formula from those values. It does not guess or learn from your data."
           ],
           [
@@ -2207,7 +2210,7 @@
           ],
           [
             "Which formulas can it build?",
-            "Eleven. SUMIF, SUMIFS, COUNTIFS, VLOOKUP, XLOOKUP, INDEX plus MATCH, IF, Nested IF, TEXT, DATEDIF and UNIQUE. Pick one from the Task list."
+            "Twenty. SUMIF, SUMIFS, COUNTIFS, VLOOKUP, XLOOKUP, INDEX plus MATCH, IF, Nested IF, TEXT, DATEDIF, UNIQUE, AVERAGEIF, EOMONTH, RANK, LARGE, SMALL, ROUND, VLOOKUP with IFERROR, XLOOKUP with several criteria, and LET. Pick one from the Task list."
           ],
           [
             "Does it explain the formula too?",
@@ -2294,12 +2297,12 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "content": {
-        "use": "A VBA macro writer is for repeating a job in Excel without doing it by hand every time: marking rows that meet a condition, copying data to a report sheet, filtering a table, or hiding a settings sheet. The macro does the clicks for you.",
-        "tip": "Start with a small task, such as looping through rows, and test the macro on a copy of your workbook. Press Alt + F11 in Excel, insert a module, paste the code, and run it from there.",
-        "limit": "The tool builds macros from fixed templates. It does not write a macro for a job it has no template for, and it cannot test the macro against your workbook. Macros only run in Excel for Windows or Mac with macros enabled.",
-        "example": "Choosing Loop through rows, with sheet Data, column A and the condition over 100, gives a macro that marks those rows High in column B.",
+        "use": "A VBA macro writer is for repeating a job in Excel without doing it by hand every time: marking rows that meet a condition, copying filtered rows to a report sheet, importing a CSV file, building a PivotTable, emailing a report with its file attached, protecting sheets, adding a dropdown list, replacing text across the whole workbook, or splitting and merging workbooks. Pick the task, fill in the labelled fields, and the tool builds the macro from a fixed template. A syntax checker is built in: paste any VBA code and it checks that Sub, If, For, With and Select blocks are closed and that quotes and brackets balance.",
+        "tip": "Start with a small task, such as looping through rows, and test the macro on a copy of your workbook. Press Alt + F11 in Excel, insert a module, paste the code, and run it from there. Change the placeholder paths and passwords before you run a template.",
+        "limit": "The tool builds macros from fixed templates. It does not write a macro for a job it has no template for, and it cannot test the macro against your workbook. The syntax check is a static check only: it cannot tell whether a sheet, range or Outlook reference exists. Macros only run in Excel for Windows or Mac with macros enabled.",
+        "example": "Choosing Import a CSV file, with sheet Data and the path C:\\Reports\\sales.csv, gives a macro that clears the sheet and imports the file, splitting values at commas.",
         "faq": [
           [
             "How do I run the macro in Excel?",
@@ -2311,19 +2314,26 @@
           ],
           [
             "Which macros can it write?",
-            "Five. Loop through rows, copy data to another sheet, AutoFilter a table, sort a table, and hide a sheet so it is very hidden. Pick one from the Task list."
+            "Fifteen. Loop through rows, copy data, AutoFilter, sort, hide a sheet, copy filtered rows, import CSV, PivotTable, Outlook mail with attachment, protect and unprotect sheets, dropdown list, find and replace, split workbook, and merge workbooks."
           ],
           [
-            "Does it work in Google Sheets?",
-            "No. VBA only runs in Excel on Windows or Mac. Google Sheets uses a different language, so paste the code in Excel instead."
+            "Can I check my own VBA code?",
+            "Yes. Paste it in the Check my VBA code box and press Check Syntax. The tool checks that every Sub, If, For, With and Select block is closed and that quotes and brackets balance. It cannot tell whether a sheet or range exists."
           ]
         ]
       },
       "meta_description": "Write Excel VBA macros from a plain-words description, free in your browser. Describe the automation, get VBA code.",
       "steps": [
-        "Pick a task in the 'Task' list: Loop through rows, Copy data to another sheet, AutoFilter a table, Sort a table, or Hide a sheet (very hidden).",
+        "Pick a task in the 'Task' list: Loop through rows, Copy data to another sheet, AutoFilter a table, Sort a table, Hide a sheet, Copy filtered rows, Import CSV, PivotTable, Outlook mail with attachment, Protect or Unprotect sheets, Dropdown list, Find and replace, Split workbook, or Merge workbooks.",
         "Fill in the labelled fields that appear for that task.",
-        "Press Generate and copy the VBA code from the box below."
+        "Press Generate and copy the VBA code from the box below. To check code you wrote yourself, paste it in the Check my VBA code box and press Check Syntax.",
+        "In Excel press Alt + F11, paste the code into a module, and press F5 to run it on a copy of your workbook."
+      ],
+      "related": [
+        "formula-generator",
+        "dax-query",
+        "excel-to-csv",
+        "csv-to-excel"
       ]
     },
     {
@@ -2349,12 +2359,12 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "content": {
-        "use": "A regex creator is for finding or checking a pattern in text: an email address, a Pakistan mobile number, a CNIC, a date, or a web link. It is used in spreadsheets, text editors and data cleaning, where a pattern is faster than reading every line.",
-        "tip": "Paste some of your own text in the test box and press Generate. The tool shows you exactly which parts matched, so you can see if the pattern is right before you use it anywhere else.",
-        "limit": "The tool gives you a fixed pattern for a named task. It does not build a pattern for a new, unusual format, and a pattern that matches your test text may still miss a different format of the same thing.",
-        "example": "Choosing Pakistan mobile number gives 03\\d{2}[- ]?\\d{7}, which finds 0300-1234567 and 03001234567.",
+        "use": "A regex creator is for finding or checking a pattern in text: an email address, a Pakistan mobile number, a CNIC, an NTN, a Pakistan IBAN, a passport number, a postal code, an amount with commas, a time, Urdu text, a date, or a web link. It is used in spreadsheets, text editors and data cleaning, where a pattern is faster than reading every line. Pick a pattern, test it on your own text with matches highlighted and capture groups listed, or build one from blocks. An explain mode reads any pattern token by token and says what each part means in plain words.",
+        "tip": "Paste some of your own text in the test box and press Generate. The tool highlights every match in your text and lists the capture groups, so you can see if the pattern is right before you use it anywhere else.",
+        "limit": "The tool gives you a fixed pattern for a named task. It does not build a pattern for a new, unusual format, and a pattern that matches your test text may still miss a different format of the same thing. The explain mode describes tokens; it does not run the pattern.",
+        "example": "Choosing Pakistan mobile number gives a pattern that finds 0300-1234567. Choosing Pakistan IBAN gives \\bPK\\d{2}[A-Z]{4}\\d{16}\\b, which finds PK36SCBL0000001123456702. Choosing Urdu text gives a pattern that finds اردو in mixed English and Urdu text.",
         "faq": [
           [
             "What is a regex?",
@@ -2362,23 +2372,30 @@
           ],
           [
             "Can I use this pattern in Excel?",
-            "Yes, with VBA, or in Google Sheets with REGEXEXTRACT. Paste the pattern exactly as shown, including the backslashes."
+            "Yes, with VBA, or in Google Sheets with REGEXEXTRACT. Paste the pattern exactly as shown, including the backslashes, and test it on a small range first."
           ],
           [
             "Which patterns can it create?",
-            "Six. Email address, Pakistan mobile number, date in DD/MM/YYYY form, web link, numbers in text, and Pakistan CNIC. Pick one from the Pattern list."
+            "Thirteen. Email address, Pakistan mobile number, date in DD/MM/YYYY form, web link, numbers in text, Pakistan CNIC, NTN, Pakistan IBAN, passport, postal code, amount with commas, time, and Urdu text. Pick one from the Pattern list."
           ],
           [
             "Can I test the pattern on my own text?",
-            "Yes. Paste text in the test box and press Generate. The tool shows which parts matched, so you can check the pattern before you use it."
+            "Yes. Paste text in the test box and press Generate. Matches are highlighted in your text, and capture groups are listed below, so you can check the pattern before you use it."
           ]
         ]
       },
       "meta_description": "Build regex patterns and extract emails and dates, free in your browser. Describe the pattern, get working regex.",
       "steps": [
-        "Pick a pattern in the 'Pattern for' list: Email address, Pakistan mobile number, Date (DD/MM/YYYY), Web link, Numbers in text, or Pakistan CNIC.",
-        "Paste some text in the 'Test text' box if you want to test the pattern.",
-        "Press Generate Pattern and copy the pattern from the box below."
+        "Pick a pattern in the 'Pattern for' list: Email address, Pakistan mobile number, Date (DD/MM/YYYY), Web link, Numbers in text, Pakistan CNIC, NTN, Pakistan IBAN, Passport, Postal code, Amount with commas, Time, or Urdu text.",
+        "Paste some text in the 'Test text' box if you want to test the pattern. Matches are highlighted in your text, and capture groups are listed below.",
+        "Press Generate Pattern and copy the pattern from the box below. To build a pattern of your own, add blocks in the builder and press Test Built Pattern. To understand a pattern, paste it in the explain box.",
+        "Copy the pattern into your own tool or code, and test it again there with your real data before you rely on it."
+      ],
+      "related": [
+        "formula-generator",
+        "vba-macro-writer",
+        "dax-query",
+        "find-and-replace"
       ]
     },
     {
@@ -2404,12 +2421,12 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "content": {
-        "use": "A DAX measure is for Power BI and Excel Power Pivot: a total, an average, a year-to-date figure, or a share of the total that updates when a user filters the report. It is the calculation behind most Power BI cards and charts.",
-        "tip": "Use your real table and column names in the fields. The measure name is the name that will appear in your report, so make it clear, such as Total Sales.",
-        "limit": "The tool builds measures from fixed templates. It does not connect to your Power BI file and cannot check that your table or column names are right. Paste the measure into Power BI and test it there.",
-        "example": "Choosing Total Sales, with table Sales and column Amount, gives Total Sales = SUM(Sales[Amount]).",
+        "use": "A DAX measure is for Power BI and Excel Power Pivot: a total, an average, a year-to-date figure, a share of the total, a month-on-month or year-on-year change, a running total, a moving average, a rank, a top N total, or one measure that changes with a slicer. It is the calculation behind most Power BI cards and charts. Pick the measure, fill in your table and column names, and the tool builds it from a fixed template with an explanation. A syntax checker is built in: paste any measure and it checks brackets, quotes and bracket references.",
+        "tip": "Use your real table and column names in the fields. The measure name is the name that will appear in your report, so make it clear, such as Total Sales. Time measures need a date table: the Date Table task builds one for you.",
+        "limit": "The tool builds measures from fixed templates. It does not connect to your Power BI file and cannot check that your table or column names are right. The syntax check cannot tell whether a table or column exists in your model. Paste the measure into Power BI and test it there.",
+        "example": "Choosing Month on Month growth, with measure Total Sales and date 'Calendar'[Date], gives a measure that compares this month with last month as a percentage.",
         "faq": [
           [
             "What is DAX?",
@@ -2421,19 +2438,26 @@
           ],
           [
             "Which measures can it build?",
-            "Five. Total Sales, Average, Year to Date, Percent of Total, and Count Rows. Pick one from the Task list and fill in your table and column names."
+            "Sixteen. Total Sales, Average, Year to Date, Percent of Total, Count Rows, Month on Month growth, Year on Year growth, Running Total, Moving Average, Previous Month, Month to Date, Quarter to Date, RANKX, Top N total, SWITCH dynamic measure, and a Date Table."
           ],
           [
-            "Do I need Power BI to use it?",
-            "No. The same measures also work in Excel Power Pivot. Paste the measure into either one, with your own table and column names."
+            "Can I check my own DAX measure?",
+            "Yes. Paste it in the Check my DAX measure box and press Check Syntax. The tool checks brackets, quotes and square brackets, and warns about function names it does not recognise. It cannot check your table or column names."
           ]
         ]
       },
       "meta_description": "Write DAX measures for Power BI from a plain-words description, free in your browser. Describe the measure, get DAX.",
       "steps": [
-        "Pick a measure in the 'Task' list: Total Sales, Average, Year to Date, Percent of Total, or Count Rows.",
+        "Pick a measure in the 'Task' list: Total Sales, Average, Year to Date, Percent of Total, Count Rows, Month on Month growth, Year on Year growth, Running Total, Moving Average, Previous Month, Month to Date, Quarter to Date, RANKX, Top N total, SWITCH dynamic measure, or Date Table.",
         "Fill in the labelled fields with your table and column names.",
-        "Press Generate, then copy the DAX measure and paste it into Power BI or Excel Power Pivot."
+        "Press Generate, then copy the DAX measure and paste it into Power BI or Excel Power Pivot. To check a measure you wrote yourself, paste it in the Check my DAX measure box and press Check Syntax.",
+        "Test the measure in Power BI on a copy of your model first, and check its total against a number you already trust."
+      ],
+      "related": [
+        "formula-generator",
+        "vba-macro-writer",
+        "excel-to-csv",
+        "csv-to-excel"
       ]
     },
     {
@@ -2460,37 +2484,44 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Export the first sheet of an Excel file as CSV, free in your browser. Your file never leaves your device.",
       "steps": [
-        "Choose an Excel file (.xlsx or .xls) with the file button.",
-        "Press Convert Excel to CSV.",
-        "Save the downloaded .csv file, which holds the first sheet of your workbook."
+        "Choose an Excel file (.xlsx or .xls) with the file button. The sheet list fills in from your file.",
+        "Pick the sheet, the export scope, the delimiter, and the options: UTF-8 BOM, visible rows only, and skip empty rows.",
+        "Press Convert Excel to CSV. One sheet downloads as a .csv file; all sheets download as one ZIP file with a CSV per sheet.",
+        "Open the downloaded CSV in a text editor or Excel to check the delimiter and the rows before you send it on."
       ],
       "content": {
-        "use": "Excel to CSV exports the first sheet of an Excel workbook as a plain .csv file, so the data can be opened in other apps or uploaded to a system that only takes CSV. A shop owner exports a stock list to upload to an online store. An office worker exports a customer list to import into another program. A student exports a class list to use in a different app. The tool reads the workbook with SheetJS in your browser and writes the first sheet as comma-separated values. Only the first sheet is exported; other sheets are left out.",
-        "tip": "Move the sheet you need to the first position in your workbook before you convert, because only the first sheet is exported. Open the .csv afterwards to check that dates and numbers look right.",
-        "limit": "Only the first sheet is exported. Formulas are saved as their calculated values, and formatting, colours, charts and other sheets are not kept. An empty first sheet gives an error and nothing is downloaded.",
-        "example": "Converting a workbook whose first sheet has 50 rows of stock data downloads ak-premium-sheet.csv with all 50 rows as comma-separated values.",
+        "use": "Excel to CSV exports a sheet of an Excel workbook as a plain .csv file, so the data can be opened in other apps or uploaded to a system that only takes CSV. A shop owner exports a stock list to upload to an online store. An office worker exports a customer list to import into another program. A student exports a class list to use in a different app. Pick any sheet, or export every sheet at once as a ZIP. Choose the delimiter, add a UTF-8 BOM so Excel opens Urdu and special characters correctly, skip hidden rows, and skip empty rows. Values are saved as they appear in Excel, with dates and numbers formatted.",
+        "tip": "Check the sheet list after choosing your file: the first sheet is selected by default. Open the .csv afterwards to check that dates and numbers look right, and that Urdu text opens correctly.",
+        "limit": "Formulas are saved as their calculated values, and formatting, colours, charts and other sheets are not kept in a single-sheet export. An empty sheet gives an error and nothing is downloaded. Hidden rows are only skipped when the visible-rows-only box is ticked.",
+        "example": "Converting a workbook with a Sales sheet and a Stock sheet, with all sheets selected, downloads ak-premium-excel-to-csv.zip holding Sales.csv and Stock.csv.",
         "faq": [
           [
             "Which sheet is exported?",
-            "Only the first sheet of the workbook. If the sheet you need is second or third, move it to the first position in Excel and save, then convert again."
+            "The sheet you pick in the Sheet list. The first sheet is selected by default. Choose All sheets in the Export list to get every sheet at once, one CSV per sheet in a ZIP file."
           ],
           [
             "Does the CSV keep my formulas?",
             "No. Formulas are saved as their calculated values. The .csv file holds plain values separated by commas, with no formatting."
           ],
           [
-            "What happens if the first sheet is empty?",
-            "The tool shows a message that the first sheet is empty and downloads nothing. Choose a workbook with data on the first sheet."
+            "What happens if the sheet is empty?",
+            "The tool shows a message that the selected sheet is empty and downloads nothing. Pick a sheet with data, or choose a different workbook."
           ],
           [
-            "Can I convert a .xls file too?",
-            "Yes. Both .xlsx and .xls files are accepted by the file picker."
+            "Can I choose the delimiter?",
+            "Yes. Pick comma, semicolon, tab or pipe in the Delimiter list. Comma is the default. Use semicolon if your data already has commas inside the values, or if the system you upload to expects semicolons."
           ]
         ]
-      }
+      },
+      "related": [
+        "csv-to-excel",
+        "formula-generator",
+        "vba-macro-writer",
+        "pdf-to-excel"
+      ]
     },
     {
       "slug": "csv-to-excel",
@@ -2509,29 +2540,31 @@
         "csv to spreadsheet"
       ],
       "libs": [
-        "xlsx"
+        "xlsx",
+        "papaparse"
       ],
       "engine": "tool-csvxcel",
       "maxFileMB": 50,
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Save CSV text as an .xlsx spreadsheet, free in your browser. Paste CSV rows and download Excel instantly.",
       "steps": [
-        "Choose a .csv file with the file button, or paste CSV text in the 'Paste CSV text' box.",
-        "Press Convert CSV to Excel.",
-        "Save the downloaded .xlsx file."
+        "Choose one or more .csv files with the file button, or paste CSV text in the 'Paste CSV text' box.",
+        "Press Preview First Rows to see the first rows, the detected delimiter and the encoding. Pick a different delimiter in the list if the preview looks wrong.",
+        "Press Convert CSV to Excel. The first row becomes a bold header with frozen panes and AutoFilter, numbers and dates become real Excel types, and each file becomes its own sheet.",
+        "Open the downloaded workbook in Excel and check that the dates and numbers read back with the right types."
       ],
       "content": {
-        "use": "CSV to Excel turns a .csv file or pasted CSV text into a proper Excel workbook, so the data opens in Excel with rows and columns. A shop owner turns a downloaded sales CSV into an Excel file to sort and filter it. An office worker turns a system export into Excel to add totals. A student turns survey results into Excel to make a chart. You can upload a file or paste the text; either way the tool reads the rows with SheetJS and writes one sheet in an .xlsx file. The first row becomes the header row of the sheet.",
-        "tip": "Check that the first row holds your column names, because it becomes the header row. If your CSV uses semicolons instead of commas, replace them first, or the columns will not split correctly.",
-        "limit": "The result is one plain sheet with no formatting, formulas or charts. The tool expects commas between values; quoted commas inside a value are handled, but very unusual CSV files may not split correctly. An empty file or empty paste gives an error.",
-        "example": "Pasting 'name,age' on the first line and 'Ali,25' on the second, then pressing Convert CSV to Excel, downloads an .xlsx file with a Name column and an Age column.",
+        "use": "CSV to Excel turns a .csv file or pasted CSV text into an Excel workbook, so it opens in Excel with rows and columns. A shop owner turns a sales CSV into an Excel file to sort and filter it. An office worker turns a system export into Excel to add totals. A student turns survey results into Excel to make a chart. The tool detects the delimiter and the file encoding by itself, shows a preview of the first rows, and turns numbers, dates and true/false values into real Excel types. The header row is bold with frozen panes and AutoFilter, column widths are fitted, and several CSV files become one workbook with a sheet per file.",
+        "tip": "Press Preview First Rows before converting: if the columns look wrong, the delimiter is probably wrong, so pick it in the list. Check that the first row holds your column names, because it becomes the header row.",
+        "limit": "The result holds values only, with no formulas or charts. Dates must be written as YYYY-MM-DD or DD/MM/YYYY to be recognised as dates. A phone number starting with 0 stays as text so the zero is not lost. Very unusual CSV files may still not split correctly, so check the preview first.",
+        "example": "Pasting 'name,age,joined' on the first line and 'Ali,25,2026-01-15' on the second gives an .xlsx file where 25 is a real number, the date is a real date, and the header row is bold with a filter.",
         "faq": [
           [
-            "Do I need to upload a file, or can I paste text?",
-            "Either works. Choose a .csv file, or paste the CSV text into the box. If you do both, the uploaded file is used."
+            "Can I paste text instead of a file?",
+            "Either works. Choose one or more .csv files, or paste the CSV text into the box. If you upload files, the pasted text is ignored."
           ],
           [
             "What becomes the header row?",
@@ -2539,14 +2572,20 @@
           ],
           [
             "Does the Excel file keep my formatting?",
-            "No. The result is a plain sheet with values only. Add colours, filters and formulas in Excel afterwards."
+            "The CSV has no formatting to keep, but the tool adds some: a bold header row, frozen panes, AutoFilter and fitted column widths. Add colours and formulas in Excel afterwards."
           ],
           [
             "What if my CSV uses semicolons?",
-            "The tool expects commas. Replace the semicolons with commas first, or the whole row will land in one column."
+            "The tool detects the delimiter by itself, including semicolons, tabs and pipes. Check the preview: if the columns look wrong, pick the delimiter in the list before you convert."
           ]
         ]
-      }
+      },
+      "related": [
+        "excel-to-csv",
+        "formula-generator",
+        "vba-macro-writer",
+        "csv-to-json"
+      ]
     },
     {
       "slug": "image-compressor",
