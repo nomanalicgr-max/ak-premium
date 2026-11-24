@@ -4229,35 +4229,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-23",
       "meta_description": "Turn JPG images into one PDF, one photo per page, in your browser. Free, private, no uploads.",
       "steps": [
-        "Choose one or more JPG images with the file button.",
-        "Check that the images are in the order you want, because each image becomes one page in that order.",
-        "Press Convert JPG to PDF.",
-        "Save the downloaded PDF, which has one image per page."
+        "Choose one or more JPG files.",
+        "Pick Images per page (1, 2 or 4), Page size (A4 or Letter) and Print size (Fit to page or Full size).",
+        "Leave Auto-rotate photos from EXIF data on so phone photos come out upright, or turn it off.",
+        "Tick Grayscale for black-and-white pages and set JPEG quality with the slider.",
+        "Press Convert JPG to PDF and save the file."
       ],
       "content": {
-        "use": "JPG to PDF turns photos into a single PDF file, one photo per page. A student photographs handwritten notes and sends them as one PDF to a teacher. A job applicant photographs certificates and attaches one PDF to an application. A shop owner photographs receipts and keeps them as one monthly PDF. Each photo is fitted to an A4 page with a small margin, so nothing is cropped, and the photos stay in the order you selected them. The PDF is built in your browser with jsPDF, so your photos are never uploaded anywhere and you do not need an account.",
-        "tip": "Choose the images in the order you want them to appear, because each image becomes one page in that order. For the sharpest result, use clear photos; a blurry photo stays blurry in the PDF. If a photo is sideways, rotate it on your phone or computer first, because this tool does not rotate images.",
-        "limit": "Only JPG and JPEG images are accepted, and each file must be under 50 MB. Each image is placed on its own page, so you cannot put two images side by side on one page. Very large images are fitted to the page, not kept at full size, and the tool does not rotate images.",
-        "example": "Choosing 4 photos of handwritten notes and pressing Convert JPG to PDF gives one 4-page PDF, with each photo on its own A4 page.",
+        "use": "Turns JPG photos into a single PDF, one photo per page or two or four in a grid. It is made for the everyday jobs: sending a set of photos as one file, printing pictures on A4 or Letter paper, or turning phone photos into a document you can share. Phone photos are rotated upright automatically using the EXIF orientation stored by the camera, so sideways pictures come out the right way up. You can print each photo full-size at its natural size, choose JPEG quality to balance file size against sharpness, or switch on grayscale for a black-and-white document. Everything runs in your browser, and the photos never leave your device.",
+        "tip": "For a photo-book look, use 1 image per page with Print size set to Fit to page; for a contact sheet, use 4 per page.",
+        "limit": "Photos are re-encoded as JPEG, so a very low quality value loses detail. PNG, WebP and HEIC files are not accepted here, use PNG to PDF for PNG files.",
+        "example": "Three holiday photos become a 3-page A4 PDF: choose the files, leave 1 per page and Auto-rotate on, press Convert JPG to PDF.",
         "faq": [
           [
-            "Can I convert a PNG image here?",
-            "No. This page only accepts JPG and JPEG images. Use PNG to PDF for PNG images, or Images to PDF if you have a mix of JPG, PNG and WebP images."
+            "Will my phone photos come out the right way up?",
+            "Yes, when Auto-rotate photos from EXIF data is on. The tool reads the orientation your camera stored in the photo and turns the picture upright before placing it on the page."
           ],
           [
-            "How do I set the page order?",
-            "Choose the images in the order you want the pages to appear. Each image becomes one page in that order, and there is no reorder step on this page."
+            "What does the Full size print option do?",
+            "It places each photo at its natural size instead of fitting it to the page, at 72 DPI and full JPEG quality. Use it when you want the photo printed exactly as taken, without scaling."
           ],
           [
-            "What is the downloaded file called?",
-            "ak-premium-jpg-to-pdf.pdf. It has one page per image, in the order you selected them, and your original images are not changed."
+            "Can I put four photos on one page?",
+            "Yes. Set Images per page to 4 and the photos are placed in a two-by-two grid, each in its own cell. Choose 2 for two photos side by side."
           ],
           [
-            "Can I convert many photos at once?",
-            "Yes. Choose as many JPG images as you need, each under 50 MB. Each image becomes one page, so ten photos give a ten-page PDF."
+            "Does JPG to PDF keep the original photo quality?",
+            "The photos are re-encoded as JPEG at the quality you choose, so at 92% and above the difference is hard to see. Full size keeps full quality; lower quality values make smaller files but softer detail."
           ]
         ]
       },
@@ -4296,35 +4297,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-23",
       "meta_description": "Turn PNG images into one PDF, one image per page, in your browser. Free, private, no uploads.",
       "steps": [
-        "Choose one or more PNG images with the file button.",
-        "Check that the images are in the order you want, because each image becomes one page in that order.",
-        "Press Convert PNG to PDF.",
-        "Save the downloaded PDF, which has one image per page."
+        "Choose one or more PNG files.",
+        "Pick Images per page (1, 2 or 4) and Page size (A4 or Letter).",
+        "Choose Transparency: keep it as-is, flatten onto white or black, or pick your own colour.",
+        "Tick Save images as JPEG inside the PDF for a smaller file, and set JPEG quality with the slider.",
+        "Press Convert PNG to PDF and save the file."
       ],
       "content": {
-        "use": "PNG to PDF turns screenshots and pictures into a single PDF file, one image per page. A student screenshots a diagram and sends it as one PDF to a teacher. An office worker screenshots a chart and attaches one PDF to a report. A designer screenshots a mockup and shares one PDF with a client. Each image is fitted to an A4 page with a small margin, so nothing is cropped, and the images stay in the order you selected them. The PDF is built in your browser with jsPDF, so your images are never uploaded anywhere and you do not need an account.",
-        "tip": "Choose the images in the order you want them to appear, because each image becomes one page in that order. PNG images keep sharp edges, so they suit screenshots and diagrams. If an image is sideways, rotate it on your phone or computer first, because this tool does not rotate images.",
-        "limit": "Only PNG images are accepted, and each file must be under 50 MB. Each image is placed on its own page, so you cannot put two images side by side on one page. Very large images are fitted to the page, not kept at full size, and the tool does not rotate images.",
-        "example": "Choosing 3 screenshots of a chart and pressing Convert PNG to PDF gives one 3-page PDF, with each screenshot on its own A4 page.",
+        "use": "Turns PNG images into a single PDF, one image per page or two or four in a grid. Transparent areas are kept exactly as they are, so a logo with a see-through background stays see-through in the PDF, or they can be flattened onto white, black or a colour of your choice, handy when the PDF will be printed, because printers cannot print transparency. You can also save the images as JPEG inside the PDF for a smaller file, at a quality you choose, or tick Grayscale for a black-and-white document. Everything runs in your browser, and the images never leave your device.",
+        "tip": "Keep transparency as-is for logos that will sit on a coloured page; flatten onto white when the PDF will be printed.",
+        "limit": "Flattening onto a colour replaces transparent pixels permanently in the PDF. The save-as-JPEG option re-encodes images, so fine detail can soften at low quality.",
+        "example": "A logo with a transparent background becomes a 1-page A4 PDF with the transparency kept, ready to place on a coloured letterhead.",
         "faq": [
           [
-            "Can I convert a JPG image here?",
-            "No. This page only accepts PNG images. Use JPG to PDF for JPG images, or Images to PDF if you have a mix of JPG, PNG and WebP images."
+            "What happens to the transparent parts of a PNG?",
+            "By default nothing: transparent pixels stay transparent in the PDF, so whatever is behind the image shows through. Choose a flatten option only if you want a solid background instead."
           ],
           [
-            "Does the PDF keep full image quality?",
-            "No. Each image is fitted to an A4 page, so a very large image is scaled down. The result is a clean, readable PDF, not a full-resolution archive of your images."
+            "Why flatten a PNG onto white?",
+            "Printers cannot print transparency, so a transparent area would come out white or patchy on paper. Flattening onto white first makes the printed result predictable."
           ],
           [
-            "What file do I get after converting?",
-            "You download one PDF named ak-premium-png-to-pdf.pdf. It has one page per image, in the order you selected them, and your original images are not changed."
+            "When should I use the save as JPEG option?",
+            "When file size matters more than transparency. JPEG is much smaller than PNG for photos, but it cannot hold transparency, so the option also flattens the image first."
           ],
           [
-            "Can I convert many screenshots at once?",
-            "Yes. Choose as many PNG images as you need, each under 50 MB. Each image becomes one page, so ten screenshots give a ten-page PDF."
+            "Can I mix PNG files of different sizes?",
+            "Yes. Each image is fitted into its own cell, so a mix of wide and tall images still lines up neatly in the grid you chose."
           ]
         ]
       },
@@ -4364,35 +4366,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-23",
       "meta_description": "Render PDF pages as JPG images, with a download link per page and one ZIP file. Free, private, no uploads.",
       "steps": [
-        "Choose a PDF file with the file button.",
-        "Press Convert PDF to JPG and wait for the status message to say it is done.",
-        "Download each page JPG from the links shown, such as Download page 2 JPG.",
-        "Or download the whole set at once as one ZIP file named ak-premium-pages.zip."
+        "Choose a PDF file.",
+        "Pick Resolution (72 to 300 DPI) and JPEG quality with the slider.",
+        "Set Pages to all, or a range such as 1-3, 5.",
+        "Optionally choose Resize to width and tick Grayscale.",
+        "Press Convert PDF to JPG, then download a single page or the ZIP of all pages."
       ],
       "content": {
-        "use": "PDF to JPG turns every page of a PDF into a JPG picture, so you can share a single page in a chat, add it to a slide or post it online. A teacher turns one page of a worksheet into a JPG to share in a class group. A student turns a diagram page into a JPG to paste into an assignment. A shop owner turns a price page into a JPG for a social media post. Each page is rendered at one and a half times its normal size for a sharp picture. After the conversion, you get a download link for each page and one ZIP file with all the pages together.",
-        "tip": "If you only need one page, download just that page's JPG link instead of the whole ZIP. JPG files are smaller than PNG, so they suit sharing in chats. Large PDFs take a while because every page is rendered in your browser, so wait for the status message to say it is done.",
-        "limit": "Each page becomes a separate JPG, so a 50-page PDF gives 50 pictures and one ZIP. The JPGs are pictures of the pages, not editable text. A scanned PDF renders as a picture of the scan, which is fine, but a very large PDF may be slow or run out of browser memory.",
-        "example": "Converting a 3-page worksheet gives three JPG links, page 1, page 2 and page 3, plus a ZIP file with all three JPGs inside.",
+        "use": "Renders every page of a PDF as a JPG image, in your browser. It is made for sharing a page as a picture, posting a page on social media, or putting a page into a document that only accepts images. You choose the resolution from 72 DPI for a quick preview up to 300 DPI for print quality, and the JPEG quality to balance sharpness against file size. You can convert only the pages you need, shrink the images to a set width such as 800 or 1200 pixels, or switch on grayscale. One page downloads on its own; several pages come as a ZIP file.",
+        "tip": "150 DPI at 90% quality is a good balance for sharing; use 300 DPI when the image will be printed.",
+        "limit": "JPG has no transparency and uses lossy compression, so fine text can soften at low quality. Very large PDFs at 300 DPI take a while and make big files.",
+        "example": "Page 2 of a 5-page PDF becomes a 150 DPI JPG: choose the file, set Pages to 2, press Convert PDF to JPG.",
         "faq": [
           [
-            "Can I download just one page?",
-            "Yes. After the conversion, each page has its own link, such as Download page 2 JPG. Press the link for the page you need. The ZIP is only for downloading all pages at once."
+            "What DPI should I choose for PDF to JPG?",
+            "72 DPI is enough for a quick preview, 150 DPI looks good on screen and in most documents, and 300 DPI is for print. Higher DPI means sharper images and bigger files."
           ],
           [
-            "What size are the JPG images?",
-            "Each page is rendered at one and a half times its normal size, so the pictures are sharp enough to share or print. They are not full-resolution scans."
+            "Can I convert only some pages to JPG?",
+            "Yes. Put the pages in the Pages box, for example 1-3, 5, and only those pages are rendered. Leave it as all to convert the whole PDF."
           ],
           [
-            "Can I get PNG images instead of JPG?",
-            "Yes. Use PDF to PNG for PNG images. This page only makes JPG images, which are smaller and suit sharing in chats."
+            "Why is there no ZIP when I convert one page?",
+            "When only one page is converted, the single JPG downloads directly, so no ZIP is needed. A ZIP is made only when two or more pages are converted."
           ],
           [
-            "Why is a long PDF slow to convert?",
-            "Every page is drawn in your browser one by one. A long PDF with many pages takes longer, and a very large file may run out of memory. Try a smaller file if it stops."
+            "Is JPG or PNG better for a PDF page?",
+            "JPG makes smaller files and is best for photos and sharing. PNG keeps sharper text and supports transparency, so use PDF to PNG when the page is mostly text or needs a transparent background."
           ]
         ]
       },
@@ -4432,35 +4435,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-23",
       "meta_description": "Render PDF pages as PNG images, with a download link per page and one ZIP file. Free, private, no uploads.",
       "steps": [
-        "Choose a PDF file with the file button.",
-        "Press Convert PDF to PNG and wait for the status message to say it is done.",
-        "Download each page PNG from the links shown, such as Download page 2 PNG.",
-        "Or download the whole set at once as one ZIP file named ak-premium-pages.zip."
+        "Choose a PDF file.",
+        "Pick Resolution (72 to 300 DPI).",
+        "Set Pages to all, or a range such as 1-3, 5.",
+        "Optionally choose Resize to width and tick Transparent background.",
+        "Set the File names pattern, then press Convert PDF to PNG and download a single page or the ZIP."
       ],
       "content": {
-        "use": "PDF to PNG turns every page of a PDF into a PNG picture, which keeps sharp edges and is easy to edit afterwards. A teacher turns a worksheet page into a PNG to crop and reuse in a new handout. A student turns a diagram page into a PNG to label it in an image editor. A designer turns a layout page into a PNG to check the spacing closely. Each page is rendered at one and a half times its normal size, so text stays crisp. After the conversion, you get a download link for each page and one ZIP file with all the pages together.",
-        "tip": "If you only need one page, download just that page's PNG link instead of the whole ZIP. PNG keeps text sharp, so it suits diagrams and pages you want to edit. Large PDFs take a while because every page is rendered in your browser, so wait for the status message to say it is done.",
-        "limit": "Each page becomes a separate PNG, so a 50-page PDF gives 50 pictures and one ZIP. The PNGs are pictures of the pages, not editable text. A scanned PDF renders as a picture of the scan, which is fine, but a very large PDF may be slow or run out of browser memory.",
-        "example": "Converting a 3-page worksheet gives three PNG links, page 1, page 2 and page 3, plus a ZIP file with all three PNGs inside.",
+        "use": "Renders every page of a PDF as a PNG image, in your browser. PNG keeps text sharp and supports transparency, so it is the better choice when the page is mostly text, a diagram or a logo. You choose the resolution from 72 DPI for a quick preview up to 300 DPI for print quality, convert only the pages you need, and shrink the images to a set width such as 800 or 1200 pixels. The file-name pattern names every image for you, report-p{nn}.png becomes report-p01.png, report-p02.png and so on, and one page downloads on its own while several pages come as a ZIP file.",
+        "tip": "Use the file-name pattern report-p{nn}.png so the files sort in page order; {nn} becomes 01, 02 and so on.",
+        "limit": "PNG files are larger than JPG. A transparent background only works where the page itself has no background colour, a page with a white background stays white.",
+        "example": "A 3-page report becomes report-p01.png, report-p02.png and report-p03.png at 150 DPI.",
         "faq": [
           [
-            "How do I save a single page?",
-            "After the conversion, each page has its own link, such as Download page 2 PNG. Press the link for the page you need. The ZIP is only for downloading all pages at once."
+            "How does the file-name pattern work?",
+            "Type a pattern such as report-p{nn}.png and {nn} is replaced by the page number with a leading zero: 01, 02, 03. {n} gives 1, 2, 3 without the zero. Without a pattern the files are named by page number."
           ],
           [
-            "Are the PNG images full size?",
-            "No. Each page is rendered at one and a half times its normal size, so the pictures are sharp enough to share or print. They are not full-resolution scans."
+            "When is the background actually transparent?",
+            "Only when the PDF page itself has no background colour. A page drawn with a white background stays white, because there is nothing transparent to keep."
           ],
           [
-            "Can I choose JPG output here?",
-            "No. This page only makes PNG images, which keep text sharper and suit editing. Use PDF to JPG for JPG images."
+            "Can I convert only pages 2 and 4 to PNG?",
+            "Yes. Put 2, 4 in the Pages box and only those two pages are rendered. Ranges such as 1-3, 5 work too."
           ],
           [
-            "What if my PDF is very large?",
-            "Every page is drawn in your browser one by one, so a long PDF takes longer. A very large file may run out of memory. Try a smaller file if the conversion stops."
+            "Why are PNG files bigger than JPG files?",
+            "PNG uses lossless compression, so it keeps every pixel exactly and stays sharp for text and diagrams. JPG throws away detail to save space, which is fine for photos but softens text."
           ]
         ]
       },
@@ -4490,7 +4494,8 @@
         "html se pdf"
       ],
       "libs": [
-        "jspdf"
+        "jspdf",
+        "html2canvas"
       ],
       "engine": "tool-txthtml",
       "maxFileMB": 50,
@@ -4499,35 +4504,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-23",
       "meta_description": "Turn a saved HTML file into a PDF in your browser. Free, private, no uploads.",
       "steps": [
-        "Choose an HTML file with the file button. The file must end in .html or .htm.",
-        "Press Convert HTML to PDF.",
-        "Wait for the status message to say the PDF is downloaded.",
-        "Open the PDF to check the text, because HTML tags and formatting are not kept."
+        "Paste your HTML into the box, or choose a saved HTML file.",
+        "Pick the Font, Font size and Page size (A4 or Letter).",
+        "Press Convert HTML to PDF and save the file.",
+        "Check the links in the PDF: links in the HTML stay clickable.",
+        "If the PDF comes out as plain text, the page could not be rendered, try a simpler saved page."
       ],
       "content": {
-        "use": "HTML to PDF turns a saved web page file into a PDF, which is handy when you have a page saved on your computer and need it as a document. A student saves a course page as an HTML file and turns it into a PDF to read offline. An office worker saves a notice from a website and turns it into a PDF to attach to an email. A shop owner saves a price page and turns it into a PDF to print. The HTML tags are stripped out, so the result is plain text in a simple 12-point font, flowing across pages as needed. Nothing is uploaded; the PDF is built in your browser.",
-        "tip": "Save the web page as an HTML file first, then choose it here. Check the PDF after converting, because the tool strips HTML tags and extra spaces. For a clean result, use a simple page rather than one full of menus and adverts.",
-        "limit": "HTML tags are stripped and formatting is not kept. The PDF is plain 12-point text only, with no bold, headings, images or tables. Very long pages flow across pages automatically, but you cannot choose the font, size or page layout. A page that is mostly images gives a PDF with little or no text.",
-        "example": "Choosing a saved notice page and pressing Convert HTML to PDF downloads ak-premium-html-to-pdf.pdf with the page's words as plain text on one page.",
+        "use": "Turns pasted or uploaded HTML into a real rendered PDF, in your browser. Headings, bold text, lists and tables are drawn as they look on a page, and pictures embedded in the HTML appear in the PDF. Links in the HTML stay clickable in the PDF. It is made for saving a receipt, an invoice or a simple web page as a document you can share or print. Scripts are removed before rendering, so a saved page cannot run code on this site. If a page cannot be rendered, the tool falls back to plain text and says so honestly instead of failing.",
+        "tip": "Save the page with its pictures embedded (data: URLs) before converting, or the pictures will be missing from the PDF.",
+        "limit": "Only the HTML you paste or upload is converted, pasting a web address is not supported, and pages that need a server or a login cannot be converted. External pictures are not fetched. If the page cannot be rendered, the tool falls back to plain text and says so.",
+        "example": "A saved invoice page with a table and a link becomes a 1-page A4 PDF with the table drawn as it looks and the link still clickable.",
         "faq": [
           [
-            "Will my page look the same in the PDF?",
-            "No. All HTML tags are stripped out and the text becomes plain 12-point text. Use it for simple pages, not for formatted web pages."
+            "Can I convert a web page by pasting its address?",
+            "No. This tool only converts HTML you paste or upload. A web address would need a server to fetch the page, and this site has no server, your files never leave your browser."
           ],
           [
-            "What happens to very long pages?",
-            "The text flows across pages automatically. The tool adds pages as needed, so a long page becomes a multi-page PDF."
+            "Why are the pictures missing from my PDF?",
+            "Pictures that live at a web address are not fetched, so they are skipped. Save the page with its pictures embedded in the file (data: URLs) and they will appear."
           ],
           [
-            "Can I convert a web page by its address?",
-            "No. You must save the page as an HTML file on your device first, then choose that file here. The tool does not fetch pages from the internet."
+            "Are links in the HTML still clickable in the PDF?",
+            "Yes, when the page renders normally. Links to web pages and email addresses are added back to the PDF as clickable link areas on the right pages."
           ],
           [
-            "Is my HTML file uploaded anywhere?",
-            "No. The PDF is built in your browser with jsPDF, so the file never leaves your device. No account is needed and nothing is sent to a server."
+            "What happens if the page cannot be rendered?",
+            "The tool falls back to the plain text of the page and tells you it did so, instead of failing. A simpler saved page usually renders properly."
           ]
         ]
       },
@@ -4558,7 +4564,8 @@
       ],
       "libs": [
         "pdfjs",
-        "jszip"
+        "jszip",
+        "pdf-lib"
       ],
       "engine": "tool-extractimages",
       "maxFileMB": 50,
@@ -4567,35 +4574,35 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-23",
       "meta_description": "Save the images embedded in a PDF as PNG files, one link per image and one ZIP file. Free, private, no uploads.",
       "steps": [
-        "Choose a PDF file with the file button.",
-        "Press Extract Images and wait for the status message to say it is done.",
-        "Download each image PNG from the links shown, such as Download ak-premium-image-1-1.png.",
-        "Or download all the images at once as one ZIP file named ak-premium-images.zip."
+        "Choose a PDF file.",
+        "Press Extract Images.",
+        "Download any image on its own from the list, or take the ZIP with all of them.",
+        "Check the list: it says which images came out in their original format and which were decoded to PNG."
       ],
       "content": {
-        "use": "Extract Images from PDF saves the pictures that are embedded inside a PDF as separate PNG files, so you can reuse them. A teacher takes a diagram out of a PDF handout to use in a new worksheet. A student saves a chart from a PDF report to paste into an assignment. A shop owner saves a product photo from a PDF catalogue to post online. Each image is saved at its original size as a PNG, with its page number in the file name. The images are read in your browser, so your PDF is never uploaded anywhere.",
-        "tip": "If you only need one image, download just its PNG link instead of the whole ZIP. The file name shows the page number, so ak-premium-image-2-1.png is the first image on page 2. Large PDFs take a while because every page is read in your browser, so wait for the status message to say it is done.",
-        "limit": "Only embedded image objects are found. Tiny inline images, vector drawings and page backgrounds are not extracted, so a PDF made only of shapes may give no images. Some images may be skipped if their format cannot be read. The extracted PNGs are the embedded pictures, not the whole page.",
-        "example": "Extracting images from a 5-page catalogue with 2 photos on page 1 and 1 chart on page 3 gives 3 PNG links and a ZIP file with all 3 images inside.",
+        "use": "Saves the pictures embedded inside a PDF, in your browser. JPEG, JPEG 2000 and JBIG2 pictures are saved in their original format and at their original resolution, byte for byte, so there is no quality loss from re-encoding. Other pictures are decoded and saved as PNG. Each image gets its own download link, with its page number, format and size shown next to it, and a ZIP with all the images downloads as well. It is made for recovering photos and logos from a PDF, or checking what pictures a document actually contains.",
+        "tip": "JPEG pictures download in their original bytes, so there is no quality loss from re-encoding.",
+        "limit": "Vector drawings (shapes and lines drawn by the PDF itself) are not pictures and are not extracted, use PDF to Images for a picture of the whole page. A JPEG with a transparency mask keeps its JPEG bytes but the mask is not kept. JBIG2 files are saved raw and need their globals segment to open in a viewer.",
+        "example": "A 2-page brochure gives 3 images: 2 JPEGs in original format and 1 PNG, plus a ZIP with all three.",
         "faq": [
           [
-            "What images does this tool find?",
-            "It finds pictures embedded inside the PDF, such as photos and charts. It does not find vector drawings, page backgrounds or tiny inline images, so some PDFs give no images at all."
+            "What image formats can be extracted in their original form?",
+            "JPEG, JPEG 2000 and JBIG2 pictures are saved byte for byte in their original format. Flate and other pictures are decoded to PNG instead."
           ],
           [
-            "Are the images saved at full size?",
-            "Yes. Each image is saved at the size it is stored in the PDF. The PNG is the embedded picture itself, not a screenshot of the page."
+            "Why did I get a PNG instead of the original JPEG?",
+            "The picture was stored in the PDF with a filter that is not JPEG, so there are no original JPEG bytes to save. It is decoded to PNG, which keeps every pixel."
           ],
           [
-            "Can I download just one image?",
-            "Yes. After the extraction, each image has its own link, such as Download ak-premium-image-1-1.png. Press the link for the image you need. The ZIP is only for downloading all images at once."
+            "Can this extract vector drawings or logos?",
+            "No. Vector drawings are shapes and lines drawn by the PDF itself, not embedded pictures, so there is no image file to save. Use PDF to Images for a picture of the whole page."
           ],
           [
-            "Why did my PDF give no images?",
-            "The PDF may have no embedded pictures. A text-only PDF, or one made of vector shapes and backgrounds, has nothing to extract. Try PDF to Images if you need a picture of the whole page."
+            "Why does my PDF show no images at all?",
+            "The PDF may be text only, or made entirely of vector shapes. Try PDF to Images, which renders each page as a picture instead of looking for embedded files."
           ]
         ]
       },
@@ -4634,36 +4641,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-23",
       "meta_description": "Stamp the same header and footer text on every page of a PDF, in your browser. Free, private, no uploads.",
       "steps": [
-        "Choose a PDF file with the file button.",
-        "Type the header text in the Header text field, or leave it blank if you only want a footer.",
-        "Type the footer text in the Footer text field, or leave it blank if you only want a header.",
-        "Press Add Header & Footer.",
-        "Save the downloaded PDF, which has the header and footer on every page."
+        "Choose a PDF file.",
+        "Type Header text and Footer text, use {page} for the page number, {total} for the page count and {date} for today's date.",
+        "Pick the Font, Font size, Colour and Alignment.",
+        "Choose Pages: all pages, odd or even only, all except the first, or the first page only.",
+        "Tick Different header and footer on the first page and choose a logo if you need them, then press Add Header & Footer."
       ],
       "content": {
-        "use": "Add Header and Footer to PDF stamps the same header and footer text on every page of a PDF, which is handy when a document needs a title, a page note or a company name on each page. A teacher adds a class name at the top and a date at the bottom of a handout. An office worker adds a project name at the top and a confidentiality note at the bottom of a report. A shop owner adds a shop name at the top and a phone number at the bottom of a price list. The text is stamped in a small grey font near the top and bottom edges, and the original pages are not changed.",
-        "tip": "Keep the header and footer short, under about 90 characters each, so the text fits on the page. Use the header for a title or project name and the footer for a date or page note. You can fill in only one of the two fields if you need just a header or just a footer.",
-        "limit": "The header and footer are stamped in a fixed small grey font near the top and bottom edges, and you cannot choose the font, size or colour. Very long text is shrunk to fit, and text longer than the page width is cut off. The stamp is added to every page, so you cannot skip a page.",
-        "example": "Adding the header Spring Term 2026 and the footer Page 1 of 10 to a 4-page handout gives a 4-page PDF with the header at the top and the footer at the bottom of every page.",
+        "use": "Stamps header and footer text on the pages of a PDF, in your browser. It is made for adding a running page count, a document title, a date or a confidentiality note to a report before sharing it. You choose the font, size, colour and alignment, and which pages get the stamp, all pages, odd or even pages only, all except the first page, or just the first page. The first page can have its own different header and footer, and a logo image can be placed at the header line. Placeholders do the counting for you: {page} becomes the page number, {total} the page count and {date} today's date.",
+        "tip": "Type Page {page} of {total} in the footer for a running page count, and {date} in the header for the date the file was stamped.",
+        "limit": "The header and footer are stamped on top of the page, so very long text is shrunk to fit and may cover page content near the edges. The logo is drawn at the header line only.",
+        "example": "A 10-page report gets 'Confidential, Page 3 of 10' in the footer of every page and the company logo at the top left.",
         "faq": [
           [
-            "Can I add only a header?",
-            "Yes. Fill in the Header text field and leave the Footer text field blank. The tool adds only the header, and the footer is skipped on every page."
+            "What do {page}, {total} and {date} do?",
+            "{page} is replaced by the page number, {total} by the total number of pages, and {date} by today's date. So 'Page {page} of {total}' on page 3 of 10 becomes 'Page 3 of 10'."
           ],
           [
-            "Can I add only a footer?",
-            "Yes. Fill in the Footer text field and leave the Header text field blank. The tool adds only the footer, and the header is skipped on every page."
+            "Can the first page have a different header?",
+            "Yes. Tick 'Different header and footer on the first page' and type the first-page header and footer in the boxes that appear. Leave a box empty and nothing is stamped there on the first page."
           ],
           [
-            "Can I change the font or colour?",
-            "No. The header and footer use a fixed small grey Helvetica font. You cannot choose the font, size or colour on this page."
+            "Can I add a header to odd pages only?",
+            "Yes. Set Pages to 'Odd pages only' and the header and footer are stamped on pages 1, 3, 5 and so on. 'Even pages only' does the opposite."
           ],
           [
-            "Does the stamp cover my page text?",
-            "It can, if your page text runs to the very top or bottom edge. The header sits near the top and the footer near the bottom, so pages with wide margins work best."
+            "Will the header cover text near the top of the page?",
+            "It can, because the header is stamped on top of the page. Keep headers short, or use 'All except the first page' so a title page stays clear."
           ]
         ]
       },
@@ -4702,35 +4709,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-23",
       "meta_description": "Flatten a PDF so form fields become permanent text and annotations are removed. Free, private, no uploads.",
       "steps": [
-        "Choose a PDF file with the file button.",
-        "Press Flatten PDF and wait for the status message to say it is done.",
-        "Save the downloaded PDF named ak-premium-flattened.pdf.",
-        "Open the PDF to check that the form answers are now part of the page, because flattening cannot be undone."
+        "Choose a PDF file.",
+        "Pick what to flatten: form fields and annotations, form fields only, or annotations only.",
+        "Press Flatten PDF.",
+        "Read the field report below: it lists the original fields and how many annotations are left.",
+        "Download the field report (.txt) if you want a copy of what was flattened."
       ],
       "content": {
-        "use": "Flatten PDF turns form fields and annotations in a PDF into permanent page content, so the filled-in answers and notes can no longer be changed or removed. A student flattens a filled application form before sending it, so the answers cannot be edited by mistake. An office worker flattens a signed form so the signature stays as it is. A shop owner flattens a price list with notes so the notes print exactly as shown. Form fields become plain text on the page, and annotations such as comments and links are removed. The flattened PDF looks the same, but nothing in it can be edited as a form any more.",
-        "tip": "Keep a copy of the original PDF before you flatten it, because flattening cannot be undone. Flatten a form only after every field is filled in, because empty fields become blank text. Check the flattened PDF before you send it, to make sure every answer is still readable.",
-        "limit": "Flattening cannot be undone, so keep a copy of the original. Form fields become plain text and can no longer be edited or filled in. Annotations such as comments, highlights and links are removed. A password-protected PDF must be unlocked first.",
-        "example": "Flattening a 2-page application form with 10 filled fields gives a 2-page PDF where the answers are now part of the page and cannot be changed.",
+        "use": "Makes form fields and annotations a permanent part of the page, so they can no longer be changed or removed. It is made for finalising a filled-in form before sending it, or locking comments and highlights into a document you are about to share. Form fields are flattened in the browser, and annotations are flattened with qpdf, which renders them into the page while keeping hyperlinks as links. You choose whether to flatten both, only the form fields, or only the annotations. A report lists the original fields and how many annotations remain, and you can download it as a text file.",
+        "tip": "Choose 'Form fields only' when you want the filled-in answers kept but the annotations (comments and highlights) left editable.",
+        "limit": "Flattening cannot be undone, keep the original file. Annotations with no appearance to draw are left in place, and the report says how many. Links are kept as links.",
+        "example": "A filled application form is flattened so the answers can no longer be changed, and the field report lists the 8 fields that were flattened.",
         "faq": [
           [
-            "What does flattening a PDF do?",
-            "It turns form fields into permanent text on the page and removes annotations. The PDF looks the same, but the fields can no longer be edited or filled in."
+            "What is the difference between flattening fields and annotations?",
+            "Flattening fields turns filled-in form boxes into ordinary page text, so the answers cannot be changed. Flattening annotations renders comments, highlights and stamps into the page itself. You can do either one or both."
           ],
           [
             "Can I undo flattening?",
-            "No. Flattening is permanent. Keep a copy of the original PDF before you flatten it, because the form fields cannot be restored afterwards."
+            "No. Once the fields and annotations are part of the page, there is no way back, so keep the original file safe before you flatten."
           ],
           [
-            "Does flattening change how the PDF looks?",
-            "No. The filled-in answers stay where they were, as plain text on the page. Only the ability to edit them is gone, and annotations such as comments are removed."
+            "Why are some annotations still there after flattening?",
+            "An annotation with no appearance to draw, nothing visible to render into the page, is left in place by qpdf. The report says how many are left."
           ],
           [
-            "Can I flatten a protected PDF?",
-            "No. A password-protected PDF must be unlocked first. Use Unlock PDF with the password, then flatten the unlocked file. The unlocked file is a normal PDF that this tool can open."
+            "Are hyperlinks kept when a PDF is flattened?",
+            "Yes. Link annotations are kept as links, so web addresses and email addresses in the document still work after flattening, exactly as they did before."
           ]
         ]
       },
@@ -4769,36 +4777,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-23",
       "meta_description": "View and edit a PDF's title, author, subject and keywords, in your browser. Free, private, no uploads.",
       "steps": [
-        "Choose a PDF file with the file button.",
-        "Read the current title, author, subject and keywords shown under Current metadata, and check the fields are filled in with them.",
-        "Change the Title, Author, Subject or Keywords fields to the values you want.",
-        "Press Update Metadata.",
-        "Save the downloaded PDF, which has the new metadata and the same pages."
+        "Choose a PDF file, the current metadata is shown above the form.",
+        "Pick the Preset: edit the fields below, or remove all personal metadata in one go.",
+        "Change the Title, Author, Subject, Keywords, Creator, Producer and dates.",
+        "Leave 'Also write these details into the XMP packet' ticked so readers can see them.",
+        "Press Update Metadata and save the file."
       ],
       "content": {
-        "use": "PDF Metadata Editor shows and changes the hidden details of a PDF, such as its title, author, subject and keywords. A student sets the title and author of an assignment PDF so it shows the right name in a reader. An office worker sets the subject of a report PDF so it is easy to find later. A shop owner sets keywords on a price list PDF so it turns up in a search. The metadata is the text a PDF reader shows in the document properties, and it does not change the pages themselves. The edited PDF is saved with the same pages and layout, only the details are new.",
-        "tip": "Fill in the title and author first, because those are the details most readers show. Use keywords that describe the document, separated by commas, so it is easy to find later. Leave a field blank if you want that detail removed from the PDF.",
-        "limit": "Only the title, author, subject and keywords can be changed. The producer, creator and dates are not edited by this tool. A password-protected PDF must be unlocked first. Some PDF readers may still show old details if they cached the file.",
-        "example": "Setting the title to Spring Term Report, the author to Ayesha Khan and the keywords to term report, spring 2026 on a 6-page PDF gives a 6-page PDF with those details in its properties.",
+        "use": "Shows and changes a PDF's title, author, subject, keywords, creator, producer and dates, in your browser. It is made for fixing a wrong author name, adding keywords so a document is easier to find, or cleaning personal details out of a file before sharing it. The current details are shown when you choose the file, and the 'Remove all personal metadata' preset clears the title, author, subject, keywords, creator and the XMP packet in one go. The details are written into the file's info and, when the box is ticked, into its XMP packet too.",
+        "tip": "Use 'Remove all personal metadata' before sharing a file outside your organisation, it clears title, author, subject, keywords, creator and the XMP packet in one go.",
+        "limit": "The app that saves the file always writes its own name as Producer and the save time as the Modification Date in the file properties, those two values can only be kept in the XMP packet, not in the file properties.",
+        "example": "A report's author is changed from a personal name to 'Reports Team' and the creation date is set to 1 January 2026.",
         "faq": [
           [
-            "What is PDF metadata?",
-            "It is the hidden detail stored in a PDF, such as its title, author, subject and keywords. A PDF reader shows it in the document properties, and search tools can use it to find the file."
+            "What is the XMP packet?",
+            "It is a block of metadata stored inside the PDF alongside the usual title and author details. Many readers and search tools read it, so this tool writes your details there as well as in the file properties."
           ],
           [
-            "Does editing metadata change my pages?",
-            "No. The pages, text and layout stay exactly the same. Only the title, author, subject and keywords stored in the file are changed."
+            "Why does the Producer still show the old app name?",
+            "Every app that saves a PDF writes its own name as the Producer in the file properties, that cannot be avoided in a browser. Your Producer value is stored in the XMP packet instead, where a reader can still see it."
           ],
           [
-            "Can I remove a detail?",
-            "Yes. Leave that field blank and press Update Metadata. The blank detail is removed from the PDF, and the other details are kept."
+            "What does 'Remove all personal metadata' actually remove?",
+            "It clears the title, author, subject, keywords and creator, and deletes the XMP packet. The saved file still names the app that saved it as Producer and shows the save time as the dates."
           ],
           [
-            "Can I edit a protected PDF?",
-            "No. A password-protected PDF must be unlocked first. Use Unlock PDF with the password, then edit the metadata of the unlocked file."
+            "Can I change the creation date of a PDF?",
+            "Yes. Set the Creation date field and it is saved in the file properties and the XMP packet. The Modification Date you type is kept in the XMP packet; the file properties always show the save time."
           ]
         ]
       },
@@ -4837,35 +4845,35 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-23",
       "meta_description": "Scale every page of a PDF to A4, Letter or Legal, in your browser. Free, private, no uploads.",
       "steps": [
-        "Choose a PDF file with the file button.",
-        "Pick a page size from the Page size list: A4, Letter or Legal.",
-        "Press Resize Pages.",
-        "Save the downloaded PDF, which has every page at the size you picked."
+        "Choose a PDF file.",
+        "Pick a Page size: A4, Letter, Legal, or Custom size with a width and height in millimetres.",
+        "Set Pages to all, or a range such as 1-3, 5, to resize only some pages.",
+        "Press Resize Pages and save the file."
       ],
       "content": {
-        "use": "Resize PDF Page Size scales every page of a PDF to A4, Letter or Legal, which is handy when a PDF was made for a different paper size and needs to print cleanly. A student resizes a US Letter assignment to A4 so it prints correctly on local paper. An office worker resizes an A4 report to Letter for a client in the United States. A shop owner resizes a Legal-size price list to A4 for a local printer. Each page is scaled to fit the new size, keeping its shape, and centred on the page. The text and pictures are scaled with the page, so nothing is cropped.",
-        "tip": "Pick the size your printer uses before you resize, because A4 is the usual size in Pakistan and Letter is the usual size in the United States. If the original page is a very different shape, the scaled page has small margins on two sides. Check the resized PDF before you print it.",
-        "limit": "Each page is scaled to fit the new size, keeping its shape, so a page of a very different shape has small margins on two sides. Form fields and links are not carried over to the resized pages. A password-protected PDF must be unlocked first.",
-        "example": "Resizing a 3-page US Letter assignment to A4 gives a 3-page PDF at A4 size (595 by 842 points), with each page scaled to fit and centred.",
+        "use": "Scales the pages of a PDF to A4, Letter, Legal or a custom size in millimetres, without turning them into pictures. The page content is scaled in place, so text stays selectable and drawings stay vector, nothing is re-rendered or blurred. Form fields and links are scaled with their pages, so a link or a field keeps working in the right place. You can resize the whole document or only the pages you choose, for example pages 2 to 3, while the rest keep their original size. Everything runs in your browser.",
+        "tip": "Resize only the pages that need it, set Pages to 2-3 to leave the cover page at its original size.",
+        "limit": "Pages are scaled to fit, so a landscape page on a portrait target gets side margins. Text inside a form field keeps its original font size, so shrinking a page a lot can clip field text. Pages whose content uses an encoding the tool cannot read are skipped and named in the status.",
+        "example": "A 2-page PDF with Letter pages becomes A4: both pages are scaled to fit, the text stays selectable, and the link on page 2 still works.",
         "faq": [
           [
-            "What sizes can I choose?",
-            "A4, Letter and Legal. A4 is 595 by 842 points, Letter is 612 by 792 points, and Legal is 612 by 1008 points. Pick the size your printer uses."
+            "Does resizing turn my PDF pages into pictures?",
+            "No. The page content is scaled in place, so text stays selectable and drawings stay vector. Nothing is re-rendered, so the quality does not drop."
           ],
           [
-            "Does resizing crop my pages?",
-            "No. Each page is scaled to fit the new size, keeping its shape, and centred on the page. Nothing is cropped, but a page of a very different shape has small margins on two sides."
+            "Do form fields and links still work after resizing?",
+            "Yes. Form fields and link areas are scaled by the same amount as their pages, so they stay in the right place and keep working."
           ],
           [
-            "Does resizing change my text?",
-            "No. The text and pictures are scaled with the page, so they stay in the same place relative to each other. Only the page size and the scale change."
+            "Can I resize only some pages?",
+            "Yes. Put the pages in the Pages box, for example 2-3, and only those pages are resized. Leave it as all to resize the whole document."
           ],
           [
-            "Can I resize a protected PDF?",
-            "No. A password-protected PDF must be unlocked first. Use Unlock PDF with the password, then resize the unlocked file. The unlocked file is a normal PDF that this tool can open."
+            "Why was a page skipped during resizing?",
+            "A page is skipped when its content uses an encoding the tool cannot read, or when it has no content at all. The status names the skipped pages, and the rest are resized normally."
           ]
         ]
       },
