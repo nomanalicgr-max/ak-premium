@@ -29,32 +29,6 @@ if (rotatePdfBtn) rotatePdfBtn.addEventListener("click", async () => {
 
 /* ---------- Rotate PDF: per-page picker, OSD auto-rotate, deskew ---------- */
 
-function deskewBestAngle(dark, w, h) {
-  if (!dark || !dark.length || w < 4 || h < 4) return 0;
-  const cx = w / 2, cy = h / 2;
-  let bestAngle = 0, bestScore = -1;
-  for (let deg = -6; deg <= 6; deg += 0.5) {
-    const rad = deg * Math.PI / 180, sin = Math.sin(rad), cos = Math.cos(rad);
-    const rows = new Float64Array(h);
-    for (let y = 0; y < h; y++) {
-      for (let x = 0; x < w; x++) {
-        if (!dark[y * w + x]) continue;
-        const ry = Math.round((x - cx) * sin + (y - cy) * cos + cy);
-        if (ry >= 0 && ry < h) rows[ry]++;
-      }
-    }
-    let score = 0;
-    for (let i = 0; i < h; i++) score += rows[i] * rows[i];
-    if (score > bestScore) { bestScore = score; bestAngle = deg; }
-  }
-  return bestAngle;
-}
-/* Extra rotate controls, built once and placed before the Rotate button. */
-const rotExtraWrap = document.createElement("div");
-rotExtraWrap.innerHTML = '<div id="rotPicker" class="thumb-list" aria-label="Pages, pick an angle for each"></div>'
-  + '<button id="rotAutoBtn" type="button" class="btn-secondary">Auto-rotate by text direction</button> '
-  + '<button id="rotDeskewBtn" type="button" class="btn-secondary">Straighten a tilted scan</button>';
-
 const rotatePdfBtnEl = $("rotatePdfBtn");
 if (rotatePdfBtnEl && rotatePdfBtnEl.parentNode) rotatePdfBtnEl.parentNode.insertBefore(rotExtraWrap, rotatePdfBtnEl);
 

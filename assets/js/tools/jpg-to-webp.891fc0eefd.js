@@ -15,3 +15,7 @@ if (jpgToWebpBtn) jpgToWebpBtn.addEventListener("click", async () => {
     setStatus("jpgToWebpStatus", "Done. WebP downloaded.");
   } catch (e) { setError("jpgToWebpStatus", "Could not convert this image. Please try a JPG file."); }
 });
+
+/* Intrinsic pixel size of an SVG document from its width/height attributes
+   or its viewBox. Falls back to 1024 x 1024 when the SVG names no size.
+   Pure, no ids; routed to the svg-to-png bundle (split-app.py TOOL_NAMES). */

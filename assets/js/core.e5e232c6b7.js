@@ -250,7 +250,16 @@ const LIB_URLS = {
      fast-formula-parser 1.0.19 (MIT) for formula-generator validation.
      Both pinned files are byte-identical to their npm tarballs. */
   "papaparse": "https://cdn.jsdelivr.net/npm/papaparse@5.5.3/papaparse.min.js",
-  "formula-parser": "https://cdn.jsdelivr.net/npm/fast-formula-parser@1.0.19/build/parser.min.js"
+  "formula-parser": "https://cdn.jsdelivr.net/npm/fast-formula-parser@1.0.19/build/parser.min.js",
+  /* UTIF.js 3.1.0 (MIT) decodes TIFF input for Image Converter; pako 2.1.0
+     (MIT) inflates deflate-compressed TIFF strips, loaded only when a TIFF
+     actually needs it. exifr 7.1.3 full build (MIT) reads EXIF orientation
+     from JPEG/TIFF/PNG/WebP. Cropper.js 1.6.2 (MIT) powers Image Cropper.
+     All four pinned files are byte-identical to their npm tarballs. */
+  "utif": "https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.js",
+  "exifr": "https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js",
+  "cropperjs": "https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js",
+  "pako": "https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"
 };
 /* SRI hashes for the pinned libraries above (Phase 4.2); same values as
    build.py. The docx URL was corrected at the same time: docx@8.5.0
@@ -279,12 +288,16 @@ const LIB_SRI = {
   "html2canvas": "sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H",
   "chartjs": "sha384-zYPBGXwO4633CABX/5Spf6emCKUJCfoOkhOMYyxMsatqQZPnDblmmOewfjsIVWCM",
   "papaparse": "sha384-Jd2/X5FXVKahwaY2nivvw4LfSTg9idSj8yNXWtT4qef0fHSYr6M7M8bJAfbFYoMc",
-  "formula-parser": "sha384-qbZbp83iiop9pehvHB2JuzaTMs+iuThw09hlU9pq3v4stgbnqXl/FNaPGkG6+PWg"
+  "formula-parser": "sha384-qbZbp83iiop9pehvHB2JuzaTMs+iuThw09hlU9pq3v4stgbnqXl/FNaPGkG6+PWg",
+  "utif": "sha384-RyBmXHdfZ/Uon+ud+/AqSyWpUWnKYt2tkRG/P4gWoRUGDU+qIAV3tGBPNlYTBZEF",
+  "exifr": "sha384-KrOocIA+lZcNUz2MDavnT/FuX+CbTREJihUi0bp8QUSwhE2AkGTNpv2b7yMbBkx5",
+  "cropperjs": "sha384-jrOgQzBlDeUNdmQn3rUt/PZD+pdcRBdWd/HWRqRo+n2OR2QtGyjSaJC0GiCeH+ir",
+  "pako": "sha384-rNlaE5fs9dGIjmxWDALQh/RBAaGRYT5ChrzHo6tRfgrZ36iRFAiquP5g41Jsv+0j"
 };
 const _libLoaded = {};
 function loadLibrary(name, statusId) {
   if (name === "jspdf-autotable" && window.jspdf && window.jspdf.jsPDF && window.jspdf.jsPDF.API && window.jspdf.jsPDF.API.autoTable) return Promise.resolve(true);
-  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "qrcode" ? "QRCode" : name === "js-yaml" ? "jsyaml" : name === "jsonrepair" ? "JSONRepair" : name === "marked-footnote" ? "markedFootnote" : name === "chartjs" ? "Chart" : name === "papaparse" ? "Papa" : name === "formula-parser" ? "FormulaParser" : name] || _libLoaded[name]) return Promise.resolve(true);
+  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "qrcode" ? "QRCode" : name === "js-yaml" ? "jsyaml" : name === "jsonrepair" ? "JSONRepair" : name === "marked-footnote" ? "markedFootnote" : name === "chartjs" ? "Chart" : name === "papaparse" ? "Papa" : name === "formula-parser" ? "FormulaParser" : name === "utif" ? "UTIF" : name === "cropperjs" ? "Cropper" : name] || _libLoaded[name]) return Promise.resolve(true);
   return new Promise((resolve) => {
     const sc = document.createElement("script");
     sc.src = LIB_URLS[name]; sc.async = true;
@@ -1240,6 +1253,32 @@ let rotPdf = null; /* pdf.js document for the picked file */
 
 /* ---------- Rotate PDF: per-page picker, OSD auto-rotate, deskew ---------- */
 
+function deskewBestAngle(dark, w, h) {
+  if (!dark || !dark.length || w < 4 || h < 4) return 0;
+  const cx = w / 2, cy = h / 2;
+  let bestAngle = 0, bestScore = -1;
+  for (let deg = -6; deg <= 6; deg += 0.5) {
+    const rad = deg * Math.PI / 180, sin = Math.sin(rad), cos = Math.cos(rad);
+    const rows = new Float64Array(h);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        if (!dark[y * w + x]) continue;
+        const ry = Math.round((x - cx) * sin + (y - cy) * cos + cy);
+        if (ry >= 0 && ry < h) rows[ry]++;
+      }
+    }
+    let score = 0;
+    for (let i = 0; i < h; i++) score += rows[i] * rows[i];
+    if (score > bestScore) { bestScore = score; bestAngle = deg; }
+  }
+  return bestAngle;
+}
+/* Extra rotate controls, built once and placed before the Rotate button. */
+const rotExtraWrap = document.createElement("div");
+rotExtraWrap.innerHTML = '<div id="rotPicker" class="thumb-list" aria-label="Pages, pick an angle for each"></div>'
+  + '<button id="rotAutoBtn" type="button" class="btn-secondary">Auto-rotate by text direction</button> '
+  + '<button id="rotDeskewBtn" type="button" class="btn-secondary">Straighten a tilted scan</button>';
+
 function romanNumeral(n) {
   if (!n || n < 1 || n > 3999) return String(n);
   const table = [[1000, "m"], [900, "cm"], [500, "d"], [400, "cd"], [100, "c"], [90, "xc"], [50, "l"], [40, "xl"], [10, "x"], [9, "ix"], [5, "v"], [4, "iv"], [1, "i"]];
@@ -2080,6 +2119,27 @@ async function convertImageFile(file, mime, quality) {
   return canvasToBlob(canvas, mime, quality);
 }
 
+/* Render an image at an arbitrary angle (degrees, clockwise) with flips
+   onto a fresh canvas sized to the rotated bounding box. Takes no element
+   ids; shared by Rotate and Flip Image and by Image to Text (deskew), so
+   it lives in core.js (see split-app.py CORE_NAMES). */
+
+function renderArbitraryRotatedImage(img, angleDeg, flipH, flipV) {
+  const w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+  const rad = (angleDeg * Math.PI) / 180, cos = Math.abs(Math.cos(rad)), sin = Math.abs(Math.sin(rad));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(w * cos + h * sin));
+  canvas.height = Math.max(1, Math.round(w * sin + h * cos));
+  const ctx = canvas.getContext("2d");
+  ctx.save();
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.rotate(rad);
+  ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
+  ctx.drawImage(img, -w / 2, -h / 2, w, h);
+  ctx.restore();
+  return canvas;
+}
+
 /* Render an image with a rotation (0-3 quarter turns clockwise) and flips
    onto a fresh canvas. Takes no element ids, so it splits to core.js. */
 
@@ -2098,6 +2158,30 @@ function renderRotatedImage(img, rot, flipH, flipV, jpeg) {
   ctx.restore();
   return canvas;
 }
+
+/* Encode a canvas as a 24-bit BMP blob (BITMAPINFOHEADER, bottom-up rows).
+   Browsers cannot save BMP from a canvas, so the bytes are written by hand.
+   Pure: takes a canvas, touches no element ids. Routed to the
+   image-converter bundle (split-app.py TOOL_NAMES), not core. */
+
+async function exifOrientationOfFile(file) {
+  try {
+    if (window.exifr && window.exifr.orientation) {
+      const o = await window.exifr.orientation(file);
+      if (o >= 1 && o <= 8) return o;
+    }
+  } catch (e) { /* fall through to the JPEG parser */ }
+  try {
+    const buf = await file.arrayBuffer();
+    return readJpegOrientation(buf);
+  } catch (e) { return 1; }
+}
+
+/* Decode a TIFF ArrayBuffer into a canvas with UTIF.js. Handles 8-bit and
+   16-bit RGB, greyscale and palette images; throws a plain Error with a
+   human message for anything else. Deflate-compressed TIFFs need pako,
+   which the caller loads first (see imageFileToCanvas). Pure apart from
+   window.UTIF / window.pako. Routed to image-converter (TOOL_NAMES). */
 
 // Unit tables: each type maps unit keys to their factor in the base unit.
 // Temperature is special (offsets, not factors) and is handled in convertUnit.
