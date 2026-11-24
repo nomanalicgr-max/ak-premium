@@ -2668,38 +2668,48 @@
       "maxFileMB": 50,
       "wave": 1,
       "status": "published",
-      "regions": [],
-      "lastReviewed": "2026-11-18",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-24",
       "meta_description": "Resize images by width and height in pixels, free in your browser. No upload, no sign-up.",
       "steps": [
         "Choose a JPG, PNG or WebP image with the file button. The original size is filled in for you.",
-        "Type the Width and Height in pixels. Tick 'Keep aspect ratio' to change the other side automatically.",
-        "Choose PNG or JPEG as the output format, then press Resize Image and save the result."
+        "Pick a size preset like Instagram post or Passport, or type the Width and Height in pixels yourself. Tick Keep aspect ratio to change the other side automatically.",
+        "Tick Face-aware crop when you want the crop centred on a face. It needs Chrome, and it falls back to the centre of the picture when no face is found.",
+        "Choose PNG, JPG, WebP or AVIF as the output format, and a quality level for JPG, WebP and AVIF.",
+        "Press Resize Image and save the downloaded file, which has the size you chose."
       ],
       "content": {
-        "use": "Image Resizer changes the width and height of a picture in pixels, so it fits a form, a profile photo box or a slide. A student resizes a photo to the size a portal asks for. A shop owner resizes product photos so they all match on a website. An office worker resizes a picture to fit a slide. When you pick a file, the tool fills in its real size for you. Tick 'Keep aspect ratio' and the other side changes automatically, so the picture does not stretch. You can save the result as PNG or JPEG.",
-        "tip": "Keep 'Keep aspect ratio' ticked unless you want to stretch the picture on purpose. Resizing a small picture much larger will make it blurry, so start from the biggest original you have.",
-        "limit": "Width and height must each be between 1 and 8000 pixels. The picture is stretched to exactly the size you type when aspect ratio is off, which can distort it. Saving as JPEG flattens transparency onto a white background, because JPEG has no transparency.",
-        "example": "Resizing a 2000 by 1500 photo to 800 by 600 with 'Keep aspect ratio' ticked downloads a sharp 800 by 600 picture.",
+        "use": "Image Resizer changes the size of a picture to exactly what you need, in your browser. It has ready presets for Instagram posts and stories, Facebook posts, YouTube thumbnails, LinkedIn posts, WhatsApp display pictures, passport photos and A4 pages at 150 and 300 DPI, so you do not have to look up the numbers. You can also type any width and height, keep the shape with the aspect ratio box, and choose PNG, JPG, WebP or AVIF with a quality level. When a face matters, the face-aware crop keeps the person in the frame instead of cutting them off. Nothing is uploaded, so your picture stays on your device.",
+        "tip": "Use a preset for social media, since each site asks for its own size. For a photo you will print, use the A4 preset at 300 DPI and PNG or JPG at 92 percent quality.",
+        "limit": "Face-aware crop needs the FaceDetector built into Chrome, so other browsers crop from the centre instead. AVIF output needs a browser that can save AVIF. Width and height must stay between 1 and 8000 pixels.",
+        "example": "A 4000 pixel wide photo resized to the Instagram post preset becomes 1080 by 1080 pixels, with the face kept in the middle of the square.",
         "faq": [
           [
-            "What does 'Keep aspect ratio' do?",
-            "When it is ticked, changing the width updates the height automatically, and changing the height updates the width, so the picture keeps its shape and does not stretch."
+            "What size is an Instagram post",
+            "An Instagram post is 1080 by 1080 pixels, and a story is 1080 by 1920 pixels. Pick Instagram post or Instagram story from the preset list and the numbers are filled in for you."
           ],
           [
-            "What is the biggest size I can use?",
-            "Width and height must each be between 1 and 8000 pixels. Bigger values are refused with a message."
+            "How does face-aware crop work",
+            "When you tick the box, the tool looks for a face in the picture and centres the crop on it, so the person stays in the frame. It needs Chrome, and it crops from the centre when no face is found or the browser cannot do it."
           ],
           [
-            "Why did my PNG lose its transparent background?",
-            "You saved it as JPEG. JPEG has no transparency, so the background becomes white. Choose PNG as the output format to keep transparency."
+            "Will resizing make my photo blurry",
+            "Making a picture smaller keeps it sharp, and making it bigger softens it, because no new detail can be added. Start from the largest original you have, and do not enlarge a small picture more than you need to."
           ],
           [
-            "Does resizing make a small photo sharper?",
-            "No. Making a small photo bigger only stretches the pixels it already has, so it looks blurry. Start from the largest original you have."
+            "Which format is smallest",
+            "WebP is usually the smallest for the same quality, followed by JPG, while PNG is the largest. Use WebP for the web, JPG for photos you share, and PNG when you need transparency or sharp text."
           ]
         ]
-      }
+      },
+      "related": [
+        "image-converter",
+        "image-cropper",
+        "passport-photo-maker",
+        "image-compressor"
+      ]
     },
     {
       "slug": "image-converter",
@@ -2718,43 +2728,58 @@
         "png to webp",
         "convert image"
       ],
-      "libs": [],
+      "libs": [
+        "pako",
+        "utif",
+        "exifr",
+        "jszip"
+      ],
       "engine": "tool-imgconvert",
       "maxFileMB": 50,
       "wave": 1,
       "status": "published",
-      "regions": [],
-      "lastReviewed": "2026-11-18",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-24",
       "meta_description": "Change image format between JPG, PNG and WebP, free in your browser. Convert images without uploading them.",
       "steps": [
-        "Choose a JPG, PNG or WebP image with the file button.",
-        "Pick the output format: JPG, PNG or WebP.",
-        "Press Convert Image and save the downloaded file."
+        "Choose one or more JPG, PNG, WebP, AVIF, BMP, GIF, ICO or TIFF images with the file button. Tick Batch mode to convert several at once.",
+        "Pick the output format: JPG, PNG, WebP, AVIF, BMP, GIF or ICO. For JPG, WebP and AVIF, choose a quality level too.",
+        "Leave Auto-rotate on to fix phone photos that were saved sideways. For JPG output, tick Keep EXIF to carry the photo details across.",
+        "Press Convert Image and wait for the progress message to finish.",
+        "Save the downloaded file, or the ZIP when you converted several images at once. TIFF input works, and GIF output is a still image."
       ],
       "content": {
-        "use": "Image Converter changes a picture from one format to another, JPG, PNG or WebP, without changing its size. A student turns a PNG screenshot into a JPG to upload to a portal that only takes JPG. A shop owner turns product photos into WebP so the website loads faster. An office worker turns a JPG photo into PNG to edit it in a program that needs PNG. The picture keeps its original width and height; only the file format changes. The conversion runs in your browser, so your photo is never uploaded.",
-        "tip": "Use JPG for photos you want to share or upload, because it makes smaller files. Use PNG when you need transparency or sharp text, and WebP when you want a modern format with small files.",
-        "limit": "Only JPG, PNG and WebP are accepted, and the output is one of the same three formats. The picture keeps its original size; this tool does not resize it. Saving as JPG flattens transparency onto a white background, because JPG has no transparency.",
-        "example": "Converting a 1200 by 800 PNG screenshot to JPG downloads the same 1200 by 800 picture as a smaller JPG file.",
+        "use": "Image Converter changes the format of your pictures without uploading them anywhere. It accepts JPG, PNG, WebP, AVIF, BMP, GIF, ICO and TIFF files, and it can turn several images into JPG, PNG, WebP, AVIF, BMP, GIF or ICO at once. Phone photos that were saved sideways are fixed automatically from their EXIF orientation, and JPG output can keep the original photo details when you tick the box. TIFF files are decoded in your browser, BMP and GIF are written byte by byte because browsers cannot save those formats, and ICO files hold 16, 32 and 48 pixel sizes for app and website icons. Everything runs on your own device, so your pictures never leave your computer.",
+        "tip": "For the smallest file, convert to WebP at 85 percent quality. For a photo you will print, use JPG at 92 percent or PNG.",
+        "limit": "GIF output is a still image, not an animation. ICO files are square, so wide images are fitted inside the square. JPEG-compressed TIFF files cannot be decoded here. AVIF output needs a browser that can save AVIF, and some browsers cannot.",
+        "example": "A 2 MB PNG screenshot converted to WebP at 85 percent quality becomes a much smaller file that still looks the same on screen.",
         "faq": [
           [
-            "Which formats can I convert between?",
-            "JPG, PNG and WebP, in any direction. Pick the image, choose the output format, and press Convert Image."
+            "Can I convert several images at once",
+            "Yes. Tick Batch mode, choose all the images, then press Convert Image. Each image is converted in turn and the results are downloaded together as one ZIP file, with the same name as each original image and the new extension."
           ],
           [
-            "Does the picture change size?",
-            "No. The width and height stay exactly the same. Only the file format changes. Use Image Resizer if you also need a different size."
+            "Does it keep my photo details",
+            "When you convert a JPG to a JPG and tick Keep EXIF, the photo details from the original file are copied into the new file. If the photo was rotated, the orientation tag is reset so the picture does not turn sideways again in other apps."
           ],
           [
-            "Why did my transparent PNG get a white background?",
-            "You converted it to JPG. JPG has no transparency, so the see-through parts become white. Convert to PNG or WebP instead to keep transparency."
+            "Why is my TIFF not converting",
+            "Most TIFF files work, including uncompressed, LZW and deflate types. A TIFF that holds a JPEG-compressed image cannot be decoded here, so convert it to an uncompressed TIFF in another app first and then try again."
           ],
           [
-            "Can I convert several images at once?",
-            "No. The tool converts one image at a time. Repeat the steps for each picture you need."
+            "Which format should I choose",
+            "Use JPG for photos and WebP when you want the smallest file for the web. Use PNG when you need transparency or sharp text. Use BMP or GIF only when another app asks for that exact format, and ICO for app icons."
           ]
         ]
-      }
+      },
+      "related": [
+        "image-resizer",
+        "image-cropper",
+        "svg-to-png",
+        "jpg-to-webp"
+      ]
     },
     {
       "slug": "image-to-text",
@@ -2780,40 +2805,44 @@
       "maxFileMB": 50,
       "wave": 1,
       "status": "published",
-      "regions": [],
-      "lastReviewed": "2026-11-18",
+      "regions": [
+        "global"
+      ],
+      "lastReviewed": "2026-11-24",
       "related": [
-        "ocr-pdf",
-        "pdf-to-text",
-        "image-compressor",
-        "translate-helper"
+        "image-converter",
+        "image-resizer",
+        "image-cropper",
+        "passport-photo-maker"
       ],
       "steps": [
-        "Choose an image with the file button.",
-        "Pick the language of the text in the image (English, Urdu, Arabic or Hindi).",
-        "Press Read Text and copy the result. The first run downloads language data, so it takes longer."
+        "Choose a JPG, PNG or WebP image with the file button. Clear printed text on a straight page reads best.",
+        "Pick the language of the text, or choose Auto-detect to let the tool work it out from the script it sees.",
+        "Press Read Text from Image and wait. The first run downloads language data, so it takes longer.",
+        "Read the words below the button. Words the tool is unsure about are highlighted, so you can check them.",
+        "Press Copy text for plain text, or Copy with line breaks to keep the layout of the original page."
       ],
       "content": {
-        "use": "Reading text from an image is for typed notes, a screenshot of a message, a photo of a notice board, or a scanned page that needs to become editable text. It saves retyping the whole thing by hand.",
-        "tip": "Choose the right language before you start. Urdu text needs the Urdu option, and a clear, straight photo with good light gives far better results than a tilted or blurry one.",
-        "limit": "Text recognition works best on clear printed text. Handwriting, fancy fonts, low light and tilted photos give poor results. The first run downloads language data, so it takes longer the first time.",
-        "example": "A photo of a shop notice in Urdu becomes editable Urdu text you can paste into a document.",
+        "use": "Image to Text reads the printed words in a picture and gives you text you can copy. Before reading, it tidies the image for you: it fixes sideways photos from their EXIF orientation, straightens pages that were scanned at a slight angle, turns the picture grey, sharpens the contrast and enlarges small images so the letters are clearer. It can work out the language by itself when you choose Auto-detect, and it shows every word with a confidence mark, highlighting the words it is unsure about so you can check those against the picture. The recognised text stays on your device, and nothing is uploaded anywhere.",
+        "tip": "Crop the image to just the text before reading it, and use a photo taken straight above the page. Handwriting reads poorly, so printed text works best.",
+        "limit": "It reads printed text, not handwriting. Blurry photos, very small text and fancy fonts read badly. Urdu and Arabic read best when the page is straight and the letters are large.",
+        "example": "A photo of a printed receipt reads as lines of text you can paste into a spreadsheet, with the shop name, items and total kept in order.",
         "faq": [
           [
-            "Does it read Urdu text?",
-            "Yes. Choose Urdu (urd) in the language list before you press Read Text. English, Arabic and Hindi are also available."
+            "How does auto-detect language work",
+            "The tool looks at the shapes of the letters and works out which script they belong to, then picks the matching language. English, Urdu and Arabic are covered, and it falls back to English when it cannot tell."
           ],
           [
-            "Why is some text wrong or missing?",
-            "The photo may be tilted, blurry or low contrast. Try a straighter, brighter photo, and crop out anything that is not text before you upload it."
+            "What do highlighted words mean",
+            "A highlighted word is one the tool is unsure about, usually because the letters were faint, blurred or partly covered. Compare those words with the picture and fix them by hand before you use the text."
           ],
           [
-            "Can it read English and Urdu in one image?",
-            "Yes. Choose English + Urdu in the language list. The tool reads both scripts from the same image in one run."
+            "Can it read handwriting",
+            "No, it is built for printed text only, and handwriting usually comes out wrong. For a handwritten note, type the words yourself or use the camera app on your phone, which is made for that job."
           ],
           [
-            "How do I copy the result?",
-            "Press the Copy Text button under the result box. It copies all the recognized text, so you can paste it into a document or message."
+            "Why is the first run slow",
+            "The first time you use it, the tool downloads the language data it needs, which can take a minute on a slow connection. Later runs reuse the downloaded data, so they start much faster."
           ]
         ]
       },
@@ -5281,43 +5310,44 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Turn SVG files into PNG images in your browser, free and private. Choose the output width.",
       "steps": [
         "Choose an SVG file with the file button.",
-        "Enter the output width in pixels in the Width box, or leave 1024.",
-        "Press Convert SVG to PNG.",
-        "Save the downloaded PNG, which has the width you entered and the same shape as the SVG."
+        "Pick 1x, 2x or 3x scale, or type an exact width and height in pixels. An icon size like 512 gives you a square image.",
+        "Choose the background: transparent, white, or a colour you pick. JPG always uses a solid background.",
+        "Choose PNG, JPG, WebP or AVIF as the output format.",
+        "Press Convert SVG to PNG and save the downloaded image, which has the size you chose and the same shape as the SVG."
       ],
       "content": {
-        "use": "SVG to PNG turns a vector SVG file into a PNG picture at the width you choose. A designer turns a logo SVG into a PNG to use it in a document or a presentation that does not take SVG. A shop owner turns an SVG icon into a PNG to put it on a website. A student turns an SVG diagram into a PNG to paste it into an assignment. The PNG keeps the shape of the SVG, and a bigger width gives a sharper picture. The conversion runs in your browser, so your file is never uploaded anywhere and you do not need an account.",
-        "tip": "Use a bigger width for a sharper PNG, because the SVG is drawn fresh at that size. Leave the width at 1024 for most uses. If the PNG comes out blank, your SVG may use an external image or font that the browser cannot load here.",
-        "limit": "Only SVG files are accepted, and each file must be under 50 MB. The PNG keeps the SVG shape, but text in the SVG uses your browser fonts, so it can look different from the original program. SVGs that link to external images or fonts cannot be drawn and give an error.",
-        "example": "Converting a logo SVG at width 1024 gives a PNG that is 1024 pixels wide, with the same shape as the logo, ready to paste into a document.",
+        "use": "SVG to PNG turns a vector drawing into a normal picture file you can use anywhere. You can scale it to 1x, 2x or 3x its own size, type an exact width and height, or pick a ready icon size from 16 up to 512 pixels, which is handy for app icons and favicons. The background can stay transparent for logos, or you can fill it white or with a colour you choose, and the result can be saved as PNG, JPG, WebP or AVIF. The SVG is read from its own width, height and viewBox, so the shape never stretches. Everything runs in your browser and the file is never uploaded.",
+        "tip": "For a crisp icon, pick 2x or 3x scale instead of a small exact size. For a logo on a coloured page, keep the background transparent and use PNG.",
+        "limit": "An SVG that loads pictures or fonts from the internet cannot be converted here, because the browser blocks those outside files. Very detailed SVGs can be slow to draw at large sizes.",
+        "example": "A 200 pixel wide logo scaled to 3x becomes a sharp 600 pixel PNG, ready to paste into a presentation or a document.",
         "faq": [
           [
-            "Why is my PNG blank or missing parts?",
-            "Your SVG probably links to an external image or font that the browser cannot load here. Save the SVG with its images and fonts embedded, or use a plain SVG with shapes and text only."
+            "What size should I pick",
+            "Use 1x for the size the SVG was drawn at, 2x or 3x when you need it sharper on high resolution screens, and an exact width when another app asks for a set number of pixels."
           ],
           [
-            "What width should I enter?",
-            "1024 pixels works for most uses. Enter a bigger width, such as 2048, for a sharper picture or a large print. The height follows the SVG shape automatically."
+            "Can I keep the background clear",
+            "Yes. Choose transparent as the background and PNG or WebP as the format, and the empty parts of the image stay see through. JPG cannot be transparent, so it always fills the background with white."
           ],
           [
-            "Does the PNG keep transparency?",
-            "Yes. If your SVG has see-through parts, the PNG keeps them see-through. The PNG is saved with transparency, so you can place it on any background."
+            "Why did my SVG fail",
+            "The most common cause is an SVG that loads a picture or a font from a web address, which the browser blocks for safety. Save those pictures inside the SVG file itself, or remove the outside links, and try again."
           ],
           [
-            "Can I convert an SVG with text in it?",
-            "Yes, but the text is drawn with your browser fonts, so it can look different from the original program. For an exact match, turn the text into shapes in your drawing program first."
+            "What are icon sizes for",
+            "Icon sizes give you square pictures at the standard sizes apps and websites expect, from 16 pixels for a tiny favicon up to 512 pixels for a large app icon. Pick the size the app or site asks for."
           ]
         ]
       },
       "related": [
         "image-converter",
-        "png-to-jpg",
         "image-resizer",
-        "image-compressor"
+        "jpg-to-png",
+        "png-to-jpg"
       ]
     },
     {
@@ -5338,7 +5368,9 @@
         "photo crop",
         "tasveer crop"
       ],
-      "libs": [],
+      "libs": [
+        "cropperjs"
+      ],
       "engine": "tool-imgcrop",
       "maxFileMB": 50,
       "wave": 1,
@@ -5346,44 +5378,44 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Crop an image in your browser, free and private. Drag to choose the area, then download a PNG.",
       "steps": [
         "Choose a JPG, PNG or WebP image with the file button.",
-        "Drag on the preview to draw the rectangle you want to keep.",
-        "Fine-tune the rectangle with the X, Y, Width and Height boxes.",
-        "Press Crop Image.",
-        "Save the downloaded PNG, which holds only the rectangle you chose."
+        "Drag the corners of the box on the preview to choose the part you want to keep, or type the exact numbers in the X, Y, Width and Height boxes.",
+        "Pick an aspect ratio like 1 to 1 or 16 to 9, or tick Lock ratio to keep the box shape while you drag it.",
+        "Use Straighten to fix a tilted photo, Rotate to turn it, and Flip to mirror it. Then choose the output format and quality.",
+        "Press Crop Image and save the downloaded picture, which holds only the part you chose."
       ],
       "content": {
-        "use": "Image Cropper cuts a picture down to the part you want, and saves it as a PNG. A student crops a screenshot to keep only one diagram for an assignment. A shop owner crops a product photo to remove the messy background around it. A job applicant crops a photo to keep only their face for a profile picture. You drag a rectangle on the preview, and the numbers in the X, Y, Width and Height boxes show exactly which part is kept. The crop runs in your browser with the canvas, so your photo is never uploaded anywhere and you do not need an account.",
-        "tip": "Drag on the preview to draw the rectangle, then use the X, Y, Width and Height boxes to set it exactly. Keep the rectangle inside the picture; numbers that go past the edge are pulled back inside. The output is always PNG, which keeps the picture sharp.",
-        "limit": "JPG, PNG and WebP images are accepted, and each file must be under 50 MB. The output is always a PNG file, even if you cropped a JPG. The crop keeps only the rectangle you drew; the rest of the picture is thrown away, so keep a copy of the original.",
-        "example": "Cropping a 1200 by 800 screenshot to a 600 by 400 rectangle gives a 600 by 400 PNG with only the diagram you selected.",
+        "use": "Image Cropper cuts a picture down to just the part you need, right in your browser. You drag a box over the photo to choose what stays, and you can lock the box to a shape like square, 16 to 9 or 3 to 2, which is handy for profile pictures and social media posts. If the photo is tilted, the straighten slider levels it, and the rotate and flip buttons turn or mirror it without leaving the page. You can type exact pixel numbers when you need a precise cut, and you choose PNG, JPG or WebP for the result. Nothing is uploaded, so your photo stays on your device.",
+        "tip": "Pick the aspect ratio before you drag, so the box keeps the right shape. For a profile picture, use 1 to 1 and keep the face in the middle of the box.",
+        "limit": "The cropper needs the Cropper.js library from the internet, so it will not start when you are offline. Very large images are slowed down by the browser, so keep the file under 50 MB.",
+        "example": "A wide holiday photo cropped to 1 to 1 keeps just the people in the middle, ready to use as a profile picture on any site.",
         "faq": [
           [
-            "How do I choose the crop area?",
-            "Drag on the preview with your mouse or finger to draw a rectangle. The X, Y, Width and Height boxes show the rectangle in pixels, and you can type new numbers there to set it exactly."
+            "How do I crop to a square",
+            "Choose 1 to 1 from the aspect ratio list, then drag the box over the part you want. The box stays square while you move it, and the result is a square picture."
           ],
           [
-            "Why is the output a PNG file?",
-            "PNG is lossless, so the cropped picture keeps all its detail. Even if you cropped a JPG, the result is a PNG. Use Image Converter afterwards if you need a JPG."
+            "What does lock ratio do",
+            "Lock ratio keeps the box in its current shape while you drag a corner, so the width and height change together. Unticking it lets you drag the box freely to any shape you like."
           ],
           [
-            "Can I crop to an exact size?",
-            "Yes. Type the exact Width and Height in pixels in the boxes, and set X and Y to place the rectangle. Press Crop Image and the PNG will have exactly that width and height."
+            "Can I straighten a tilted photo",
+            "Yes. Move the straighten slider left or right until the horizon or the lines in the photo look level, then press Crop Image. The photo is turned by that many degrees before it is cut."
           ],
           [
-            "Can I undo a crop?",
-            "No. The crop throws away everything outside the rectangle. Keep a copy of the original picture, or choose the same image again and draw a new rectangle."
+            "Which format keeps the best quality",
+            "PNG keeps every pixel exactly and is best for screenshots and graphics. JPG is smaller for photos, and 92 percent quality looks the same as the original on screen. WebP sits between the two."
           ]
         ]
       },
       "related": [
         "image-resizer",
-        "rotate-flip-image",
         "image-converter",
-        "image-compressor"
+        "rotate-flip-image",
+        "passport-photo-maker"
       ]
     },
     {
@@ -5404,7 +5436,9 @@
         "rotate photo",
         "tasveer rotate"
       ],
-      "libs": [],
+      "libs": [
+        "jszip"
+      ],
       "engine": "tool-imgrotateflip",
       "maxFileMB": 50,
       "wave": 1,
@@ -5412,36 +5446,36 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-24",
       "meta_description": "Rotate or flip an image in your browser, free and private. Turn it left or right, or mirror it.",
       "steps": [
-        "Choose a JPG, PNG or WebP image with the file button.",
-        "Press Rotate Left or Rotate Right to turn the picture, or Flip Horizontal or Flip Vertical to mirror it.",
-        "Pick the output format, PNG or JPEG, in the Output format box.",
-        "Press Download Image.",
-        "Save the downloaded picture, which has the rotation and flip you applied."
+        "Choose one or more JPG, PNG or WebP images with the file button. Phone photos are turned the right way up from their EXIF details.",
+        "Press Rotate Left or Rotate Right to turn the picture in 90 degree steps, or Flip Horizontal or Flip Vertical to mirror it.",
+        "Move the Straighten slider to fix a tilted photo by a few degrees, up to 45 each way.",
+        "Pick the output format, PNG, JPG or WebP, in the Output format box.",
+        "Press Download Image. One picture downloads at once, and several pictures download together as a ZIP."
       ],
       "content": {
-        "use": "Rotate and Flip Image turns a picture left or right, or mirrors it, without changing anything else. A student rotates a sideways photo of handwritten notes so it reads the right way up. A shop owner flips a product photo to match the layout of a web page. A job applicant rotates a scanned certificate that came out sideways. Each press of Rotate Left or Rotate Right turns the picture by 90 degrees, and Flip Horizontal or Flip Vertical mirrors it. The changes run in your browser with the canvas, so your photo is never uploaded anywhere and you do not need an account.",
-        "tip": "Press Rotate Right once for a photo that is sideways clockwise, or three times for one that is sideways the other way. Flip Horizontal mirrors a picture left to right, which is useful for a selfie that looks reversed. Choose JPEG for photos and PNG if you need transparency.",
-        "limit": "JPG, PNG and WebP images are accepted, and each file must be under 50 MB. Rotating by 90 degrees swaps the width and height. Saving as JPEG flattens transparency onto a white background, because JPG has no transparency.",
-        "example": "Rotating a 800 by 1200 sideways photo once to the right gives a 1200 by 800 photo that reads the right way up.",
+        "use": "Rotate and Flip Image turns, mirrors and straightens your pictures without uploading them. You can rotate in 90 degree steps, flip a photo left to right or top to bottom, and use the straighten slider to fix a horizon that is a few degrees off, which is handy for photos taken at a slight tilt. Phone photos are read the right way up automatically from their EXIF details, so a sideways picture is fixed before you start. You can work on several images at once and download them together as a ZIP, and you choose PNG, JPG or WebP for the result. Everything happens in your browser, so your photos stay private.",
+        "tip": "Straighten works best on small tilts. Turn the photo with Rotate first to get it close, then use the slider for the last few degrees.",
+        "limit": "Rotation is exact for 90 degree steps. Straightening turns the picture by a few degrees and fills the corners with the image edge, so a small part of the corners is lost. TIFF files are not accepted here.",
+        "example": "A photo saved sideways by a phone is fixed by the EXIF check, then flipped horizontally so the text in it reads the right way.",
         "faq": [
           [
-            "How many times do I press Rotate Right?",
-            "Once for a photo that is sideways clockwise, twice to turn it upside down, and three times for a photo that is sideways the other way. Each press turns the picture by 90 degrees."
+            "Why is my photo sideways",
+            "Phones save the photo as it was taken and note the right way up in the EXIF details. This tool reads those details and turns the photo the right way up when it loads, so you rarely need to rotate it yourself."
           ],
           [
-            "What is the difference between flip and rotate?",
-            "Rotate turns the picture around, so the top becomes a side. Flip mirrors it, so the left and right swap but the top stays on top. A flipped photo is a mirror image, not a rotated one."
+            "Can I rotate by any angle",
+            "Yes. Rotate Left and Rotate Right turn the picture in 90 degree steps, and the straighten slider adds up to 45 degrees each way. Together they cover any angle you need."
           ],
           [
-            "Why is the width and height swapped?",
-            "Rotating by 90 degrees turns the picture on its side, so the old width becomes the new height and the old height becomes the new width. Rotating twice, by 180 degrees, keeps the width and height the same."
+            "Does flipping lose quality",
+            "No. Flipping and 90 degree rotation only move the pixels around, so nothing is lost. Saving as JPG compresses the picture again, so use PNG when you want the pixels kept exactly as they are."
           ],
           [
-            "Which output format should I pick?",
-            "Pick JPEG for photos, because it makes smaller files. Pick PNG if your picture has transparency or sharp text, because PNG keeps both exactly. JPEG turns see-through parts white."
+            "Can I rotate many photos together",
+            "Yes. Choose several images at once, set the rotation and flip once, then press Download Image. Every photo gets the same change, and the results download together as one ZIP file."
           ]
         ]
       },
