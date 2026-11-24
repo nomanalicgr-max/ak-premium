@@ -1,5 +1,37 @@
 # AK Premium — Changelog
 
+## v31 — 24 November 2026 (advanced upgrade plan, batch 11: Image converters + design/everyday)
+
+### PNG to JPG — quality, background colour, EXIF orientation
+- Pick the JPEG quality, choose the colour used to fill a transparent background, and let photos rotate the right way up from their EXIF data before converting. The result is a standard JPEG that opens anywhere.
+
+### JPG to PNG — smaller PNG-8 files, exact colours for simple images
+- Simple images with few colours are now saved as PNG-8, which is much smaller than a full-colour PNG, and the colours are kept exactly. Photos still use a full-colour PNG. Every PNG-8 file is checked before it is saved, and if the check fails the tool falls back to a full-colour PNG and says so.
+
+### WebP to JPG — quality, background colour, EXIF orientation
+- Convert WebP pictures to JPEG with a quality slider and a background colour for transparent areas, and let photos rotate the right way up from their EXIF data. The result is a standard JPEG that opens anywhere.
+
+### WebP to PNG — smaller PNG-8 files, EXIF orientation
+- Simple WebP images with few colours are now saved as PNG-8, which is much smaller than a full-colour PNG, and the colours are kept exactly. Photos still use a full-colour PNG, with the same check-and-fallback as JPG to PNG, and photos are rotated the right way up from their EXIF data.
+
+### JPG to WebP — quality, Best-quality mode, target size, EXIF orientation
+- Save JPG photos as WebP with a quality slider, a Best-quality mode, or a target file size that the tool aims for by trying lower qualities. Photos are rotated the right way up from their EXIF data. Browsers cannot write a truly lossless WebP file, so Best-quality is a high-quality lossy save and the page says so plainly.
+
+### Image Compressor — EXIF toggle, honest note about location data
+- A new switch chooses whether the photo's EXIF information is kept or stripped when it is compressed. Re-saving a photo never keeps its location data, and the page says so.
+
+### Passport Photo Maker — NADRA and driving-licence sizes, guide overlay, print sheets
+- Ready sizes for NADRA and Punjab driving-licence photos (35 by 45 mm), with a head oval and shoulder line over the photo to help line the face up. Print sheets hold 4 or 6 photos on a 4 by 6 sheet and 8 on a 6 by 8 sheet; 8 photos do not fit a 4 by 6 sheet at the exact size, and the page says so. NADRA photos are kept under 60 KB by trying lower qualities when needed.
+
+### Colour Palette — WCAG contrast, harmonies, shades, eyedropper, exports
+- Check any two colours against the WCAG AA and AAA contrast rules, build palettes from six harmony types, and see shades and tints from 50 to 900 for every colour. Colours can be typed as hex, RGB, HSL or a colour name, or picked from a photo with the eyedropper. Palettes export as CSS variables, Tailwind config or a PNG image.
+
+### QR Code Generator — structured types, error correction, logo, scan test
+- Build QR codes for a web link, Wi-Fi network, contact card, email, SMS, phone number, location or payment, with a size choice, error-correction level from L to H, custom colours and a logo in the centre. Codes save as PNG or SVG, and a built-in scan test reads the code back to confirm it works. The QR library was changed to one that supports SVG and error-correction control.
+
+### Password Generator — passphrases, strength and crack time
+- A new passphrase mode makes passwords from words, using a 1,296-word sample of the EFF large wordlist (the full 7,776-word list was not shipped). Strength and an estimated crack time are shown for every password, using zxcvbn. There are also modes that leave out look-alike characters, make pronounceable passwords, and make PIN codes.
+
 ## v30 — 24 November 2026 (advanced upgrade plan, batch 10: Image core)
 
 ### Image Converter — TIFF, BMP, GIF and ICO input, batch conversion
