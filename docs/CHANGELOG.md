@@ -1,5 +1,25 @@
 # AK Premium — Changelog
 
+## v30 — 24 November 2026 (advanced upgrade plan, batch 10: Image core)
+
+### Image Converter — TIFF, BMP, GIF and ICO input, batch conversion
+- Now accepts JPG, PNG, WebP, AVIF, BMP, GIF, ICO and TIFF files, and converts several images at once into JPG, PNG, WebP or AVIF, with a ZIP download for the batch. TIFF files are decoded in the browser (UTIF.js), photos are rotated the right way up from their EXIF data, and the EXIF data can be kept or stripped. GIF output is a still image, not an animation, ICO files are square so wide images are fitted inside, JPEG-compressed TIFF files cannot be decoded here, and AVIF output needs a browser that can save AVIF.
+
+### Image to Text — OCR pre-processing and word confidence
+- Before reading, the image is tidied for you: sideways photos are fixed from their EXIF orientation, pages are straightened, contrast is raised, the image is turned grey and enlarged for small text. The result is now word by word with a confidence score, and words the reader is unsure about are highlighted. The language is detected automatically when it can be. It reads printed text only, not handwriting.
+
+### Image Cropper — aspect lock, rotate while cropping, straighten
+- Drag a box over the photo to choose what stays, with the box locked to a shape like square, 16 to 9 or 3 to 2. You can rotate the photo while cropping, straighten a tilted photo and flip it, then save as JPG, PNG or WebP at your chosen quality. The cropper needs the Cropper.js library from the internet, so it will not start when you are offline.
+
+### SVG to PNG — scales, icon presets, backgrounds, more outputs
+- Scale an SVG to 1x, 2x or 3x its own size, type an exact width and height, or pick a ready icon size from 16 up to 512 pixels. The background can stay transparent or be filled with a colour, and the result can be saved as PNG, JPG, WebP or AVIF. An SVG that loads pictures or fonts from the internet cannot be converted here, because the browser blocks those outside files.
+
+### Rotate and Flip Image — arbitrary angle, straighten, batch
+- Rotate in 90 degree steps or by any angle with the straighten slider, flip a photo left to right or top to bottom, and let photos rotate themselves the right way up from their EXIF data. Several photos can be rotated at once and downloaded as a ZIP. Straightening turns the picture by a few degrees and fills the corners with the image edge, so a small part of the corners is lost.
+
+### Image Resizer — social and print presets, face-aware crop
+- Ready presets for Instagram posts and stories, Facebook posts, YouTube thumbnails, LinkedIn posts, WhatsApp and passport photos, plus A4 at print DPI. Pick the output format and quality. Face-aware crop uses the FaceDetector built into Chrome, so other browsers crop from the centre instead, and AVIF output needs a browser that can save AVIF.
+
 ## v29 — 24 November 2026 (advanced upgrade plan, batch 9: Excel wizards)
 
 ### Formula Generator — 9 new formulas, validation with a check box
