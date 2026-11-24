@@ -37,6 +37,13 @@ Libraries (loaded from public CDNs, except qpdf-wasm and diff-match-patch which 
 - exifr — MIT License — https://github.com/MikeKovarik/exifr
 - Cropper.js — MIT License — https://github.com/fengyuanchen/cropperjs
 - pako — MIT License — https://github.com/nodeca/pako
+- UPNG.js — MIT License — https://github.com/photopea/UPNG.js
+- color-thief — MIT License — https://github.com/lokesh/color-thief
+- jsQR — Apache License 2.0 — https://github.com/cozmo/jsQR
+- zxcvbn — MIT License — https://github.com/dropbox/zxcvbn
+- qrcode-generator — MIT License — https://github.com/kazuhikoarase/qrcode-generator
+- EFF large wordlist (1,296-word sample used by Password Generator) —
+  Creative Commons Attribution — https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases
 
 Icons and fonts:
 - Lucide icons — ISC License — https://lucide.dev
