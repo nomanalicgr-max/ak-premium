@@ -3007,18 +3007,20 @@
       "wave": 1,
       "status": "published",
       "regions": [],
-      "lastReviewed": "2026-11-18",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Count words, characters and reading time, free in your browser. Paste text and see the counts instantly.",
       "steps": [
         "Type or paste your text in the box.",
-        "Read the live counts below the box: Words, Characters, Characters (no spaces), Sentences, Paragraphs and Reading time.",
+        "Read the live counts below the box: Words, Characters, Characters (no spaces), Sentences, Paragraphs, Reading time and Speaking time.",
+        "Read the Flesch reading score and the most-used words below the counts.",
+        "Type a word goal in the 'Word goal' box to see a progress bar and how much is left.",
         "Edit the text in the box and the counts update with every keystroke."
       ],
       "content": {
-        "use": "Word Counter counts the words, characters, sentences and paragraphs in your text as you type, so you can check a limit before you submit. A student checks that an essay is under 500 words. A job applicant checks that a cover letter fits the limit. A writer checks the reading time of an article before publishing it. The counts update live with every keystroke, so there is nothing to press. Reading time is worked out at 200 words per minute, which is a normal reading speed. The text never leaves your browser.",
-        "tip": "Paste the final text, not a draft with notes, because everything in the box is counted. If the word count looks high, check for extra spaces or repeated paragraphs at the end.",
-        "limit": "The tool counts what you type; it does not check spelling, grammar or meaning. Reading time is a rough guide at 200 words per minute and is rounded up to whole minutes. Paragraphs are counted by blank lines between blocks of text.",
-        "example": "Pasting a 400-word essay shows Words: 400, Reading time: 2 min, because 400 words at 200 words per minute takes 2 minutes.",
+        "use": "Word Counter counts the words, characters, sentences and paragraphs in your text as you type, so you can check a limit before you submit. A student checks that an essay is under 500 words. A writer checks the reading time of an article before publishing it. The counts update live with every keystroke, so there is nothing to press. Reading time is worked out at 200 words per minute, speaking time at 130 words per minute, and the Flesch score tells you how easy the text is to read. The most-used words show which words you repeat, and a word goal shows your progress toward a target. The text never leaves your browser.",
+        "tip": "Paste the final text, not a draft with notes, because everything in the box is counted. If the word count looks high, check for extra spaces or repeated paragraphs at the end. Set a word goal before you start writing, so the progress bar shows how far you have got.",
+        "limit": "The tool counts what you type; it does not check spelling, grammar or meaning. Reading time is a rough guide at 200 words per minute and speaking time at 130 words per minute, both rounded up to whole minutes. The most-used words list counts English words only. Paragraphs are counted by blank lines between blocks of text.",
+        "example": "Pasting a 400-word essay shows Words: 400, Reading time: 2 min, Speaking time: 4 min, because 400 words at 200 words per minute takes 2 minutes and at 130 words per minute takes about 4 minutes. Setting a word goal of 500 shows 80 percent.",
         "faq": [
           [
             "How is reading time worked out?",
@@ -3030,11 +3032,11 @@
           ],
           [
             "Do spaces count as characters?",
-            "Both counts are shown. Characters counts everything including spaces, and Characters (no spaces) counts letters and punctuation only."
+            "Both counts are shown. Characters counts everything including spaces, and Characters (no spaces) counts letters and punctuation only, so you can use whichever count the form or site asks for."
           ],
           [
-            "Is there a limit on how much text I can paste?",
-            "No fixed limit. Very long text still counts, because the counting happens in your browser as you type."
+            "How is speaking time worked out?",
+            "At 130 words per minute, rounded up to whole minutes. A 400-word text shows 4 minutes, because speaking is slower than reading, which is worked out at 200 words per minute."
           ]
         ]
       }
@@ -6364,19 +6366,20 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Count characters, words, sentences and reading time in your browser, live as you type.",
       "steps": [
         "Type or paste your text in the box.",
-        "Read the live counts below the box: Characters, Characters (no spaces), Words, Sentences, Paragraphs and Reading time.",
-        "Edit the text in the box and the counts update with every keystroke.",
-        "Use the Characters count when a form, post or message limits the length."
+        "Read the live counts below the box: Characters, Characters (no spaces), Words, Sentences, Paragraphs, Reading time, Graphemes and Size.",
+        "Use the Graphemes count for emoji: a family emoji counts as one, while Characters counts its code units.",
+        "Pick a platform in the 'Platform limit' list to see how much room is left.",
+        "Edit the text and the counts update with every keystroke."
       ],
       "content": {
-        "use": "Character Counter counts the characters in your text as you type, so you can check a limit before you submit or post. A student checks that an essay title fits the limit. A job applicant checks that a cover letter fits the box on the form. A writer checks that a post fits the character limit of a social site. A shop owner checks that a product name fits the label. The counts update live with every keystroke, so there is nothing to press. Words, sentences, paragraphs and reading time are shown too, so the page works as a quick word counter as well. The text never leaves your browser.",
-        "tip": "Check the count before you submit a form, because a form may cut off extra characters without warning. If the count looks high, check for extra spaces or repeated paragraphs at the end of the text.",
-        "limit": "The tool counts what you type; it does not check spelling, grammar or meaning. Reading time is a rough guide at 200 words per minute and is rounded up to whole minutes. A line break counts as one character, and most emoji count as two.",
-        "example": "Pasting 'Hello world' shows Characters: 11, Characters (no spaces): 10, Words: 2 and Reading time: 1 min.",
+        "use": "Character Counter counts the characters in your text as you type, so you can check a limit before you submit or post. A job applicant checks that a cover letter fits the box on the form. A writer checks that a post fits the character limit of a social site. The counts update live with every keystroke, so there is nothing to press. Words, sentences, paragraphs and reading time are shown too, so the page works as a quick word counter as well. The Graphemes count tells you how many visible characters there are, which matters for emoji, and Size tells you how many bytes the text takes. The text never leaves your browser.",
+        "tip": "Pick the platform limit before you finish writing, because the count line tells you how many characters are left while you edit. If the count looks high, check for extra spaces or repeated paragraphs at the end of the text.",
+        "limit": "The tool counts what you type; it does not check spelling, grammar or meaning. Reading time is a rough guide at 200 words per minute and is rounded up to whole minutes. A line break counts as one character, and most emoji count as two in the Characters count but one in the Graphemes count.",
+        "example": "Pasting 'Hello world' shows Characters: 11, Characters (no spaces): 10, Words: 2 and Reading time: 1 min. Pasting one family emoji shows Graphemes: 1 but Characters: 11.",
         "faq": [
           [
             "Does a line break count as a character?",
@@ -6384,15 +6387,15 @@
           ],
           [
             "Does it count emoji as one character?",
-            "No. Most emoji count as two characters, because the browser stores them as two code units. A simple smiley counts as two, and a flag or a family emoji can count as more, so a post with many emoji may reach the limit sooner."
+            "It depends on the count you read. Graphemes counts a whole emoji as one, while Characters counts the code units the browser stores, so one family emoji shows Graphemes 1 and Characters 11. Use Graphemes when a site counts visible characters."
           ],
           [
             "Can I count characters for a post?",
-            "Yes. Paste the post text in the box and read the Characters count. Compare it with the limit of the site you post on, and trim the text until the count fits. The count updates as you type, so you can watch it while you edit."
+            "Yes. Paste the post text in the box, then pick the platform in the limit list to see how many characters are left. Trim the text until the count fits, and watch it update as you type."
           ],
           [
-            "Why does the count change when I paste?",
-            "Pasting adds the characters of the pasted text to the count, including spaces and line breaks. If the count jumps more than you expect, the pasted text may have extra spaces or blank lines at the end, which you can delete."
+            "What does the size in bytes mean?",
+            "It is how many bytes the text takes when saved as UTF-8. English letters take one byte each, Urdu and Arabic letters take two, and most emoji take four, so a text with emoji is larger than its character count suggests."
           ]
         ]
       },
@@ -6429,20 +6432,21 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Generate lorem ipsum placeholder text in paragraphs, sentences or words, free in your browser.",
       "steps": [
         "Choose Paragraphs, Sentences or Words in the 'Unit' list.",
         "Choose how many you need in the 'Count' list.",
-        "Press Generate Lorem Ipsum.",
-        "Read the placeholder text in the box below the button.",
-        "Press Copy Text to copy it to the clipboard."
+        "Tick 'Shuffle the sentences' for a new order, or untick 'Start with the classic first sentence' to move it.",
+        "Type a word target in the 'Word target' box if you need about that many words instead.",
+        "Choose 'HTML paragraphs' in the 'Output format' list to get the text wrapped in paragraph tags.",
+        "Press Generate Lorem Ipsum, then press Copy Text to copy it."
       ],
       "content": {
-        "use": "Lorem Ipsum Generator makes placeholder text for a design, so you can see how a page looks before the real words are ready. A designer fills a new website layout with paragraphs to check the spacing. A student makes a sample document to test a font. A developer fills a form with sentences to check that long text does not break the layout. You choose paragraphs, sentences or words, choose how many, and press the button to get the text. The words are the classic Latin filler text that designers have used for years, so readers focus on the layout, not the words. The text never leaves your browser.",
-        "tip": "Use paragraphs for a page layout and sentences for a single block of text. The first sentence is always the classic 'Lorem ipsum dolor sit amet', so readers will know at once that the text is a placeholder.",
-        "limit": "The text is placeholder Latin, not real English, so do not publish it as content. You can ask for 1 to 20 paragraphs, sentences or words at a time. The sentences come in the same order every time, so the output is the same for the same choices.",
-        "example": "Choosing Sentences and 2 gives 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'",
+        "use": "Lorem Ipsum Generator makes placeholder text for a design, so you can see how a page looks before the real words are ready. A designer fills a new website layout with paragraphs to check the spacing. You choose paragraphs, sentences or words, choose how many, and press the button to get the text. The words are the classic Latin filler text that designers have used for years, so readers focus on the layout, not the words. Shuffle gives a fresh order each time, a seed repeats an order exactly, and a word target makes about as many words as you asked for. The text never leaves your browser.",
+        "tip": "Use paragraphs for a page layout and sentences for a single block of text. The first sentence is always the classic 'Lorem ipsum dolor sit amet', so readers will know at once that the text is a placeholder. Save the seed if you want the same shuffled order again.",
+        "limit": "The text is placeholder Latin, not real English, so do not publish it as content. You can ask for 1 to 20 paragraphs, sentences or words at a time, or a word target up to 5000 words. A word target gives at least that many words, never fewer, and the HTML format is shown as source text in the box.",
+        "example": "Choosing Sentences and 2 gives 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' Typing a word target of 100 gives about 100 words in paragraphs of five sentences.",
         "faq": [
           [
             "What is lorem ipsum?",
@@ -6453,12 +6457,12 @@
             "No. It is only a placeholder for a design that is not finished yet. Replace it with real words before you publish, because visitors will not understand Latin filler text and may think the page is broken."
           ],
           [
-            "How many paragraphs should I use?",
-            "Use as many as the space needs. One paragraph fills a small block, three paragraphs fill a page section, and more than five is rare, because a real page would use real words by then."
+            "How do I get the same shuffled order again?",
+            "Type the same seed number in the 'Random seed' box and press Generate again. The same seed always gives the same shuffled order, while leaving the seed empty gives a new random order each time."
           ],
           [
-            "Is the text the same every time?",
-            "Yes. The sentences come in the same order every time, so the same choices always give the same text. That makes it easy to compare two layouts, because only the layout changes, not the words."
+            "What does a word target do?",
+            "It makes about as many words as you asked for, in paragraphs of five sentences. The text may run a little over the target, because whole sentences are used, and the count is shown in the status line."
           ]
         ]
       },
@@ -6495,24 +6499,25 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Remove duplicate lines from a list, keeping the first copy of each line, free in your browser.",
       "steps": [
         "Paste your lines in the box, one line per row.",
         "Tick 'Case sensitive' if Apple and apple should count as different lines.",
-        "Press Remove Duplicates.",
-        "Read the cleaned list below the button and the count of removed lines.",
-        "Press Copy Result to copy the cleaned list."
+        "Choose 'Last copy' in the 'Keep' list if the last copy should be kept instead of the first.",
+        "Tick 'Ignore punctuation-only differences' if 'hello.' and 'hello' should count as the same line.",
+        "Tick 'Treat near-duplicates as the same line' and set the similarity if almost-same lines should be removed too.",
+        "Press Remove Duplicates, then read the cleaned list and the count of removed lines, or press Copy Result."
       ],
       "content": {
-        "use": "Remove Duplicate Lines cleans a list by keeping the first copy of each line and dropping the rest, so a messy list becomes a clean one. A teacher removes repeated names from a class list. A shop owner removes repeated items from a stock list. A student removes repeated lines from notes copied from two sources. A worker cleans an email list before sending. You paste the lines, choose whether case matters, and press the button. Empty lines are removed too, and the order of the lines stays the same. The tool shows how many lines were removed, so you can check the result. The text never leaves your browser.",
-        "tip": "Sort the list first if you want the kept lines in alphabetical order, because this tool keeps the order you pasted. Tick 'Case sensitive' only when Apple and apple really are different lines.",
-        "limit": "Lines are trimmed, so extra spaces at the start or end do not stop a match. Empty lines are removed, and only the first copy of each line is kept. The tool does not sort the lines; use Sort Lines if you want them in order.",
-        "example": "Pasting 'apple', 'banana', 'apple', 'cherry' and 'banana' on separate lines keeps apple, banana and cherry, and reports 2 duplicate lines removed.",
+        "use": "Remove Duplicate Lines cleans a list by keeping the first copy of each line and dropping the rest, so a messy list becomes a clean one. A teacher removes repeated names from a class list. A shop owner removes repeated items from a stock list. A worker cleans an email list before sending. You paste the lines, choose whether case matters, and press the button. Empty lines are removed too, and the order of the lines stays the same. The tool shows how many lines were removed, so you can check the result. You can also keep the last copy, ignore punctuation-only differences, or remove lines that are nearly the same. The text never leaves your browser.",
+        "tip": "Sort the list first if you want the kept lines in alphabetical order, because this tool keeps the order you pasted. Tick 'Case sensitive' only when Apple and apple really are different lines, and keep the similarity at 90 percent unless too many lines are being removed.",
+        "limit": "Lines are trimmed, so extra spaces at the start or end do not stop a match. Empty lines are removed, and only the first copy of each line is kept unless you choose the last copy. Near-duplicate matching compares letters only, so two lines that differ by one word may still count as the same line at 90 percent.",
+        "example": "Pasting 'apple', 'banana', 'apple', 'cherry' and 'banana' on separate lines keeps apple, banana and cherry, and reports 2 duplicate lines removed. With near-duplicates on, 'Hello world' and 'Hello worle' count as one line at 90 percent similarity.",
         "faq": [
           [
             "Does it keep the first or the last copy?",
-            "The first copy. The first time a line appears it is kept, and every later copy of the same line is removed. The order of the kept lines is the order they first appeared in your list."
+            "The first copy, unless you choose 'Last copy' in the Keep list. The first time a line appears it is kept, and every later copy of the same line is removed. The order of the kept lines is the order they first appeared in your list."
           ],
           [
             "Are blank lines removed?",
@@ -6523,8 +6528,8 @@
             "Only if you tick the box. With the box unticked, Apple and apple count as the same line, and only the first one is kept. With the box ticked, they count as different lines, and both are kept."
           ],
           [
-            "What happens to the order of the lines?",
-            "Nothing. The kept lines stay in the order you pasted them, because the tool only removes copies, it does not sort. If you want them in alphabetical order, open Sort Lines next and sort the cleaned list."
+            "What counts as a near-duplicate?",
+            "A line that is almost the same as one already kept, by the similarity you set. At 90 percent, lines that differ by one letter in ten count as the same line, and the later one is removed. Lower the number to catch more, or raise it to catch fewer."
           ]
         ]
       },
@@ -6561,20 +6566,20 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Sort lines of text A to Z, Z to A, by number or by length, free in your browser.",
       "steps": [
         "Paste your lines in the box, one line per row.",
-        "Choose the order in the 'Sort order' list, such as A to Z or Numbers, smallest first.",
+        "Choose the order in the 'Sort order' list, such as A to Z, Natural order or Numbers, smallest first.",
         "Tick 'Ignore empty lines' to leave blank lines out of the result.",
         "Press Sort Lines.",
         "Read the sorted list below the button, or press Copy Result to copy it."
       ],
       "content": {
-        "use": "Sort Lines puts a list in order, so you can find things fast instead of reading the whole list. A teacher sorts student names from A to Z. A shop owner sorts product codes by number. A worker sorts a list of tasks from shortest to longest. A student sorts notes by the length of each line. You paste the lines, choose the order, and press the button. A to Z and Z to A use the alphabet, Numbers puts the smallest number first, and the length orders sort by how long each line is. The original text is not changed; the sorted list appears below the box. The text never leaves your browser.",
-        "tip": "Use 'Numbers, smallest first' for lists that start with a number, such as '2 apples' and '10 apples'. Lines that do not start with a number go to the end of the list.",
-        "limit": "Sorting is by the alphabet, so capital letters sort before small letters in some browsers. Lines that do not start with a number go to the end when you sort by number. The original text in the box is not changed.",
-        "example": "Sorting 'banana', 'apple' and 'cherry' from A to Z gives apple, banana and cherry.",
+        "use": "Sort Lines puts a list in order, so you can find things fast instead of reading the whole list. A teacher sorts student names from A to Z. A shop owner sorts product codes by number. A student sorts notes by the length of each line. You paste the lines, choose the order, and press the button. A to Z and Z to A use the alphabet, Natural order puts 2 before 10 and handles Urdu letters in order, Numbers puts the smallest number first, and the length orders sort by how long each line is. The original text is not changed; the sorted list appears below the box. The text never leaves your browser.",
+        "tip": "Use 'Natural order' for lists like 'Item 2' and 'Item 10', because plain A to Z puts 10 before 2. Use 'Numbers, smallest first' for lists that start with a number, such as '2 apples' and '10 apples'.",
+        "limit": "Sorting is by the alphabet, so capital letters sort before small letters in some browsers, except in Natural order, which ignores case. Lines that do not start with a number go to the end when you sort by number. The original text in the box is not changed.",
+        "example": "Sorting 'banana', 'apple' and 'cherry' from A to Z gives apple, banana and cherry. Sorting 'Item 10', 'Item 2' and 'Item 1' in Natural order gives Item 1, Item 2 and Item 10.",
         "faq": [
           [
             "How are numbers sorted?",
@@ -6589,8 +6594,8 @@
             "No. The text in the box stays as you typed it, and the sorted list appears below the button. You can change the order and press the button again to sort the same lines differently."
           ],
           [
-            "Can I sort numbers and words together?",
-            "Yes, with the number order. Lines that start with a number sort by that number, and lines that start with a word go to the end, in alphabetical order among themselves."
+            "What is natural order sorting?",
+            "An order that treats numbers inside text as numbers, not as letters. 'Item 2' comes before 'Item 10', and capital and small letters sort together, so it matches how a person reads a mixed list."
           ]
         ]
       },
@@ -6762,19 +6767,19 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Turn plain text into bold, italic, script and more Unicode styles, free in your browser.",
       "steps": [
         "Type a word or short phrase in the box.",
-        "Read the styled versions below the box: Bold, Italic, Monospace, Script and more.",
+        "Read the styled versions below the box: Bold, Italic, Monospace, Script, Squared, Bubble, Upside-down and more.",
         "Press the Copy button next to a style to copy that version.",
         "Paste the copied text where you want it, such as a profile name or a message."
       ],
       "content": {
-        "use": "Fancy Text Generator changes plain text into styled Unicode letters, so a name or message stands out. A student styles a profile name with bold letters. A shop owner styles a sale announcement with script letters. A writer styles a heading with monospace letters. A friend sends a message in circled letters for fun. You type the words once and the page shows them in eight styles, each with its own Copy button. The styles are special Unicode characters, not real formatting, so they work in most apps but may look different on some devices. The text never leaves your browser.",
+        "use": "Fancy Text Generator changes plain text into styled Unicode letters, so a name or message stands out. A student styles a profile name with bold letters. A shop owner styles a sale announcement with script letters. A writer styles a heading with monospace letters. A friend sends a message in circled letters for fun. You type the words once and the page shows them in thirteen styles, each with its own Copy button. The styles are special Unicode characters, not real formatting, so they work in most apps but may look different on some devices. Upside-down flips the text, strikethrough draws a line through it, and underline draws a line under it. The text never leaves your browser.",
         "tip": "Bold and italic work in most apps, but script and double-struck letters may show as boxes on old devices, so test the copied text where you plan to use it. Keep the text short, because styled letters take more space.",
-        "limit": "Styled text is made of special Unicode characters, not real formatting, so some apps and old devices may show boxes instead of letters. Screen readers may read styled letters oddly, so do not use them for important information.",
-        "example": "Typing 'Hello' shows Bold as '𝐇𝐞𝐥𝐥𝐨' and Script as 'ℋℯ𝓁𝓁𝓄'.",
+        "limit": "Styled text is made of special Unicode characters, not real formatting, so some apps and old devices may show boxes instead of letters. Screen readers may read styled letters oddly, so do not use them for important information. Squared and bubble styles have capital letters only, so small letters are shown as capitals.",
+        "example": "Typing 'Hello' shows Bold as '𝐇𝐞𝐥𝐥𝐨' and Script as 'ℋℯ𝓁𝓁𝓄'. Typing 'hi' in Upside-down shows 'ᴉɥ'.",
         "faq": [
           [
             "Will the styled text work everywhere?",
@@ -6789,8 +6794,8 @@
             "Yes. Most social apps accept Unicode letters in names, bios and posts, because they are ordinary text characters. Some apps may show them differently, so check how the name looks on another phone before you keep it."
           ],
           [
-            "Is the text still searchable?",
-            "Not always. A search looks for plain letters, and styled letters are different characters, so a search for Hello may not find a styled Hello. Use plain text for anything people need to search for."
+            "Why do squared letters look like capitals?",
+            "Squared and bubble letters exist as capitals only in Unicode, so small letters are shown as the same capital. 'hello' in Squared shows as five capital letters in boxes, which is a limit of the characters, not a bug."
           ]
         ]
       },
@@ -6827,20 +6832,21 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Find and replace every match of a word or phrase in your text, free in your browser.",
       "steps": [
         "Paste your text in the box.",
         "Type the text to find in the 'Find' box.",
         "Type the replacement in the 'Replace with' box, or leave it empty to delete the matches.",
-        "Tick 'Match case' if Cat and cat should be treated as different words.",
-        "Press Replace All, then read the new text and the count of replacements below the button."
+        "Tick 'Match case' if Cat and cat should be treated as different words, 'Regular expression' for a pattern, or 'Whole word only' to skip parts of longer words.",
+        "Read the live match count, then press 'Preview Changes' to see up to five changed lines, or 'Replace All' to apply it.",
+        "Press 'Undo' to put the text before the last replace back in the box."
       ],
       "content": {
-        "use": "Find and Replace changes every match of a word or phrase in your text at once, so you do not have to fix each one by hand. A writer changes a character name through a whole story. A student fixes a repeated spelling mistake in an essay. A shop owner changes a price word in a list of products. A worker updates a date in a long note. You paste the text, type what to find and what to put in its place, and press Replace All. The tool counts the replacements, so you can check that every match was changed. The new text appears below the button, ready to copy. The text never leaves your browser.",
-        "tip": "Leave the 'Replace with' box empty to delete the matches. Check the replacement count after you press the button, because a count of 0 means the find text was not in the text at all.",
-        "limit": "The search is plain text, not a pattern, so special characters are treated as ordinary letters. Replacing cannot be undone on this page, so copy the new text before you change the input. The tool replaces every match at once.",
-        "example": "Replacing 'cat' with 'dog' in 'The cat sat on the cat mat' gives 'The dog sat on the dog mat', with 2 replacements.",
+        "use": "Find and Replace changes every match of a word or phrase in your text at once, so you do not have to fix each one by hand. A writer changes a character name through a whole story. A student fixes a repeated spelling mistake in an essay. You paste the text, type what to find and what to put in its place, and press Replace All. The tool counts the replacements, so you can check that every match was changed. The new text appears below the button, ready to copy. You can also use a regular expression, match whole words only, preview the changes, or undo the last replace. The text never leaves your browser.",
+        "tip": "Leave the 'Replace with' box empty to delete the matches. Check the replacement count after you press the button, because a count of 0 means the find text was not in the text at all. Press Preview Changes first when the text is long, so you can see what will change.",
+        "limit": "The search is plain text unless you tick 'Regular expression', in which case a dot, a star or a bracket works as a pattern. Replacing can be undone once per replace with the Undo button, and only the last ten replaces are kept. The tool replaces every match at once.",
+        "example": "Replacing 'cat' with 'dog' in 'The cat sat on the cat mat' gives 'The dog sat on the dog mat', with 2 replacements. With 'Whole word only' ticked, 'cat' in 'concatenate' is left alone.",
         "faq": [
           [
             "Does it replace every match?",
@@ -6852,11 +6858,11 @@
           ],
           [
             "Can I use special characters in the search?",
-            "Yes. The search is plain text, so a dot, a star or a bracket is treated as an ordinary letter, not as a pattern. That makes it safe to search for prices, file names and other text with symbols."
+            "Yes, in two ways. With plain search, a dot, a star or a bracket is treated as an ordinary letter. With 'Regular expression' ticked, those characters work as a pattern, so a dot matches any letter and a star repeats the last part."
           ],
           [
-            "Does it change the original text?",
-            "No. The text in the box stays as you typed it, and the new text appears below the button. Copy the new text before you change the input, because pressing the button again works on the text in the box."
+            "Can I undo a replace?",
+            "Yes. Press the Undo button after a replace, and the text before that replace comes back in the box. Only the last ten replaces are kept, so an older replace cannot be undone after ten more replaces."
           ]
         ]
       },
@@ -7090,19 +7096,20 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Turn any title into a clean URL slug with lowercase letters and hyphens, free in your browser.",
       "steps": [
         "Type or paste your title in the box.",
         "Read the slug below the box: it updates live with every keystroke.",
-        "Press Copy Slug to copy it.",
-        "Paste the slug at the end of your page address."
+        "Untick 'Transliterate Urdu, Arabic and Russian words' if you want words in other scripts removed instead.",
+        "Type a longest length in the 'Longest slug' box to cut the slug at a word edge, and a page address to see the full link.",
+        "Press Copy Slug to copy it, then paste the slug at the end of your page address."
       ],
       "content": {
-        "use": "Slug Generator turns a page title into a clean slug for the address of the page, so links stay short and easy to read. A blogger turns a post title into a link that readers can remember. A shop owner turns a product name into a neat address for the product page. A teacher turns a lesson title into a link for students. You type the title once, and the tool makes it lowercase, changes spaces to hyphens, removes accents and special signs, and trims hyphens from the ends. The slug updates live as you type, and the text never leaves your browser.",
-        "tip": "Keep titles short before you make a slug, because a long title makes a long link that is hard to share. Remove words such as 'the' and 'and' from the title if the slug still looks long.",
-        "limit": "The slug uses English letters, numbers and hyphens only, so words in other scripts are removed. Very long titles are not cut short, so check the length before you use the slug. A slug is only the last part of an address, not a full link.",
-        "example": "Typing 'Hello World! My First Post' gives the slug 'hello-world-my-first-post'.",
+        "use": "Slug Generator turns a page title into a clean slug for the address of the page, so links stay short and easy to read. A blogger turns a post title into a link that readers can remember. A shop owner turns a product name into a neat address for the product page. You type the title once, and the tool makes it lowercase, changes spaces to hyphens, removes accents and special signs, and trims hyphens from the ends. Urdu, Arabic and Russian words are turned into Latin letters, and small words such as 'the' and 'ke' are dropped. The slug updates live as you type, and the text never leaves your browser.",
+        "tip": "Keep titles short before you make a slug, because a long title makes a long link that is hard to share. If the slug still looks long, tick the stop-word box to drop small words, or set a longest length to cut it at a word edge.",
+        "limit": "The slug uses English letters, numbers and hyphens only. Urdu, Arabic and Russian words are turned into Latin letters letter by letter, so 'salam' is written 'slam' because short vowels are not guessed. A length limit cuts at the last hyphen at or before the limit, or at the limit if there is no hyphen. A slug is only the last part of an address, not a full link.",
+        "example": "Typing 'Hello World! My First Post' gives the slug 'hello-world-my-first-post'. Typing 'Привет мир' with transliteration on gives 'privet-mir', and 'سلام دنیا' gives 'slam-dnya'.",
         "faq": [
           [
             "What is a slug?",
@@ -7117,8 +7124,8 @@
             "Accents are removed and the plain letter is kept, so 'café' becomes 'cafe'. This keeps the slug to plain English letters, which every browser and server can handle."
           ],
           [
-            "Can I use a slug with numbers?",
-            "Yes. Numbers are kept as they are, so 'Top 10 Tips' becomes 'top-10-tips'. Only letters, numbers and hyphens appear in the slug."
+            "What happens to Urdu or Russian words?",
+            "They are turned into Latin letters, letter by letter. 'Привет' becomes 'privet', and 'سلام' becomes 'slam', because short vowels are not guessed. Untick the transliteration box if you want those words removed instead."
           ]
         ]
       },
