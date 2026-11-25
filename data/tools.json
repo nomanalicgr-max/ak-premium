@@ -6632,19 +6632,20 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Hear text read aloud in your browser with your device voices, speed and pitch controls.",
       "steps": [
         "Type or paste the text in the box.",
         "Choose a voice in the 'Voice' list, if your browser offers more than one.",
         "Move the Speed and Pitch sliders if you want it faster, slower, higher or lower.",
         "Press Speak to hear the text read aloud.",
+        "Press Pause to hold it, then Resume to carry on from the same place.",
         "Press Stop to end it early."
       ],
       "content": {
-        "use": "Text to Speech reads your text aloud in the browser, so you can listen instead of reading. A student listens to notes while walking. A writer hears how a sentence sounds before publishing it. A parent reads a story aloud with the device while cooking. A language learner hears the sound of English words. You type or paste the text, choose a voice if your browser offers more than one, set the speed and pitch, and press Speak. The voice comes from your device and browser, so the voices on offer differ from one device to another. The text never leaves your browser.",
-        "tip": "Short sentences read more clearly than very long ones, so split a long paragraph before you press Speak. If a voice sounds wrong, try another voice from the list, because voices differ by device.",
-        "limit": "Voices come from your device and browser, and some browsers offer no voice choice at all. Long text may be cut off by the browser, and the spoken audio cannot be downloaded from this page. The tool does not work in browsers without speech support.",
+        "use": "Text to Speech reads your text aloud in the browser, so you can listen instead of reading. A student listens to notes while walking. A writer hears how a sentence sounds before publishing it. A language learner hears the sound of English words. You type or paste the text, choose a voice if your browser offers more than one, set the speed and pitch, and press Speak. Long text is read in short pieces, so it is never cut off, and the word being spoken is highlighted as you listen. Pause and Resume let you stop and carry on. The voice comes from your device, so the voices on offer differ by device. The text never leaves your browser.",
+        "tip": "Short sentences read more clearly than very long ones, so split a long paragraph before you press Speak. The highlighted word shows where the reading has reached, so you can follow along. If a voice sounds wrong, try another voice from the list, because voices differ by device.",
+        "limit": "Voices come from your device and browser, and some browsers offer no voice choice at all. Long text is read in short pieces so it is never cut off, but the spoken audio cannot be downloaded from this page. The tool does not work in browsers without speech support.",
         "example": "Typing 'Hello, this is a test.' and pressing Speak reads the sentence aloud in the chosen voice.",
         "faq": [
           [
@@ -6653,11 +6654,11 @@
           ],
           [
             "Can I change the voice?",
-            "Yes, if your device offers more than one. The Voice list shows every voice your browser knows, and you can pick one before you press Speak. Some devices offer only one voice, and some offer none to choose."
+            "Yes, if your device offers more than one. The Voice list shows every voice your browser knows, and you can pick one before you press Speak. If the list is empty, your device has no extra voices, and Speak still works with the default voice."
           ],
           [
-            "Why is there no voice to choose?",
-            "Your device or browser has no extra voices installed. The tool then uses the default voice, and Speak still works. Installing a voice in your device settings may add more choices to the list."
+            "Can I pause the reading?",
+            "Yes. Press Pause to hold the reading, then Resume to carry on from the same place. The word being spoken stays highlighted, so you can see where it stopped. Press Stop to end it early."
           ],
           [
             "Can I download the spoken audio?",
@@ -6692,7 +6693,9 @@
       ],
       "libs": [
         "marked",
-        "marked-footnote"
+        "marked-footnote",
+        "dompurify",
+        "highlight"
       ],
       "engine": "tool-markdown",
       "maxFileMB": null,
@@ -6701,36 +6704,37 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Preview Markdown as formatted text in your browser, live as you type, with tables, task lists and footnotes.",
       "steps": [
         "Type or paste Markdown in the box; the preview updates as you type.",
         "Make a table with a header row, a row of dashes, then the rows, like | Item | Price |.",
-        "Make a task list with - [ ] for an open item and - [x] for a done item.",
-        "Add a footnote with [^1] in the text and [^1]: the note at the bottom.",
-        "Press Copy HTML to copy the formatted result, or Download HTML to save it as a page."
+        "Make a task list with - [ ] for an open item and - [x] for a done item, and add a footnote with [^1] in the text and [^1]: the note at the bottom.",
+        "Press Copy HTML to copy the formatted result, or Download HTML to save it as a page.",
+        "Write raw HTML in the text to see safe tags rendered, such as a bold tag, while scripts and links that run code are removed.",
+        "Write a code block with three backticks and a language name, such as ```js, to see the code coloured."
       ],
       "content": {
-        "use": "Markdown Previewer turns Markdown text into a formatted preview as you type, using the marked library for full CommonMark plus GitHub-style tables, task lists and footnotes. A writer checks a blog post with headings, bold words, tables and a footnote before publishing. A student drafts notes with a to-do list and a table of results. The preview shows the word count and reading time, and you can copy or download the formatted HTML.",
-        "tip": "A table needs a header row and a row of dashes under it, or it stays as plain text. Write a footnote as [^1] where you want the number, then add [^1]: the note itself at the bottom of the document. If the preview looks empty, check that the text is in the box and not only in the preview pane.",
-        "limit": "Raw HTML in your text is escaped and shown as text, never run, so no HTML tags, scripts or embedded pages are rendered. Diagrams, maths formulas and raw HTML blocks are not supported. Footnotes always render at the bottom of the preview.",
-        "example": "Typing '| Item | Price |\n| --- | --- |\n| Pen | 50 |' shows a real two-column table, and adding 'See the note[^1]' with '[^1]: Prices include tax.' at the bottom shows a numbered footnote link.",
+        "use": "Markdown Previewer turns Markdown text into a formatted preview as you type, using the marked library for full CommonMark plus GitHub-style tables, task lists and footnotes. A writer checks a blog post with headings, bold words, tables and a footnote before publishing. A student drafts notes with a to-do list and a table of results. Raw HTML in your text is now rendered, so a safe tag such as bold shows as bold, while scripts and unsafe links are removed first. Code blocks are coloured by language, so code is easy to read. The preview shows the word count and reading time, and you can copy or download the formatted HTML.",
+        "tip": "A table needs a header row and a row of dashes under it, or it stays as plain text. Write a footnote as [^1] where you want the number, then add [^1]: the note itself at the bottom of the document. Start a code block with three backticks and a language name, such as ```js, to colour the code. If the preview looks empty, check that the text is in the box and not only in the preview pane.",
+        "limit": "Raw HTML is cleaned before it is shown, so scripts, event handlers and unsafe links are removed and never run. Diagrams, maths formulas and raw HTML blocks that the cleaner removes are not supported. Footnotes always render at the bottom of the preview.",
+        "example": "Typing '| Item | Price |\n| --- | --- |\n| Pen | 50 |' shows a real two-column table, and adding 'See the note[^1]' with '[^1]: Prices include tax.' at the bottom shows a numbered footnote link. A code block written as ```js with const x = 1; inside shows the code coloured, with the keyword in a different colour from the number.",
         "faq": [
           [
             "Does the preview support tables?",
             "Yes. Write a header row, a row of dashes, then the rows, like | Item | Price | on the first line, | --- | --- | on the second, and | Pen | 50 | on the third. The preview shows a real table."
           ],
           [
-            "How do I add a footnote?",
-            "Put [^1] in the text where you want the number, then add a line [^1]: your note at the bottom of the document. The preview shows a numbered link that jumps to the note."
+            "How do I add a footnote or a task list?",
+            "Put [^1] in the text where you want the number, then add a line [^1]: your note at the bottom. For a task list, write - [ ] for an open item and - [x] for a done item, one per line. The preview shows real checkboxes you can tick."
           ],
           [
-            "What is a task list and how do I make one?",
-            "A task list is a list with checkboxes. Write - [ ] for an open item and - [x] for a done item, one per line. The preview shows real checkboxes you can tick."
+            "Does raw HTML work in the preview?",
+            "Yes, for safe tags. A bold tag or a link shows as formatted text, because the preview cleans the HTML first. Scripts, event handlers and links that run code are removed, so nothing in your text can run."
           ],
           [
-            "Can I download the formatted preview as HTML?",
-            "Yes. Press Download HTML to save the preview as a page you can open in any browser, or Copy HTML to paste the formatted result into another app."
+            "Are code blocks coloured?",
+            "Yes. Start a code block with three backticks and a language name, such as ```js for JavaScript, and the preview colours keywords, strings and numbers. A block with no language name stays plain."
           ]
         ]
       },
@@ -6899,19 +6903,21 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Check readability with the Flesch Reading Ease score and grade level, free in your browser.",
       "steps": [
         "Paste your text in the box.",
         "Press Check Readability.",
         "Read the Flesch Reading Ease score, the grade level, and the word, sentence and syllable counts.",
-        "Compare the score with the guide: 90 and above is Very easy, 60 to 70 is Standard, below 30 is Very difficult."
+        "Compare the score with the guide: 90 and above is Very easy, 60 to 70 is Standard, below 30 is Very difficult.",
+        "Read the extra scores: Gunning Fog, SMOG, Coleman-Liau, ARI and Dale-Chall, each with its own grade.",
+        "Look at the highlighted text below the score: long sentences are marked, and passive phrases are underlined."
       ],
       "content": {
-        "use": "Readability Checker scores your text with the Flesch Reading Ease and the Flesch-Kincaid grade, so you can tell how easy it is to read. A writer checks that a blog post is easy for most readers. A teacher checks that a handout fits the class level. A student checks an essay before handing it in. A shop owner checks that a product note is plain and clear. You paste the text and press the button. The tool counts words, sentences and syllables, then works out the scores and a plain label, from Very easy to Very difficult. The scores describe the text, not the reader, and syllables are estimated by a rule. The text never leaves your browser.",
-        "tip": "Short sentences and short words raise the score, so split long sentences if the text scores below 60. Compare two versions of the same text to see which one reads more easily.",
-        "limit": "Syllables are estimated by a rule that counts vowel groups, not by a dictionary, so unusual words may score slightly differently. The score describes the text, not the reader, and a low score does not mean the text is wrong.",
-        "example": "The two sentences 'The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.' score 93.7, grade 2.3, Very easy.",
+        "use": "Readability Checker scores your text with the Flesch Reading Ease and the Flesch-Kincaid grade, so you can tell how easy it is to read. A writer checks that a blog post is easy for most readers. A teacher checks that a handout fits the class level. A student checks an essay before handing it in. You paste the text and press the button. The tool also works out four more scores, Gunning Fog, SMOG, Coleman-Liau and ARI, plus Dale-Chall, which counts words outside a list of about 3,000 familiar words. Long sentences are marked in the text, and passive phrases are underlined, so you can see what to fix. The text never leaves your browser.",
+        "tip": "Short sentences and short words raise the score, so split long sentences if the text scores below 60. Compare two versions of the same text to see which one reads more easily. The marked sentences are the ones over 25 words, and the underlined phrases use a passive verb, so rewriting those first helps the most.",
+        "limit": "Syllables are estimated by a rule that counts vowel groups, not by a dictionary, so unusual words may score slightly differently. The extra scores share that rule, and SMOG is meant for 30 or more sentences, so short texts give a rough guide only. The formulas were made for English, so text in another language may give a score that does not mean the same thing. The score describes the text, not the reader, and a low score does not mean the text is wrong.",
+        "example": "The two sentences 'The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.' score 93.7, grade 2.3, Very easy. The same text scores Fog 3.4, SMOG 3.1, Coleman-Liau 3.9, ARI 1.4 and Dale-Chall 5, Grades 5 to 6, with no long sentences and no passive phrases.",
         "faq": [
           [
             "What is a good readability score?",
@@ -6926,8 +6932,8 @@
             "It is a score from 0 to 100 that rates how easy a text is to read, from the average sentence length and the average syllables per word. A higher score means easier reading, and a lower score means harder reading."
           ],
           [
-            "Does it work for other languages?",
-            "Not really. The Flesch formulas were made for English, and the syllable rule counts English vowel groups. Text in another language may give a score, but the score will not mean the same thing."
+            "What is the Dale-Chall score?",
+            "It counts the words in your text that are outside a list of about 3,000 familiar English words. A score of 5 to 6 fits school grades 5 and 6, 7 to 8 fits grades 7 and 8, and 9 or more fits college reading."
           ]
         ]
       },
@@ -6964,24 +6970,24 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Count how often each word appears in your text, most used first, free in your browser.",
       "steps": [
         "Paste your text in the box.",
         "Tick 'Ignore common words' to leave out words such as the and and.",
-        "Choose how many words to show in the 'Show' list.",
-        "Press Count Word Frequency.",
-        "Read the list below the button: the most used word first, with its count."
+        "Press Count Word Frequency, then read the list below the button: the most used word first, with its count. Choose how many words to show in the 'Show' list.",
+        "Read the common pairs and triples under the list to see which words appear together.",
+        "Press Download CSV to save the full count as a spreadsheet file."
       ],
       "content": {
-        "use": "Word Frequency counts how often each word appears in your text, so you can see what a piece of writing is really about. A student checks whether an essay repeats one word too much. A writer checks the key words in an article before choosing a title. A teacher checks the common words in a reading passage. A shop owner checks which words customers use most in reviews. You paste the text, choose whether to ignore common words such as the and and, and press the button. The list shows the most used word first, with its count, and words with the same count are listed in alphabetical order. The text never leaves your browser.",
-        "tip": "Tick 'Ignore common words' to see the real key words, because the and and are the most used words in almost every text. A word that appears far more than the rest is usually the topic of the text.",
-        "limit": "Only words made of English letters are counted; numbers, punctuation and words in other scripts are ignored. Words are counted without capitals, so Cat and cat count as the same word.",
-        "example": "In 'the cat and the dog and the bird' with common words ignored, bird, cat and dog each show 1.",
+        "use": "Word Frequency counts how often each word appears in your text, so you can see what a piece of writing is really about. A student checks whether an essay repeats one word too much. A writer checks the key words in an article before choosing a title. A shop owner checks which words customers use most in reviews. You paste the text, choose whether to ignore common words, and press the button. Words are counted in any script, so Urdu and Arabic words count too, and bars show the top 20. The list also shows the pairs and triples that appear together most, and the full count downloads as a CSV file. The text never leaves your browser.",
+        "tip": "Tick 'Ignore common words' to see the real key words, because the and and are the most used words in almost every text. A word that appears far more than the rest is usually the topic of the text. The pairs list shows which words appear together, which often names the topic better than single words.",
+        "limit": "Words are counted without capitals, so Cat and cat count as the same word. Numbers and punctuation are not counted as words. Words are split where the writing system splits them, so a hyphenated word counts as two words, and a word joined by a zero-width joiner counts as one.",
+        "example": "In 'the cat and the dog and the bird' with common words ignored, bird, cat and dog each show 1. In the Urdu line 'میرا گھر میرا سکول', میرا shows 2.",
         "faq": [
           [
             "What counts as a word?",
-            "A run of English letters. Numbers, punctuation and spaces break words apart, and words are counted without capitals, so Cat and cat count as the same word. Words in other scripts are ignored by this tool."
+            "Any word in any script. Urdu, Arabic and other scripts count, because words are cut by the writing system, not by English letters. Numbers and punctuation are not counted, and Cat and cat count as the same word."
           ],
           [
             "Why are common words left out?",
@@ -6992,8 +6998,8 @@
             "Yes. Choose All words in the Show list, and the tool lists every different word in the text, most used first. For a long text the list is long, so Top 10 or Top 20 is easier to read."
           ],
           [
-            "Does it count words in other languages?",
-            "No. This tool only counts words made of English letters, so Urdu, Arabic and other scripts are ignored. If your text is in another language, use Word Counter, which counts words by spaces instead."
+            "Can I download the counts as a file?",
+            "Yes. Press Download CSV after you count, and the full list of words and counts is saved as a spreadsheet file, with the common pairs listed below it."
           ]
         ]
       },
@@ -7030,17 +7036,18 @@
       "regions": [
         "global"
       ],
-      "lastReviewed": "2026-11-19",
+      "lastReviewed": "2026-11-25",
       "meta_description": "Dictate and turn your speech into text in your browser, free with no sign-up.",
       "steps": [
         "Choose your language in the 'Language' list.",
         "Press Start Listening and allow the microphone when your browser asks.",
         "Speak clearly into the microphone and watch the words appear in the transcript box.",
         "Press Stop when you finish speaking.",
-        "Press Copy Transcript to copy the text for use anywhere."
+        "Press Copy Transcript to copy the text for use anywhere.",
+        "Press Download Transcript to save the words as a text file with a time on each line."
       ],
       "content": {
-        "use": "Speech to Text turns your spoken words into written text, so you can write without typing. A student dictates notes while walking. A writer speaks a first draft and edits it later. A shop owner dictates a product note while packing an order. A person with a sore wrist writes messages by voice. You choose your language, press Start Listening, allow the microphone when your browser asks, and speak clearly. The words appear in the transcript box as you speak, and you can copy the text when you stop. The transcript is built in your browser from the speech service of your browser, and the text stays with you.",
+        "use": "Speech to Text turns your spoken words into written text, so you can write without typing. A student dictates notes while walking. A writer speaks a first draft and edits it later. A shop owner dictates a product note while packing an order. A person with a sore wrist writes messages by voice. You choose your language, press Start Listening, allow the microphone, and speak clearly. The words appear in the transcript box as you speak, and you can copy the text or download it as a file with a time on each line when you stop. The transcript is built in your browser from your browser's speech service, and the text stays with you.",
         "tip": "Speak in a quiet room and hold the microphone near your mouth, because background noise and a far microphone cause wrong words. Short sentences work better than long ones, and a pause between sentences helps the tool tell where one sentence ends.",
         "limit": "The tool needs a browser that supports speech recognition, such as Chrome on desktop or Android, and it needs a microphone. Your browser may send the audio to its own speech service to turn it into text, so do not dictate private or secret words. Recognition is not perfect, so check the transcript and fix wrong words before you use it.",
         "example": "Speaking 'Hello, this is a test' with English (US) chosen shows the same words in the transcript box.",
@@ -7054,8 +7061,8 @@
             "It may. Your browser can send the audio to its own speech service to turn it into words, and that service is run by the browser maker, not by this site. Do not dictate passwords, private names or secret words."
           ],
           [
-            "Why are some words wrong?",
-            "Speech recognition guesses words from sound, so similar sounding words can be mixed up, and background noise makes it worse. Speak slowly in a quiet room, and read the transcript at the end to fix any wrong words."
+            "Can I download the transcript?",
+            "Yes. Press Download Transcript after you stop listening. The file is a plain text file, and each line starts with the time, such as [00:12], so you can find when each part was said."
           ],
           [
             "Can I dictate in Urdu?",

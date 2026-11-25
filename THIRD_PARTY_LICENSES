@@ -1,5 +1,5 @@
 AK Premium — Third-party licences
-Last updated: 23 November 2026
+Last updated: 25 November 2026
 
 AK Premium is built with the open-source libraries, icons and fonts listed
 below. Each entry gives the project, its licence and where to find it.
@@ -26,6 +26,8 @@ Libraries (loaded from public CDNs, except qpdf-wasm and diff-match-patch which 
 - jsonpath-plus — MIT License — https://github.com/brettz9/jsonpath-plus
 - marked — MIT License — https://github.com/markedjs/marked
 - marked-footnote — MIT License — https://github.com/bent10/marked-extensions
+- DOMPurify — MPL-2.0 or Apache License 2.0 — https://github.com/cure53/DOMPurify
+- highlight.js — BSD-3-Clause License — https://github.com/highlightjs/highlight.js
 - node-forge — BSD-3-Clause License — https://github.com/digitalbazaar/forge
 - diff-match-patch — Apache License 2.0 — https://github.com/google/diff-match-patch (self-hosted copy in assets/js/diff-match-patch.js; only the Node-only export lines were removed)
 - jspdf-autotable — MIT License — https://github.com/simonbengtsson/jsPDF-AutoTable

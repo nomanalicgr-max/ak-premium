@@ -32,6 +32,8 @@
   --icon-pk-bg:#dcfce7; --icon-pk-fg:#166534;
   --icon-excel-bg:#ccfbf1; --icon-excel-fg:#0f766e;
   --icon-warn-bg:#fef3c7; --icon-warn-fg:#92400e;
+  /* code highlighting (Markdown Previewer) */
+  --hl-keyword:#7c3aed; --hl-string:#15803d; --hl-number:#b45309; --hl-comment:#6b7280; --hl-function:#1d4ed8; --hl-builtin:#0e7490;
   /* shape + elevation */
   --r-sm:8px; --r-md:12px; --r-lg:16px;
   --shadow-1:0 1px 2px rgba(15,23,42,.06);
@@ -317,6 +319,17 @@ body.tool-page .workspace-tool{display:block}
 .md-preview ul,.md-preview ol{padding-inline-start:var(--s-5);margin:0 0 var(--s-3)}
 .md-preview blockquote{border-inline-start:4px solid var(--primary);color:var(--muted);margin:0 0 var(--s-3);padding:var(--s-2) var(--s-3)}
 .md-preview code{font-family:var(--font-mono);font-size:.875rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:0 var(--s-1)}
+/* code highlighting in the Markdown preview (highlight.js classes) */
+.md-preview .hljs-keyword,.md-preview .hljs-selector-tag,.md-preview .hljs-doctag{color:var(--hl-keyword)}
+.md-preview .hljs-string,.md-preview .hljs-regexp,.md-preview .hljs-meta .hljs-string{color:var(--hl-string)}
+.md-preview .hljs-number,.md-preview .hljs-literal{color:var(--hl-number)}
+.md-preview .hljs-comment,.md-preview .hljs-quote{color:var(--hl-comment);font-style:italic}
+.md-preview .hljs-title,.md-preview .hljs-title.function_,.md-preview .hljs-section{color:var(--hl-function)}
+.md-preview .hljs-built_in,.md-preview .hljs-type{color:var(--hl-builtin)}
+.md-preview .hljs-attr,.md-preview .hljs-attribute,.md-preview .hljs-variable{color:var(--hl-number)}
+/* word-frequency bars */
+.wf-bar-row{margin:6px 0}
+.wf-bar-row > span{font-size:.875rem}
 .md-preview pre{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s-3);overflow:auto;margin:0 0 var(--s-3)}
 .md-preview pre code{border:0;background:none;padding:0}
 .md-preview hr{border:0;border-top:1px solid var(--border);margin:var(--s-4) 0}
@@ -494,6 +507,7 @@ html[data-theme="dark"]{
   --icon-pk-bg:#0f2a1c; --icon-pk-fg:#4ade80;
   --icon-excel-bg:#0f2f2b; --icon-excel-fg:#5eead4;
   --icon-warn-bg:#2a2210; --icon-warn-fg:#fbbf24;
+  --hl-keyword:#c4b5fd; --hl-string:#86efac; --hl-number:#fcd34d; --hl-comment:#94a3b8; --hl-function:#93c5fd; --hl-builtin:#67e8f9;
   --shadow-1:none; --shadow-2:0 8px 24px rgba(0,0,0,.45);
 }
 

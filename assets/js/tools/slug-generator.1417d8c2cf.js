@@ -69,3 +69,4 @@ if (slugCopyBtn) slugCopyBtn.addEventListener("click", () => {
   if (!text || text === "Your slug will appear here.") { setStatus("slugStatus", "Type a title first, then use Copy Slug."); return; }
   copyTextToClipboard(text, "slugStatus");
 });
+// "mm:ss" stamp for a transcript line, from seconds since listening started.

@@ -272,7 +272,15 @@ const LIB_URLS = {
   "upng": "https://cdn.jsdelivr.net/npm/upng-js@2.1.0/UPNG.js",
   "colorthief": "https://cdn.jsdelivr.net/npm/colorthief@2.4.0/dist/color-thief.umd.js",
   "jsqr": "https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js",
-  "zxcvbn": "https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js"
+  "zxcvbn": "https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js",
+  /* DOMPurify 3.5.0 (MPL-2.0 OR Apache-2.0) cleans raw HTML for the
+     Markdown Previewer, so safe tags render and scripts never run.
+     highlight.js 11.12.0 (BSD-3-Clause) colours code blocks in the
+     preview. The jsDelivr highlight.js package ships no browser
+     bundle, so the cdnjs-published build is pinned (version and
+     licence checked in the file itself). Both files are SRI-verified. */
+  "dompurify": "https://cdn.jsdelivr.net/npm/dompurify@3.5.0/dist/purify.min.js",
+  "highlight": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.12.0/highlight.min.js"
 };
 /* SRI hashes for the pinned libraries above (Phase 4.2); same values as
    build.py. The docx URL was corrected at the same time: docx@8.5.0
@@ -309,12 +317,14 @@ const LIB_SRI = {
   "upng": "sha384-5zRBkJ6IHy9ezWHX/cBuwC0SnrK23Cfx6G6kIjwR5no9khaSv2md2ZHMXphI3UCB",
   "colorthief": "sha384-ZkLR4RZXZ2JWJPEflQmS8WA93TozFLyxZwFHAny12Of6jNKBDWeEx8OF7r1Hg51r",
   "jsqr": "sha384-b5Ya4Bq3qCyz39m2ISh+4DxjAIljdeFwK/BsXLuj9gugaNwAcj/ia15fxNZL9Nlx",
-  "zxcvbn": "sha384-LXuP8lknSGBOLVn4fwVOl+rWR+zOEtZx6CF9ZLaN6gKBgLByU4D79VWWjV4/gefq"
+  "zxcvbn": "sha384-LXuP8lknSGBOLVn4fwVOl+rWR+zOEtZx6CF9ZLaN6gKBgLByU4D79VWWjV4/gefq",
+  "dompurify": "sha384-DOUwTXbuiiQxlONuue5N42674XXDfjIJ/LTPtJMZ2ZV1Ir4NRQ3OnM/yM505YQAc",
+  "highlight": "sha384-wjfDDhOPPdjtva8vWBhWeVprSpmxisEu5aYT3q1JyACqXpdKpo3PWZTMVq24MBix"
 };
 const _libLoaded = {};
 function loadLibrary(name, statusId) {
   if (name === "jspdf-autotable" && window.jspdf && window.jspdf.jsPDF && window.jspdf.jsPDF.API && window.jspdf.jsPDF.API.autoTable) return Promise.resolve(true);
-  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "js-yaml" ? "jsyaml" : name === "jsonrepair" ? "JSONRepair" : name === "marked-footnote" ? "markedFootnote" : name === "chartjs" ? "Chart" : name === "papaparse" ? "Papa" : name === "formula-parser" ? "FormulaParser" : name === "utif" ? "UTIF" : name === "cropperjs" ? "Cropper" : name === "upng" ? "UPNG" : name === "colorthief" ? "ColorThief" : name === "jsqr" ? "jsQR" : name] || _libLoaded[name]) return Promise.resolve(true);
+  if (window[name === "pdfjs" ? "pdfjsLib" : name === "jspdf" ? "jspdf" : name === "js-yaml" ? "jsyaml" : name === "jsonrepair" ? "JSONRepair" : name === "marked-footnote" ? "markedFootnote" : name === "chartjs" ? "Chart" : name === "papaparse" ? "Papa" : name === "formula-parser" ? "FormulaParser" : name === "utif" ? "UTIF" : name === "cropperjs" ? "Cropper" : name === "upng" ? "UPNG" : name === "colorthief" ? "ColorThief" : name === "jsqr" ? "jsQR" : name === "dompurify" ? "DOMPurify" : name === "highlight" ? "hljs" : name] || _libLoaded[name]) return Promise.resolve(true);
   return new Promise((resolve) => {
     const sc = document.createElement("script");
     sc.src = LIB_URLS[name]; sc.async = true;
@@ -2621,6 +2631,9 @@ const LOREM_SENTENCES = [
 ];
 // Common English words ignored by the word-frequency tool when asked.
 const STOPWORDS = new Set("the a an and or but of to in on for with is are was were be been it its this that these those i you he she we they at by from as not no so if then than too very can will would should could have has had do does did my your his her our their am".split(" "));
+// Common Urdu words ignored by the word-frequency tool when asked.
+// Lives in core with STOPWORDS: wordFrequency is a core function.
+const URDU_STOPWORDS = new Set("اور کا کی کو سے میں نے ہے ہیں تھا تھی پر تک بھی جو کہ یہ وہ اس ان کر کے گا گی گے نہ نہیں صرف جب اگر تو پھر ابھی بہت کچھ کون کس کیا جیسے ویسے یا انھیں انہیں".split(" "));
 // Small capital letters (Unicode has no small capital for x, so x stays x).
 const SMALL_CAPS = { a: "ᴀ", b: "ʙ", c: "ᴄ", d: "ᴅ", e: "ᴇ", f: "ꜰ", g: "ɢ", h: "ʜ", i: "ɪ", j: "ᴊ", k: "ᴋ", l: "ʟ", m: "ᴍ", n: "ɴ", o: "ᴏ", p: "ᴘ", q: "ꞯ", r: "ʀ", s: "ꜱ", t: "ᴛ", u: "ᴜ", v: "ᴠ", w: "ᴡ", x: "x", y: "ʏ", z: "ᴢ" };
 // Build a Unicode letter map from contiguous mathematical alphanumeric
@@ -2739,20 +2752,46 @@ function readabilityScore(text) {
   else if (ease >= 30) level = "Difficult";
   return { words: words.length, sentences, syllables, ease: Math.round(ease * 10) / 10, grade: Math.round(grade * 10) / 10, level };
 }
+// Extra readability scores, all from the same word/sentence/syllable
+// counts. Gunning Fog, SMOG, Coleman-Liau and ARI are estimates: they
+// share the vowel-group syllable rule, and SMOG is meant for 30 or more
+// sentences. Dale-Chall counts words outside the familiar list above.
 
-function wordFrequency(text, ignoreStopwords, topN) {
-  const words = String(text || "").toLowerCase().match(/[a-z']+/g) || [];
+function wordFrequency(text, ignoreStopwords, topN, opts) {
+  opts = opts || {};
+  let words = null;
+  if (typeof Intl !== "undefined" && typeof Intl.Segmenter === "function") {
+    try {
+      const seg = new Intl.Segmenter(undefined, { granularity: "word" });
+      words = [];
+      for (const s of seg.segment(String(text || ""))) {
+        if (s.isWordLike && /\p{L}/u.test(s.segment)) words.push(s.segment.toLowerCase());
+      }
+    } catch (e) { words = null; }
+  }
+  if (!words) words = (String(text || "").toLowerCase().match(/[a-z']+/g) || []);
   const counts = {};
+  const kept = [];
   for (const w of words) {
     const clean = w.replace(/^'+|'+$/g, "");
     if (!clean) continue;
-    if (ignoreStopwords && STOPWORDS.has(clean)) continue;
+    if (ignoreStopwords && (STOPWORDS.has(clean) || URDU_STOPWORDS.has(clean))) continue;
     counts[clean] = (counts[clean] || 0) + 1;
+    kept.push(clean);
   }
   const rows = Object.keys(counts).map((w) => [w, counts[w]]);
   rows.sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
   const n = topN === "all" ? rows.length : (parseInt(topN, 10) || 10);
-  return { rows: rows.slice(0, n), total: rows.length };
+  const result = { rows: rows.slice(0, n), total: rows.length };
+  if (opts.ngrams) {
+    const pairs = {}, triples = {};
+    for (let i = 0; i + 1 < kept.length; i++) { const k = kept[i] + " " + kept[i + 1]; pairs[k] = (pairs[k] || 0) + 1; }
+    for (let i = 0; i + 2 < kept.length; i++) { const k = kept[i] + " " + kept[i + 1] + " " + kept[i + 2]; triples[k] = (triples[k] || 0) + 1; }
+    const top = (obj) => Object.keys(obj).map((k) => [k, obj[k]]).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).slice(0, 10);
+    result.bigrams = top(pairs);
+    result.trigrams = top(triples);
+  }
+  return result;
 }
 
 function escapeHtml(s) {
@@ -2773,10 +2812,13 @@ function mdInline(s) {
 // never run. Supports headings, bold, italic, code, lists, links, quotes,
 // rules and code blocks. No tables, footnotes or raw HTML.
 /* Full CommonMark rendering via marked (MIT) with the marked-footnote
-   extension for footnotes. Raw HTML is escaped first, so a pasted tag is
-   shown as text and never runs — the same safe rule the old hand-rolled
-   renderer used. GFM tables and task lists come with marked itself. Falls
-   back to the hand-rolled subset when the library did not load. */
+   extension for footnotes. When DOMPurify has loaded, raw HTML is rendered
+   and then cleaned: safe tags show as formatted text, while scripts, event
+   handlers and unsafe links are removed and never run. When DOMPurify did
+   not load, HTML is escaped first, so a pasted tag is shown as text and
+   never runs — the same safe rule the old hand-rolled renderer used. GFM
+   tables and task lists come with marked itself. Falls back to the
+   hand-rolled subset when the library did not load. */
 let _markedFootnoteOn = false;
 
 function renderMarkdown(text) {
@@ -2784,6 +2826,9 @@ function renderMarkdown(text) {
     if (!_markedFootnoteOn && window.markedFootnote) {
       try { window.marked.use(window.markedFootnote()); } catch (e) { /* footnotes stay off */ }
       _markedFootnoteOn = true;
+    }
+    if (window.DOMPurify) {
+      try { return window.DOMPurify.sanitize(window.marked.parse(String(text || "")), { USE_PROFILES: { html: true } }); } catch (e) { return renderMarkdownFallback(text); }
     }
     const safe = String(text || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     try { return window.marked.parse(safe); } catch (e) { return renderMarkdownFallback(text); }

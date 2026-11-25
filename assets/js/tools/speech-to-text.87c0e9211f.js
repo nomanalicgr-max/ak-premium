@@ -2,6 +2,17 @@
 
 /* ---------- Wave 1: Developer tools (batch 5) ---------- */
 
+function sttFormatTime(seconds) {
+  const s = Math.max(0, Math.floor(seconds || 0));
+  const m = Math.floor(s / 60);
+  return (m < 10 ? "0" + m : String(m)) + ":" + (s % 60 < 10 ? "0" + (s % 60) : String(s % 60));
+}
+// Transcript file lines: one "[mm:ss] words" line per final result.
+
+function sttSegmentsToText(segments) {
+  return (segments || []).map((seg) => "[" + sttFormatTime(seg.t) + "] " + seg.text).join("\n");
+}
+
 const sttStartBtn = $("sttStartBtn");
 if (sttStartBtn) sttStartBtn.addEventListener("click", () => {
   const Ctor = sttRecognitionCtor();
@@ -19,6 +30,8 @@ if (sttStartBtn) sttStartBtn.addEventListener("click", () => {
   rec.interimResults = true;
   window.__sttRec = rec;
   window.__sttListening = true;
+  window.__sttSegments = [];
+  window.__sttStartTime = Date.now();
   if ($("sttTranscript")) $("sttTranscript").textContent = "";
   if ($("sttInterim")) $("sttInterim").textContent = "";
   sttStartBtn.disabled = true;
@@ -31,6 +44,7 @@ if (sttStartBtn) sttStartBtn.addEventListener("click", () => {
       if (res.isFinal) {
         const el = $("sttTranscript");
         if (el) el.textContent = (el.textContent || "") + res[0].transcript;
+        (window.__sttSegments = window.__sttSegments || []).push({ t: (Date.now() - (window.__sttStartTime || Date.now())) / 1000, text: res[0].transcript });
       } else interim += res[0].transcript;
     }
     if ($("sttInterim")) $("sttInterim").textContent = interim;
@@ -80,4 +94,12 @@ if (sttCopyBtn) sttCopyBtn.addEventListener("click", () => {
   const text = ($("sttTranscript") || {}).textContent || "";
   if (!text.trim()) { setStatus("sttStatus", "Listen first, then use Copy Transcript."); return; }
   copyTextToClipboard(text, "sttStatus");
+});
+
+const sttDownloadBtn = $("sttDownloadBtn");
+if (sttDownloadBtn) sttDownloadBtn.addEventListener("click", () => {
+  const segments = window.__sttSegments || [];
+  if (!segments.length) { setStatus("sttStatus", "Listen first, then use Download Transcript."); return; }
+  downloadText(sttSegmentsToText(segments) + "\n", "ak-premium-transcript.txt", "text/plain;charset=utf-8");
+  setStatus("sttStatus", "Done. Transcript downloaded (" + segments.length + " line" + (segments.length === 1 ? "" : "s") + " with timestamps).");
 });

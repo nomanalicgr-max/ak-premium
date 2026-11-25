@@ -10,7 +10,16 @@ if (mdInput) mdInput.addEventListener("input", async () => {
     const ok = await loadLibrary("marked", "mdStatus");
     if (ok) await loadLibrary("marked-footnote", "mdStatus");
   }
+  if (!window.DOMPurify) await loadLibrary("dompurify", "mdStatus");
+  if (!window.hljs) await loadLibrary("highlight", "mdStatus");
   out.innerHTML = renderMarkdown(mdInput.value);
+  if (window.hljs && window.hljs.highlightElement) {
+    out.querySelectorAll("pre code").forEach((el) => { try { window.hljs.highlightElement(el); } catch (e) { /* leave plain */ } });
+  }
+  // DOMPurify or highlight.js failing to load is a graceful downgrade
+  // (raw HTML stays escaped, code stays uncoloured), so clear any load
+  // error once the preview itself has rendered.
+  if (out.innerHTML.trim()) setStatus("mdStatus", "");
   const stats = $("mdStats");
   if (stats) {
     const c = countWords(mdInput.value);

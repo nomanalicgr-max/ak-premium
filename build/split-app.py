@@ -232,6 +232,19 @@ TOOL_NAMES = {
     'meritReversePlanner': 'percentage-marks-calculator',
     'pctToGpa': 'percentage-marks-calculator',
     'gpaToPct': 'percentage-marks-calculator',
+    # v35: Text B pure helpers -> their tool bundles. (readabilityScore
+    # and wordFrequency stay in core by design: the first is called by the
+    # v34 word-counter handler too, the second by the word-frequency
+    # handler and the local-summarizer path; DALE_CHALL rides inside the
+    # readabilityExtraScores chunk, and URDU_STOPWORDS sits in the section
+    # preamble with STOPWORDS, so both stay in core by design.)
+    'ttsSplitSentences': 'text-to-speech',
+    'ttsWordSpans': 'text-to-speech',
+    'ttsWordAt': 'text-to-speech',
+    'readabilityExtraScores': 'readability-checker',
+    'readabilityHighlightHtml': 'readability-checker',
+    'sttFormatTime': 'speech-to-text',
+    'sttSegmentsToText': 'speech-to-text',
 }
 # Load-time const lookups of DYNAMICALLY created controls -> that tool's
 # bundle, not core. The split routes a chunk by the ids it touches, but
