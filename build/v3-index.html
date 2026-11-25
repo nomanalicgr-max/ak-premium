@@ -1493,6 +1493,13 @@
           <label>Pitch <input id="ttsPitch" type="range" min="0" max="2" step="0.1" value="1"> <span id="ttsPitchLabel">1</span></label>
           <button id="ttsSpeakBtn" type="button" class="btn-primary">Speak</button>
           <button id="ttsStopBtn" type="button" class="btn-secondary">Stop</button>
+          <div class="field-row">
+            <button id="ttsPauseBtn" type="button" class="btn-secondary">Pause</button>
+            <button id="ttsResumeBtn" type="button" class="btn-secondary">Resume</button>
+          </div>
+          <div class="progress" id="ttsProgressWrap" style="display:none"><span id="ttsProgressBar"></span></div>
+          <p class="status" id="ttsProgress"></p>
+          <div id="ttsHighlight" aria-live="polite"></div>
           <p class="status" id="ttsStatus"></p>
         </div>
 
@@ -1542,6 +1549,7 @@
           <textarea id="readInput" rows="6" placeholder="Paste your text here…"></textarea>
           <button id="readBtn" type="button" class="btn-primary">Check Readability</button>
           <pre id="readOutput" class="terminal">Readability score will appear here.</pre>
+          <div id="readHighlight" aria-live="polite"></div>
           <p class="status" id="readStatus"></p>
         </div>
 
@@ -1554,6 +1562,9 @@
           </label>
           <button id="wfBtn" type="button" class="btn-primary">Count Word Frequency</button>
           <pre id="wfOutput" class="terminal">Word counts will appear here.</pre>
+          <div id="wfBars"></div>
+          <pre id="wfNgrams" class="terminal">Common pairs and triples will appear here.</pre>
+          <button id="wfDownloadBtn" type="button" class="btn-secondary">Download CSV</button>
           <p class="status" id="wfStatus"></p>
         </div>
 
@@ -1567,6 +1578,7 @@
           <pre id="sttTranscript" class="terminal">Your transcript will appear here.</pre>
           <p class="status" id="sttInterim" aria-live="polite"></p>
           <button id="sttCopyBtn" type="button" class="btn-secondary">Copy Transcript</button>
+          <button id="sttDownloadBtn" type="button" class="btn-secondary">Download Transcript</button>
           <p class="status" id="sttStatus"></p>
         </div>
         <div class="workspace-tool" id="tool-slug">
