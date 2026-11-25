@@ -1,5 +1,10 @@
 # AK Premium — Changelog
 
+## v33.1 — 25 November 2026 (hotfix: time-zone-converter page broken in v33)
+
+- The v33 live-bundle check found the Time Zone Converter page broken in production: the `initTzZones` IIFE had landed in core.js while the `tzLabel` function it calls lives in the time-zone-converter bundle, so core.js threw `ReferenceError: tzLabel is not defined` at load, the From zone list was emptied, and the main conversion and the .ics download did not work. The IIFE now routes to the time-zone-converter bundle (split-app.py TOOL_NAMES) and carries a guard that returns early if `tzLabel` is ever missing, so the page degrades to its built-in zone lists instead of breaking. No other tool behaviour changes.
+- New regression checks: the harness now verifies that core.js loads without error on the Time Zone Converter page with the full IANA list, and that core.js loads without error on every tool page.
+
 ## v33 — 24 November 2026 (advanced upgrade plan, batch 13: Calculators 2 + Pakistan)
 
 ### Time Zone Converter — IANA list, meeting planner, overlap finder

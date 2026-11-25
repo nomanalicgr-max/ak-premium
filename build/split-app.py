@@ -178,6 +178,7 @@ TOOL_NAMES = {
     'passwordZxcvbnNote': 'password-generator',
     'pwdModeRows': 'password-generator',
     # v33: Calculators 2 + Pakistan pure helpers -> their tool bundles.
+    'initTzZones': 'time-zone-converter',
     'tzLabel': 'time-zone-converter',
     'tzWallToUtc': 'time-zone-converter',
     'tzMeetingPlan': 'time-zone-converter',

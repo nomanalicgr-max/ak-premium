@@ -2596,34 +2596,6 @@ function evaluateScientific(expr, angleMode) {
 
 // Time-zone label for zones outside the built-in TZ_LABELS table.
 
-/* ---------- v33: Calculators 2 + Pakistan ---------- */
-
-(function initTzZones() {
-  if (typeof Intl === "undefined" || typeof Intl.supportedValuesOf !== "function") return;
-  const zones = Intl.supportedValuesOf("timeZone");
-  const fill = (id, keep) => {
-    const sel = $(id);
-    if (!sel) return;
-    const cur = keep || sel.value;
-    sel.innerHTML = "";
-    zones.forEach((z) => {
-      const o = document.createElement("option");
-      o.value = z; o.textContent = tzLabel(z) + " (" + z + ")";
-      sel.appendChild(o);
-    });
-    if (zones.includes(cur)) sel.value = cur;
-  };
-  fill("tzFrom", "Asia/Karachi");
-  fill("tzTo", "Europe/London");
-  fill("tzPlanHome", "Asia/Karachi");
-  fill("tzPlanZ1", "Europe/London");
-  fill("tzPlanZ2", "America/New_York");
-  fill("tzPlanZ3", "Asia/Dubai");
-  fill("tzOverlapA", "Asia/Karachi");
-  fill("tzOverlapB", "Europe/London");
-})();
-/* v33: meeting planner — one time across three zones. */
-
 // Lorem ipsum sentence pool (classic placeholder text, public domain).
 const LOREM_SENTENCES = [
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",

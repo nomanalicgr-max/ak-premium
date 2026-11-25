@@ -78,6 +78,33 @@ if (tzBtn) tzBtn.addEventListener("click", () => {
   setStatus("tzStatus", "Done.");
 });
 
+(function initTzZones() {
+  if (typeof Intl === "undefined" || typeof Intl.supportedValuesOf !== "function") return;
+  if (typeof tzLabel !== "function") return; // tzLabel lives in the time-zone-converter bundle; without it, do not clear the selects (v33.1: the IIFE once landed in core.js and threw here, breaking the whole page).
+  const zones = Intl.supportedValuesOf("timeZone");
+  const fill = (id, keep) => {
+    const sel = $(id);
+    if (!sel) return;
+    const cur = keep || sel.value;
+    sel.innerHTML = "";
+    zones.forEach((z) => {
+      const o = document.createElement("option");
+      o.value = z; o.textContent = tzLabel(z) + " (" + z + ")";
+      sel.appendChild(o);
+    });
+    if (zones.includes(cur)) sel.value = cur;
+  };
+  fill("tzFrom", "Asia/Karachi");
+  fill("tzTo", "Europe/London");
+  fill("tzPlanHome", "Asia/Karachi");
+  fill("tzPlanZ1", "Europe/London");
+  fill("tzPlanZ2", "America/New_York");
+  fill("tzPlanZ3", "Asia/Dubai");
+  fill("tzOverlapA", "Asia/Karachi");
+  fill("tzOverlapB", "Europe/London");
+})();
+/* v33: meeting planner — one time across three zones. */
+
 (function initTzPlan() {
   const btn = $("tzPlanBtn"); if (!btn) return;
   btn.addEventListener("click", () => {
