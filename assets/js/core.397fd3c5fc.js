@@ -2629,91 +2629,70 @@ const SMALL_CAPS = { a: "ᴀ", b: "ʙ", c: "ᴄ", d: "ᴅ", e: "ᴇ", f: "ꜰ", 
 
 /* ---------- Wave 1: Text & writing tools (batch 4) ---------- */
 
-function buildFancyMap(capBase, smallBase, digitBase, capEx, smallEx) {
-  const m = {};
-  for (let i = 0; i < 26; i++) {
-    m[String.fromCharCode(65 + i)] = String.fromCodePoint(capBase + i);
-    m[String.fromCharCode(97 + i)] = String.fromCodePoint(smallBase + i);
-  }
-  if (digitBase) for (let i = 0; i < 10; i++) m[String(i)] = String.fromCodePoint(digitBase + i);
-  if (capEx) for (const k in capEx) m[k] = capEx[k];
-  if (smallEx) for (const k in smallEx) m[k] = smallEx[k];
-  return m;
-}
-const FANCY_MAPS = {
-  bold: buildFancyMap(0x1D400, 0x1D41A, 0x1D7CE),
-  italic: buildFancyMap(0x1D434, 0x1D44E, null, null, { h: "ℎ" }),
-  boldItalic: buildFancyMap(0x1D468, 0x1D482, null),
-  monospace: buildFancyMap(0x1D670, 0x1D68A, 0x1D7F6),
-  script: buildFancyMap(0x1D49C, 0x1D4B6, null, { B: "ℬ", E: "ℰ", F: "ℱ", H: "ℋ", I: "ℐ", L: "ℒ", M: "ℳ", R: "ℛ" }, { e: "ℯ", g: "ℊ" }),
-  doubleStruck: buildFancyMap(0x1D538, 0x1D552, null, { C: "ℂ", H: "ℍ", N: "ℕ", P: "ℙ", Q: "ℚ", R: "ℝ", Z: "ℤ" }),
-  circled: buildFancyMap(0x24B6, 0x24D0, null),
-  smallCaps: Object.assign({}, SMALL_CAPS, Object.fromEntries(Object.keys(SMALL_CAPS).map((k) => [k.toUpperCase(), SMALL_CAPS[k]])))
-};
-// Circled digits: 1-9 are U+2460-U+2468, 0 is U+24EA.
-for (let d = 1; d <= 9; d++) FANCY_MAPS.circled[String(d)] = String.fromCodePoint(0x245F + d);
-FANCY_MAPS.circled["0"] = "⓪";
-
-function loremIpsum(unit, count) {
+function loremIpsum(unit, count, opts) {
+  opts = opts || {};
   count = Math.max(1, Math.min(20, parseInt(count, 10) || 1));
+  let pool = LOREM_SENTENCES.slice();
+  if (opts.shuffle) {
+    let seed = parseInt(opts.seed, 10);
+    if (isNaN(seed)) seed = Math.floor(Math.random() * 2147483647);
+    else seed = (seed ^ 0x9E3779B9) >>> 0;
+    const rand = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); const tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp; }
+    if (opts.classic !== false) { const first = pool.indexOf(LOREM_SENTENCES[0]); if (first > 0) { pool.splice(first, 1); pool.unshift(LOREM_SENTENCES[0]); } }
+  } else if (opts.classic === false) {
+    pool.push(pool.shift());
+  }
+  const wrap = (paras) => opts.format === "html" ? paras.map((p) => "<p>" + p + "</p>").join("\n") : paras.join("\n\n");
+  const target = Math.max(0, Math.min(5000, parseInt(opts.targetWords, 10) || 0));
+  if (target > 0) {
+    const sentences = [];
+    let words = 0;
+    let i = 0;
+    while (words < target && sentences.length < 1000) { const s = pool[i % pool.length]; sentences.push(s); words += s.split(/\s+/).length; i++; }
+    const paras = [];
+    for (let p = 0; p < sentences.length; p += 5) paras.push(sentences.slice(p, p + 5).join(" "));
+    return { text: wrap(paras), words };
+  }
   if (unit === "sentences") {
     const out = [];
-    for (let i = 0; i < count; i++) out.push(LOREM_SENTENCES[i % LOREM_SENTENCES.length]);
-    return { text: out.join(" ") };
+    for (let i = 0; i < count; i++) out.push(pool[i % pool.length]);
+    const text = out.join(" ");
+    return { text: opts.format === "html" ? "<p>" + text + "</p>" : text, words: text.split(/\s+/).length };
   }
   if (unit === "words") {
-    const words = LOREM_SENTENCES.join(" ").split(/\s+/);
+    const words = pool.join(" ").split(/\s+/);
     const out = [];
     for (let i = 0; i < count; i++) out.push(words[i % words.length]);
-    return { text: out.join(" ") };
+    const text = out.join(" ");
+    return { text: opts.format === "html" ? "<p>" + text + "</p>" : text, words: count };
   }
   const paras = [];
   for (let p = 0; p < count; p++) {
     const s = [];
-    for (let i = 0; i < 5; i++) s.push(LOREM_SENTENCES[(p * 5 + i) % LOREM_SENTENCES.length]);
+    for (let i = 0; i < 5; i++) s.push(pool[(p * 5 + i) % pool.length]);
     paras.push(s.join(" "));
   }
-  return { text: paras.join("\n\n") };
+  const words = paras.join(" ").split(/\s+/).length;
+  return { text: wrap(paras), words };
 }
+// Levenshtein edit distance (two rows, no full matrix).
 
-function dedupeLines(text, caseSensitive) {
-  const lines = String(text || "").split("\n");
-  const seen = new Set();
-  const kept = [];
-  let removed = 0;
-  for (const line of lines) {
-    const t = line.trim();
-    if (!t) continue;
-    const key = caseSensitive ? t : t.toLowerCase();
-    if (seen.has(key)) { removed++; continue; }
-    seen.add(key);
-    kept.push(t);
-  }
-  return { lines: kept, removed };
-}
+function escapeRegExp(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
 
-function sortLinesFn(text, order, ignoreEmpty) {
-  const lines = String(text || "").split("\n").map((s) => s.trim());
-  const kept = ignoreEmpty ? lines.filter(Boolean) : lines;
-  const sorted = kept.slice();
-  if (order === "za") sorted.sort((a, b) => b.localeCompare(a));
-  else if (order === "num") sorted.sort((a, b) => {
-    const na = parseFloat(a), nb = parseFloat(b);
-    if (isNaN(na) && isNaN(nb)) return a.localeCompare(b);
-    if (isNaN(na)) return 1;
-    if (isNaN(nb)) return -1;
-    return na - nb;
-  });
-  else if (order === "len-desc") sorted.sort((a, b) => b.length - a.length);
-  else if (order === "len-asc") sorted.sort((a, b) => a.length - b.length);
-  else sorted.sort((a, b) => a.localeCompare(b));
-  return { lines: sorted };
-}
-
-function findReplace(text, find, replace, matchCase) {
+function findReplace(text, find, replace, matchCase, opts) {
   if (!find) return { error: "Please enter the text to find." };
+  opts = opts || {};
   const src = String(text || "");
   const rep = replace === undefined || replace === null ? "" : String(replace);
+  if (opts.regex || opts.wholeWord) {
+    let pattern = opts.regex ? find : escapeRegExp(find);
+    if (opts.wholeWord) pattern = "\\b(?:" + pattern + ")\\b";
+    let re;
+    try { re = new RegExp(pattern, "g" + (matchCase ? "" : "i")); } catch (e) { return { error: "That pattern is not a valid regular expression: " + e.message }; }
+    const count = (src.match(re) || []).length;
+    return { result: src.replace(re, rep), count };
+  }
   let count = 0;
   let result = "";
   if (matchCase) {
@@ -2854,38 +2833,22 @@ function renderMarkdownFallback(text) {
   return blocks.join("\n");
 }
 
-function fancyStyles(text) {
-  const s = String(text || "");
-  const out = {};
-  for (const name in FANCY_MAPS) {
-    const map = FANCY_MAPS[name];
-    out[name] = [...s].map((ch) => map[ch] || ch).join("");
-  }
-  return out;
-}
-// Labelled style rows for the page script (which cannot read the core
-// const tables directly when scripts are eval'd separately).
-
-function fancyRows(text) {
-  const styles = fancyStyles(text);
-  return [["Bold", styles.bold], ["Italic", styles.italic], ["Bold Italic", styles.boldItalic], ["Monospace", styles.monospace], ["Script", styles.script], ["Double-struck", styles.doubleStruck], ["Circled", styles.circled], ["Small Caps", styles.smallCaps]];
-}
-// The voices on this device, for the page script (same eval reason as above).
-
 function ttsVoiceList() {
   if (!("speechSynthesis" in window) || !window.speechSynthesis) return [];
   return window.speechSynthesis.getVoices() || [];
 }
+// Grapheme count via Intl.Segmenter: an emoji with a skin tone or a ZWJ
+// sequence counts as 1, not 2. Falls back to code points when Segmenter
+// is missing. Byte size is the UTF-8 length of the text.
 
 /* Pure functions are function declarations, so the splitter puts them in
    core.js automatically. Handlers read core helpers only through functions,
    never through core const tables (jsdom cannot see const across evals). */
+// Letter-by-letter transliteration for Urdu, Arabic and Russian (Cyrillic).
+// It maps each letter to its Latin sound, so Russian "privet" comes out
+// right; Urdu vowels are not guessed, so سلام becomes "slam", not "salam".
 
 /* ---------- Wave 1: Developer tools (batch 5) ---------- */
-
-function slugifyText(text) {
-  return String(text || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
-}
 
 function jsonToYamlText(text) {
   if (typeof window.jsyaml === "undefined") throw new Error("The YAML library did not load.");

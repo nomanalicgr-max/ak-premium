@@ -203,6 +203,32 @@ TOOL_NAMES = {
     'amountWordsFor': 'amount-to-words',
     'chequeLine': 'amount-to-words',
     'urduCountStats': 'urdu-word-counter',
+    # v34: Text A pure helpers -> their tool bundles.
+    'graphemeCount': 'character-counter',
+    'utf8ByteSize': 'character-counter',
+    'dedupeLines': 'remove-duplicate-lines',
+    'levenshtein': 'remove-duplicate-lines',
+    'slugifyText': 'slug-generator',
+    'transliterateText': 'slug-generator',
+    'translitMap': 'slug-generator',
+    'slugStopwords': 'slug-generator',
+    # v34 fix (parent, post-stage-2): pure single-tool helpers that fell
+    # through to core (same trap as v31 generatePassword / v32 helpers).
+    # sortLinesFn is called only by the sort-lines handler; the fancy
+    # cluster is used only by the fancy-text-generator handler.
+    # NOTE on const tables: is_anchor() only treats a const as an anchor
+    # when its value starts with $(" (or it is a _TASKS table), so a plain
+    # const table rides inside the PRECEDING anchor's chunk (or the section
+    # preamble, which always goes to core). FANCY_MAPS rides with the
+    # buildFancyMap chunk, so it needs no entry. SMALL_CAPS sits in the
+    # section preamble (before the first anchor) so it STAYS in core and
+    # the fancy bundle reads it from there — same pattern as
+    # LOREM_SENTENCES (loremIpsum lives in core) and STOPWORDS
+    # (wordFrequency lives in core; local-summarizer also reads it).
+    'sortLinesFn': 'sort-lines',
+    'buildFancyMap': 'fancy-text-generator',
+    'fancyStyles': 'fancy-text-generator',
+    'fancyRows': 'fancy-text-generator',
     'meritReversePlanner': 'percentage-marks-calculator',
     'pctToGpa': 'percentage-marks-calculator',
     'gpaToPct': 'percentage-marks-calculator',

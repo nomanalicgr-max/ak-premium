@@ -4,9 +4,15 @@
 
 const loremBtn = $("loremBtn");
 if (loremBtn) loremBtn.addEventListener("click", () => {
-  const result = loremIpsum(($("loremUnit") || {}).value, ($("loremCount") || {}).value);
+  const result = loremIpsum(($("loremUnit") || {}).value, ($("loremCount") || {}).value, {
+    shuffle: !!($("loremShuffle") || {}).checked,
+    seed: ($("loremSeed") || {}).value || "",
+    classic: !!($("loremClassic") || {}).checked,
+    format: ($("loremFormat") || {}).value || "plain",
+    targetWords: ($("loremTargetWords") || {}).value || ""
+  });
   if ($("loremOutput")) $("loremOutput").textContent = result.text;
-  setStatus("loremStatus", "Done. Placeholder text generated.");
+  setStatus("loremStatus", "Done. Generated " + result.words + " words.");
 });
 
 const loremCopyBtn = $("loremCopyBtn");
