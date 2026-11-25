@@ -38,7 +38,7 @@ SITE_URL = cfg_val("SITE_URL").rstrip("/") or "https://ak-premium.vercel.app"
 CONTACT_EMAIL = cfg_val("CONTACT_EMAIL") or "nomanalicgr@gmail.com"
 FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform?embedded=true"
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc5viJP-VM__kJulxw6IqmYzJucTUMukVHDzSe-9ffoHO2gvg/viewform"
-ASSET_V = "32"  # v32 (2026-11-24): advanced upgrade plan batch 12 — Calculators 1 + business: age-calculator (exact age, countdown, milestones), percentage-calculator (reverse, margin, markup, percentage points), bmi-calculator (adult + WHO Growth Reference 2007 child percentiles 5-19y), cgpa-calculator (4.0/10.0, what-if planner), discount-calculator (stacked, reverse, BOGO, tax + delivery), compound-interest (monthly deposits, year-by-year table, inflation-adjusted, two-plan compare), tip-calculator (tax/service, round-up per person, itemised split), fraction-calculator (mixed numbers, chained third fraction, step-by-step working), invoice-generator (line discount/tax, auto number, logo, PDF + Excel + CSV + JSON), resume-builder (3 templates, live preview, PDF + DOCX, ATS keyword check).
+ASSET_V = "33"  # v33 (2026-11-24): advanced upgrade plan batch 13 — Calculators 2 + Pakistan: time-zone-converter (IANA list, meeting planner, working-hours overlap, .ics download), date-difference (working days with verified 2026 Pakistan public holidays, add/subtract days, countdown), calorie-tdee-calculator (BMR/TDEE, goal targets, macro split, Katch-McArdle), scientific-calculator (trig/hyperbolic, DEG/RAD, memory, history, keyboard), land-converter (marla-size selector, 13 units, price estimate), zakat-calculator (trade/shares/forex/loans, gold-vs-silver nisab, PKR/USD), amount-to-words (PKR/USD/GBP/AED, paise modes, cheque line), urdu-word-counter (ZWNJ-safe, Arabic-Indic digits, reading/speaking times), percentage-marks-calculator (5 parts, reverse planner, % to GPA).
 BUILD_DATE = datetime.date.today().isoformat()  # sitemap lastmod = build date (Phase 4.1)
 
 # Content hashing (Phase 4.3): hashed filenames + immutable caching in
@@ -1327,6 +1327,198 @@ EXCEL_WS = {
     '\n<h2>Check my DAX measure</h2>\n<label>DAX measure to check <textarea id="daxCheckInput" rows="4" placeholder="Paste your DAX measure here, for example: Total Sales = SUM(Sales[Amount])"></textarea></label>\n<button id="daxCheckBtn" type="button" class="btn-secondary">Check Syntax</button>\n<pre id="daxCheckOutput" class="terminal" aria-live="polite">The check result will appear here.</pre>'),
 }
 
+# v33: time-zone converter — meeting planner, working-hours overlap, calendar file.
+ws_replace("tool-timezone", '''<div class="workspace-tool" id="tool-timezone">
+<h2>Convert Time Zones</h2>
+<div class="field-row">
+<label>Date <input id="tzDate" type="date" aria-label="Date"></label>
+<label>Time <input id="tzTime" type="time" value="12:00" aria-label="Time"></label>
+</div>
+<div class="field-row">
+<label>From time zone <select id="tzFrom" aria-label="From time zone"><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/London">London (Europe/London)</option><option value="Europe/Paris">Paris (Europe/Paris)</option><option value="Europe/Berlin">Berlin (Europe/Berlin)</option><option value="America/New_York">New York (America/New_York)</option><option value="America/Los_Angeles">Los Angeles (America/Los_Angeles)</option><option value="America/Toronto">Toronto (America/Toronto)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="Asia/Riyadh">Riyadh (Asia/Riyadh)</option><option value="Asia/Kolkata">India (Asia/Kolkata)</option><option value="Asia/Dhaka">Dhaka (Asia/Dhaka)</option><option value="Asia/Singapore">Singapore (Asia/Singapore)</option><option value="Asia/Kuala_Lumpur">Kuala Lumpur (Asia/Kuala_Lumpur)</option><option value="Asia/Tokyo">Tokyo (Asia/Tokyo)</option><option value="Australia/Sydney">Sydney (Australia/Sydney)</option><option value="Pacific/Auckland">Auckland (Pacific/Auckland)</option><option value="UTC">UTC</option></select></label>
+<label>To time zone <select id="tzTo" aria-label="To time zone"><option value="Europe/London">London (Europe/London)</option><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/Paris">Paris (Europe/Paris)</option><option value="Europe/Berlin">Berlin (Europe/Berlin)</option><option value="America/New_York">New York (America/New_York)</option><option value="America/Los_Angeles">Los Angeles (America/Los_Angeles)</option><option value="America/Toronto">Toronto (America/Toronto)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="Asia/Riyadh">Riyadh (Asia/Riyadh)</option><option value="Asia/Kolkata">India (Asia/Kolkata)</option><option value="Asia/Dhaka">Dhaka (Asia/Dhaka)</option><option value="Asia/Singapore">Singapore (Asia/Singapore)</option><option value="Asia/Kuala_Lumpur">Kuala Lumpur (Asia/Kuala_Lumpur)</option><option value="Asia/Tokyo">Tokyo (Asia/Tokyo)</option><option value="Australia/Sydney">Sydney (Australia/Sydney)</option><option value="Pacific/Auckland">Auckland (Pacific/Auckland)</option><option value="UTC">UTC</option></select></label>
+</div>
+<button id="tzBtn" type="button" class="btn-primary">Convert</button>
+<pre id="tzOutput" class="terminal" aria-live="polite">The converted time will appear here.</pre>
+<p class="status" id="tzStatus" aria-live="polite"></p>
+<h2>Plan a Meeting Across Time Zones</h2>
+<p class="tool-note">Pick a time in your home zone and see it in three other zones at once.</p>
+<div class="field-row">
+<label>Date <input id="tzPlanDate" type="date" aria-label="Meeting date"></label>
+<label>Time <input id="tzPlanTime" type="time" value="15:00" aria-label="Meeting time"></label>
+</div>
+<div class="field-row">
+<label>My time zone <select id="tzPlanHome" aria-label="My time zone"><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/London">London (Europe/London)</option><option value="America/New_York">New York (America/New_York)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="UTC">UTC</option></select></label>
+</div>
+<div class="field-row">
+<label>Zone 1 <select id="tzPlanZ1" aria-label="First other time zone"><option value="Europe/London">London (Europe/London)</option><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="America/New_York">New York (America/New_York)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="UTC">UTC</option></select></label>
+<label>Zone 2 <select id="tzPlanZ2" aria-label="Second other time zone"><option value="America/New_York">New York (America/New_York)</option><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/London">London (Europe/London)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="UTC">UTC</option></select></label>
+<label>Zone 3 <select id="tzPlanZ3" aria-label="Third other time zone"><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/London">London (Europe/London)</option><option value="America/New_York">New York (America/New_York)</option><option value="UTC">UTC</option></select></label>
+</div>
+<button id="tzPlanBtn" type="button" class="btn-secondary">Show Meeting Time in All Zones</button>
+<pre id="tzPlanOutput" class="terminal" aria-live="polite">The meeting time in each zone will appear here.</pre>
+<p class="status" id="tzPlanStatus" aria-live="polite"></p>
+<h2>Find Overlapping Working Hours</h2>
+<p class="tool-note">Finds the hours that are inside 09:00 to 17:00 in both zones on one date.</p>
+<div class="field-row">
+<label>Date <input id="tzOverlapDate" type="date" aria-label="Overlap date"></label>
+<label>Zone A <select id="tzOverlapA" aria-label="First zone for overlap"><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/London">London (Europe/London)</option><option value="America/New_York">New York (America/New_York)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="UTC">UTC</option></select></label>
+<label>Zone B <select id="tzOverlapB" aria-label="Second zone for overlap"><option value="Europe/London">London (Europe/London)</option><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="America/New_York">New York (America/New_York)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="UTC">UTC</option></select></label>
+</div>
+<button id="tzOverlapBtn" type="button" class="btn-secondary">Find Overlap</button>
+<pre id="tzOverlapOutput" class="terminal" aria-live="polite">The overlap will appear here.</pre>
+<p class="status" id="tzOverlapStatus" aria-live="polite"></p>
+<h2>Save the Converted Time to Your Calendar</h2>
+<p class="tool-note">Downloads a calendar file (.ics) for the time you converted above.</p>
+<div class="field-row">
+<label>Event title <input id="tzIcsTitle" type="text" value="Meeting" aria-label="Event title"></label>
+<label>Length (minutes) <input id="tzIcsDuration" type="number" value="60" min="5" step="5" inputmode="numeric" aria-label="Event length in minutes"></label>
+</div>
+<button id="tzIcsBtn" type="button" class="btn-secondary">Download Calendar File (.ics)</button>
+<p class="status" id="tzIcsStatus" aria-live="polite"></p>
+</div>''')
+
+# v33: date difference — working days, add/subtract days, live countdown.
+ws_replace("tool-datediff", '''<div class="workspace-tool" id="tool-datediff">
+<h2>Date Difference</h2>
+<div class="field-row">
+<label>From <input id="ddFrom" type="date" aria-label="From date"></label>
+<label>To <input id="ddTo" type="date" aria-label="To date"></label>
+</div>
+<label><input id="ddWorking" type="checkbox"> Count working days only (Monday to Friday, skipping Pakistan public holidays 2026)</label>
+<button id="ddBtn" type="button" class="btn-primary">Calculate</button>
+<pre id="ddOutput" class="terminal" aria-live="polite">The difference will appear here.</pre>
+<p class="status" id="ddStatus" aria-live="polite"></p>
+<h2>Add or Subtract Days</h2>
+<p class="tool-note">Start from a date and add or subtract a number of days.</p>
+<div class="field-row">
+<label>Start date <input id="ddBase" type="date" aria-label="Start date"></label>
+<label>Days to add (use a minus number to subtract) <input id="ddDays" type="number" value="30" step="1" inputmode="numeric" aria-label="Days to add"></label>
+</div>
+<button id="ddAddBtn" type="button" class="btn-secondary">Add Days</button>
+<pre id="ddAddOutput" class="terminal" aria-live="polite">The new date will appear here.</pre>
+<p class="status" id="ddAddStatus" aria-live="polite"></p>
+<h2>Countdown to a Date</h2>
+<p class="tool-note">Counts down live to a date and time you pick.</p>
+<div class="field-row">
+<label>Target date and time <input id="ddTarget" type="datetime-local" aria-label="Target date and time"></label>
+</div>
+<button id="ddCountBtn" type="button" class="btn-secondary">Start Countdown</button>
+<button id="ddCountStop" type="button" class="btn-secondary">Stop</button>
+<pre id="ddCountOutput" class="terminal" aria-live="polite">The countdown will appear here.</pre>
+<p class="status" id="ddCountStatus" aria-live="polite"></p>
+</div>''')
+
+# v33: TDEE — imperial units, body fat, goal targets, macro split.
+ws_replace("tool-tdee", '''<div class="workspace-tool" id="tool-tdee">
+<h2>Calorie and TDEE Calculator</h2>
+<label>Units <select id="tdeeUnit" aria-label="Units"><option value="metric">Metric (cm and kg)</option><option value="imperial">Imperial (feet, inches and lb)</option></select></label>
+<div class="field-row">
+<label>Age <input id="tdeeAge" type="number" min="15" max="100" step="1" inputmode="numeric" aria-label="Age in years"></label>
+<label>Sex <select id="tdeeSex" aria-label="Sex"><option value="male">Male</option><option value="female">Female</option></select></label>
+</div>
+<div class="field-row" id="tdeeHeightRow">
+<label>Height (cm) <input id="tdeeHeight" type="number" min="100" max="250" step="0.1" inputmode="decimal" aria-label="Height in centimetres"></label>
+</div>
+<div class="field-row" id="tdeeFeetRow" style="display: none">
+<label>Height (feet) <input id="tdeeFeet" type="number" min="3" max="8" step="1" inputmode="numeric" aria-label="Height in feet"></label>
+<label>Height (inches) <input id="tdeeInches" type="number" min="0" max="11" step="1" inputmode="numeric" aria-label="Height in inches"></label>
+</div>
+<div class="field-row" id="tdeeWeightRow">
+<label>Weight (kg) <input id="tdeeWeight" type="number" min="30" max="300" step="0.1" inputmode="decimal" aria-label="Weight in kilograms"></label>
+</div>
+<div class="field-row" id="tdeeLbRow" style="display: none">
+<label>Weight (lb) <input id="tdeeLb" type="number" min="60" max="660" step="0.1" inputmode="decimal" aria-label="Weight in pounds"></label>
+</div>
+<div class="field-row">
+<label>Activity level <select id="tdeeActivity" aria-label="Activity level"><option value="1.2">Sedentary (little or no exercise)</option><option value="1.375">Lightly active (1-3 days a week)</option><option value="1.55">Moderately active (3-5 days a week)</option><option value="1.725">Very active (6-7 days a week)</option><option value="1.9">Extra active (physical job)</option></select></label>
+<label>Body fat % (optional, for the Katch-McArdle formula) <input id="tdeeBodyFat" type="number" min="3" max="70" step="0.1" inputmode="decimal" aria-label="Body fat percentage"></label>
+</div>
+<div class="field-row">
+<label>Goal <select id="tdeeGoal" aria-label="Goal"><option value="maintain">Stay the same weight</option><option value="lose">Lose weight</option><option value="gain">Gain weight</option></select></label>
+<label>Macro split <select id="tdeeMacro" aria-label="Macro split"><option value="balanced">Balanced (30% protein, 40% carbs, 30% fat)</option><option value="high-protein">High protein (40% protein, 30% carbs, 30% fat)</option><option value="low-carb">Low carb (35% protein, 20% carbs, 45% fat)</option></select></label>
+</div>
+<button id="tdeeBtn" type="button" class="btn-primary">Calculate</button>
+<pre id="tdeeOutput" class="terminal" aria-live="polite">Your BMR and TDEE will appear here.</pre>
+<p class="status" id="tdeeStatus" aria-live="polite"></p>
+</div>''')
+
+# v33: scientific calculator — angle mode, memory, history, new functions.
+ws_replace("tool-scientific", '''<div class="workspace-tool" id="tool-scientific">
+<h2>Scientific Calculator</h2>
+<label>Display <input id="sciDisplay" type="text" readonly value="0" aria-label="Calculator display"></label>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="sin(">sin</button>
+<button type="button" class="btn-secondary" data-sci-key="cos(">cos</button>
+<button type="button" class="btn-secondary" data-sci-key="tan(">tan</button>
+<button type="button" class="btn-secondary" data-sci-key="log(">log</button>
+<button type="button" class="btn-secondary" data-sci-key="ln(">ln</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="asin(">sin-1</button>
+<button type="button" class="btn-secondary" data-sci-key="acos(">cos-1</button>
+<button type="button" class="btn-secondary" data-sci-key="atan(">tan-1</button>
+<button type="button" class="btn-secondary" data-sci-key="exp(">exp</button>
+<button type="button" class="btn-secondary" data-sci-key="pow10(">10^x</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="sinh(">sinh</button>
+<button type="button" class="btn-secondary" data-sci-key="cosh(">cosh</button>
+<button type="button" class="btn-secondary" data-sci-key="tanh(">tanh</button>
+<button type="button" class="btn-secondary" data-sci-key="cbrt(">cube root</button>
+<button type="button" class="btn-secondary" data-sci-key="inv(">1/x</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="sqrt(">sqrt</button>
+<button type="button" class="btn-secondary" data-sci-key="^2">x²</button>
+<button type="button" class="btn-secondary" data-sci-key="^">^</button>
+<button type="button" class="btn-secondary" data-sci-key="pi">π</button>
+<button type="button" class="btn-secondary" data-sci-key="e">e</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="7">7</button>
+<button type="button" class="btn-secondary" data-sci-key="8">8</button>
+<button type="button" class="btn-secondary" data-sci-key="9">9</button>
+<button type="button" class="btn-secondary" data-sci-key="/">÷</button>
+<button type="button" class="btn-secondary" data-sci-key="(">(</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="4">4</button>
+<button type="button" class="btn-secondary" data-sci-key="5">5</button>
+<button type="button" class="btn-secondary" data-sci-key="6">6</button>
+<button type="button" class="btn-secondary" data-sci-key="*">×</button>
+<button type="button" class="btn-secondary" data-sci-key=")">)</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="1">1</button>
+<button type="button" class="btn-secondary" data-sci-key="2">2</button>
+<button type="button" class="btn-secondary" data-sci-key="3">3</button>
+<button type="button" class="btn-secondary" data-sci-key="-">−</button>
+<button type="button" class="btn-secondary" data-sci-key="!">!</button>
+</div>
+<div class="field-row">
+<button type="button" class="btn-secondary" data-sci-key="0">0</button>
+<button type="button" class="btn-secondary" data-sci-key=".">.</button>
+<button type="button" class="btn-secondary" data-sci-key="%">%</button>
+<button type="button" class="btn-secondary" data-sci-key="+">+</button>
+<button type="button" class="btn-secondary" id="sciBack">Back</button>
+</div>
+<div class="field-row">
+<button id="sciClear" type="button" class="btn-secondary">C</button>
+<button id="sciEquals" type="button" class="btn-primary">=</button>
+<button id="sciAngleBtn" type="button" class="btn-secondary">DEG</button>
+<button id="sciMPlus" type="button" class="btn-secondary">M+</button>
+<button id="sciMR" type="button" class="btn-secondary">MR</button>
+<button id="sciMC" type="button" class="btn-secondary">MC</button>
+<button id="sciAns" type="button" class="btn-secondary">Ans</button>
+</div>
+<pre id="sciOutput" class="terminal">Result will appear here.</pre>
+<p class="status" id="sciStatus"></p>
+<h2>History</h2>
+<p class="tool-note">Tap a past calculation to use it again. The last 10 are kept.</p>
+<div id="sciHistory" class="field-row" aria-live="polite">No calculations yet.</div>
+</div>''')
+
 # New Pakistan tools: workspaces + tool entries
 # Pakistan tool entries now live in data/tools.json (category "pakistan").
 # Their workspace HTML stays in PAKISTAN_WS below.
@@ -1334,10 +1526,19 @@ PAKISTAN_WS = {
 "tool-land": '''<div class="workspace-tool" id="tool-land">
 <h2>Land Converter</h2>
 <label>Area <input id="landValue" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 1"></label>
-<label>From <select id="landFrom"><option value="marla">Marla</option><option value="kanal" selected>Kanal</option><option value="acre">Acre</option><option value="sqft">Square feet</option><option value="sqyd">Square yards</option><option value="sqm">Square metres</option></select></label>
+<label>From <select id="landFrom"><option value="marla">Marla</option><option value="kanal" selected>Kanal</option><option value="acre">Acre</option><option value="sqft">Square feet</option><option value="sqyd">Square yards</option><option value="sqm">Square metres</option><option value="bigha">Bigha (Punjab)</option><option value="guntha">Guntha</option><option value="cent">Cent</option><option value="ropani">Ropani (Nepal)</option><option value="perch">Perch</option><option value="hectare">Hectare</option><option value="sarsai">Sarsai</option></select></label>
+<label>Marla size <select id="landMarla"><option value="revenue">Revenue marla (272.25 sq ft, land records)</option><option value="society">Housing-society marla (225 sq ft, DHA and Bahria)</option><option value="scheme">Some schemes (250 sq ft)</option><option value="custom">Custom size (type it below)</option></select></label>
+<label>Custom marla size in sq ft (only for the custom choice) <input id="landCustomMarla" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 272.25"></label>
+<h2>From Length and Width</h2>
+<p class="tool-note">Or work out a plot's area from its length and width in feet.</p>
+<div class="field-row"><label>Length (feet) <input id="landLength" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 60"></label><label>Width (feet) <input id="landWidth" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 90"></label></div>
+<h2>Price Estimate</h2>
+<p class="tool-note">Optional. Uses the rate you type only; it is not a market price.</p>
+<label>Rate per marla (Rs) <input id="landRate" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 500000"></label>
 <button id="landBtn" type="button" class="btn-primary">Convert Land Area</button>
 <pre id="landOutput" class="terminal" aria-live="polite">The converted areas will appear here.</pre>
 <p class="status" id="landStatus" aria-live="polite"></p>
+<p class="file-limit-note">There is no single provincial marla. The revenue marla is 272.25 sq ft (9 sarsai, 5.5 ft karam) and is used in land records. Housing societies such as DHA and Bahria use a 225 sq ft marla. Sindh mostly sells land in square yards, not marla.</p>
 </div>''',
 "tool-tax": '''<div class="workspace-tool" id="tool-tax">
 <h2>Pakistan Salary Tax Calculator</h2>
@@ -1356,38 +1557,66 @@ PAKISTAN_WS = {
 </div>''',
 "tool-zakat": '''<div class="workspace-tool" id="tool-zakat">
 <h2>Zakat Calculator</h2>
-<div class="field-row"><label>Cash and bank (Rs) <input id="zakatCash" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Debts to subtract (Rs) <input id="zakatDebts" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
+<label>Currency of your amounts <select id="zakatCurrency"><option value="pkr">Pakistani rupees (Rs)</option><option value="usd">US dollars (converted at the rate you type below)</option></select></label>
+<label>Exchange rate: Rs per US dollar (only for US dollars) <input id="zakatFxRate" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 280"></label>
+<div class="field-row"><label>Cash and bank <input id="zakatCash" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Debts to subtract <input id="zakatDebts" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
 <div class="field-row"><label>Gold (tola) <input id="zakatGold" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Gold rate per tola (Rs) <input id="zakatGoldRate" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
 <div class="field-row"><label>Silver (tola) <input id="zakatSilver" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Silver rate per tola (Rs) <input id="zakatSilverRate" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
-<label>Custom nisab (Rs, optional) <input id="zakatNisab" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Leave empty to use the rate-based nisab"></label>
+<div class="field-row"><label>Trade goods, stock value <input id="zakatTrade" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Shares, current value <input id="zakatShares" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
+<div class="field-row"><label>Foreign currency held <input id="zakatForex" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Rate per unit in Rs <input id="zakatForexRate" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
+<label>Loans given to others (money you expect back) <input id="zakatLoans" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label>
+<label>Nisab to use <select id="zakatNisabMode"><option value="silver">Silver nisab (52.5 tola silver)</option><option value="gold">Gold nisab (7.5 tola gold)</option></select></label>
+<label>Custom nisab in Rs (optional, overrides the choice above) <input id="zakatNisab" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Leave empty to use the rate-based nisab"></label>
+<label>Date your wealth first reached the nisab (optional, for the lunar-year reminder) <input id="zakatHawlDate" type="date"></label>
 <button id="zakatBtn" type="button" class="btn-primary">Calculate Zakat</button>
 <pre id="zakatOutput" class="terminal" aria-live="polite">Your Zakat estimate will appear here.</pre>
 <p class="status" id="zakatStatus" aria-live="polite"></p>
-<p class="file-limit-note">Estimate only, not religious advice. Nisab is 7.5 tola gold or 52.5 tola silver.</p>
+<p class="file-limit-note">Estimate only, not religious advice. Nisab is 7.5 tola gold or 52.5 tola silver. The government bank-deduction nisab for Ramadan 2026 was reported as Rs 503,529, but that figure was not directly verified from an official source, and the government re-notifies it every year — verify before relying on it.</p>
 </div>''',
 "tool-amountwords": '''<div class="workspace-tool" id="tool-amountwords">
 <h2>Amount to Words</h2>
-<label>Amount (Rs) <input id="amountWordsInput" type="text" placeholder="Example: 125000"></label>
+<label>Amount <input id="amountWordsInput" type="text" placeholder="Example: 125000"></label>
+<div class="field-row"><label>Currency <select id="atwCurrency"><option value="pkr">Pakistani rupees (Rs)</option><option value="usd">US dollars</option><option value="gbp">British pounds</option><option value="aed">UAE dirhams</option></select></label><label>Paise handling <select id="atwPaisa"><option value="exact">Exact paise</option><option value="round">Round to the nearest rupee</option><option value="down">Ignore the paise</option></select></label></div>
 <button id="amountWordsBtn" type="button" class="btn-primary">Write in Words</button>
 <div id="amountWordsOutput" class="terminal" aria-live="polite">The amount in words will appear here.</div>
+<button id="atwCopyBtn" type="button" class="btn-secondary">Copy Both Lines</button>
+<h2>Cheque Line</h2>
+<p class="tool-note">Optional. Fill in the payee and date to get a cheque line you can copy.</p>
+<div class="field-row"><label>Payee name <input id="atwPayee" type="text" placeholder="Example: Ahmed Khan"></label><label>Date <input id="atwDate" type="date"></label></div>
+<pre id="amountWordsCheque" class="terminal" aria-live="polite">The cheque line will appear here.</pre>
+<button id="atwCopyChequeBtn" type="button" class="btn-secondary">Copy Cheque Line</button>
 <p class="status" id="amountWordsStatus" aria-live="polite"></p>
 </div>''',
 "tool-urducount": '''<div class="workspace-tool" id="tool-urducount">
 <h2>Urdu Word Counter</h2>
 <label>Urdu text <textarea id="urduCounterInput" rows="6" dir="rtl" lang="ur" placeholder="یہاں اردو متن لکھیں..."></textarea></label>
 <button id="urduCounterBtn" type="button" class="btn-primary">Count Words</button>
-<pre id="urduCounterOutput" class="terminal" aria-live="polite" dir="rtl">The count will appear here.</pre>
+<pre id="urduCounterOutput" class="terminal" aria-live="polite">The count will appear here.</pre>
 <p class="status" id="urduCounterStatus" aria-live="polite"></p>
 </div>''',
 "tool-merit": '''<div class="workspace-tool" id="tool-merit">
 <h2>Percentage &amp; Merit Calculator</h2>
-<p class="file-limit-note">Enter up to 3 parts. Weights must add up to 100%.</p>
+<p class="file-limit-note">Enter up to 5 parts. Weights must add up to 100%.</p>
 <div class="field-row"><label>Part 1 obtained <input id="meritObtained1" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 1 total <input id="meritTotal1" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 1 weight % <input id="meritWeight1" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label></div>
 <div class="field-row"><label>Part 2 obtained <input id="meritObtained2" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 2 total <input id="meritTotal2" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 2 weight % <input id="meritWeight2" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label></div>
 <div class="field-row"><label>Part 3 obtained <input id="meritObtained3" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 3 total <input id="meritTotal3" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 3 weight % <input id="meritWeight3" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label></div>
+<div class="field-row"><label>Part 4 obtained <input id="meritObtained4" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 4 total <input id="meritTotal4" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 4 weight % <input id="meritWeight4" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label></div>
+<div class="field-row"><label>Part 5 obtained <input id="meritObtained5" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 5 total <input id="meritTotal5" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label><label>Part 5 weight % <input id="meritWeight5" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label></div>
 <button id="meritBtn" type="button" class="btn-primary">Calculate Aggregate</button>
 <pre id="meritOutput" class="terminal" aria-live="polite">Your aggregate will appear here.</pre>
 <p class="status" id="meritStatus" aria-live="polite"></p>
+<h2>What Do I Need in the Last Part?</h2>
+<p class="tool-note">Fill in parts 1 to 4 above, then enter your target aggregate and the last part's total and weight.</p>
+<div class="field-row"><label>Target aggregate % <input id="meritTarget" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 85"></label><label>Last part total marks <input id="meritRevTotal" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 1100"></label><label>Last part weight % <input id="meritRevWeight" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 50"></label></div>
+<button id="meritRevBtn" type="button" class="btn-secondary">Work Out the Marks I Need</button>
+<pre id="meritRevOutput" class="terminal" aria-live="polite">The marks you need will appear here.</pre>
+<p class="status" id="meritRevStatus" aria-live="polite"></p>
+<h2>Percentage to GPA</h2>
+<p class="tool-note">A common 4.0 conversion, not an official scale. Universities set their own grade boundaries, so check your university's official policy.</p>
+<div class="field-row"><label>Percentage <input id="meritGpaPct" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 87"></label><label>Or GPA (0 to 4.0) <input id="meritGpaVal" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 3.5"></label></div>
+<button id="meritGpaBtn" type="button" class="btn-secondary">Convert</button>
+<pre id="meritGpaOutput" class="terminal" aria-live="polite">The conversion will appear here.</pre>
+<p class="status" id="meritGpaStatus" aria-live="polite"></p>
 </div>''',
 }
 
@@ -2199,7 +2428,7 @@ def build_sw():
                 "/assets/fonts/inter-var.woff2", "/assets/fonts/plus-jakarta-var.woff2",
                 "/assets/fonts/noto-nastaliq-urdu.woff2", "/assets/og-image.png", "/favicon.svg"]
     sw = '''/* AK Premium service worker (v18). Generated by build.py; do not hand-edit. */
-const CACHE = "ak-premium-v32";
+const CACHE = "ak-premium-v33";
 const PRECACHE = %s;
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));

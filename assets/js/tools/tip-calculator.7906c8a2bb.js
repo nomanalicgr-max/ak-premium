@@ -52,6 +52,8 @@ function tipSplitByItems(text, bill, pct, tax, service, tipOnTax) {
 }
 // Offset (ms) of a time zone at a given instant, via Intl formatToParts.
 
+/* ---------- v33: Calculators 2 + Pakistan ---------- */
+
 const tipBtn = $("tipBtn");
 if (tipBtn) tipBtn.addEventListener("click", () => {
   const result = tipCalc(parseFloat($("tipBill").value), parseFloat($("tipPct").value), parseFloat($("tipPeople").value), {

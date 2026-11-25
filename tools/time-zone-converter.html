@@ -31,7 +31,7 @@
 <link rel="preload" href="/assets/fonts/plus-jakarta-var.153fc85b70.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/styles.1026ec2fe8.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Time Zone Converter", "applicationCategory": "BusinessApplication", "operatingSystem": "Web browser", "inLanguage": "en", "description": "Convert a date and time between world time zones, with daylight saving handled. Free, in your browser. No sign-up.", "url": "https://ak-premium.vercel.app/tools/time-zone-converter", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "AK Premium", "url": "https://ak-premium.vercel.app/"}}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the time difference between Lahore and London?", "acceptedAnswer": {"@type": "Answer", "text": "It is 5 hours in winter and 4 hours in summer, because London uses daylight saving and Lahore does not. Pick a date to get the right gap."}}, {"@type": "Question", "name": "Does it handle daylight saving time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The tool uses your browser's time zone rules, so daylight saving is applied for the date you pick, and the gap between two zones can change with the season."}}, {"@type": "Question", "name": "Can I convert to New York time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Choose America/New_York in the To list. New York is 10 hours behind Lahore in winter and 9 hours behind in summer."}}, {"@type": "Question", "name": "Why does the date change sometimes?", "acceptedAnswer": {"@type": "Answer", "text": "When the converted time crosses midnight, the date moves to the next day or the day before. The tool always shows the full date with the time."}}, {"@type": "Question", "name": "Is Time Zone Converter free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Time Zone Converter on AK Premium is free to use in your browser, with no sign-up and no account."}}, {"@type": "Question", "name": "Do my files leave my browser when I use Time Zone Converter?", "acceptedAnswer": {"@type": "Answer", "text": "No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the time difference between Lahore and London?", "acceptedAnswer": {"@type": "Answer", "text": "It is 5 hours in winter and 4 hours in summer, because London uses daylight saving and Lahore does not. Pick a date to get the right gap."}}, {"@type": "Question", "name": "Does it handle daylight saving time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The tool uses your browser's time zone rules, so daylight saving is applied for the date you pick, and the gap between two zones can change with the season."}}, {"@type": "Question", "name": "Can I plan a meeting across three zones?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Pick a date and time in your home zone, choose three other zones, and press Show Meeting Time in All Zones. Each zone shows its own time and date."}}, {"@type": "Question", "name": "How do I save a converted time?", "acceptedAnswer": {"@type": "Answer", "text": "Convert a time first, type an event title and a length, then press Download Calendar File. The .ics file opens in Google Calendar, Outlook and Apple Calendar."}}, {"@type": "Question", "name": "Is Time Zone Converter free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Time Zone Converter on AK Premium is free to use in your browser, with no sign-up and no account."}}, {"@type": "Question", "name": "Do my files leave my browser when I use Time Zone Converter?", "acceptedAnswer": {"@type": "Answer", "text": "No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device."}}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ak-premium.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://ak-premium.vercel.app/tools"}, {"@type": "ListItem", "position": 3, "name": "Time Zone Converter", "item": "https://ak-premium.vercel.app/tools/time-zone-converter"}]}</script>
 </head>
 <body class="tool-page" data-tool="time-zone-converter">
@@ -325,39 +325,70 @@
 <p><strong>Convert times between world time zones.</strong></p>
 <section class="workspace" aria-label="Time Zone Converter tool">
 <div class="workspace-tool" id="tool-timezone">
-          <h2>Time Zone Converter</h2>
-          <div class="field-row">
-            <label>Date <input id="tzDate" type="date"></label>
-            <label>Time <input id="tzTime" type="time"></label>
-          </div>
-          <div class="field-row">
-            <label>From time zone
-              <select id="tzFrom"><option value="UTC">UTC</option><option value="Asia/Karachi" selected>Lahore (PKT)</option><option value="Asia/Dubai">Dubai (GST)</option><option value="Asia/Kolkata">Kolkata (IST)</option><option value="Asia/Dhaka">Dhaka (BST)</option><option value="Asia/Singapore">Singapore (SGT)</option><option value="Asia/Tokyo">Tokyo (JST)</option><option value="Australia/Sydney">Sydney (AEST)</option><option value="Europe/London">London (GMT)</option><option value="Europe/Paris">Paris (CET)</option><option value="Europe/Berlin">Berlin (CET)</option><option value="America/New_York">New York (EST)</option><option value="America/Chicago">Chicago (CST)</option><option value="America/Denver">Denver (MST)</option><option value="America/Los_Angeles">Los Angeles (PST)</option><option value="America/Toronto">Toronto (EST)</option><option value="Pacific/Auckland">Auckland (NZST)</option></select>
-            </label>
-            <label>To time zone
-              <select id="tzTo"><option value="UTC">UTC</option><option value="Asia/Karachi">Lahore (PKT)</option><option value="Asia/Dubai">Dubai (GST)</option><option value="Asia/Kolkata">Kolkata (IST)</option><option value="Asia/Dhaka">Dhaka (BST)</option><option value="Asia/Singapore">Singapore (SGT)</option><option value="Asia/Tokyo">Tokyo (JST)</option><option value="Australia/Sydney">Sydney (AEST)</option><option value="Europe/London" selected>London (GMT)</option><option value="Europe/Paris">Paris (CET)</option><option value="Europe/Berlin">Berlin (CET)</option><option value="America/New_York">New York (EST)</option><option value="America/Chicago">Chicago (CST)</option><option value="America/Denver">Denver (MST)</option><option value="America/Los_Angeles">Los Angeles (PST)</option><option value="America/Toronto">Toronto (EST)</option><option value="Pacific/Auckland">Auckland (NZST)</option></select>
-            </label>
-          </div>
-          <button id="tzBtn" type="button" class="btn-primary">Convert Time Zone</button>
-          <pre id="tzOutput" class="terminal">Result will appear here.</pre>
-          <p class="status" id="tzStatus"></p>
-        </div>
+<h2>Convert Time Zones</h2>
+<div class="field-row">
+<label>Date <input id="tzDate" type="date" aria-label="Date"></label>
+<label>Time <input id="tzTime" type="time" value="12:00" aria-label="Time"></label>
+</div>
+<div class="field-row">
+<label>From time zone <select id="tzFrom" aria-label="From time zone"><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/London">London (Europe/London)</option><option value="Europe/Paris">Paris (Europe/Paris)</option><option value="Europe/Berlin">Berlin (Europe/Berlin)</option><option value="America/New_York">New York (America/New_York)</option><option value="America/Los_Angeles">Los Angeles (America/Los_Angeles)</option><option value="America/Toronto">Toronto (America/Toronto)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="Asia/Riyadh">Riyadh (Asia/Riyadh)</option><option value="Asia/Kolkata">India (Asia/Kolkata)</option><option value="Asia/Dhaka">Dhaka (Asia/Dhaka)</option><option value="Asia/Singapore">Singapore (Asia/Singapore)</option><option value="Asia/Kuala_Lumpur">Kuala Lumpur (Asia/Kuala_Lumpur)</option><option value="Asia/Tokyo">Tokyo (Asia/Tokyo)</option><option value="Australia/Sydney">Sydney (Australia/Sydney)</option><option value="Pacific/Auckland">Auckland (Pacific/Auckland)</option><option value="UTC">UTC</option></select></label>
+<label>To time zone <select id="tzTo" aria-label="To time zone"><option value="Europe/London">London (Europe/London)</option><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/Paris">Paris (Europe/Paris)</option><option value="Europe/Berlin">Berlin (Europe/Berlin)</option><option value="America/New_York">New York (America/New_York)</option><option value="America/Los_Angeles">Los Angeles (America/Los_Angeles)</option><option value="America/Toronto">Toronto (America/Toronto)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="Asia/Riyadh">Riyadh (Asia/Riyadh)</option><option value="Asia/Kolkata">India (Asia/Kolkata)</option><option value="Asia/Dhaka">Dhaka (Asia/Dhaka)</option><option value="Asia/Singapore">Singapore (Asia/Singapore)</option><option value="Asia/Kuala_Lumpur">Kuala Lumpur (Asia/Kuala_Lumpur)</option><option value="Asia/Tokyo">Tokyo (Asia/Tokyo)</option><option value="Australia/Sydney">Sydney (Australia/Sydney)</option><option value="Pacific/Auckland">Auckland (Pacific/Auckland)</option><option value="UTC">UTC</option></select></label>
+</div>
+<button id="tzBtn" type="button" class="btn-primary">Convert</button>
+<pre id="tzOutput" class="terminal" aria-live="polite">The converted time will appear here.</pre>
+<p class="status" id="tzStatus" aria-live="polite"></p>
+<h2>Plan a Meeting Across Time Zones</h2>
+<p class="tool-note">Pick a time in your home zone and see it in three other zones at once.</p>
+<div class="field-row">
+<label>Date <input id="tzPlanDate" type="date" aria-label="Meeting date"></label>
+<label>Time <input id="tzPlanTime" type="time" value="15:00" aria-label="Meeting time"></label>
+</div>
+<div class="field-row">
+<label>My time zone <select id="tzPlanHome" aria-label="My time zone"><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/London">London (Europe/London)</option><option value="America/New_York">New York (America/New_York)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="UTC">UTC</option></select></label>
+</div>
+<div class="field-row">
+<label>Zone 1 <select id="tzPlanZ1" aria-label="First other time zone"><option value="Europe/London">London (Europe/London)</option><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="America/New_York">New York (America/New_York)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="UTC">UTC</option></select></label>
+<label>Zone 2 <select id="tzPlanZ2" aria-label="Second other time zone"><option value="America/New_York">New York (America/New_York)</option><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/London">London (Europe/London)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="UTC">UTC</option></select></label>
+<label>Zone 3 <select id="tzPlanZ3" aria-label="Third other time zone"><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/London">London (Europe/London)</option><option value="America/New_York">New York (America/New_York)</option><option value="UTC">UTC</option></select></label>
+</div>
+<button id="tzPlanBtn" type="button" class="btn-secondary">Show Meeting Time in All Zones</button>
+<pre id="tzPlanOutput" class="terminal" aria-live="polite">The meeting time in each zone will appear here.</pre>
+<p class="status" id="tzPlanStatus" aria-live="polite"></p>
+<h2>Find Overlapping Working Hours</h2>
+<p class="tool-note">Finds the hours that are inside 09:00 to 17:00 in both zones on one date.</p>
+<div class="field-row">
+<label>Date <input id="tzOverlapDate" type="date" aria-label="Overlap date"></label>
+<label>Zone A <select id="tzOverlapA" aria-label="First zone for overlap"><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="Europe/London">London (Europe/London)</option><option value="America/New_York">New York (America/New_York)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="UTC">UTC</option></select></label>
+<label>Zone B <select id="tzOverlapB" aria-label="Second zone for overlap"><option value="Europe/London">London (Europe/London)</option><option value="Asia/Karachi">Pakistan Time (PKT) (Asia/Karachi)</option><option value="America/New_York">New York (America/New_York)</option><option value="Asia/Dubai">Dubai (Asia/Dubai)</option><option value="UTC">UTC</option></select></label>
+</div>
+<button id="tzOverlapBtn" type="button" class="btn-secondary">Find Overlap</button>
+<pre id="tzOverlapOutput" class="terminal" aria-live="polite">The overlap will appear here.</pre>
+<p class="status" id="tzOverlapStatus" aria-live="polite"></p>
+<h2>Save the Converted Time to Your Calendar</h2>
+<p class="tool-note">Downloads a calendar file (.ics) for the time you converted above.</p>
+<div class="field-row">
+<label>Event title <input id="tzIcsTitle" type="text" value="Meeting" aria-label="Event title"></label>
+<label>Length (minutes) <input id="tzIcsDuration" type="number" value="60" min="5" step="5" inputmode="numeric" aria-label="Event length in minutes"></label>
+</div>
+<button id="tzIcsBtn" type="button" class="btn-secondary">Download Calendar File (.ics)</button>
+<p class="status" id="tzIcsStatus" aria-live="polite"></p>
+</div>
 </section>
 <div class="ad-slot ad-slot-incontent" data-ad-slot="incontent" role="complementary" aria-label="Advertisement"></div><h2>What Time Zone Converter does</h2>
-<p>Time Zone Converter changes a time from one part of the world to another. A worker in Lahore joins a call with a team in London and needs the right time. A student applies to a university abroad and must not miss a deadline in another time zone. A family calls relatives overseas and wants to avoid waking them up. You pick the date and time, choose the zone you have and the zone you want, and the tool shows the converted time, with daylight saving handled for you.</p>
+<p>Time Zone Converter changes a time from one part of the world to another, and now helps you plan around it. A worker in Lahore joins a call with a team in London and needs the right time. A student must not miss a deadline at a university abroad. A family calls relatives overseas without waking them up. Pick the date and time and the two zones, and the tool shows the converted time, with daylight saving handled. The meeting planner shows one time in three other zones at once, the overlap finder shows the hours when two zones are both at work, and you can save the converted time as a calendar file.</p>
 <h2>How to use Time Zone Converter</h2>
-<ol><li>Pick the date in the &#x27;Date&#x27; box and the time in the &#x27;Time&#x27; box.</li><li>Choose the zone the time is in, in the &#x27;From time zone&#x27; list.</li><li>Choose the zone you want in the &#x27;To time zone&#x27; list.</li><li>Press Convert Time Zone, or just wait, because the result updates as you type.</li><li>Read the converted date and time under the button.</li></ol>
+<ol><li>Pick the date in the &#x27;Date&#x27; box and the time in the &#x27;Time&#x27; box.</li><li>Choose the zone the time is in, in the &#x27;From time zone&#x27; list.</li><li>Choose the zone you want in the &#x27;To time zone&#x27; list.</li><li>Press Convert, or just wait, because the result updates as you type.</li><li>Use the meeting planner below for three zones at once, the overlap finder for working hours, or download the calendar file.</li></ol>
 <h2>Tips for a good result</h2>
 <p>Daylight saving changes the gap between zones in summer and winter, so always include the date, not just the time. London is 5 hours behind Lahore in winter but 4 hours behind in summer. If the converted time falls on another day, the tool shows the new date too.</p>
-<div class="callout callout--limits"><p><strong>Limits to know about.</strong> The tool uses the time zone rules built into your browser, which are kept up to date by your system. Very old or future dates may use rules that have changed. It converts clock times only; it does not book meetings or send invites.</p></div>
+<div class="callout callout--limits"><p><strong>Limits to know about.</strong> The tool uses the time zone rules built into your browser, which are kept up to date by your system. Very old or future dates may use rules that have changed. It converts clock times only; it does not book meetings or send invites. The calendar file opens in Google Calendar, Outlook and Apple Calendar.</p></div>
 <h2>Example</h2>
-<p>12:00 on 15 January 2026 in Lahore is 07:00 on 15 January 2026 in London.</p>
+<p>12:00 on 15 January 2026 in Lahore is 07:00 on 15 January 2026 in London, and 15:00 in Lahore is 11:00 in London and 06:00 in New York.</p>
 <h2>Frequently asked questions</h2>
 <details><summary>What is the time difference between Lahore and London?</summary>
 <p>It is 5 hours in winter and 4 hours in summer, because London uses daylight saving and Lahore does not. Pick a date to get the right gap.</p></details><details><summary>Does it handle daylight saving time?</summary>
-<p>Yes. The tool uses your browser&#x27;s time zone rules, so daylight saving is applied for the date you pick, and the gap between two zones can change with the season.</p></details><details><summary>Can I convert to New York time?</summary>
-<p>Yes. Choose America/New_York in the To list. New York is 10 hours behind Lahore in winter and 9 hours behind in summer.</p></details><details><summary>Why does the date change sometimes?</summary>
-<p>When the converted time crosses midnight, the date moves to the next day or the day before. The tool always shows the full date with the time.</p></details><details><summary>Is Time Zone Converter free?</summary>
+<p>Yes. The tool uses your browser&#x27;s time zone rules, so daylight saving is applied for the date you pick, and the gap between two zones can change with the season.</p></details><details><summary>Can I plan a meeting across three zones?</summary>
+<p>Yes. Pick a date and time in your home zone, choose three other zones, and press Show Meeting Time in All Zones. Each zone shows its own time and date.</p></details><details><summary>How do I save a converted time?</summary>
+<p>Convert a time first, type an event title and a length, then press Download Calendar File. The .ics file opens in Google Calendar, Outlook and Apple Calendar.</p></details><details><summary>Is Time Zone Converter free?</summary>
 <p>Yes. Time Zone Converter on AK Premium is free to use in your browser, with no sign-up and no account.</p></details><details><summary>Do my files leave my browser when I use Time Zone Converter?</summary>
 <p>No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device.</p></details><div class="related">
 <h2>Related tools</h2>
@@ -367,9 +398,9 @@
 <div class="callout callout--privacy"><p>Your files are processed in your browser by Time Zone Converter. They are not uploaded to an AK Premium server, and you do not need an account. <a href="/privacy">Privacy Policy</a>.</p></div>
 <div class="ad-slot ad-slot-bottom" data-ad-slot="bottom" role="complementary" aria-label="Advertisement"></div></main>
 <footer class="site-footer"><div class="footer-inner"><div class="footer-col"><h3>Tools</h3><ul><li><a href="/pdf-tools">PDF Tools</a></li><li><a href="/image-tools">Image Tools</a></li><li><a href="/convert-tools">Convert</a></li><li><a href="/calculators">Calculators</a></li><li><a href="/developer-tools">Developer Tools</a></li><li><a href="/excel-tools">Excel Tools</a></li><li><a href="/business-tools">Business Tools</a></li><li><a href="/tools">All tools</a></li></ul></div><div class="footer-col"><h3>Country tools</h3><ul><li><a href="/country/pakistan">Pakistan tools</a></li><li><a href="/#section-country">India tools</a></li><li><a href="/#section-country">UAE &amp; Saudi tools</a></li><li><a href="/#section-country">UK tools</a></li><li><a href="/#section-country">US tools</a></li></ul></div><div class="footer-col"><h3>Company</h3><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/whats-new">What&rsquo;s new</a></li></ul></div><div class="footer-col"><h3>Legal</h3><ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/cookies">Cookie Policy</a></li><li><a href="/terms">Terms of Service</a></li><li><a href="/disclaimer">Disclaimer</a></li><li><a href="/dmca">DMCA</a></li><li><a href="/licenses">Licenses</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 AK Premium. Free tools, private by design. Files are processed in your browser and are not uploaded to an AK Premium server.</p></div></footer><div class="consent-banner" id="consentBanner" hidden><p>AK Premium uses cookies for ads and analytics only if you accept. Your files are processed in your browser and are never uploaded. <a href="/privacy">Read the Privacy Policy</a>.</p><button type="button" class="btn-primary" id="consentAccept">Accept</button><button type="button" class="btn-secondary" id="consentReject">Reject</button></div><script defer src="/assets/js/strings.924d7477b1.js"></script>
-<script defer src="/config.js?v=32"></script>
+<script defer src="/config.js?v=33"></script>
 <script defer src="/assets/js/common.bd66a64512.js"></script>
-<script defer src="/assets/js/core.c19e819a2f.js"></script>
-<script defer src="/assets/js/tools/time-zone-converter.64cb938ba3.js"></script>
+<script defer src="/assets/js/core.03d66fb7d8.js"></script>
+<script defer src="/assets/js/tools/time-zone-converter.b2b1a45870.js"></script>
 </body>
 </html>

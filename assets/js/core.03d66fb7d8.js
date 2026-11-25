@@ -2463,9 +2463,10 @@ function tdeeCalc(age, sex, heightCm, weightKg, factor) {
 // Safe expression evaluator (shunting-yard to RPN). Trig uses degrees.
 // No eval(): only numbers, brackets, operators and the named functions.
 
-function evaluateScientific(expr) {
+function evaluateScientific(expr, angleMode) {
   const s = String(expr || "").replace(/\s+/g, "");
   if (!s) return { error: "Please build a sum first." };
+  const rad = angleMode === "rad";
   const tokens = [];
   let i = 0;
   while (i < s.length) {
@@ -2479,11 +2480,12 @@ function evaluateScientific(expr) {
       i = j;
     } else if (/[a-z]/.test(ch)) {
       let j = i;
-      while (j < s.length && /[a-z]/.test(s[j])) j++;
+      // Letters AND digits: "pow10" is one function name, not "pow" + 10.
+      while (j < s.length && /[a-z0-9]/.test(s[j])) j++;
       const name = s.slice(i, j);
       if (name === "pi") tokens.push({ t: "num", v: Math.PI });
       else if (name === "e") tokens.push({ t: "num", v: Math.E });
-      else if (["sin", "cos", "tan", "log", "ln", "sqrt"].includes(name)) tokens.push({ t: "fn", v: name });
+      else if (["sin", "cos", "tan", "asin", "acos", "atan", "sinh", "cosh", "tanh", "log", "ln", "sqrt", "exp", "pow10", "cbrt", "inv"].includes(name)) tokens.push({ t: "fn", v: name });
       else return { error: "Unknown word: " + name };
       i = j;
     } else if ("+-*/^%!()".includes(ch)) {
@@ -2546,9 +2548,22 @@ function evaluateScientific(expr) {
       if (!st.length) return { error: "Missing number for " + tok.v + "." };
       const x = st.pop();
       let r;
-      if (tok.v === "sin") r = Math.sin(x * Math.PI / 180);
-      else if (tok.v === "cos") r = Math.cos(x * Math.PI / 180);
-      else if (tok.v === "tan") r = Math.tan(x * Math.PI / 180);
+      // Trig follows the angle mode: degrees by default, radians when asked.
+      const toRad = (d) => rad ? d : d * Math.PI / 180;
+      const fromRad = (a) => rad ? a : a * 180 / Math.PI;
+      if (tok.v === "sin") r = Math.sin(toRad(x));
+      else if (tok.v === "cos") r = Math.cos(toRad(x));
+      else if (tok.v === "tan") r = Math.tan(toRad(x));
+      else if (tok.v === "asin") { if (x < -1 || x > 1) return { error: "Arcsin needs a number from -1 to 1." }; r = fromRad(Math.asin(x)); }
+      else if (tok.v === "acos") { if (x < -1 || x > 1) return { error: "Arccos needs a number from -1 to 1." }; r = fromRad(Math.acos(x)); }
+      else if (tok.v === "atan") r = fromRad(Math.atan(x));
+      else if (tok.v === "sinh") r = Math.sinh(x);
+      else if (tok.v === "cosh") r = Math.cosh(x);
+      else if (tok.v === "tanh") r = Math.tanh(x);
+      else if (tok.v === "exp") r = Math.exp(x);
+      else if (tok.v === "pow10") r = Math.pow(10, x);
+      else if (tok.v === "cbrt") r = Math.cbrt(x);
+      else if (tok.v === "inv") { if (x === 0) return { error: "Cannot divide by zero." }; r = 1 / x; }
       else if (tok.v === "log") { if (x <= 0) return { error: "Log needs a number more than 0." }; r = Math.log10(x); }
       else if (tok.v === "ln") { if (x <= 0) return { error: "Ln needs a number more than 0." }; r = Math.log(x); }
       else if (tok.v === "sqrt") { if (x < 0) return { error: "Square root needs a number of 0 or more." }; r = Math.sqrt(x); }
@@ -2578,6 +2593,36 @@ function evaluateScientific(expr) {
   if (!isFinite(v)) return { error: "The answer is too large to show." };
   return { value: v };
 }
+
+// Time-zone label for zones outside the built-in TZ_LABELS table.
+
+/* ---------- v33: Calculators 2 + Pakistan ---------- */
+
+(function initTzZones() {
+  if (typeof Intl === "undefined" || typeof Intl.supportedValuesOf !== "function") return;
+  const zones = Intl.supportedValuesOf("timeZone");
+  const fill = (id, keep) => {
+    const sel = $(id);
+    if (!sel) return;
+    const cur = keep || sel.value;
+    sel.innerHTML = "";
+    zones.forEach((z) => {
+      const o = document.createElement("option");
+      o.value = z; o.textContent = tzLabel(z) + " (" + z + ")";
+      sel.appendChild(o);
+    });
+    if (zones.includes(cur)) sel.value = cur;
+  };
+  fill("tzFrom", "Asia/Karachi");
+  fill("tzTo", "Europe/London");
+  fill("tzPlanHome", "Asia/Karachi");
+  fill("tzPlanZ1", "Europe/London");
+  fill("tzPlanZ2", "America/New_York");
+  fill("tzPlanZ3", "Asia/Dubai");
+  fill("tzOverlapA", "Asia/Karachi");
+  fill("tzOverlapB", "Europe/London");
+})();
+/* v33: meeting planner — one time across three zones. */
 
 // Lorem ipsum sentence pool (classic placeholder text, public domain).
 const LOREM_SENTENCES = [
@@ -4202,12 +4247,12 @@ const LIVE_CALCS = [
   { btn: "bmiBtn", inputs: ["bmiHeight", "bmiWeight", "bmiFeet", "bmiInches", "bmiLb", "bmiWaist", "bmiAge"], selects: ["bmiMode", "bmiUnit", "bmiSex"], bmi: true },
   { btn: "emiBtn", inputs: ["emiPrincipal", "emiRate", "emiYears"] },
   { btn: "cgpaBtn", inputs: ["cgpaInput"], cgpa: true },
-  { btn: "landBtn", inputs: ["landValue"], selects: ["landFrom"] },
+  { btn: "landBtn", inputs: ["landValue", "landLength", "landWidth", "landRate", "landCustomMarla"], selects: ["landFrom", "landMarla"] },
   { btn: "taxBtn", inputs: ["taxMonthly"], selects: ["taxYear"] },
-  { btn: "zakatBtn", inputs: ["zakatCash", "zakatDebts", "zakatGold", "zakatGoldRate", "zakatSilver", "zakatSilverRate", "zakatNisab"], zakat: true },
+  { btn: "zakatBtn", inputs: ["zakatCash", "zakatDebts", "zakatGold", "zakatGoldRate", "zakatSilver", "zakatSilverRate", "zakatNisab", "zakatTrade", "zakatShares", "zakatForex", "zakatForexRate", "zakatLoans", "zakatFxRate"], zakat: true },
   { btn: "amountWordsBtn", inputs: ["amountWordsInput"] },
   { btn: "urduCounterBtn", inputs: ["urduCounterInput"] },
-  { btn: "meritBtn", inputs: ["meritObtained1", "meritTotal1", "meritWeight1", "meritObtained2", "meritTotal2", "meritWeight2", "meritObtained3", "meritTotal3", "meritWeight3"], merit: true },
+  { btn: "meritBtn", inputs: ["meritObtained1", "meritTotal1", "meritWeight1", "meritObtained2", "meritTotal2", "meritWeight2", "meritObtained3", "meritTotal3", "meritWeight3", "meritObtained4", "meritTotal4", "meritWeight4", "meritObtained5", "meritTotal5", "meritWeight5"], merit: true },
   { btn: "unitBtn", inputs: ["unitValue"], selects: ["unitFrom", "unitTo"] },
   { btn: "discBtn", inputs: ["discPrice", "discPct"] },
   { btn: "ciBtn", inputs: ["ciPrincipal", "ciRate", "ciYears"], selects: ["ciFreq"] },
@@ -4215,7 +4260,7 @@ const LIVE_CALCS = [
   { btn: "tipBtn", inputs: ["tipBill", "tipPct", "tipPeople"] },
   { btn: "tzBtn", inputs: ["tzDate", "tzTime"], selects: ["tzFrom", "tzTo"] },
   { btn: "ddBtn", inputs: ["ddFrom", "ddTo"] },
-  { btn: "tdeeBtn", inputs: ["tdeeAge", "tdeeHeight", "tdeeWeight"], selects: ["tdeeSex", "tdeeActivity"] },
+  { btn: "tdeeBtn", inputs: ["tdeeAge", "tdeeHeight", "tdeeWeight", "tdeeFeet", "tdeeInches", "tdeeLb", "tdeeBodyFat"], selects: ["tdeeSex", "tdeeActivity", "tdeeUnit", "tdeeGoal", "tdeeMacro"] },
   { btn: "frBtn", inputs: ["frNum1", "frDen1", "frNum2", "frDen2"], selects: ["frOp"] },
   { btn: "loremBtn", inputs: [], selects: ["loremUnit", "loremCount"] },
   { btn: "dedupeBtn", inputs: ["dedupeInput"] },
@@ -4230,12 +4275,13 @@ LIVE_CALCS.forEach((c) => {
   const num = (id) => parseFloat(($(id) || {}).value || "") || 0;
   const ready = () => {
     if (c.zakat) {
-      const wealth = num("zakatCash") + num("zakatGold") * num("zakatGoldRate") + num("zakatSilver") * num("zakatSilverRate");
+      const fx = (($("zakatCurrency") || {}).value || "pkr") === "usd" ? (num("zakatFxRate") || 0) : 1;
+      const wealth = (num("zakatCash") + num("zakatTrade") + num("zakatShares") + num("zakatForex") * num("zakatForexRate") + num("zakatLoans")) * fx + num("zakatGold") * num("zakatGoldRate") + num("zakatSilver") * num("zakatSilverRate");
       return wealth > 0 && (num("zakatGoldRate") > 0 || num("zakatSilverRate") > 0 || num("zakatNisab") > 0);
     }
     if (c.merit) {
       let sum = 0, rows = 0;
-      for (let i = 1; i <= 3; i++) {
+      for (let i = 1; i <= 5; i++) {
         if (num("meritTotal" + i) > 0 && num("meritWeight" + i) > 0) { sum += num("meritWeight" + i); rows++; }
       }
       return rows > 0 && Math.abs(sum - 100) < 0.01;
@@ -4271,12 +4317,12 @@ LIVE_CALCS.forEach((c) => {
     { out: "bmiOutput", inputs: ["bmiHeight", "bmiWeight", "bmiFeet", "bmiInches", "bmiLb", "bmiWaist", "bmiAge"], selects: ["bmiMode", "bmiUnit", "bmiSex"] },
     { out: "emiOutput", inputs: ["emiPrincipal", "emiRate", "emiYears"] },
     { out: "cgpaOutput", inputs: ["cgpaInput", "cgpaTarget", "cgpaRemaining"], selects: ["cgpaScale"] },
-    { out: "landOutput", inputs: ["landValue"], selects: ["landFrom"] },
+    { out: "landOutput", inputs: ["landValue", "landLength", "landWidth", "landRate", "landCustomMarla"], selects: ["landFrom", "landMarla"] },
     { out: "taxOutput", inputs: ["taxMonthly"], selects: ["taxYear"] },
-    { out: "zakatOutput", inputs: ["zakatCash", "zakatDebts", "zakatGold", "zakatGoldRate", "zakatSilver", "zakatSilverRate", "zakatNisab"] },
+    { out: "zakatOutput", inputs: ["zakatCash", "zakatDebts", "zakatGold", "zakatGoldRate", "zakatSilver", "zakatSilverRate", "zakatNisab", "zakatTrade", "zakatShares", "zakatForex", "zakatForexRate", "zakatLoans", "zakatFxRate", "zakatHawlDate"], selects: ["zakatCurrency", "zakatNisabMode"] },
     { out: "amountWordsOutput", inputs: ["amountWordsInput"] },
     { out: "urduCounterOutput", inputs: ["urduCounterInput"] },
-    { out: "meritOutput", inputs: ["meritObtained1", "meritTotal1", "meritWeight1", "meritObtained2", "meritTotal2", "meritWeight2", "meritObtained3", "meritTotal3", "meritWeight3"] },
+    { out: "meritOutput", inputs: ["meritObtained1", "meritTotal1", "meritWeight1", "meritObtained2", "meritTotal2", "meritWeight2", "meritObtained3", "meritTotal3", "meritWeight3", "meritObtained4", "meritTotal4", "meritWeight4", "meritObtained5", "meritTotal5", "meritWeight5"] },
     { out: "unitOutput", inputs: ["unitValue"], selects: ["unitType", "unitFrom", "unitTo"] },
     { out: "discOutput", inputs: ["discPrice", "discPct", "discPct2", "discTaxRate", "discDelivery", "discSalePrice"], selects: ["discMode"] },
     { out: "ciOutput", inputs: ["ciPrincipal", "ciRate", "ciYears", "ciDeposit", "ciInflation", "ciRate2"], selects: ["ciFreq"] },
@@ -4284,7 +4330,7 @@ LIVE_CALCS.forEach((c) => {
     { out: "tipOutput", inputs: ["tipBill", "tipPct", "tipPeople", "tipTax", "tipService", "tipItems"], selects: ["tipRound"] },
     { out: "tzOutput", inputs: ["tzDate", "tzTime"], selects: ["tzFrom", "tzTo"] },
     { out: "ddOutput", inputs: ["ddFrom", "ddTo"] },
-    { out: "tdeeOutput", inputs: ["tdeeAge", "tdeeHeight", "tdeeWeight"], selects: ["tdeeSex", "tdeeActivity"] },
+    { out: "tdeeOutput", inputs: ["tdeeAge", "tdeeHeight", "tdeeWeight", "tdeeFeet", "tdeeInches", "tdeeLb", "tdeeBodyFat"], selects: ["tdeeSex", "tdeeActivity", "tdeeUnit", "tdeeGoal", "tdeeMacro"] },
     { out: "sciOutput", inputs: ["sciDisplay"] },
     { out: "frOutput", inputs: ["frNum1", "frDen1", "frNum2", "frDen2", "frWhole1", "frWhole2", "frNum3", "frDen3", "frWhole3"], selects: ["frOp"] }
   ];
@@ -4570,8 +4616,13 @@ function initWizard(prefix, tasks, outId, statusId, opts) {
    are checked, and the result says so honestly. */
 const KNOWN_EXCEL_FUNCTIONS = new Set(("ABS ACCRINT ACOS ACOSH ACOT ACOTH ADDRESS AGGREGATE AMORDEGRC AMORLINC AND ARABIC AREAS ASC ASIN ASINH ATAN ATAN2 ATANH AVEDEV AVERAGE AVERAGEA AVERAGEIF AVERAGEIFS BAHTTEXT BASE BESSELI BESSELJ BESSELK BESSELY BETA.DIST BETA.INV BINOM.DIST BINOM.DIST.RANGE BINOM.INV BITAND BITLSHIFT BITOR BITRSHIFT BITXOR CALL CEILING CEILING.MATH CEILING.PRECISE CELL CHAR CHISQ.DIST CHISQ.DIST.RT CHISQ.INV CHISQ.INV.RT CHISQ.TEST CHOOSE CLEAN CODE COLUMN COLUMNS COMBIN COMBINA COMPLEX CONCAT CONCATENATE CONFIDENCE.NORM CONFIDENCE.T CONVERT CORREL COS COSH COT COTH COUNT COUNTA COUNTBLANK COUNTIF COUNTIFS COUPON COUPONDAYBS COUPONDAYS COUPONDAYSNC COUPONNCD COUPONNUM COUPONPCD COVAR COVAR.P COVAR.S CRITBINOM CUBEKPIMEMBER CUBEMEMBER CUBEVALUE CUBESET CUBESETCOUNT CUBERANKEDMEMBER CUMIPMT CUMPRINC DATE DATEDIF DATEVALUE DAVERAGE DAY DAYS DAYS360 DB DBCS DCOUNT DCOUNTA DDB DECIMAL DEGREES DELTA DEVSQ DGET DMAX DMIN DOLLAR DOLLARDE DOLLARFR DPRODUCT DSTDEV DSTDEVP DSUM DURATION DVAR DVARP EDATE EFFECT ENCODEURL EOMONTH ERF ERF.PRECISE ERFC ERFC.PRECISE ERROR.TYPE EUROCONVERT EVEN EXACT EXP EXPON.DIST F.DIST F.DIST.RT F.INV F.INV.RT F.TEST FACT FACTDOUBLE FALSE FDIST FILTER FILTERXML FIND FINDB FISHER FISHERINV FIXED FLOOR FLOOR.MATH FLOOR.PRECISE FORECAST FORECAST.ETS FORECAST.LINEAR FORMULATEXT FREQUENCY FTEST FV FVSCHEDULE GAMMA GAMMA.DIST GAMMA.INV GAMMALN GAMMALN.PRECISE GCD GEOMEAN GESTEP GETPIVOTDATA GROWTH HARMEAN HEX2BIN HEX2DEC HEX2OCT HLOOKUP HOUR HYPERLINK HYPGEOM.DIST IF IFERROR IFNA IFS IMABS IMAGINARY IMARGUMENT IMCONJUGATE IMCOS IMCOSH IMCOT IMDIV IMEXP IMLN IMLOG10 IMLOG2 IMPOWER IMPRODUCT IMREAL IMSEC IMSECH IMSIN IMSINH IMSQRT IMSUB IMSUM IMTAN INDEX INDIRECT INFO INT INTERCEPT INTRATE IPMT IRR ISBLANK ISERR ISERROR ISEVEN ISFORMULA ISLOGICAL ISNA ISNONTEXT ISNUMBER ISODD ISOWEEKNUM ISPMT ISREF ISTEXT ISTHAIDIGIT JIS KURT LARGE LCM LEFT LEN LET LINEST LN LOG LOG10 LOGEST LOGNORM.DIST LOGNORM.INV LOOKUP LOWER MDETERM MDURATION MEDIAN MID MIDB MIN MINA MINIFS MINUTE MIRR MODE MODE.MULT MODE.SNGL MONTH MROUND MULTINOMIAL MUNIT N NA NEGBINOM.DIST NETWORKDAYS NETWORKDAYS.INTL NOMINAL NORM.DIST NORM.INV NORM.S.DIST NORM.S.INV NOT NOW NPER NPV NUMBERVALUE OCT2BIN OCT2DEC OCT2HEX ODD ODDFPRICE ODDLYIELD OFFSET OR PDURATION PEARSON PERCENTILE PERCENTILE.EXC PERCENTILE.INC PERCENTRANK PERCENTRANK.EXC PERCENTRANK.INC PERMUT PERMUTATIONA PHONETIC PI PMT POISSON.DIST POWER PPMT PRICE PRICEDISC PRICEMAT PROB PRODUCT PROPER PV QUARTILE QUARTILE.EXC QUARTILE.INC QUOTIENT RADIANS RAND RANDBETWEEN RANK RANK.AVG RANK.EQ RATE RECEIVED REPLACE REPLACEB REPT RIGHT RIGHTB ROMAN ROUND ROUNDDOWN ROUNDUP ROW ROWS RRI RSQ RTD SEARCH SEARCHB SECOND SEQUENCE SERIESSUM SHEET SHEETS SIGN SIN SINH SKEW SKEW.P SLN SLOPE SMALL SORT SORTBY SQRT SQRTPI STANDARDIZE STDEV STDEV.P STDEV.S STDEVA STDEVPA STEYX SUBSTITUTE SUBTOTAL SUM SUMIF SUMIFS SUMPRODUCT SUMSQ SUMX2MY2 SUMX2PY2 SUMXMY2 SWITCH SYD T TAN TANH TBILLEQ TBILLPRICE TBILLYIELD TEXT TEXTJOIN TIME TIMEVALUE TODAY TRANSPOSE TREND TRIM TRIMMEAN TRUE TRUNC TYPE UNICHAR UNICODE UNIQUE UPPER VALUE VAR VAR.P VAR.S VARA VARPA VDB VLOOKUP WEBSERVICE WEEKDAY WEEKNUM WORKDAY WORKDAY.INTL XIRR XLOOKUP XMATCH XNPV XOR YEAR YEARFRAC YIELD YIELDDISC YIELDMAT Z.TEST").split(" "));
 
-/* Land converter: 1 Kanal = 20 Marla = 5,445 sq ft; 1 Acre = 8 Kanal = 43,560 sq ft; 1 Marla = 272.25 sq ft. */
+/* Land converter: 1 Kanal = 20 Marla = 5,445 sq ft; 1 Acre = 8 Kanal = 43,560 sq ft; 1 Marla = 272.25 sq ft (revenue marla). */
 const LAND_UNITS = { marla: 272.25, kanal: 5445, acre: 43560, sqft: 1, sqyd: 9, sqm: 10.7639 };
+// Which marla size the user picked: the revenue marla (272.25 sq ft, used in
+// land records and most of Khyber Pakhtunkhwa), the housing-society marla
+// (225 sq ft, used by DHA, Bahria and most schemes), 250 sq ft in some
+// schemes, or a size the user types. There is no single provincial marla:
+// Sindh mostly sells land in square yards, not marla.
 
 const TAX_SLABS_FALLBACK = {"years": [
   {"tax_year": "2026", "label": "Tax Year 2026 (FY 2025-26, Finance Act 2025)", "default": false, "slabs": [{"up_to": 600000, "rate": 0, "base_tax": 0}, {"up_to": 1200000, "rate": 0.01, "base_tax": 0}, {"up_to": 2200000, "rate": 0.11, "base_tax": 6000}, {"up_to": 3200000, "rate": 0.23, "base_tax": 116000}, {"up_to": 4100000, "rate": 0.30, "base_tax": 346000}, {"up_to": null, "rate": 0.35, "base_tax": 616000}], "surcharge": {"threshold": 10000000, "rate": 0.09, "note": "9% surcharge on tax payable where taxable income exceeds Rs 10,000,000 (s.4AB)."}},
@@ -4610,7 +4661,7 @@ function numToWordsEn(n) {
   if (n === 0) return "zero";
   if (n < 0) return "minus " + numToWordsEn(-n);
   let out = "";
-  const scales = [[1000000000, "billion"], [1000000, "million"], [1000, "thousand"], [100, "hundred"]];
+  const scales = [[100000000000, "kharab"], [1000000000, "arab"], [1000000, "million"], [1000, "thousand"], [100, "hundred"]];
   for (const [v, name] of scales) {
     if (n >= v) { out += numToWordsEn(Math.floor(n / v)) + " " + name + " "; n %= v; }
   }
@@ -4626,7 +4677,7 @@ function numToWordsUr(n) {
   if (n === 0) return "صفر";
   if (n < 0) return "منفی " + numToWordsUr(-n);
   let out = "";
-  const scales = [[10000000, "کروڑ"], [100000, "لاکھ"], [1000, "ہزار"], [100, "سو"]];
+  const scales = [[100000000000, "کھرب"], [1000000000, "ارب"], [10000000, "کروڑ"], [100000, "لاکھ"], [1000, "ہزار"], [100, "سو"]];
   for (const [v, name] of scales) {
     if (n >= v) { out += numToWordsUr(Math.floor(n / v)) + " " + name + " "; n %= v; }
   }

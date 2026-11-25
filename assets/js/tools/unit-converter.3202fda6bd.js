@@ -1,6 +1,6 @@
 /* AK Premium v12 — unit-converter (split from app.js). Loads after core.js, only on its own tool page. */
 
-/* ---------- Wave 1: Calculators & converters (batch 3) ---------- */
+/* ---------- v33: Calculators 2 + Pakistan ---------- */
 
 const unitType = $("unitType");
 if (unitType) unitType.addEventListener("change", () => {

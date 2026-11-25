@@ -327,14 +327,21 @@
 <section class="workspace" dir="ltr" aria-label="Zakat Calculator tool">
 <div class="workspace-tool" id="tool-zakat">
 <h2>Zakat Calculator</h2>
-<div class="field-row"><label>Cash and bank (Rs) <input id="zakatCash" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Debts to subtract (Rs) <input id="zakatDebts" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
+<label>Currency of your amounts <select id="zakatCurrency"><option value="pkr">Pakistani rupees (Rs)</option><option value="usd">US dollars (converted at the rate you type below)</option></select></label>
+<label>Exchange rate: Rs per US dollar (only for US dollars) <input id="zakatFxRate" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Example: 280"></label>
+<div class="field-row"><label>Cash and bank <input id="zakatCash" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Debts to subtract <input id="zakatDebts" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
 <div class="field-row"><label>Gold (tola) <input id="zakatGold" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Gold rate per tola (Rs) <input id="zakatGoldRate" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
 <div class="field-row"><label>Silver (tola) <input id="zakatSilver" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Silver rate per tola (Rs) <input id="zakatSilverRate" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
-<label>Custom nisab (Rs, optional) <input id="zakatNisab" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Leave empty to use the rate-based nisab"></label>
+<div class="field-row"><label>Trade goods, stock value <input id="zakatTrade" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Shares, current value <input id="zakatShares" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
+<div class="field-row"><label>Foreign currency held <input id="zakatForex" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label><label>Rate per unit in Rs <input id="zakatForexRate" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label></div>
+<label>Loans given to others (money you expect back) <input id="zakatLoans" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" value="0"></label>
+<label>Nisab to use <select id="zakatNisabMode"><option value="silver">Silver nisab (52.5 tola silver)</option><option value="gold">Gold nisab (7.5 tola gold)</option></select></label>
+<label>Custom nisab in Rs (optional, overrides the choice above) <input id="zakatNisab" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="Leave empty to use the rate-based nisab"></label>
+<label>Date your wealth first reached the nisab (optional, for the lunar-year reminder) <input id="zakatHawlDate" type="date"></label>
 <button id="zakatBtn" type="button" class="btn-primary">Calculate Zakat</button>
 <pre id="zakatOutput" class="terminal" aria-live="polite">Your Zakat estimate will appear here.</pre>
 <p class="status" id="zakatStatus" aria-live="polite"></p>
-<p class="file-limit-note">Estimate only, not religious advice. Nisab is 7.5 tola gold or 52.5 tola silver.</p>
+<p class="file-limit-note">Estimate only, not religious advice. Nisab is 7.5 tola gold or 52.5 tola silver. The government bank-deduction nisab for Ramadan 2026 was reported as Rs 503,529, but that figure was not directly verified from an official source, and the government re-notifies it every year — verify before relying on it.</p>
 </div>
 </section>
 <h2 lang="ur" dir="rtl">استعمال کا طریقہ</h2>
@@ -352,9 +359,9 @@
 <div class="callout callout--privacy"><p lang="ur" dir="rtl">آپ کی فائلیں آپ کے براؤزر میں ہی پروسیس ہوتی ہیں، کہیں اپ لوڈ نہیں ہوتیں۔ <a href="/privacy">Privacy Policy</a>.</p></div>
 </main>
 <footer class="site-footer"><div class="footer-inner"><div class="footer-col"><h3>Tools</h3><ul><li><a href="/pdf-tools">PDF Tools</a></li><li><a href="/image-tools">Image Tools</a></li><li><a href="/convert-tools">Convert</a></li><li><a href="/calculators">Calculators</a></li><li><a href="/developer-tools">Developer Tools</a></li><li><a href="/excel-tools">Excel Tools</a></li><li><a href="/business-tools">Business Tools</a></li><li><a href="/tools">All tools</a></li></ul></div><div class="footer-col"><h3>Country tools</h3><ul><li><a href="/country/pakistan">Pakistan tools</a></li><li><a href="/#section-country">India tools</a></li><li><a href="/#section-country">UAE &amp; Saudi tools</a></li><li><a href="/#section-country">UK tools</a></li><li><a href="/#section-country">US tools</a></li></ul></div><div class="footer-col"><h3>Company</h3><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/whats-new">What&rsquo;s new</a></li></ul></div><div class="footer-col"><h3>Legal</h3><ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/cookies">Cookie Policy</a></li><li><a href="/terms">Terms of Service</a></li><li><a href="/disclaimer">Disclaimer</a></li><li><a href="/dmca">DMCA</a></li><li><a href="/licenses">Licenses</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 AK Premium. Free tools, private by design. Files are processed in your browser and are not uploaded to an AK Premium server.</p></div></footer><div class="consent-banner" id="consentBanner" hidden><p>AK Premium uses cookies for ads and analytics only if you accept. Your files are processed in your browser and are never uploaded. <a href="/privacy">Read the Privacy Policy</a>.</p><button type="button" class="btn-primary" id="consentAccept">Accept</button><button type="button" class="btn-secondary" id="consentReject">Reject</button></div><script defer src="/assets/js/strings.924d7477b1.js"></script>
-<script defer src="/config.js?v=32"></script>
+<script defer src="/config.js?v=33"></script>
 <script defer src="/assets/js/common.bd66a64512.js"></script>
-<script defer src="/assets/js/core.c19e819a2f.js"></script>
-<script defer src="/assets/js/tools/zakat-calculator.63f7541026.js"></script>
+<script defer src="/assets/js/core.03d66fb7d8.js"></script>
+<script defer src="/assets/js/tools/zakat-calculator.617d0a1847.js"></script>
 </body>
 </html>

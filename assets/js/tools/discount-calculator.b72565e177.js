@@ -34,6 +34,8 @@ function reverseDiscount(salePrice, pct) {
   return { original, saved: Math.round((original - salePrice) * 100) / 100 };
 }
 
+/* ---------- v33: Calculators 2 + Pakistan ---------- */
+
 const discBtn = $("discBtn");
 if (discBtn) discBtn.addEventListener("click", () => {
   const mode = ($("discMode") || {}).value || "discount";

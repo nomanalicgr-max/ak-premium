@@ -1,6 +1,6 @@
 /* AK Premium v12 — fraction-calculator (split from app.js). Loads after core.js, only on its own tool page. */
 
-/* ---------- Wave 1: Calculators & converters (batch 3) ---------- */
+/* ---------- v33: Calculators 2 + Pakistan ---------- */
 
 function fractionCalc(n1, d1, op, n2, d2, extra) {
   if (!Number.isInteger(n1) || !Number.isInteger(d1) || !Number.isInteger(n2) || !Number.isInteger(d2)) return { error: "Please enter whole numbers only." };

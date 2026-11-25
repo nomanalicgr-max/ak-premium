@@ -1,5 +1,34 @@
 # AK Premium — Changelog
 
+## v33 — 24 November 2026 (advanced upgrade plan, batch 13: Calculators 2 + Pakistan)
+
+### Time Zone Converter — IANA list, meeting planner, overlap finder
+- Convert a time between any two time zones from the full IANA list, plan a meeting across three zones at once, find the working-hours overlap between two zones, and download the result as a calendar (.ics) file.
+
+### Date Difference — working days, add or subtract days, countdown
+- The days, weeks and months between two dates, working days counted Monday to Friday with the verified 2026 Pakistan public holidays (Cabinet Division circular F.No.10-1/2025-Min-II, 19 January 2026), adding or subtracting days from a date, and a live countdown.
+
+### Calorie & TDEE Calculator — BMR, goals, macros, imperial units
+- Basal metabolic rate and total daily energy expenditure from activity level, with weight-loss and weight-gain targets, a macro split, the Katch-McArdle option using body-fat percentage, and imperial units. A health note reminds you this is an estimate, not medical advice.
+
+### Scientific Calculator — trig, memory, history, keyboard
+- Trigonometric, inverse and hyperbolic functions, powers, roots and logarithms, degree and radian modes, memory keys and an answer key, a clickable 10-item history, and keyboard input, all evaluated safely without eval().
+
+### Land Converter — marla-size selector, 13 units, price estimate
+- Convert between marla, kanal, acre, square feet, square yards and more, work out an area from length and width, and estimate a price. The marla size is a selector (Revenue 272.25, housing-society 225, some schemes 250, or custom) because no official provincial marla figure could be verified.
+
+### Zakat Calculator — trade, shares, forex, loans, gold or silver nisab
+- Zakat at 2.5% on cash, trade goods, shares, foreign currency and loans, with a gold or silver nisab choice and amounts in PKR or USD at a typed exchange rate. The nisab of Rs 503,529 (Ramadan 2026) is shown as reported.
+
+### Amount to Words — PKR, USD, GBP, AED, cheque line
+- Write any amount in words in English, with paise handled exactly, rounded or dropped, and a cheque line with a formatted date. Amounts scale up to kharab and arab.
+
+### Urdu Word Counter — ZWNJ-safe counting, reading and speaking times
+- Count words and characters in Urdu text, including Arabic-Indic digits and ZWNJ-joined words, with sentence and paragraph counts, reading time at 200 words per minute and speaking time at 130 words per minute.
+
+### Percentage Marks Calculator — parts, reverse planner, percentage to GPA
+- Percentage and grade from up to five subject parts, a reverse planner for the marks still needed to reach a target, and percentage to GPA on the common 4.0 scale. University merit presets are not included because no official merit policy could be verified.
+
 ## v32 — 24 November 2026 (advanced upgrade plan, batch 12: Calculators 1 + business)
 
 ### Age Calculator — exact age, countdown, milestones

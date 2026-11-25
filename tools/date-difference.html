@@ -31,7 +31,7 @@
 <link rel="preload" href="/assets/fonts/plus-jakarta-var.153fc85b70.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/styles.1026ec2fe8.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Date Difference Calculator", "applicationCategory": "BusinessApplication", "operatingSystem": "Web browser", "inLanguage": "en", "description": "Count the days, weeks and months between any two dates in your browser. Free, in your browser. No sign-up.", "url": "https://ak-premium.vercel.app/tools/date-difference", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "isPartOf": {"@type": "WebSite", "name": "AK Premium", "url": "https://ak-premium.vercel.app/"}}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How many days are between two dates?", "acceptedAnswer": {"@type": "Answer", "text": "Pick the two dates and press Calculate Difference. The tool shows the exact number of days, plus the weeks and days and the full months."}}, {"@type": "Question", "name": "Does it count the first date?", "acceptedAnswer": {"@type": "Answer", "text": "No. The count is the days from the first date to the second date. If you want to include both end days, add 1 to the day count."}}, {"@type": "Question", "name": "Can I count weeks instead of days?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The result shows the weeks and the extra days as well, so 365 days shows as 52 weeks and 1 day."}}, {"@type": "Question", "name": "Does the order of the dates matter?", "acceptedAnswer": {"@type": "Answer", "text": "No. The tool always counts the gap between the two dates, whichever one you pick first, so you can enter them in any order you like."}}, {"@type": "Question", "name": "Is Date Difference Calculator free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Date Difference Calculator on AK Premium is free to use in your browser, with no sign-up and no account."}}, {"@type": "Question", "name": "Do my files leave my browser when I use Date Difference Calculator?", "acceptedAnswer": {"@type": "Answer", "text": "No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How many working days are in January 2026?", "acceptedAnswer": {"@type": "Answer", "text": "From 1 to 31 January 2026 there are 22 working days, after skipping weekends. The 1 January bank holiday is not skipped, because banks close but government offices stay open."}}, {"@type": "Question", "name": "Does it skip Pakistan public holidays?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, for 2026 only. The list comes from the Cabinet Division circular of 19 January 2026, with Eid and Ashura dates as later notified. Holidays for 2027 are not published yet."}}, {"@type": "Question", "name": "Can I add days to a date?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Enter a start date and a number of days, then press Add Days. Use a minus number to subtract days, and the tool shows the new date with its weekday."}}, {"@type": "Question", "name": "How does the countdown work?", "acceptedAnswer": {"@type": "Answer", "text": "Pick a date and time, press Start Countdown, and the tool updates every second with the days, hours, minutes and seconds left. Press Stop to stop it."}}, {"@type": "Question", "name": "Is Date Difference Calculator free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Date Difference Calculator on AK Premium is free to use in your browser, with no sign-up and no account."}}, {"@type": "Question", "name": "Do my files leave my browser when I use Date Difference Calculator?", "acceptedAnswer": {"@type": "Answer", "text": "No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device."}}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ak-premium.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://ak-premium.vercel.app/tools"}, {"@type": "ListItem", "position": 3, "name": "Date Difference Calculator", "item": "https://ak-premium.vercel.app/tools/date-difference"}]}</script>
 </head>
 <body class="tool-page" data-tool="date-difference">
@@ -325,31 +325,50 @@
 <p><strong>Count days, weeks and months between dates.</strong></p>
 <section class="workspace" aria-label="Date Difference Calculator tool">
 <div class="workspace-tool" id="tool-datediff">
-          <h2>Date Difference Calculator</h2>
-          <div class="field-row">
-            <label>From date <input id="ddFrom" type="date"></label>
-            <label>To date <input id="ddTo" type="date"></label>
-          </div>
-          <button id="ddBtn" type="button" class="btn-primary">Calculate Difference</button>
-          <pre id="ddOutput" class="terminal">Result will appear here.</pre>
-          <p class="status" id="ddStatus"></p>
-        </div>
+<h2>Date Difference</h2>
+<div class="field-row">
+<label>From <input id="ddFrom" type="date" aria-label="From date"></label>
+<label>To <input id="ddTo" type="date" aria-label="To date"></label>
+</div>
+<label><input id="ddWorking" type="checkbox"> Count working days only (Monday to Friday, skipping Pakistan public holidays 2026)</label>
+<button id="ddBtn" type="button" class="btn-primary">Calculate</button>
+<pre id="ddOutput" class="terminal" aria-live="polite">The difference will appear here.</pre>
+<p class="status" id="ddStatus" aria-live="polite"></p>
+<h2>Add or Subtract Days</h2>
+<p class="tool-note">Start from a date and add or subtract a number of days.</p>
+<div class="field-row">
+<label>Start date <input id="ddBase" type="date" aria-label="Start date"></label>
+<label>Days to add (use a minus number to subtract) <input id="ddDays" type="number" value="30" step="1" inputmode="numeric" aria-label="Days to add"></label>
+</div>
+<button id="ddAddBtn" type="button" class="btn-secondary">Add Days</button>
+<pre id="ddAddOutput" class="terminal" aria-live="polite">The new date will appear here.</pre>
+<p class="status" id="ddAddStatus" aria-live="polite"></p>
+<h2>Countdown to a Date</h2>
+<p class="tool-note">Counts down live to a date and time you pick.</p>
+<div class="field-row">
+<label>Target date and time <input id="ddTarget" type="datetime-local" aria-label="Target date and time"></label>
+</div>
+<button id="ddCountBtn" type="button" class="btn-secondary">Start Countdown</button>
+<button id="ddCountStop" type="button" class="btn-secondary">Stop</button>
+<pre id="ddCountOutput" class="terminal" aria-live="polite">The countdown will appear here.</pre>
+<p class="status" id="ddCountStatus" aria-live="polite"></p>
+</div>
 </section>
 <div class="ad-slot ad-slot-incontent" data-ad-slot="incontent" role="complementary" aria-label="Advertisement"></div><h2>What Date Difference Calculator does</h2>
-<p>Date Difference Calculator counts the time between two dates. A worker counts the days left before a project deadline. A parent counts the days until a child&#x27;s birthday. A student counts the weeks between the start and the end of a term. A traveller counts the days of a trip. You pick the two dates and the tool shows the days between them, the weeks and days, and the full months, so you can plan without counting on a calendar.</p>
+<p>Date Difference works out the days, weeks and months between two dates, and now counts working days and runs a countdown too. A teacher counts the days left before an exam. A shop owner checks how many working days are left to deliver an order. A family counts down to a wedding or a flight. Pick the from and to dates and the tool shows the gap in days, weeks and months, and broken down into years, months and days. Tick the working-days box to skip weekends and Pakistan public holidays for 2026, or add days to a date and watch a live countdown.</p>
 <h2>How to use Date Difference Calculator</h2>
-<ol><li>Pick the first date in the &#x27;From date&#x27; box.</li><li>Pick the second date in the &#x27;To date&#x27; box.</li><li>Press Calculate Difference, or just wait, because the result updates as you type.</li><li>Read the days, weeks and months under the button.</li></ol>
+<ol><li>Pick the start date in the &#x27;From&#x27; box and the end date in the &#x27;To&#x27; box.</li><li>Press Calculate to see the gap in days, weeks and months.</li><li>Tick the working-days box to skip weekends and Pakistan public holidays for 2026.</li><li>Use Add or Subtract Days to work out a date a number of days away.</li><li>Use the countdown to watch the days, hours and minutes to a date you pick.</li></ol>
 <h2>Tips for a good result</h2>
-<p>The count is the number of days from the first date to the second date, not including the first date. If you need to include both end days, add 1 to the day count. The order of the two dates does not matter; the tool always counts the gap between them.</p>
-<div class="callout callout--limits"><p><strong>Limits to know about.</strong> The tool counts whole days between the dates you pick. It does not count working days or skip weekends and holidays. Very old dates may use calendar rules that differ from today&#x27;s calendar.</p></div>
+<p>The working-days count skips Saturdays and Sundays and the Pakistan public holidays for 2026, from the Cabinet Division circular of 19 January 2026. Both end dates are counted. The 26 December holiday is for Christians only, so it is not skipped.</p>
+<div class="callout callout--limits"><p><strong>Limits to know about.</strong> Public holidays are bundled for 2026 only, from the Cabinet Division circular F.No.10-1/2025-Min-II dated 19 January 2026, with Eid and Ashura dates as later notified. Holidays for 2027 are not published yet, so the working-days count only works for dates in 2026. Moon-sighting dates can change, so check the official notice for Eid and Ashura.</p></div>
 <h2>Example</h2>
-<p>From 1 January 2025 to 1 January 2026 is 365 days, which is 52 weeks and 1 day.</p>
+<p>From 1 January 2026 to 1 February 2026 is 31 days, which is 4 weeks and 3 days, or 1 month. There are 22 working days in that range.</p>
 <h2>Frequently asked questions</h2>
-<details><summary>How many days are between two dates?</summary>
-<p>Pick the two dates and press Calculate Difference. The tool shows the exact number of days, plus the weeks and days and the full months.</p></details><details><summary>Does it count the first date?</summary>
-<p>No. The count is the days from the first date to the second date. If you want to include both end days, add 1 to the day count.</p></details><details><summary>Can I count weeks instead of days?</summary>
-<p>Yes. The result shows the weeks and the extra days as well, so 365 days shows as 52 weeks and 1 day.</p></details><details><summary>Does the order of the dates matter?</summary>
-<p>No. The tool always counts the gap between the two dates, whichever one you pick first, so you can enter them in any order you like.</p></details><details><summary>Is Date Difference Calculator free?</summary>
+<details><summary>How many working days are in January 2026?</summary>
+<p>From 1 to 31 January 2026 there are 22 working days, after skipping weekends. The 1 January bank holiday is not skipped, because banks close but government offices stay open.</p></details><details><summary>Does it skip Pakistan public holidays?</summary>
+<p>Yes, for 2026 only. The list comes from the Cabinet Division circular of 19 January 2026, with Eid and Ashura dates as later notified. Holidays for 2027 are not published yet.</p></details><details><summary>Can I add days to a date?</summary>
+<p>Yes. Enter a start date and a number of days, then press Add Days. Use a minus number to subtract days, and the tool shows the new date with its weekday.</p></details><details><summary>How does the countdown work?</summary>
+<p>Pick a date and time, press Start Countdown, and the tool updates every second with the days, hours, minutes and seconds left. Press Stop to stop it.</p></details><details><summary>Is Date Difference Calculator free?</summary>
 <p>Yes. Date Difference Calculator on AK Premium is free to use in your browser, with no sign-up and no account.</p></details><details><summary>Do my files leave my browser when I use Date Difference Calculator?</summary>
 <p>No. AK Premium tools run in your browser, so the files you choose are not uploaded to an AK Premium server. The libraries the tool needs load from public CDNs, but your files stay on your device.</p></details><div class="related">
 <h2>Related tools</h2>
@@ -359,9 +378,9 @@
 <div class="callout callout--privacy"><p>Your files are processed in your browser by Date Difference Calculator. They are not uploaded to an AK Premium server, and you do not need an account. <a href="/privacy">Privacy Policy</a>.</p></div>
 <div class="ad-slot ad-slot-bottom" data-ad-slot="bottom" role="complementary" aria-label="Advertisement"></div></main>
 <footer class="site-footer"><div class="footer-inner"><div class="footer-col"><h3>Tools</h3><ul><li><a href="/pdf-tools">PDF Tools</a></li><li><a href="/image-tools">Image Tools</a></li><li><a href="/convert-tools">Convert</a></li><li><a href="/calculators">Calculators</a></li><li><a href="/developer-tools">Developer Tools</a></li><li><a href="/excel-tools">Excel Tools</a></li><li><a href="/business-tools">Business Tools</a></li><li><a href="/tools">All tools</a></li></ul></div><div class="footer-col"><h3>Country tools</h3><ul><li><a href="/country/pakistan">Pakistan tools</a></li><li><a href="/#section-country">India tools</a></li><li><a href="/#section-country">UAE &amp; Saudi tools</a></li><li><a href="/#section-country">UK tools</a></li><li><a href="/#section-country">US tools</a></li></ul></div><div class="footer-col"><h3>Company</h3><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/whats-new">What&rsquo;s new</a></li></ul></div><div class="footer-col"><h3>Legal</h3><ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/cookies">Cookie Policy</a></li><li><a href="/terms">Terms of Service</a></li><li><a href="/disclaimer">Disclaimer</a></li><li><a href="/dmca">DMCA</a></li><li><a href="/licenses">Licenses</a></li></ul></div></div><div class="footer-bottom"><p>&copy; 2026 AK Premium. Free tools, private by design. Files are processed in your browser and are not uploaded to an AK Premium server.</p></div></footer><div class="consent-banner" id="consentBanner" hidden><p>AK Premium uses cookies for ads and analytics only if you accept. Your files are processed in your browser and are never uploaded. <a href="/privacy">Read the Privacy Policy</a>.</p><button type="button" class="btn-primary" id="consentAccept">Accept</button><button type="button" class="btn-secondary" id="consentReject">Reject</button></div><script defer src="/assets/js/strings.924d7477b1.js"></script>
-<script defer src="/config.js?v=32"></script>
+<script defer src="/config.js?v=33"></script>
 <script defer src="/assets/js/common.bd66a64512.js"></script>
-<script defer src="/assets/js/core.c19e819a2f.js"></script>
-<script defer src="/assets/js/tools/date-difference.174b5e59f7.js"></script>
+<script defer src="/assets/js/core.03d66fb7d8.js"></script>
+<script defer src="/assets/js/tools/date-difference.830e8ea513.js"></script>
 </body>
 </html>

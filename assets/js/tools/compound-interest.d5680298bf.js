@@ -60,6 +60,8 @@ function compoundYearTable(rows) {
   return html + "</tbody></table>";
 }
 
+/* ---------- v33: Calculators 2 + Pakistan ---------- */
+
 const ciBtn = $("ciBtn");
 if (ciBtn) ciBtn.addEventListener("click", () => {
   const result = compoundCalc(parseFloat($("ciPrincipal").value), parseFloat($("ciRate").value), parseFloat($("ciYears").value), parseFloat($("ciFreq").value), {
